@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Tenure | Brainstorm in your chat client. Open your IDE. It already knows.
+    </title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <nav>
+      <span class="nav-logo logo-container">
+        <img src="tenure-logo-small.svg" class="logo-icon" alt="tenure" />
+        tenure
+      </span>
+      <div class="nav-links">
+        <a href="#">Docs</a>
+        <a href="https://github.com/tenurehq/tenure">GitHub</a>
+        <a href="https://arxiv.org/abs/2605.11325">Research</a>
+        <a href="https://github.com/tenurehq/tenure" class="nav-cta"
+          >Install Free</a
+        >
+      </div>
+    </nav>
+
+    <section id="hero">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Runs entirely on localhost. Nothing ever leaves your machine.
+        </div>
+
+        <h1>
+          Brainstorm in your chat client. Open your IDE. It already knows.
+        </h1>
+
+        <p class="hero-rag-line">
+          Not RAG. Not another memory wrapper. Watch what it learns before it
+          ever changes a response.
+        </p>
+
+        <p class="hero-sub">
+          Persistent memory that follows you across every tool and every
+          session. Turn injection on when you're ready, not before.
+        </p>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value"
+              >1.0<a
+                href="https://huggingface.co/spaces/tenurehq/precisionmembench"
+                style="
+                  color: var(--accent);
+                  font-size: 0.7em;
+                  vertical-align: super;
+                  text-decoration: none;
+                "
+                >*</a
+              ></span
+            >
+            <span class="hero-stat-label">Retrieval precision</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">&lt;15ms</span>
+            <span class="hero-stat-label">Retrieval latency</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">0</span>
+            <span class="hero-stat-label">Workflow changes</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">0</span>
+            <span class="hero-stat-label">API calls</span>
+          </div>
+        </div>
+
+        <p class="install-label">// install from your existing tools</p>
+
+        <div class="editor-buttons">
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode"
+            class="editor-btn"
+          >
+            <img class="image-icon" src="vscode.webp" />
+          </a>
+          <a
+            href="https://clawhub.ai/plugins/@tenureai/openclaw-plugin"
+            class="editor-btn"
+          >
+            <img class="image-icon" src="openclaw.svg" />
+          </a>
+          <a
+            href="https://open-vsx.org/extension/tenureai/tenure-vscode"
+            class="editor-btn"
+          >
+            <img class="image-icon" src="windsurf.png" />
+          </a>
+          <a
+            href="https://open-vsx.org/extension/tenureai/tenure-vscode"
+            class="editor-btn"
+          >
+            <img class="image-icon" src="continue.png" />
+          </a>
+        </div>
+
+        <p class="terminal-line">
+          Prefer the terminal?
+          <span class="copy-cmd-wrap">
+            <code class="copy-cmd-text"
+              >curl -fsSL
+              https://raw.githubusercontent.com/tenurehq/tenure/main/scripts/install.sh
+              | bash</code
+            >
+            <button
+              class="copy-cmd-btn"
+              onclick="
+                (function (btn) {
+                  navigator.clipboard
+                    .writeText(
+                      'curl -fsSL https://raw.githubusercontent.com/tenurehq/tenure/main/scripts/install.sh | bash',
+                    )
+                    .then(function () {
+                      btn.textContent = 'Copied!';
+                      setTimeout(function () {
+                        btn.textContent = 'Copy';
+                      }, 2000);
+                    });
+                })(this)
+              "
+            >
+              Copy
+            </button>
+          </span>
+        </p>
+
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="term-dot term-dot-red"></span>
+            <span class="term-dot term-dot-yellow"></span>
+            <span class="term-dot term-dot-green"></span>
+            <span class="terminal-title">tenure &mdash; localhost:5757</span>
+          </div>
+          <div class="terminal-body">
+            <div>
+              <span class="t-prompt">$</span>
+              <span class="t-cmd">tenure install</span>
+            </div>
+            <div class="t-dim">
+              &nbsp;&nbsp;Pulling tenurehq/tenure:latest...
+            </div>
+            <div class="t-dim">&nbsp;&nbsp;Starting container on :5757...</div>
+            <div>
+              <span class="t-ok">&nbsp;&nbsp;&#10003; Tenure is running</span>
+            </div>
+            <div>&nbsp;</div>
+            <div class="t-muted">&nbsp;&nbsp;Bearer token:</div>
+            <div>
+              &nbsp;&nbsp;<span class="t-token"
+                >sk-tenure-&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span
+              >
+            </div>
+            <div>&nbsp;</div>
+            <div>
+              <span class="t-ok">&nbsp;&nbsp;&#10003;</span>
+              <span class="t-muted"
+                >Point your editor at localhost:5757/v1</span
+              >
+            </div>
+            <div>
+              <span class="t-ok">&nbsp;&nbsp;&#10003;</span>
+              <span class="t-muted"
+                >Memory active. Extraction on. Injection off.</span
+              >
+            </div>
+            <div>&nbsp;</div>
+            <div class="t-dim">
+              &nbsp;&nbsp;&mdash; 30 seconds. That's it. &mdash;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="retrieval-tax">
+      <div class="container">
+        <span class="label">Retrieval precision</span>
+        <h2>
+          1.0 precision. Because a smart model shouldn't have to clean up messy
+          retrieval.
+        </h2>
+
+        <p>
+          Other memory tools cheat. They dump your entire chat history or loose
+          vector clusters into the context window and let a capable downstream
+          model find the needle in the haystack. They claim SOTA on answer
+          accuracy but you pay the latency and context tax.
+        </p>
+
+        <p>
+          It's the difference between querying your database and filtering in
+          application code. Everyone knows which one belongs in production.
+        </p>
+
+        <div class="compare-code">
+          <div class="compare-code-col">
+            <div class="compare-code-label">Everyone else</div>
+            <div class="terminal">
+              <div class="terminal-body">
+                <div>
+                  <span class="code-comment">-- retrieve everything</span>
+                </div>
+                <div>
+                  <span class="code-kw">SELECT</span>
+                  <span class="code-punct">*</span>
+                  <span class="code-kw">FROM</span>
+                  <span class="code-type">beliefs</span>
+                </div>
+                <div>&nbsp;</div>
+                <div>
+                  <span class="code-comment"
+                    >-- hope the model sorts it out</span
+                  >
+                </div>
+                <div>
+                  <span class="code-comment">-- 18 results injected</span>
+                </div>
+                <div><span class="code-comment">-- precision: 0.05</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="compare-code-col">
+            <div class="compare-code-label good">Tenure</div>
+            <div class="terminal">
+              <div class="terminal-body">
+                <div>
+                  <span class="code-comment">-- query at the source</span>
+                </div>
+                <div>
+                  <span class="code-kw">SELECT</span>
+                  <span class="code-punct">*</span>
+                  <span class="code-kw">FROM</span>
+                  <span class="code-type">beliefs</span>
+                </div>
+                <div>
+                  <span class="code-kw">WHERE</span>
+                  <span class="code-type">scope</span>
+                  <span class="code-punct">=</span>
+                  <span class="code-str">'project:api'</span>
+                </div>
+                <div>
+                  <span class="code-kw">AND</span>
+                  <span class="code-fn">alias_match</span
+                  ><span class="code-punct">(</span
+                  ><span class="code-str">'redis'</span
+                  ><span class="code-punct">)</span>
+                </div>
+                <div>
+                  <span class="code-kw">AND</span>
+                  <span class="code-type">status</span>
+                  <span class="code-punct">=</span>
+                  <span class="code-str">'active'</span>
+                </div>
+                <div>&nbsp;</div>
+                <div>
+                  <span class="code-comment">-- 1 result. precision: 1.0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="precision-tax">
+          Every irrelevant belief in context is
+          <strong>tokens you're paying for</strong> and
+          <strong>latency you're waiting on.</strong>
+        </p>
+        <div class="precision-bars">
+          <div class="bar-row">
+            <span class="bar-label tenure-label">tenure</span>
+            <div class="bar-track">
+              <div class="bar-fill tenure-fill"></div>
+            </div>
+            <span class="bar-value tenure-val">1.00</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">supermemory</span>
+            <div class="bar-track">
+              <div
+                class="bar-fill"
+                style="background: var(--dim); width: 43%"
+              ></div>
+            </div>
+            <span class="bar-value other-val">0.43</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">zep</span>
+            <div class="bar-track"><div class="bar-fill zep-fill"></div></div>
+            <span class="bar-value other-val">0.09</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">mem0</span>
+            <div class="bar-track"><div class="bar-fill mem0-fill"></div></div>
+            <span class="bar-value other-val">0.06</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">hindsight</span>
+            <div class="bar-track">
+              <div class="bar-fill hindsight-fill"></div>
+            </div>
+            <span class="bar-value other-val">0.06</span>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-value">43/43</div>
+            <div class="stat-name">Active retrieval passes</div>
+            <div class="stat-desc">
+              The only pass type that proves the right belief surfaced — and
+              only that belief. Every other system scores 0.
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">12/12</div>
+            <div class="stat-name">Session turns passed</div>
+            <div class="stat-desc">
+              Say something in turn 9. Retrieve it in turn 10. No other system
+              has demonstrated this.
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">0.00</div>
+            <div class="stat-name">Drift score</div>
+            <div class="stat-desc">
+              Off-topic turns do not contaminate later retrieval. Mem0 scores
+              0.94. Agentmemory scores 0.81.
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; text-align: center">
+          <p style="font-size: 0.8rem; color: var(--dim)">
+            Results are reproducible. Dataset on HuggingFace.
+            <a href="https://github.com/tenurehq/precisionMemBench"
+              >Run it yourself</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="tax" style="background: var(--bg)">
+      <div class="container">
+        <span class="label">The orientation tax</span>
+        <h2>You can see exactly what it's costing you.</h2>
+        <p>
+          Most tools hide the waste. Tenure measures it and shows you it
+          decreasing.
+        </p>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-top: 3rem;
+          "
+        >
+          <div class="stat-card">
+            <div class="stat-value" style="color: var(--green)">247</div>
+            <div class="stat-name">Re-explanations prevented</div>
+            <div class="stat-desc">
+              Turns where a belief was injected and the next turn was not a
+              correction.
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" style="color: var(--green)">~4h</div>
+            <div class="stat-name">Estimated time saved</div>
+            <div class="stat-desc">
+              Re-explanations prevented &times; 1 minute. A floor. Silent
+              failures are not counted here.
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" style="color: var(--amber)">12</div>
+            <div class="stat-name">Tax still paid</div>
+            <div class="stat-desc">
+              Turns where your message existed primarily to re-establish context
+              Tenure should have supplied.
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" style="color: var(--accent)">&#8595;</div>
+            <div class="stat-name">Re-explanation trend</div>
+            <div class="stat-desc">
+              Tax-paid turns are decreasing across the period. Tenure gets
+              better at your codebase over time.
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.8rem; color: var(--dim); margin-top: 1.5rem">
+          Numbers shown are illustrative from a representative session. Your
+          dashboard shows your actual numbers from day one.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── TRUST ── -->
+    <section id="trust">
+      <div class="container">
+        <span class="label">Trust the process</span>
+        <h2>Try it before you commit to it.</h2>
+        <p>
+          Run with extraction on and injection off for a week or two. See
+          exactly what Tenure learned about how you work before it ever changes
+          a single response. No risk. No behavior change. No surprises.
+        </p>
+
+        <div class="trust-grid">
+          <div class="trust-card">
+            <div class="trust-step">Week 1&ndash;2 &mdash; Observe</div>
+            <h3>Extraction on. Injection off.</h3>
+            <p>
+              Tenure watches your sessions silently. It extracts decisions,
+              preferences, facts, questions, and blockers into a structured
+              belief store but injects nothing. Your AI responses are completely
+              unchanged. You are just letting it learn.
+            </p>
+            <div class="toggle-demo">
+              <div>
+                <span class="cmd">!inject off</span> &nbsp;<span class="comment"
+                  ># nothing changes yet</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="trust-card featured">
+            <div class="trust-step">When you are ready &mdash; Turn it on</div>
+            <h3>Open the panel. See what it knows.</h3>
+            <p>
+              Before you ever turn injection on, open the VS Code side panel and
+              read every belief Tenure captured. Edit anything. Delete anything.
+              Pin what matters most. You decide what the model gets to know.
+            </p>
+            <div class="toggle-demo">
+              <div>
+                <span class="cmd">!inject on</span> &nbsp;<span class="comment"
+                  ># now it knows you</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="unique-badge">
+          &#10003; No other memory system lets you observe before you commit.
+        </div>
+      </div>
+    </section>
+
+    <section id="mcp">
+      <div class="container">
+        <span class="label">Why not MCP?</span>
+        <h2>Memory tools that rely on MCP have a fundamental flaw.</h2>
+
+        <p class="mcp-intro">
+          The model has to <strong>decide to call them.</strong> That means your
+          context is only retrieved when the model thinks to reach for it — and
+          it often does not. You end up with memory that works sometimes,
+          unpredictably, on certain questions.
+        </p>
+
+        <div class="mcp-compare">
+          <div class="mcp-card bad">
+            <div class="mcp-card-label">&#10007; MCP memory tools</div>
+            <h3>Retrieval on request. Sometimes.</h3>
+            <p>
+              When memory is a tool call, the model decides when to fetch
+              context. If it does not recognize that it needs prior information,
+              it does not ask. Your memory sits idle while the model
+              hallucinates decisions you already made.
+            </p>
+          </div>
+          <div class="mcp-card good">
+            <div class="mcp-card-label">&#10003; Tenure proxy layer</div>
+            <h3>Memory injected automatically. Always.</h3>
+            <p>
+              Tenure sits between your client and your provider. Every request
+              is enriched before it reaches the model. No tool call to trigger.
+              No prompt engineering required. Your beliefs are in context on
+              every single request.
+            </p>
+          </div>
+        </div>
+
+        <div class="compare-table-wrap">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th>Tenure</th>
+                <th>MCP Memory</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Memory in context on every request</td>
+                <td class="check">Always</td>
+                <td class="cross">Only if model calls the tool</td>
+              </tr>
+              <tr>
+                <td>Works across every client</td>
+                <td class="check">Yes</td>
+                <td class="cross">Client must support MCP</td>
+              </tr>
+              <tr>
+                <td>Zero prompt engineering</td>
+                <td class="check">Yes</td>
+                <td class="cross">Requires tool-use config</td>
+              </tr>
+              <tr>
+                <td>Retrieval latency</td>
+                <td class="check">&lt;15ms</td>
+                <td class="cross">Varies, often 500ms+</td>
+              </tr>
+              <tr>
+                <td>Fully local, no cloud</td>
+                <td class="check">Yes</td>
+                <td class="cross">Depends on implementation</td>
+              </tr>
+              <tr>
+                <td>Per-turn injection audit</td>
+                <td class="check">Yes &mdash; every turn logged</td>
+                <td class="cross">No</td>
+              </tr>
+              <tr>
+                <td>Within-session availability (turn N+1)</td>
+                <td class="check">Yes &mdash; extracted during stream</td>
+                <td class="cross">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="native-integrations">
+      <div class="container">
+        <span class="label">Native integration</span>
+        <h2>Registered as your LLM provider.<br />You don't change a thing.</h2>
+        <p>
+          Tenure registers directly inside VS Code as a native LLM provider.
+          Bring your own API key. Your existing tools — Copilot, Continue, any
+          OpenAI-compatible client just works, with memory.
+        </p>
+
+        <div class="integration-block">
+          <div
+            class="integration-card featured"
+            style="border: 1px solid rgba(0, 168, 173, 0.3)"
+          >
+            <div class="integration-header">
+              <div class="integration-logo">
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 25 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  transform="rotate(0 0 0)"
+                >
+                  <path
+                    d="M8.09429 7.20447C8.53365 7.64379 8.53368 8.3561 8.09436 8.79546L4.88978 12.0003L8.09432 15.2049C8.53366 15.6442 8.53366 16.3565 8.09432 16.7959C7.65498 17.2352 6.94267 17.2352 6.50333 16.7959L2.50333 12.7959C2.06401 12.3565 2.06399 11.6443 2.5033 11.2049L6.5033 7.20454C6.94262 6.76518 7.65493 6.76515 8.09429 7.20447ZM17.0034 7.20447C17.4427 6.76515 18.155 6.76518 18.5944 7.20454L22.5944 11.2049C23.0337 11.6443 23.0336 12.3565 22.5943 12.7959L18.5943 16.7959C18.155 17.2352 17.4427 17.2352 17.0033 16.7959C16.564 16.3565 16.564 15.6442 17.0033 15.2049L20.2079 12.0003L17.0033 8.79546C16.564 8.3561 16.564 7.64379 17.0034 7.20447Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    opacity="0.4"
+                    d="M14.2328 2.87882C14.3063 2.87273 14.381 2.87384 14.4565 2.88273C14.4941 2.88716 14.5319 2.8929 14.5697 2.90128C15.1763 3.03607 15.559 3.63753 15.4242 4.24406L11.8686 20.2441C11.7589 20.7369 11.3417 21.0815 10.8637 21.121C10.7903 21.1271 10.7154 21.126 10.64 21.1171C10.6024 21.1127 10.5646 21.106 10.5268 21.0976C9.92025 20.9628 9.5375 20.3623 9.67227 19.7558L13.2279 3.75577C13.3375 3.26294 13.7548 2.91846 14.2328 2.87882Z"
+                    fill="#ffffff"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="integration-title">VS Code</div>
+                <div class="integration-subtitle">
+                  Native LLM Provider · BYOK
+                </div>
+              </div>
+            </div>
+            <p class="integration-desc">
+              Registered at the provider level, not a plugin wrapping someone
+              else's call. Tenure is in the chain. Your key, your model, your
+              memory. Onboarding happens inside the IDE.
+            </p>
+            <div class="integration-features">
+              <div class="integration-feature">
+                <span class="integration-feature-dot"></span>
+                <span
+                  ><strong>BYOK</strong> &mdash; Anthropic, OpenAI, or any
+                  OpenAI-compatible endpoint</span
+                >
+              </div>
+              <div class="integration-feature">
+                <span class="integration-feature-dot"></span>
+                <span
+                  ><strong>Native copilot features</strong> with memory — no
+                  workflow change</span
+                >
+              </div>
+              <div class="integration-feature">
+                <span class="integration-feature-dot"></span>
+                <span
+                  ><strong>Beliefs panel</strong> in the sidebar — inspect,
+                  edit, pin from inside VS Code</span
+                >
+              </div>
+              <div class="integration-feature">
+                <span class="integration-feature-dot"></span>
+                <span
+                  ><strong>Onboarding inside the IDE</strong> — no browser tab,
+                  no separate dashboard</span
+                >
+              </div>
+            </div>
+            <div class="integration-callout">
+              <strong>Microsoft vs. Cursor is heating up.</strong> You are
+              already in VS Code. Now it remembers everything.
+            </div>
+          </div>
+
+          <div class="integration-card">
+            <div class="integration-header">
+              <div class="integration-logo">
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 24 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  transform="rotate(0 0 0)"
+                >
+                  <path
+                    d="M2 12.1016C2 6.57871 6.47715 2.10156 12 2.10156C17.5228 2.10156 22 6.57871 22 12.1016C22 17.6244 17.5228 22.1016 12 22.1016C11.5379 22.1016 11.0832 22.0702 10.6378 22.0096C10.8132 21.7604 10.9601 21.4871 11.0727 21.1937L11.3105 20.574C11.5379 20.5923 11.7679 20.6016 12 20.6016C16.6944 20.6016 20.5 16.796 20.5 12.1016C20.5 7.40714 16.6944 3.60156 12 3.60156C7.30558 3.60156 3.5 7.40714 3.5 12.1016C3.5 12.265 3.50461 12.4274 3.51372 12.5885C2.90303 12.9909 2.5 13.6827 2.5 14.4688V15.2327C2.17555 14.2478 2 13.1952 2 12.1016Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    d="M8.37059 6.85235C7.83786 6.86553 7.3307 7.14713 6.67471 7.88311C6.49097 8.08926 6.17491 8.10742 5.96877 7.92368C5.76263 7.73994 5.74446 7.42388 5.9282 7.21774C6.65558 6.40166 7.40378 5.87595 8.34587 5.85266C9.25055 5.83029 10.2106 6.27899 11.3537 7.05314C11.5824 7.20798 11.6422 7.51886 11.4874 7.7475C11.3325 7.97615 11.0216 8.03597 10.793 7.88113C9.67492 7.12394 8.94073 6.83826 8.37059 6.85235Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    d="M10 9.24847C10 8.55811 9.44036 7.99847 8.75 7.99847C8.05964 7.99847 7.5 8.55811 7.5 9.24847C7.5 9.93882 8.05964 10.4986 8.75 10.4986C9.44036 10.4986 10 9.93882 10 9.24847Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    d="M16.9216 10.5837C16.9216 9.89333 16.3619 9.33368 15.6716 9.33368C14.9812 9.33368 14.4216 9.89333 14.4216 10.5837C14.4216 11.274 14.9812 11.8338 15.6716 11.8338C16.3619 11.8338 16.9216 11.274 16.9216 10.5837Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    d="M7.62642 12.7963C7.77909 12.4113 8.215 12.2229 8.60005 12.3756C9.7323 12.8245 10.5716 13.1496 11.3945 13.4592L9.44717 14.3201C9.02391 14.1556 8.56589 13.9756 8.04719 13.77C7.66214 13.6173 7.47375 13.1814 7.62642 12.7963Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M4.75 13.9069C5.16421 13.9069 5.5 14.2427 5.5 14.6569V16.7931L13.5164 14.1652C13.91 14.0362 14.3337 14.2507 14.4627 14.6443C14.5917 15.0379 14.3772 15.4616 13.9836 15.5906L11.276 16.4782L9.67225 20.6577C9.33849 21.5274 8.50322 22.1016 7.57161 22.1016H6.25C5.00736 22.1016 4 21.0942 4 19.8516V14.6569C4 14.2427 4.33579 13.9069 4.75 13.9069ZM9.43821 17.0807L5.5 18.3717V19.8516C5.5 20.2658 5.83579 20.6016 6.25 20.6016H7.57161C7.88215 20.6016 8.16057 20.4102 8.27182 20.1203L9.43821 17.0807Z"
+                    fill="#ffffff"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="integration-title">
+                  Think anywhere. It follows you.
+                </div>
+                <div class="integration-subtitle">
+                  Chat client · Mobile · Zero cold starts
+                </div>
+              </div>
+            </div>
+            <p class="integration-desc">
+              You're on a walk. The auth flow clicks. You tell OpenClaw on
+              WhatsApp: "Redis for sessions, not Postgres. TTL-based expiry."
+              Tomorrow morning, your IDE already knows. No copy-paste. No
+              re-explanation. The decision landed the moment you said it.
+            </p>
+            <div class="integration-features">
+              <div class="integration-feature">
+                <span class="integration-feature-dot"></span>
+                <span>
+                  Works with Open WebUI, OpenClaw, LibreChat, any
+                  OpenAI-compatible client</span
+                >
+              </div>
+              <div class="integration-feature">
+                <span class="integration-feature-dot"></span>
+                <span>Same local belief store as your IDE</span>
+              </div>
+              <div class="integration-feature">
+                <span class="integration-feature-dot"></span>
+                <span
+                  >Aha moments captured wherever they happen — phone, tablet,
+                  laptop</span
+                >
+              </div>
+            </div>
+            <div class="integration-callout">
+              <strong>No priming. No copy-pasting context.</strong> Exactly
+              where you left off, in a completely different client.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vscode-panel">
+      <div class="container-wide">
+        <div class="container" style="padding: 0 0 2rem">
+          <span class="label">VS Code Integration</span>
+          <h2>Your beliefs. Right in the sidebar.</h2>
+          <p>
+            The Tenure side panel shows you exactly what the model knows, per
+            file and globally, directly inside VS Code. Click any belief to see
+            every turn it was injected — and the exact query that surfaced it.
+          </p>
+        </div>
+
+        <div class="vscode-mockup">
+          <div class="vscode-titlebar">
+            <span class="term-dot term-dot-red"></span>
+            <span class="term-dot term-dot-yellow"></span>
+            <span class="term-dot term-dot-green"></span>
+            <div class="vscode-tabs" style="margin-left: 1rem">
+              <div class="vscode-tab active">userRepository.ts</div>
+              <div class="vscode-tab">authService.ts</div>
+              <div class="vscode-tab">README.md</div>
+            </div>
+          </div>
+
+          <div class="vscode-body">
+            <div class="vscode-editor">
+              <div>
+                <span class="vscode-line-num">1</span
+                ><span class="code-kw">import</span
+                ><span class="code-punct"> { </span
+                ><span class="code-type">Db</span
+                ><span class="code-punct">, </span
+                ><span class="code-type">ObjectId</span
+                ><span class="code-punct"> } </span
+                ><span class="code-kw">from</span
+                ><span class="code-str"> 'mongodb'</span>
+              </div>
+              <div>
+                <span class="vscode-line-num">2</span
+                ><span class="code-comment"
+                  >// Tenure knows: MongoDB raw driver, no ORM</span
+                >
+              </div>
+              <div><span class="vscode-line-num">3</span></div>
+              <div>
+                <span class="vscode-line-num">4</span
+                ><span class="code-kw">export function</span
+                ><span class="code-fn"> makeUserRepository</span
+                ><span class="code-punct">(</span
+                ><span class="code-type">db</span
+                ><span class="code-punct">: </span
+                ><span class="code-type">Db</span
+                ><span class="code-punct">) {</span>
+              </div>
+              <div>
+                <span class="vscode-line-num">5</span
+                ><span style="margin-left: 1.5rem"></span
+                ><span class="code-kw">const</span
+                ><span class="code-type"> col</span
+                ><span class="code-punct"> = </span
+                ><span class="code-type">db</span
+                ><span class="code-punct">.</span
+                ><span class="code-fn">collection</span
+                ><span class="code-punct">(</span
+                ><span class="code-str">"users"</span
+                ><span class="code-punct">)</span>
+              </div>
+              <div>
+                <span class="vscode-line-num">6</span
+                ><span style="margin-left: 1.5rem"></span
+                ><span class="code-kw">return</span
+                ><span class="code-punct"> {</span>
+              </div>
+              <div>
+                <span class="vscode-line-num">7</span
+                ><span style="margin-left: 3rem"></span
+                ><span class="code-kw">async</span
+                ><span class="code-fn"> findById</span
+                ><span class="code-punct">(</span
+                ><span class="code-type">id</span
+                ><span class="code-punct">, </span
+                ><span class="code-type">ctx</span
+                ><span class="code-punct">) { ... }</span>
+              </div>
+              <div>
+                <span class="vscode-line-num">8</span
+                ><span style="margin-left: 1.5rem"></span
+                ><span class="code-punct">}</span>
+              </div>
+              <div>
+                <span class="vscode-line-num">9</span
+                ><span class="code-punct">}</span>
+              </div>
+            </div>
+
+            <div class="vscode-panel-side">
+              <div class="panel-header">
+                <span>Tenure Beliefs</span>
+                <span class="panel-header-badge">9 active</span>
+              </div>
+
+              <div class="panel-section">
+                <div class="panel-section-label">
+                  &#128196; This file &mdash; userRepository.ts
+                </div>
+                <div class="belief-item">
+                  <span class="belief-type type-decision">decision</span>
+                  <span class="belief-text"
+                    >MongoDB raw driver &mdash; no Mongoose</span
+                  >
+                </div>
+                <div class="belief-item">
+                  <span class="belief-type type-preference">preference</span>
+                  <span class="belief-text"
+                    >Factory functions over classes</span
+                  >
+                </div>
+                <div class="belief-item">
+                  <span class="belief-type type-entity">entity</span>
+                  <span class="belief-text"
+                    >users collection &rarr; ObjectId</span
+                  >
+                </div>
+              </div>
+
+              <div class="panel-global">
+                <div class="panel-section-label">
+                  &#127760; Global &mdash; project beliefs
+                </div>
+                <div class="belief-item">
+                  <span class="belief-type type-preference">preference</span>
+                  <span class="belief-text">TypeScript strict mode</span>
+                </div>
+                <div class="belief-item">
+                  <span class="belief-type type-decision">decision</span>
+                  <span class="belief-text">Fastify over Express</span>
+                </div>
+                <div class="belief-item">
+                  <span class="belief-type type-decision">decision</span>
+                  <span class="belief-text">Vitest &mdash; Jest ruled out</span>
+                </div>
+                <div class="belief-item">
+                  <span class="belief-type type-entity">entity</span>
+                  <span class="belief-text"
+                    >auth service &rarr; Redis session store</span
+                  >
+                </div>
+                <div class="belief-item">
+                  <span class="belief-type type-preference">preference</span>
+                  <span class="belief-text">No ORMs. No magic.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container" style="padding: 1.5rem 0 0">
+          <p style="font-size: 0.85rem; color: var(--dim)">
+            &#9679; Click any belief to see every turn it was injected. &#9679;
+            The exact query that surfaced it is persisted alongside it. &#9679;
+            Edit, pin, or delete directly from the panel. &#9679; Per-file and
+            global beliefs stay scoped — project A never bleeds into project B.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="audit" style="background: var(--bg)">
+      <div class="container">
+        <span class="label">Full audit trail</span>
+        <h2>Something went wrong.<br />Here's how you find out why.</h2>
+        <p>
+          Every other system shows you a list of beliefs. Tenure shows you a
+          history. Click a turn, see exactly what was injected. Click a belief,
+          see every turn it was active. The query that triggered it is persisted
+          at the time it happened, not reconstructed from logs.
+        </p>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-top: 3rem;
+          "
+        >
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.2629 6.02734H3.25V18.0002H3.26633C3.34441 18.5943 3.69411 19.0915 4.13112 19.4789C4.62904 19.9204 5.30674 20.2837 6.0798 20.5736C7.63146 21.1554 9.72474 21.5 12 21.5C14.2753 21.5 16.3685 21.1554 17.9202 20.5736C18.6933 20.2837 19.371 19.9204 19.8689 19.4789C20.3059 19.0915 20.6556 18.5943 20.7337 18.0002H20.75V6.02734H20.7371C20.6664 5.42103 20.3126 4.91451 19.8689 4.52107C19.371 4.07962 18.6933 3.71633 17.9202 3.42643C16.3685 2.84456 14.2753 2.5 12 2.5C9.72474 2.5 7.63146 2.84456 6.0798 3.42643C5.30674 3.71633 4.62904 4.07962 4.13112 4.52107C3.68736 4.91451 3.33363 5.42103 3.2629 6.02734ZM4.75 6.25C4.75 6.1273 4.81363 5.92061 5.12623 5.64346C5.43796 5.36708 5.93183 5.08392 6.60649 4.83093C7.95026 4.32701 9.85699 4 12 4C14.143 4 16.0497 4.32701 17.3935 4.83093C18.0682 5.08392 18.562 5.36708 18.8738 5.64346C19.1864 5.92061 19.25 6.1273 19.25 6.25C19.25 6.3727 19.1864 6.57939 18.8738 6.85654C18.562 7.13292 18.0682 7.41608 17.3935 7.66907C16.0497 8.17299 14.143 8.5 12 8.5C9.85699 8.5 7.95026 8.17299 6.60649 7.66907C5.93183 7.41608 5.43796 7.13292 5.12623 6.85654C4.81363 6.57939 4.75 6.3727 4.75 6.25ZM19.25 12V8.43499C18.859 8.67795 18.4086 8.89041 17.9202 9.07357C16.3685 9.65544 14.2753 10 12 10C9.72474 10 7.63146 9.65544 6.0798 9.07357C5.59137 8.89041 5.14101 8.67795 4.75 8.43499V12C4.75 12.1227 4.81363 12.3294 5.12623 12.6065C5.43796 12.8829 5.93183 13.1661 6.60649 13.4191C7.95026 13.923 9.85699 14.25 12 14.25C14.143 14.25 16.0497 13.923 17.3935 13.4191C18.0682 13.1661 18.562 12.8829 18.8738 12.6065C19.1864 12.3294 19.25 12.1227 19.25 12ZM4.75 14.185C5.14101 14.4279 5.59137 14.6404 6.0798 14.8236C7.63146 15.4054 9.72474 15.75 12 15.75C14.2753 15.75 16.3685 15.4054 17.9202 14.8236C18.4086 14.6404 18.859 14.4279 19.25 14.185V17.75C19.25 17.8727 19.1864 18.0794 18.8738 18.3565C18.562 18.6329 18.0682 18.9161 17.3935 19.1691C16.0497 19.673 14.143 20 12 20C9.85699 20 7.95026 19.673 6.60649 19.1691C5.93183 18.9161 5.43796 18.6329 5.12623 18.3565C4.81363 18.0794 4.75 17.8727 4.75 17.75V14.185Z"
+                  fill="#ffffff"
+                /></svg
+            ></span>
+            <h3>Per-turn injection log</h3>
+            <p>
+              See exactly which beliefs were in context for every turn. Not
+              inferred. Recorded as it happened.
+            </p>
+          </div>
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="40"
+                height="40"
+                viewBox="0 0 25 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M22.0234 11.183C22.0234 9.83305 21.4073 8.62719 20.4434 7.83114V7.80859C20.4434 5.84696 18.9372 4.23712 17.0182 4.07247C16.525 3.0707 15.4944 2.38086 14.3013 2.38086C13.3924 2.38086 12.5771 2.78142 12.0223 3.41562C11.4675 2.78294 10.6532 2.3835 9.74562 2.3835C8.55266 2.3835 7.52219 3.07315 7.02888 4.07469C5.10981 4.23925 3.60352 5.84913 3.60352 7.81083V7.83236C2.6396 8.62841 2.02344 9.83427 2.02344 11.1842C2.02344 12.5342 2.6396 13.7401 3.60352 14.5361V15.3749C3.60352 17.2431 4.96968 18.7923 6.75748 19.0778C6.98981 20.5187 8.2392 21.6191 9.74562 21.6191C10.6545 21.6191 11.4698 21.2186 12.0246 20.5844C12.5794 21.2171 13.3937 21.6165 14.3013 21.6165C15.8075 21.6165 17.0568 20.5163 17.2893 19.0756C19.0772 18.7901 20.4434 17.2409 20.4434 15.3727V14.5349C21.4073 13.7388 22.0234 12.533 22.0234 11.183ZM19.2725 8.82605C20.0289 9.33894 20.5234 10.2033 20.5234 11.183C20.5234 12.1627 20.0289 13.0271 19.2725 13.54C19.0666 13.6795 18.9434 13.9121 18.9434 14.1607V15.3727C18.9434 16.6153 17.936 17.6227 16.6934 17.6227H16.5781C16.3792 17.6227 16.1884 17.7017 16.0478 17.8423C15.9071 17.983 15.8281 18.1738 15.8281 18.3727V18.5896C15.8281 19.4329 15.1445 20.1165 14.3013 20.1165C13.458 20.1165 12.7744 19.4329 12.7744 18.5896V5.40773C12.7744 4.56446 13.458 3.88086 14.3013 3.88086C15.0044 3.88086 15.5983 4.35683 15.7748 5.00547C15.8636 5.33199 16.1601 5.55859 16.4985 5.55859H16.6934C17.936 5.55859 18.9434 6.56595 18.9434 7.80859V8.20528C18.9434 8.45397 19.0666 8.68649 19.2725 8.82605ZM4.7744 13.5412C4.01794 13.0283 3.52344 12.1639 3.52344 11.1842C3.52344 10.2046 4.01794 9.34016 4.7744 8.82727C4.98024 8.68771 5.10352 8.45519 5.10352 8.2065L5.10352 7.81083C5.10352 6.56819 6.11087 5.56083 7.35352 5.56083H7.54851C7.88685 5.56083 8.1833 5.3343 8.27217 5.00784C8.44872 4.35933 9.04256 3.8835 9.74562 3.8835C10.5889 3.8835 11.2725 4.5671 11.2725 5.41037V18.5923C11.2725 19.4355 10.5889 20.1191 9.74562 20.1191C8.90235 20.1191 8.21875 19.4355 8.21875 18.5923V18.3749C8.21875 17.9607 7.88296 17.6249 7.46875 17.6249H7.35352C6.11088 17.6249 5.10352 16.6175 5.10352 15.3749L5.10352 14.162C5.10352 13.9133 4.98024 13.6808 4.7744 13.5412Z"
+                  fill="#ffffff"
+                /></svg
+            ></span>
+            <h3>Belief provenance</h3>
+            <p>
+              Click any belief to see every session it was injected, and the
+              query that surfaced it each time.
+            </p>
+          </div>
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  d="M6.25 9.77441C6.25 9.3602 6.58579 9.02441 7 9.02441H17C17.4142 9.02441 17.75 9.3602 17.75 9.77441C17.75 10.1886 17.4142 10.5244 17 10.5244H7C6.58579 10.5244 6.25 10.1886 6.25 9.77441Z"
+                  fill="#ffffff"
+                />
+                <path
+                  d="M7 12.0244C6.58579 12.0244 6.25 12.3602 6.25 12.7744C6.25 13.1886 6.58579 13.5244 7 13.5244H12C12.4142 13.5244 12.75 13.1886 12.75 12.7744C12.75 12.3602 12.4142 12.0244 12 12.0244H7Z"
+                  fill="#ffffff"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2 11.2742C2 7.1187 5.36869 3.75 9.52419 3.75H14.4758C18.6313 3.75 22 7.1187 22 11.2742C22 14.9718 19.3335 18.0453 15.8183 18.6788L10.3819 22.3403C10.1519 22.4952 9.85529 22.5106 9.61056 22.3803C9.36582 22.2501 9.21289 21.9955 9.21289 21.7182V18.7921C5.20175 18.6288 2 15.3254 2 11.2742ZM9.52419 5.25C6.19712 5.25 3.5 7.94712 3.5 11.2742C3.5 14.6013 6.19712 17.2984 9.52419 17.2984H9.96289C10.3771 17.2984 10.7129 17.6342 10.7129 18.0484V20.3089L15.1148 17.3442C15.2058 17.2829 15.3091 17.2423 15.4176 17.2253C18.2971 16.7737 20.5 14.2805 20.5 11.2742C20.5 7.94712 17.8029 5.25 14.4758 5.25H9.52419Z"
+                  fill="#ffffff"
+                /></svg
+            ></span>
+            <h3>Persisted query context</h3>
+            <p>
+              The exact query you gave the model is stored alongside the
+              injection event. The record is complete.
+            </p>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-top: 2rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+          "
+        >
+          <p style="font-size: 0.875rem; color: var(--muted); margin: 0">
+            <span style="color: var(--text); font-weight: 500"
+              >No other system tracks injection per turn.</span
+            >
+            Every competitor shows you beliefs as a static list. Tenure gives
+            you a complete paper trail — which beliefs were present, when,
+            against which query. For developers who care about why the model
+            responded the way it did, that difference is everything.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="details">
+      <div class="container">
+        <span class="label">Details</span>
+        <h2>Control when you want it.<br />Invisible when you do not.</h2>
+        <p>
+          Tenure learns automatically. But everything it knows is visible,
+          editable, and correctable.
+        </p>
+
+        <div class="details-grid">
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="24"
+                height="24"
+                viewBox="0 0 25 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M22.0234 11.183C22.0234 9.83305 21.4073 8.62719 20.4434 7.83114V7.80859C20.4434 5.84696 18.9372 4.23712 17.0182 4.07247C16.525 3.0707 15.4944 2.38086 14.3013 2.38086C13.3924 2.38086 12.5771 2.78142 12.0223 3.41562C11.4675 2.78294 10.6532 2.3835 9.74562 2.3835C8.55266 2.3835 7.52219 3.07315 7.02888 4.07469C5.10981 4.23925 3.60352 5.84913 3.60352 7.81083V7.83236C2.6396 8.62841 2.02344 9.83427 2.02344 11.1842C2.02344 12.5342 2.6396 13.7401 3.60352 14.5361V15.3749C3.60352 17.2431 4.96968 18.7923 6.75748 19.0778C6.98981 20.5187 8.2392 21.6191 9.74562 21.6191C10.6545 21.6191 11.4698 21.2186 12.0246 20.5844C12.5794 21.2171 13.3937 21.6165 14.3013 21.6165C15.8075 21.6165 17.0568 20.5163 17.2893 19.0756C19.0772 18.7901 20.4434 17.2409 20.4434 15.3727V14.5349C21.4073 13.7388 22.0234 12.533 22.0234 11.183ZM19.2725 8.82605C20.0289 9.33894 20.5234 10.2033 20.5234 11.183C20.5234 12.1627 20.0289 13.0271 19.2725 13.54C19.0666 13.6795 18.9434 13.9121 18.9434 14.1607V15.3727C18.9434 16.6153 17.936 17.6227 16.6934 17.6227H16.5781C16.3792 17.6227 16.1884 17.7017 16.0478 17.8423C15.9071 17.983 15.8281 18.1738 15.8281 18.3727V18.5896C15.8281 19.4329 15.1445 20.1165 14.3013 20.1165C13.458 20.1165 12.7744 19.4329 12.7744 18.5896V5.40773C12.7744 4.56446 13.458 3.88086 14.3013 3.88086C15.0044 3.88086 15.5983 4.35683 15.7748 5.00547C15.8636 5.33199 16.1601 5.55859 16.4985 5.55859H16.6934C17.936 5.55859 18.9434 6.56595 18.9434 7.80859V8.20528C18.9434 8.45397 19.0666 8.68649 19.2725 8.82605ZM4.7744 13.5412C4.01794 13.0283 3.52344 12.1639 3.52344 11.1842C3.52344 10.2046 4.01794 9.34016 4.7744 8.82727C4.98024 8.68771 5.10352 8.45519 5.10352 8.2065L5.10352 7.81083C5.10352 6.56819 6.11087 5.56083 7.35352 5.56083H7.54851C7.88685 5.56083 8.1833 5.3343 8.27217 5.00784C8.44872 4.35933 9.04256 3.8835 9.74562 3.8835C10.5889 3.8835 11.2725 4.5671 11.2725 5.41037V18.5923C11.2725 19.4355 10.5889 20.1191 9.74562 20.1191C8.90235 20.1191 8.21875 19.4355 8.21875 18.5923V18.3749C8.21875 17.9607 7.88296 17.6249 7.46875 17.6249H7.35352C6.11088 17.6249 5.10352 16.6175 5.10352 15.3749L5.10352 14.162C5.10352 13.9133 4.98024 13.6808 4.7744 13.5412Z"
+                  fill="#ffffff"
+                /></svg
+            ></span>
+            <h3>Structured beliefs</h3>
+            <p>
+              Not raw chat history. Typed, scoped, versioned conclusions the
+              model can act on directly — without re-deriving them from a
+              transcript.
+            </p>
+          </div>
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M9.59859 3.49501C9.90762 2.65448 10.6463 2 11.616 2C12.5858 2 13.3245 2.65449 13.6335 3.49502C13.8851 3.38177 14.1652 3.31802 14.4678 3.31802C15.7613 3.31802 16.6437 4.48247 16.6437 5.69968V6.13703C16.8528 6.06365 17.0791 6.02338 17.3196 6.02338C18.6131 6.02338 19.4956 7.18783 19.4956 8.40504V14.1096C19.5135 14.8186 19.5172 16.7392 18.6678 18.5107C18.2348 19.4137 17.573 20.2935 16.5699 20.9459C15.565 21.5996 14.2658 21.9935 12.6103 22L12.6074 22C10.7934 22 9.18343 21.1137 8.00738 20.2156C6.81983 19.3087 5.98549 18.3213 5.70771 17.9747C5.64971 17.9023 5.59912 17.8417 5.54755 17.7856L3.20116 15.2304L3.18883 15.2167C2.38497 14.2968 2.38497 12.842 3.18883 11.9221C4.03934 10.9489 5.46177 10.943 6.31921 11.9044L6.58834 12.1788V5.69968C6.58834 4.48247 7.47077 3.31802 8.76424 3.31802C9.06687 3.31802 9.347 3.38177 9.59859 3.49501ZM9.44013 5.69273V11.0417C9.44013 11.4559 9.77592 11.7917 10.1901 11.7917C10.6043 11.7917 10.9401 11.4559 10.9401 11.0417L10.9402 5.69968C10.9402 5.69646 10.9401 5.69323 10.9401 5.69V4.38166C10.9401 3.79659 11.3345 3.5 11.616 3.5C11.8976 3.5 12.2919 3.79659 12.2919 4.38166V11.2299C12.2919 11.6441 12.6277 11.9799 13.0419 11.9799C13.4562 11.9799 13.7919 11.6441 13.7919 11.2299V5.69968C13.7919 5.11461 14.1863 4.81802 14.4678 4.81802C14.7494 4.81802 15.1437 5.11461 15.1437 5.69968V11.2299C15.1437 11.6441 15.4795 11.9799 15.8937 11.9799C16.308 11.9799 16.6437 11.6441 16.6437 11.2299V8.40504C16.6437 7.81997 17.0381 7.52338 17.3196 7.52338C17.6012 7.52338 17.9956 7.81997 17.9956 8.40504L17.9956 14.1192L17.9958 14.1386C18.013 14.7999 18.0053 16.4231 17.3152 17.8622C16.9765 18.5686 16.4808 19.2145 15.7521 19.6885C15.0254 20.1612 14.0188 20.4942 12.6059 20.5C11.2702 20.4995 9.98186 19.8361 8.91777 19.0235C7.86479 18.2194 7.11701 17.3346 6.87825 17.0367C6.81079 16.9525 6.73649 16.8626 6.65237 16.771L4.31323 14.2238C4.00849 13.8684 4.01018 13.2618 4.31832 12.9092C4.57632 12.6139 4.94736 12.6139 5.20537 12.9092C5.21482 12.92 5.22459 12.9305 5.23465 12.9408L6.80288 14.5398C7.01621 14.7573 7.33994 14.8242 7.62198 14.7089C7.90403 14.5937 8.08834 14.3193 8.08834 14.0146V5.69968C8.08834 5.11461 8.48271 4.81802 8.76424 4.81802C9.04466 4.81802 9.43702 5.11226 9.44013 5.69273Z"
+                  fill="#ffffff"
+                />
+              </svg>
+            </span>
+            <h3>Scope isolation</h3>
+            <p>
+              Engineering beliefs stay in engineering sessions. Project A never
+              bleeds into Project B. Every scope is a hard structural boundary —
+              not a probabilistic filter.
+            </p>
+          </div>
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  d="M7.86453 11.1699C7.90113 11.2584 7.95538 11.3412 8.02729 11.4131C8.17316 11.559 8.36418 11.6322 8.55537 11.6328L8.55762 11.6328H15.4413C15.8556 11.6328 16.1913 11.297 16.1913 10.8828C16.1913 10.4686 15.8556 10.1328 15.4413 10.1328H10.3683L10.6666 9.83449C10.9595 9.54159 10.9595 9.06672 10.6666 8.77383C10.3737 8.48093 9.89884 8.48093 9.60594 8.77383L8.02729 10.3525C7.95538 10.4244 7.90113 10.5073 7.86453 10.5957C7.82786 10.6842 7.80762 10.7811 7.80762 10.8828C7.80762 10.9845 7.82786 11.0815 7.86453 11.1699Z"
+                  fill="#ffffff"
+                />
+                <path
+                  d="M13.333 14.163C13.0401 14.4559 13.0401 14.9308 13.333 15.2237C13.6258 15.5166 14.1007 15.5166 14.3936 15.2237L15.9723 13.645C16.2652 13.3521 16.2652 12.8773 15.9723 12.5844C15.8186 12.4307 15.6149 12.3577 15.4136 12.3652H8.55762C8.1434 12.3652 7.80762 12.701 7.80762 13.1152C7.80762 13.5295 8.1434 13.8652 8.55762 13.8652H13.6307L13.333 14.163Z"
+                  fill="#ffffff"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M13.4475 2.59976C12.6478 1.80008 11.3513 1.80008 10.5516 2.59976L2.59976 10.5516C1.80008 11.3513 1.80008 12.6478 2.59976 13.4475L10.5525 21.4002C11.3522 22.1999 12.6487 22.1999 13.4484 21.4002L21.4002 13.4484C22.1999 12.6487 22.1999 11.3522 21.4002 10.5525L13.4475 2.59976ZM11.6123 3.66042C11.8262 3.44653 12.1729 3.44653 12.3868 3.66042L20.3396 11.6131C20.5535 11.827 20.5535 12.1738 20.3396 12.3877L12.3877 20.3396C12.1738 20.5535 11.8271 20.5535 11.6132 20.3396L3.66042 12.3868C3.44653 12.1729 3.44653 11.8262 3.66042 11.6123L11.6123 3.66042Z"
+                  fill="#ffffff"
+                /></svg
+            ></span>
+            <h3>Supersession</h3>
+            <p>
+              When you change a decision, the old one is retired — not deleted.
+              It never gets suggested again, but the record stays for audit.
+            </p>
+          </div>
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="24"
+                height="24"
+                viewBox="0 0 25 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7 3.25C5.75736 3.25 4.75 4.25736 4.75 5.5V18.4999C4.75 19.7426 5.75736 20.75 7 20.75H8.75C9.99264 20.75 11 19.7426 11 18.4999V5.5C11 4.25736 9.99264 3.25 8.75 3.25H7ZM6.25 5.5C6.25 5.08579 6.58579 4.75 7 4.75H8.75C9.16421 4.75 9.5 5.08579 9.5 5.5V18.4999C9.5 18.9142 9.16421 19.2499 8.75 19.2499H7C6.58579 19.2499 6.25 18.9142 6.25 18.4999V5.5Z"
+                  fill="#ffffff"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M16.25 3.25C15.0074 3.25 14 4.25736 14 5.5V18.4999C14 19.7426 15.0074 20.75 16.25 20.75H18C19.2426 20.75 20.25 19.7426 20.25 18.4999V5.5C20.25 4.25736 19.2426 3.25 18 3.25H16.25ZM15.5 5.5C15.5 5.08579 15.8358 4.75 16.25 4.75H18C18.4142 4.75 18.75 5.08579 18.75 5.5V18.4999C18.75 18.9142 18.4142 19.2499 18 19.2499H16.25C15.8358 19.2499 15.5 18.9142 15.5 18.4999V5.5Z"
+                  fill="#ffffff"
+                />
+              </svg>
+            </span>
+            <h3>Pause anytime</h3>
+            <p>
+              Type
+              <code
+                style="
+                  font-family: var(--mono);
+                  font-size: 0.8em;
+                  color: var(--accent);
+                "
+                >!extract off</code
+              >
+              in any session. Your existing memory still works. Tenure just
+              stops taking notes.
+            </p>
+          </div>
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M4.75 9.75V18.5C4.75 18.9142 5.08579 19.25 5.5 19.25H9.74805V20.75H5.5C4.25736 20.75 3.25 19.7426 3.25 18.5V5.5C3.25 4.25736 4.25736 3.25 5.5 3.25H18.4985C19.7412 3.25 20.7485 4.25736 20.7485 5.5L20.7485 9.75H4.75ZM4.75 5.5C4.75 5.08579 5.08579 4.75 5.5 4.75H18.4985C18.9128 4.75 19.2485 5.08579 19.2485 5.5L19.2485 8.25H4.75V5.5Z"
+                  fill="#ffffff"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M20.2968 12.3389C19.6134 11.6555 18.5054 11.6555 17.8219 12.3389L12.6637 17.4971C12.3009 17.86 12.0729 18.3359 12.0177 18.8461L11.8287 20.593C11.8043 20.8188 11.8835 21.0434 12.044 21.204C12.2046 21.3646 12.4293 21.4437 12.6551 21.4193L14.402 21.2303C14.9121 21.1751 15.3881 20.9472 15.7509 20.5843L20.9092 15.4261C21.5926 14.7427 21.5926 13.6347 20.9092 12.9512L20.2968 12.3389ZM18.02 14.2622L18.9859 15.2281L14.6903 19.5237C14.5693 19.6446 14.4107 19.7206 14.2406 19.739L13.4203 19.8278L13.509 19.0074C13.5274 18.8374 13.6034 18.6787 13.7244 18.5578L18.02 14.2622Z"
+                  fill="#ffffff"
+                /></svg
+            ></span>
+            <h3>Editable memory</h3>
+            <p>
+              Open
+              <code
+                style="
+                  font-family: var(--mono);
+                  font-size: 0.8em;
+                  color: var(--accent);
+                "
+                >/beliefs</code
+              >
+              or use the VS Code side panel to see everything Tenure knows. Edit
+              anything. Pin what matters. Delete what is wrong.
+            </p>
+          </div>
+          <div class="detail-card">
+            <span class="detail-icon"
+              ><svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                transform="rotate(0 0 0)"
+              >
+                <path
+                  d="M10.6961 21.9144C12.8787 22.2018 15.095 21.7609 17.0014 20.6603C18.9078 19.5596 20.3978 17.8606 21.2402 15.8268C22.0826 13.7931 22.2304 11.5381 21.6607 9.41181C21.0909 7.28548 19.8355 5.40656 18.089 4.06647C16.3426 2.72638 14.2027 2 12.0014 2C9.80006 2 7.66023 2.72637 5.91379 4.06647C4.17568 5.40016 2.92389 7.26756 2.35035 9.38139C2.33707 9.42423 2.32752 9.46872 2.3221 9.51447C2.27673 9.88 2.50658 10.2323 2.87248 10.3304C2.95754 10.3532 3.0431 10.3604 3.12614 10.3538H6.06684C6.48105 10.3538 6.81684 10.018 6.81684 9.60376C6.81684 9.18955 6.48105 8.85376 6.06684 8.85376H4.10512C4.66956 7.43713 5.60742 6.19226 6.82693 5.2565C8.31141 4.11742 10.1303 3.5 12.0014 3.5C13.8725 3.5 15.6914 4.11742 17.1759 5.2565C18.6604 6.39558 19.7275 7.99265 20.2118 9.80004C20.6961 11.6074 20.5704 13.5241 19.8544 15.2528C19.1383 16.9815 17.8719 18.4256 16.2514 19.3612C14.6309 20.2968 12.7471 20.6715 10.8919 20.4273C9.0368 20.183 7.31409 19.3335 5.991 18.0104C5.69811 17.7175 5.22323 17.7175 4.93034 18.0104C4.63744 18.3033 4.63744 18.7782 4.93034 19.0711C6.48692 20.6277 8.51363 21.6271 10.6961 21.9144Z"
+                  fill="#ffffff"
+                />
+                <path
+                  d="M11.2514 12.9856V7.5C11.2514 7.08579 11.5872 6.75 12.0014 6.75C12.4156 6.75 12.7514 7.08579 12.7514 7.5V12.567L15.8405 14.3505C16.1992 14.5576 16.3221 15.0163 16.115 15.375C15.9079 15.7337 15.4492 15.8566 15.0905 15.6495L11.6389 13.6567C11.6127 13.6423 11.5876 13.6263 11.5635 13.6089C11.4748 13.5453 11.4036 13.465 11.3517 13.3749C11.2997 13.285 11.2659 13.1834 11.2551 13.0749C11.2521 13.0453 11.2509 13.0155 11.2514 12.9856Z"
+                  fill="#ffffff"
+                /></svg
+            ></span>
+            <h3>Sub-15ms retrieval</h3>
+            <p>
+              Alias-weighted BM25 with hard scope filtering. No embedding model,
+              no reranking pass, no waiting. Precision improves as the store
+              grows — not degrades.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <span class="label">How it works</span>
+        <h2>Sits between you and your provider.</h2>
+        <p>
+          Point your client at localhost:5757. Tenure routes to your provider,
+          learns from the conversation, and injects what it knows on every
+          request.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num-col">
+              <div class="step-num">01</div>
+              <div class="step-line"></div>
+            </div>
+            <div>
+              <div class="step-label">Install</div>
+              <h3>One click. That's the only manual step.</h3>
+              <p>
+                Install directly from VS Code, Windsurf, or Continue. Or run the
+                install script. Runs as a local Docker container. Your bearer
+                token is printed at the end. Takes thirty seconds.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col">
+              <div class="step-num">02</div>
+              <div class="step-line"></div>
+            </div>
+            <div>
+              <div class="step-label">Automatic Provisioning</div>
+              <h3>The daemon starts itself.</h3>
+              <p>
+                The extension securely spins up the local daemon on port 5757
+                and hooks up the proxy layer. The daemon starts itself. No
+                terminal required.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col">
+              <div class="step-num">03</div>
+              <div class="step-line"></div>
+            </div>
+            <div>
+              <div class="step-label">Zero plaintext keys</div>
+              <h3>
+                Your key goes into the IDE's secret store. Not a config file.
+              </h3>
+              <p>
+                Tenure generates your local bearer token and automatically
+                injects it directly into your IDE's native secret store. Zero
+                plain-text keys left floating around in your global config
+                files.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col">
+              <div class="step-num">04</div>
+            </div>
+            <div>
+              <div class="step-label">Work</div>
+              <h3>There is no step four.</h3>
+              <p>
+                Tenure learns in the background. The first session is good. The
+                tenth is noticeably better. By the fiftieth, it knows you. Every
+                session compounds. The store gets more precise, not less, as it
+                grows.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="compat-row">
+          <span class="compat-chip">VS Code</span>
+          <span class="compat-chip">Windsurf</span>
+          <span class="compat-chip">Continue</span>
+          <span class="compat-chip">Open WebUI</span>
+          <span class="compat-chip">Cline</span>
+          <span class="compat-chip">LibreChat</span>
+          <span class="compat-chip">OpenClaw</span>
+          <span class="compat-chip">Any OpenAI-compatible client</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy">
+      <div class="container">
+        <span class="label">Privacy</span>
+        <h2>Your data never leaves your machine.</h2>
+
+        <div class="privacy-grid">
+          <div>
+            <p class="privacy-statement">
+              No cloud. No accounts. No telemetry. Tenure runs entirely on
+              localhost. Beliefs are encrypted at rest. Export your entire
+              memory as an encrypted archive and restore it anywhere.
+              <span>You own your memory. All of it. Forever.</span>
+            </p>
+          </div>
+          <div>
+            <table class="privacy-table">
+              <tbody>
+                <tr>
+                  <td>Network calls home</td>
+                  <td>Zero</td>
+                </tr>
+                <tr>
+                  <td>Account required</td>
+                  <td>No</td>
+                </tr>
+                <tr>
+                  <td>Storage</td>
+                  <td>Encrypted at rest</td>
+                </tr>
+                <tr>
+                  <td>Portable</td>
+                  <td>Export / import anytime</td>
+                </tr>
+                <tr>
+                  <td>License</td>
+                  <td>MIT</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta">
+      <div class="container">
+        <span class="label">Get started</span>
+        <h2>Stop re-explaining yourself.</h2>
+        <p>
+          Thirty seconds to install. First session already better. Turn
+          injection on when you are ready, not before.
+        </p>
+
+        <p class="install-label">// install from your existing tools</p>
+
+        <div class="editor-buttons">
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode"
+            class="editor-btn"
+          >
+            <img class="image-icon" src="vscode.webp" />
+          </a>
+          <a
+            href="https://clawhub.ai/plugins/@tenureai/openclaw-plugin"
+            class="editor-btn"
+          >
+            <img class="image-icon" src="openclaw.svg" />
+          </a>
+          <a
+            href="https://open-vsx.org/extension/tenureai/tenure-vscode"
+            class="editor-btn"
+          >
+            <img class="image-icon" src="windsurf.png" />
+          </a>
+          <a
+            href="https://open-vsx.org/extension/tenureai/tenure-vscode"
+            class="editor-btn"
+          >
+            <img class="image-icon" src="continue.png" />
+          </a>
+        </div>
+
+        <p class="terminal-line">
+          Prefer the terminal?
+          <span class="copy-cmd-wrap">
+            <code class="copy-cmd-text"
+              >curl -fsSL
+              https://raw.githubusercontent.com/tenurehq/tenure/main/scripts/install.sh
+              | bash</code
+            >
+            <button
+              class="copy-cmd-btn"
+              onclick="
+                (function (btn) {
+                  navigator.clipboard
+                    .writeText(
+                      'curl -fsSL https://raw.githubusercontent.com/tenurehq/tenure/main/scripts/install.sh | bash',
+                    )
+                    .then(function () {
+                      btn.textContent = 'Copied!';
+                      setTimeout(function () {
+                        btn.textContent = 'Copy';
+                      }, 2000);
+                    });
+                })(this)
+              "
+            >
+              Copy
+            </button>
+          </span>
+        </p>
+
+        <p class="cta-meta">
+          Requires Docker <span>&middot;</span> MIT licensed
+          <span>&middot;</span> Fully local <span>&middot;</span> No account
+          needed
+        </p>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+      <span class="footer-logo">tenure &middot; MIT License</span>
+      <div class="footer-links">
+        <a href="#">Docs</a>
+        <a href="https://github.com/tenurehq/tenure">GitHub</a>
+        <a href="https://arxiv.org/abs/2605.11325">Paper</a>
+        <a href="https://huggingface.co/spaces/tenurehq/precisionmembench"
+          >Benchmark</a
+        >
+      </div>
+    </footer>
+  </body>
+</html>
