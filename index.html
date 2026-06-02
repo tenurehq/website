@@ -6,13 +6,107 @@
     <title>
       Tenure | Brainstorm in your chat client. Open your IDE. It already knows.
     </title>
+    <meta
+      name="description"
+      content="Tenure is a fully local AI memory layer that runs on localhost. Persistent, structured memory that follows you across every tool and every session. 1.0 retrieval precision. Zero cloud. Zero workflow changes."
+    />
+    <meta
+      name="keywords"
+      content="AI memory, developer memory tool, local LLM memory, persistent AI context, VS Code AI memory, localhost AI, coding assistant memory, AI context injection, no RAG memory, AI productivity"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tenureai.dev" />
+    <meta
+      property="og:title"
+      content="Tenure | Brainstorm in your chat client. Open your IDE. It already knows."
+    />
+    <meta
+      property="og:description"
+      content="Persistent AI memory that runs entirely on localhost. 1.0 retrieval precision. No RAG. No MCP. No cloud. Works across VS Code, Open WebUI, LibreChat, and any OpenAI-compatible client."
+    />
+    <meta property="og:image" content="https://tenureai.dev/og-image.png" />
+    <meta property="og:site_name" content="Tenure" />
+    <meta name="robots" content="index, follow" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://tenureai.dev" />
+    <meta
+      name="twitter:title"
+      content="Tenure | AI Memory That Runs on Localhost"
+    />
+    <meta
+      name="twitter:description"
+      content="Stop re-explaining yourself. Tenure gives your AI tools persistent, structured memory with 1.0 retrieval precision. Fully local. Zero cloud. Works across every client."
+    />
+    <meta name="twitter:image" content="https://tenureai.dev/og-image.png" />
+    <meta
+      name="description:extended"
+      content="Tenure is a local-first AI memory proxy that sits between your LLM client and your provider. It automatically extracts beliefs from conversations, stores them locally with BM25 retrieval, and injects the right context on every request — without MCP, RAG pipelines, or cloud dependencies. Precision: 1.0. Latency: under 15ms."
+    />
+    <meta
+      name="ai:product-type"
+      content="developer tool, AI memory layer, LLM proxy"
+    />
+    <meta
+      name="ai:use-case"
+      content="persistent memory across AI coding assistants, context injection, belief store for developers"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://tenureai.dev/#software",
+            "name": "Tenure",
+            "url": "https://tenureai.dev",
+            "codeRepository": "https://github.com/tenurehq/tenure",
+            "image": "https://tenureai.dev/og-image.png",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Linux, macOS, Windows",
+            "description": "Fully local AI memory layer for developers. Persistent, structured memory that follows you across every tool and every session. 1.0 retrieval precision. Zero cloud.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock"
+            },
+            "license": "https://opensource.org/licenses/MIT"
+          },
+          {
+            "@type": "Dataset",
+            "@id": "https://tenureai.dev/#dataset",
+            "name": "precisionMemBench",
+            "description": "A multi-dimensional retrieval benchmark for LLM memory systems measuring retrieval precision, noise isolation, session-turn latency, and belief mutability across 89 cases and 11 providers.",
+            "url": "https://huggingface.co/datasets/tenurehq/precisionmembench",
+            "sameAs": [
+              "https://arxiv.org/abs/2605.11325",
+              "https://github.com/tenurehq/precisionMemBench"
+            ],
+            "license": "https://opensource.org/licenses/MIT",
+            "creator": {
+              "@type": "Organization",
+              "name": "Tenure",
+              "url": "https://tenureai.dev"
+            },
+            "about": {
+              "@id": "https://tenureai.dev/#software"
+            }
+          }
+        ]
+      }
+    </script>
+    <link rel="canonical" href="https://tenureai.dev" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="styles/index.css" />
   </head>
   <body>
     <nav>
       <span class="nav-logo logo-container">
-        <img src="tenure-logo-small.svg" class="logo-icon" alt="tenure" />
+        <img
+          src="images/tenure-logo-small.svg"
+          class="logo-icon"
+          alt="tenure"
+        />
         tenure
       </span>
       <div class="nav-links">
@@ -83,25 +177,25 @@
             href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode"
             class="editor-btn"
           >
-            <img class="image-icon" src="vscode.webp" />
+            <img class="image-icon" src="images/vscode.webp" />
           </a>
           <a
             href="https://clawhub.ai/plugins/@tenureai/openclaw-plugin"
             class="editor-btn"
           >
-            <img class="image-icon" src="openclaw.svg" />
+            <img class="image-icon" src="images/openclaw.svg" />
           </a>
           <a
             href="https://open-vsx.org/extension/tenureai/tenure-vscode"
             class="editor-btn"
           >
-            <img class="image-icon" src="windsurf.png" />
+            <img class="image-icon" src="images/windsurf.png" />
           </a>
           <a
             href="https://open-vsx.org/extension/tenureai/tenure-vscode"
             class="editor-btn"
           >
-            <img class="image-icon" src="continue.png" />
+            <img class="image-icon" src="images/continue.png" />
           </a>
         </div>
 
@@ -429,7 +523,7 @@
               Tenure watches your sessions silently. It extracts decisions,
               preferences, facts, questions, and blockers into a structured
               belief store but injects nothing. Your AI responses are completely
-              unchanged. You are just letting it learn.
+              unchanged.
             </p>
             <div class="toggle-demo">
               <div>
@@ -471,8 +565,8 @@
 
         <p class="mcp-intro">
           The model has to <strong>decide to call them.</strong> That means your
-          context is only retrieved when the model thinks to reach for it — and
-          it often does not. You end up with memory that works sometimes,
+          context is only retrieved when the model thinks to reach for it and it
+          often does not. You end up with memory that works sometimes,
           unpredictably, on certain questions.
         </p>
 
@@ -703,7 +797,7 @@
               <div class="integration-feature">
                 <span class="integration-feature-dot"></span>
                 <span
-                  >Aha moments captured wherever they happen — phone, tablet,
+                  >Aha moments captured wherever they happen: phone, tablet,
                   laptop</span
                 >
               </div>
@@ -725,7 +819,7 @@
           <p>
             The Tenure side panel shows you exactly what the model knows, per
             file and globally, directly inside VS Code. Click any belief to see
-            every turn it was injected — and the exact query that surfaced it.
+            every turn it was injected and the exact query that surfaced it.
           </p>
         </div>
 
@@ -1034,7 +1128,7 @@
             <h3>Structured beliefs</h3>
             <p>
               Not raw chat history. Typed, scoped, versioned conclusions the
-              model can act on directly — without re-deriving them from a
+              model can act on directly without re-deriving them from a
               transcript.
             </p>
           </div>
@@ -1059,7 +1153,7 @@
             <h3>Scope isolation</h3>
             <p>
               Engineering beliefs stay in engineering sessions. Project A never
-              bleeds into Project B. Every scope is a hard structural boundary —
+              bleeds into Project B. Every scope is a hard structural boundary
               not a probabilistic filter.
             </p>
           </div>
@@ -1353,25 +1447,25 @@
             href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode"
             class="editor-btn"
           >
-            <img class="image-icon" src="vscode.webp" />
+            <img class="image-icon" src="images/vscode.webp" />
           </a>
           <a
             href="https://clawhub.ai/plugins/@tenureai/openclaw-plugin"
             class="editor-btn"
           >
-            <img class="image-icon" src="openclaw.svg" />
+            <img class="image-icon" src="images/openclaw.svg" />
           </a>
           <a
             href="https://open-vsx.org/extension/tenureai/tenure-vscode"
             class="editor-btn"
           >
-            <img class="image-icon" src="windsurf.png" />
+            <img class="image-icon" src="images/windsurf.png" />
           </a>
           <a
             href="https://open-vsx.org/extension/tenureai/tenure-vscode"
             class="editor-btn"
           >
-            <img class="image-icon" src="continue.png" />
+            <img class="image-icon" src="images/continue.png" />
           </a>
         </div>
 
