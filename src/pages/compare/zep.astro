@@ -1,0 +1,180 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs Zep | AI Memory Comparison" description="Zep achieves 0.09 mean retrieval precision with 897-second ingestion time. Tenure achieves 1.00 with sub-15ms latency.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>Tenure vs. Zep</h1>
+    <p>Zep is a temporal knowledge graph for enterprise agent memory. Multi-container deployment. 897 seconds to ingest 35 beliefs. Mean precision: 0.09.</p>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <div class="tldr-box">
+        <h3>TL;DR</h3>
+        <ul>
+          <li>Zep's graph-based retrieval achieves 0.09 mean precision. Zero active retrieval passes.</li>
+          <li>Ingestion cost: 897 seconds for 35 beliefs (mean 25,630ms per belief).</li>
+          <li>A belief introduced at turn 1 may not be queryable until the session has concluded.</li>
+          <li>Drift score 0.89 on re-entry: noise beliefs from unrelated turns contaminate retrieval.</li>
+          <li>Requires multi-container deployment with graph store and embedding pipeline.</li>
+        </ul>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure precision</div>
+          <div class="metric-value good">1.00</div>
+          <div class="metric-context">43/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Zep precision</div>
+          <div class="metric-value bad">0.09</div>
+          <div class="metric-context">0/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure latency</div>
+          <div class="metric-value good">9.77ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Zep latency</div>
+          <div class="metric-value bad">124.36ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>The availability gap</h2>
+      <p>Zep's async ingestion architecture creates a structural availability problem in conversational use. Individual beliefs reach 125,148ms during ingestion. At a mean of 25,630ms per belief against a conversational turn cadence of 10 to 30 seconds, a belief introduced at turn 1 may not be queryable until the session has largely concluded.</p>
+      <p>Tenure extracts beliefs during the stream and makes them available on the very next turn. The session-turn evaluation confirms this: all 12 session cases pass, including turn N+1 availability.</p>
+
+      <div class="compare-verdict">
+        <p><strong>Memory that takes 15 minutes to become queryable is not memory. It is a batch pipeline.</strong> Conversational memory requires sub-second write-to-read latency. Zep's graph construction overhead makes this architecturally impossible at conversational cadence.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>Session-level noise isolation</h2>
+      <p>After topic drift, Zep produces drift score 0.89 on the re-entry turn. It surfaces noise beliefs introduced during unrelated drift turns while retaining the correct belief in the result set at low rank. The model receives noise alongside signal and must sort it out at inference time.</p>
+      <p>Session-turn latency: 418.13ms p50 (3x degradation over single-turn baseline of 139.64ms).</p>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Infrastructure comparison</h2>
+      <p>Zep requires a multi-container deployment including a graph store and embedding pipeline. Tenure runs as a single Docker container on localhost.</p>
+
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenure</th>
+              <th>Zep</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td>Mean retrieval precision</td>
+              <td><span class="check">1.00</span></td>
+              <td><span class="cross">0.09</span></td>
+            </tr>
+            <tr>
+              <td>Active retrieval passes</td>
+              <td><span class="check">43/43</span></td>
+              <td><span class="cross">0/43</span></td>
+            </tr>
+            <tr>
+              <td>Total passes (89 cases)</td>
+              <td><span class="check">89/89</span></td>
+              <td><span class="cross">9/89</span></td>
+            </tr>
+            <tr>
+              <td>Retrieval latency (p50)</td>
+              <td><span class="check">9.77ms</span></td>
+              <td>124.36ms</td>
+            </tr>
+            <tr>
+              <td>Session latency (p50)</td>
+              <td><span class="check">47.79ms</span></td>
+              <td>418.13ms</td>
+            </tr>
+            <tr>
+              <td>Drift score</td>
+              <td><span class="check">0.00</span></td>
+              <td><span class="cross">0.89</span></td>
+            </tr>
+            <tr>
+              <td>Ingestion (35 beliefs)</td>
+              <td><span class="check">1.0s</span></td>
+              <td><span class="cross">897s</span></td>
+            </tr>
+            <tr>
+              <td>Deployment</td>
+              <td><span class="check">Single container</span></td>
+              <td>Multi-container (graph + embed)</td>
+            </tr>
+            <tr>
+              <td>Runs fully local</td>
+              <td><span class="check">Always</span></td>
+              <td>Cloud-first (self-host available)</td>
+            </tr>
+            <tr>
+              <td>Account required</td>
+              <td><span class="check">No</span></td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Scope isolation</td>
+              <td><span class="check">Hard filter</span></td>
+              <td><span class="cross">None native</span></td>
+            </tr>
+            <tr>
+              <td>Supersession handling</td>
+              <td><span class="check">Chain with audit</span></td>
+              <td>Temporal invalidation</td>
+            </tr>
+            <tr>
+              <td>Turn N+1 availability</td>
+              <td><span class="check">Yes</span></td>
+              <td><span class="cross">No (async ingestion)</span></td>
+            </tr>
+            <tr>
+              <td>Per-turn injection audit</td>
+              <td><span class="check">Yes</span></td>
+              <td><span class="cross">No</span></td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>MIT</td>
+              <td>Proprietary (cloud) / BSL</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="methodology-note">
+        Zep evaluated against pinned Docker image digest <code>zep-zep@sha256:f9e5372caf60</code>. Full methodology: <a href="https://arxiv.org/abs/2605.11325">arXiv:2605.11325</a>. Dataset: <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="compare-cta">
+    <div class="container">
+      <h2>One container. Sub-15ms. Precision 1.0.</h2>
+      <p>No graph store. No embedding pipeline. No async ingestion gap. Thirty seconds to install.</p>
+      <div class="cta-buttons">
+        <a href="/#cta" class="btn-primary">Install Tenure</a>
+        <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,1148 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="PrecisionMemBench — LLM Memory Retrieval Benchmark | Tenure"
+  description="89-case benchmark measuring retrieval precision independently of generative models. Tenure: 1.0 precision, 89/89 passes. Mem0, Zep, Hindsight: 0 active retrieval passes. Published on arXiv."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "PrecisionMemBench",
+  "description": "An 89-case benchmark measuring LLM memory retrieval precision independently of generative models. Covers alias resolution, scope disambiguation, supersession chain exclusion, fuzzy matching, cross-user isolation, session-level noise isolation, and multi-turn topic drift.",
+  "url": "https://tenureai.dev/benchmark",
+  "sameAs": [
+    "https://arxiv.org/abs/2605.11325",
+    "https://github.com/tenurehq/precisionMemBench",
+    "https://huggingface.co/spaces/tenurehq/precisionmembench"
+  ],
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {
+    "@type": "Person",
+    "name": "Jeffrey Flynt",
+    "email": "jeffrey.flynt@utexas.edu"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tenure",
+    "url": "https://tenureai.dev"
+  },
+  "datePublished": "2026-05-27",
+  "keywords": ["LLM memory", "retrieval precision", "AI memory benchmark", "RAG evaluation", "BM25", "vector search"],
+  "measurementTechnique": "Retrieval precision and recall evaluated independently of generative models using mustExclude and shouldOnlyInclude assertions",
+  "variableMeasured": ["retrieval precision", "retrieval recall", "drift score", "retrieval latency", "ingestion latency"]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Structured Belief State and the First Precision-Aware Benchmark for LLM Memory Retrieval",
+  "author": {
+    "@type": "Person",
+    "name": "Jeffrey Flynt",
+    "affiliation": "Independent Researcher"
+  },
+  "datePublished": "2026-05-27",
+  "url": "https://arxiv.org/abs/2605.11325",
+  "publisher": {
+    "@type": "Organization",
+    "name": "arXiv"
+  },
+  "description": "We present PrecisionMemBench, an 89-case benchmark measuring retrieval precision independently of generative models, and Tenure, a local-first structured belief store achieving 1.0 precision and 89/89 benchmark passes.",
+  "about": {
+    "@type": "Dataset",
+    "name": "PrecisionMemBench",
+    "url": "https://tenureai.dev/benchmark"
+  }
+}
+</script>
+
+<section id="bench-hero" class="bench-hero">
+  <div class="container" style="text-align:center;">
+    <span class="label">PrecisionMemBench</span>
+    <h1>The benchmark that measures<br/>what memory tools actually do.</h1>
+    <p class="hero-sub">
+      Every existing benchmark measures whether the model answered correctly.<br/>
+      This one measures whether the memory system <em>retrieved</em> correctly.<br/>
+      Those are not the same question.
+    </p>
+
+    <div class="bench-hero-stats">
+      <div class="bench-hero-stat">
+        <span class="bench-hero-value good">89</span>
+        <span class="bench-hero-label">Total cases</span>
+      </div>
+      <div class="bench-hero-stat-div"></div>
+      <div class="bench-hero-stat">
+        <span class="bench-hero-value good">5</span>
+        <span class="bench-hero-label">Systems evaluated</span>
+      </div>
+      <div class="bench-hero-stat-div"></div>
+      <div class="bench-hero-stat">
+        <span class="bench-hero-value good">0</span>
+        <span class="bench-hero-label">Active retrieval passes<br/><span style="font-size:0.7rem;font-weight:400;">for every competitor</span></span>
+      </div>
+      <div class="bench-hero-stat-div"></div>
+      <div class="bench-hero-stat">
+        <span class="bench-hero-value good">1.0</span>
+        <span class="bench-hero-label">Tenure precision</span>
+      </div>
+    </div>
+
+    <div class="bench-cta-row">
+      <a href="https://github.com/tenurehq/precisionMemBench" class="btn-primary" target="_blank" rel="noopener">
+        Run it yourself →
+      </a>
+      <a href="https://arxiv.org/abs/2605.11325" class="btn-secondary" target="_blank" rel="noopener">
+        Read the paper
+      </a>
+      <a href="https://huggingface.co/spaces/tenurehq/precisionmembench" class="btn-secondary" target="_blank" rel="noopener">
+        HuggingFace leaderboard
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="label">The problem</span>
+    <h2>Why existing benchmarks are measuring the wrong thing</h2>
+    <p>LoCoMo, LongMemEval, and every benchmark built on top of them measure answer quality through a generative judge. This design cannot distinguish a memory system that retrieves one correct belief from one that retrieves its entire store.</p>
+
+    <div class="gap-grid">
+      <div class="gap-card gap-card-bad">
+        <div class="gap-card-header">
+          <span class="gap-icon">✗</span>
+          <h3>Answer-quality benchmarks</h3>
+        </div>
+        <p>Retrieve everything. Route through a model. Score on F1. A system with 0.05 retrieval precision looks "competitive" because the downstream model compensates for the noise.</p>
+        <div class="gap-terminal">
+          <div class="gap-terminal-line"><span class="t-dim">-- retrieve everything</span></div>
+          <div class="gap-terminal-line"><span class="t-cmd">SELECT * FROM beliefs</span></div>
+          <div class="gap-terminal-line"><span class="t-dim">-- hope the model sorts it out</span></div>
+          <div class="gap-terminal-line"><span class="t-dim">-- 18 results injected</span></div>
+          <div class="gap-terminal-line"><span style="color:var(--red);">-- precision: 0.05</span></div>
+        </div>
+      </div>
+
+      <div class="gap-card gap-card-good">
+        <div class="gap-card-header">
+          <span class="gap-icon good">✓</span>
+          <h3>PrecisionMemBench</h3>
+        </div>
+        <p>Assert against retrieved beliefs directly. No generative model in the evaluation loop. <code>mustExclude</code> and <code>shouldOnlyInclude</code> make noise a hard failure.</p>
+        <div class="gap-terminal">
+          <div class="gap-terminal-line"><span class="t-dim">-- query at the source</span></div>
+          <div class="gap-terminal-line"><span class="t-cmd">SELECT * FROM beliefs</span></div>
+          <div class="gap-terminal-line"><span class="t-cmd">WHERE scope = 'project:api'</span></div>
+          <div class="gap-terminal-line"><span class="t-cmd">AND alias_match('redis')</span></div>
+          <div class="gap-terminal-line"><span class="t-ok">-- 1 result. precision: 1.0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-verdict" style="margin-top: 2rem;">
+      <p>Strip the generative model out and route retrieved context to a classifier, rules engine, or structured pipeline: current retrieval implementations fail immediately. The generative model was never a neutral consumer — it was load-bearing infrastructure compensating for retrieval noise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEADERBOARD ── -->
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container-wide">
+    <span class="label">Results</span>
+    <h2>Leaderboard</h2>
+    <p>89 cases. 11 systems. One metric that matters: active retrieval passes — cases where a <code>retrievalPrecision</code> assertion was satisfied.</p>
+
+    <!-- Main leaderboard table -->
+    <div class="compare-table-section" style="margin-top: 2rem;">
+      <table class="compare-table-full leaderboard-table">
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Active passes</th>
+            <th>Total passes</th>
+            <th>Mean precision</th>
+            <th>Mean recall</th>
+            <th>Retrieval p50</th>
+            <th>Ingestion total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td><strong>tenure</strong> <span class="badge-yours">this</span></td>
+            <td><span class="val-good">43/43</span></td>
+            <td><span class="val-good">77/77</span></td>
+            <td><span class="val-good">1.00</span></td>
+            <td><span class="val-good">1.00</span></td>
+            <td><span class="val-good">9.77ms</span></td>
+            <td>1.00s</td>
+          </tr>
+          <tr>
+            <td>supermemory</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">17/17</span></td>
+            <td>44/77</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">0.43</span></td>
+            <td>0.55</td>
+            <td>819.48ms</td>
+            <td>0.00s</td>
+          </tr>
+          <tr>
+            <td>gbrain</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">5/5</span></td>
+            <td>34/77</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">0.14</span></td>
+            <td>0.17</td>
+            <td>543.84ms</td>
+            <td>28.60s</td>
+          </tr>
+          <tr>
+            <td>agentmemory</td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>7/77</td>
+            <td><span class="val-bad">0.17</span></td>
+            <td>0.97</td>
+            <td>82.28ms</td>
+            <td>1.10s</td>
+          </tr>
+          <tr>
+            <td>yourmemory</td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>21/77</td>
+            <td><span class="val-bad">0.17</span></td>
+            <td>0.88</td>
+            <td>313.39ms</td>
+            <td>16.40s</td>
+          </tr>
+          <tr>
+            <td>atomicmemory</td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>9/77</td>
+            <td><span class="val-bad">0.15</span></td>
+            <td>0.95</td>
+            <td>71.01ms</td>
+            <td>658.90s</td>
+          </tr>
+          <tr>
+            <td>zep</td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>9/77</td>
+            <td><span class="val-bad">0.09</span></td>
+            <td>0.95</td>
+            <td>124.36ms</td>
+            <td>897.00s</td>
+          </tr>
+          <tr>
+            <td>vector<span class="badge-note">mxbai-embed-large</span></td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>11/77</td>
+            <td><span class="val-bad">0.09</span></td>
+            <td>1.00</td>
+            <td>71.87ms</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>hindsight</td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>9/77</td>
+            <td><span class="val-bad">0.06</span></td>
+            <td>1.00</td>
+            <td>589.86ms</td>
+            <td>173.30s</td>
+          </tr>
+          <tr>
+            <td>mem0</td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>9/77</td>
+            <td><span class="val-bad">0.06</span></td>
+            <td>0.99</td>
+            <td>64.94ms</td>
+            <td>111.30s</td>
+          </tr>
+          <tr>
+            <td>a-mem</td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>9/77</td>
+            <td><span class="val-bad">0.06</span></td>
+            <td>0.99</td>
+            <td>13.80ms</td>
+            <td>178.80s</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pass type explainer -->
+    <div class="pass-type-grid">
+      <div class="pass-type-card">
+        <div class="pass-type-label">Active retrieval passes</div>
+        <p>Cases with a <code>retrievalPrecision</code> assertion that was satisfied. The only pass type that demonstrates verified retrieval capability. A system cannot accumulate these by returning everything or nothing.</p>
+      </div>
+      <div class="pass-type-card">
+        <div class="pass-type-label">Structural passes</div>
+        <p>Cases asserting scope isolation, supersession exclusion, or type routing without a precision assertion, and the structural property holds.</p>
+      </div>
+      <div class="pass-type-card">
+        <div class="pass-type-label">Trivially empty passes</div>
+        <p>Cases where the expected result set is empty by design (empty query, <code>maxBeliefs: 0</code>). Any system returning an empty set passes by construction. <code>retrievalPrecision</code> is null for these cases.</p>
+      </div>
+    </div>
+
+    <div class="methodology-note">
+      All comparison systems received a schema-aware wrapper granting them pin-status filtering, open-question routing, and scope isolation for free at evaluation time. Competitors fail purely on retrieval precision — the structural routing logic was given to them. Results reflect pinned Docker image digests. <a href="https://github.com/tenurehq/precisionMemBench" target="_blank" rel="noopener">Reproduce locally →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── BY CATEGORY ── -->
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container-wide">
+    <span class="label">Results by category</span>
+    <h2>Where the failures happen</h2>
+    <p>89 cases across 14 categories. Alias resolution and session-level noise isolation are where the precision gap is most stark.</p>
+
+    <div class="compare-table-section" style="margin-top: 2rem;">
+      <table class="compare-table-full">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Cases</th>
+            <th>Tenure</th>
+            <th>Vector</th>
+            <th>Mem0</th>
+            <th>Zep</th>
+            <th>Hindsight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alias resolution</td>
+            <td>23</td>
+            <td><span class="val-good">23/23</span></td>
+            <td><span class="val-bad">0/23</span></td>
+            <td><span class="val-bad">0/23</span></td>
+            <td><span class="val-bad">0/23</span></td>
+            <td><span class="val-bad">0/23</span></td>
+          </tr>
+          <tr>
+            <td>Session-level noise isolation</td>
+            <td>12</td>
+            <td><span class="val-good">12/12</span></td>
+            <td><span class="val-bad">0/12</span></td>
+            <td><span class="val-bad">0/12</span></td>
+            <td><span class="val-bad">0/12</span></td>
+            <td><span class="val-bad">0/12</span></td>
+          </tr>
+          <tr>
+            <td>Scope disambiguation</td>
+            <td>12</td>
+            <td><span class="val-good">10/12</span></td>
+            <td>1/12</td>
+            <td><span class="val-bad">0/12</span></td>
+            <td><span class="val-bad">0/12</span></td>
+            <td><span class="val-bad">0/12</span></td>
+          </tr>
+          <tr>
+            <td>Fuzzy matching &amp; prefix guards</td>
+            <td>7</td>
+            <td><span class="val-good">7/7</span></td>
+            <td><span class="val-bad">0/7</span></td>
+            <td><span class="val-bad">0/7</span></td>
+            <td><span class="val-bad">0/7</span></td>
+            <td><span class="val-bad">0/7</span></td>
+          </tr>
+          <tr>
+            <td>Type routing / open questions</td>
+            <td>6</td>
+            <td><span class="val-good">6/6</span></td>
+            <td><span class="val-bad">0/6</span></td>
+            <td><span class="val-bad">0/6</span></td>
+            <td><span class="val-bad">0/6</span></td>
+            <td><span class="val-bad">0/6</span></td>
+          </tr>
+          <tr>
+            <td>Design boundary cases</td>
+            <td>6</td>
+            <td><span class="val-good">6/6</span></td>
+            <td>2/6</td>
+            <td>2/6</td>
+            <td>2/6</td>
+            <td>2/6</td>
+          </tr>
+          <tr>
+            <td>Budget eviction &amp; capacity</td>
+            <td>5</td>
+            <td><span class="val-good">5/5</span></td>
+            <td>3/5</td>
+            <td>3/5</td>
+            <td>3/5</td>
+            <td>3/5</td>
+          </tr>
+          <tr>
+            <td>Persona prelude content</td>
+            <td>4</td>
+            <td><span class="val-good">4/4</span></td>
+            <td>2/4</td>
+            <td>1/4</td>
+            <td>1/4</td>
+            <td>1/4</td>
+          </tr>
+          <tr>
+            <td>Relation expansion</td>
+            <td>4</td>
+            <td><span class="val-good">4/4</span></td>
+            <td><span class="val-bad">0/4</span></td>
+            <td><span class="val-bad">0/4</span></td>
+            <td><span class="val-bad">0/4</span></td>
+            <td><span class="val-bad">0/4</span></td>
+          </tr>
+          <tr>
+            <td>Supersession chain exclusion</td>
+            <td>3</td>
+            <td><span class="val-good">3/3</span></td>
+            <td><span class="val-bad">0/3</span></td>
+            <td><span class="val-bad">0/3</span></td>
+            <td><span class="val-bad">0/3</span></td>
+            <td><span class="val-bad">0/3</span></td>
+          </tr>
+          <tr>
+            <td>Ranking stability</td>
+            <td>3</td>
+            <td><span class="val-good">3/3</span></td>
+            <td>1/3</td>
+            <td>1/3</td>
+            <td>1/3</td>
+            <td>1/3</td>
+          </tr>
+          <tr>
+            <td>Counter-signal retrieval</td>
+            <td>2</td>
+            <td><span class="val-good">2/2</span></td>
+            <td><span class="val-bad">0/2</span></td>
+            <td><span class="val-bad">0/2</span></td>
+            <td><span class="val-bad">0/2</span></td>
+            <td><span class="val-bad">0/2</span></td>
+          </tr>
+          <tr>
+            <td>Cross-user isolation</td>
+            <td>1</td>
+            <td><span class="val-good">1/1</span></td>
+            <td>1/1</td>
+            <td>1/1</td>
+            <td>1/1</td>
+            <td>1/1</td>
+          </tr>
+          <tr>
+            <td>Cold start behavior</td>
+            <td>1</td>
+            <td><span class="val-good">1/1</span></td>
+            <td>1/1</td>
+            <td>1/1</td>
+            <td>1/1</td>
+            <td>1/1</td>
+          </tr>
+          <tr style="font-weight:600; border-top: 2px solid var(--border2);">
+            <td><strong>Total</strong></td>
+            <td><strong>89</strong></td>
+            <td><span class="val-good"><strong>89/89</strong></span></td>
+            <td><span class="val-bad"><strong>11/89</strong></span></td>
+            <td><span class="val-bad"><strong>9/89</strong></span></td>
+            <td><span class="val-bad"><strong>9/89</strong></span></td>
+            <td><span class="val-bad"><strong>8/89</strong></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── EMBEDDING INVARIANCE ── -->
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="label">Embedding model invariance</span>
+    <h2>A bigger model doesn't fix this</h2>
+    <p>The natural objection: use a more capable embedding model. We tested across a 20× range in scale. Precision is identical. The fix is not a better ruler — it is a different measurement instrument.</p>
+
+    <div class="compare-table-section" style="margin-top: 2rem;">
+      <table class="compare-table-full">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Dimensions</th>
+            <th>Precision</th>
+            <th>Passes</th>
+            <th>Mean latency</th>
+            <th>p95 latency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>nomic-embed-text</td>
+            <td>768</td>
+            <td><span class="val-bad">0.09</span></td>
+            <td><span class="val-bad">11/77</span></td>
+            <td>43ms</td>
+            <td>85ms</td>
+          </tr>
+          <tr>
+            <td>mxbai-embed-large</td>
+            <td>1024</td>
+            <td><span class="val-bad">0.09</span></td>
+            <td><span class="val-bad">11/77</span></td>
+            <td>96ms</td>
+            <td>257ms</td>
+          </tr>
+          <tr>
+            <td>qwen3-8b</td>
+            <td>4096</td>
+            <td><span class="val-bad">0.09</span></td>
+            <td><span class="val-bad">11/77</span></td>
+            <td>1131ms</td>
+            <td>2605ms</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="compare-verdict" style="margin-top: 1.5rem;">
+      <p>At roughly 20× the mean latency of nomic-embed-text and over 1,100ms mean per query, the 8-billion parameter qwen3 model produces identical precision. All 11 passes in every configuration are trivially empty or budget-forced cases. Active retrieval passes across all three: 0.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SESSION DRIFT ── -->
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="label">Multi-turn noise isolation</span>
+    <h2>After 8 off-topic turns, can you get your context back?</h2>
+    <p>The session cases test one thing: whether beliefs introduced during off-topic drift turns contaminate retrieval on subsequent unrelated turns. A drift score of 0 is perfect isolation. All competitors score 0.92–1.0.</p>
+
+    <div class="compare-table-section" style="margin-top: 2rem;">
+      <table class="compare-table-full">
+        <thead>
+          <tr>
+            <th>Turn</th>
+            <th>Tenure</th>
+            <th>Vector</th>
+            <th>Mem0</th>
+            <th>Zep</th>
+            <th>Hindsight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Turn 9 — implicit re-entry</td>
+            <td><span class="val-good">0.00</span></td>
+            <td><span class="val-bad">1.00</span></td>
+            <td><span class="val-bad">1.00</span></td>
+            <td><span class="val-bad">1.00</span></td>
+            <td><span class="val-bad">1.00</span></td>
+          </tr>
+          <tr>
+            <td>Turn 10 — explicit re-entry</td>
+            <td><span class="val-good">0.00</span></td>
+            <td><span class="val-bad">0.94</span></td>
+            <td><span class="val-bad">1.00</span></td>
+            <td><span class="val-bad">1.00</span></td>
+            <td><span class="val-bad">0.94</span></td>
+          </tr>
+          <tr>
+            <td>Cross-session formative</td>
+            <td><span class="val-good">0.00</span></td>
+            <td><span class="val-bad">0.94</span></td>
+            <td><span class="val-bad">1.00</span></td>
+            <td><span class="val-bad">0.92</span></td>
+            <td><span class="val-bad">1.00</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top: 1.5rem; font-size: 0.875rem;">Hindsight at turn 10: drift score 1.0 with the correct belief absent entirely (recall 0). Not ranked low — missing from the result set, with 4 explicit noise belief violations flagged on top of a full-corpus return.</p>
+
+    <!-- Session latency -->
+    <h3 style="margin-top: 3rem; margin-bottom: 0.5rem;">Session-turn latency</h3>
+    <p style="margin-bottom: 1rem;">Single-turn latency is not session latency. Under session load, all three comparison systems degrade 3–4×. Hindsight, 672ms single-turn, exceeds 2,700ms mean per session turn.</p>
+
+    <div class="compare-table-section">
+      <table class="compare-table-full">
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Single-turn mean</th>
+            <th>Session mean</th>
+            <th>Session p50</th>
+            <th>Session p95</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td><strong>Tenure</strong></td>
+            <td><span class="val-good">13ms</span></td>
+            <td><span class="val-good">49ms</span></td>
+            <td>48ms</td>
+            <td>135ms</td>
+          </tr>
+          <tr>
+            <td>Vector baseline</td>
+            <td>96ms</td>
+            <td>319ms</td>
+            <td>257ms</td>
+            <td>728ms</td>
+          </tr>
+          <tr>
+            <td>Mem0</td>
+            <td>79ms</td>
+            <td>383ms</td>
+            <td>378ms</td>
+            <td>692ms</td>
+          </tr>
+          <tr>
+            <td>Zep</td>
+            <td>140ms</td>
+            <td>397ms</td>
+            <td>418ms</td>
+            <td>660ms</td>
+          </tr>
+          <tr>
+            <td>Hindsight</td>
+            <td>672ms</td>
+            <td><span class="val-bad">2,736ms</span></td>
+            <td>1,881ms</td>
+            <td><span class="val-bad">6,163ms</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── METHODOLOGY ── -->
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="label">Methodology</span>
+    <h2>How it works</h2>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="method-num">01</div>
+        <h3>Fixed seed corpus</h3>
+        <p>35 beliefs spanning two domain scopes, a three-hop supersession chain, and a secondary-user fixture for isolation validation. All comparison systems are pre-ingested and confirmed available before any retrieval case runs.</p>
+      </div>
+      <div class="method-card">
+        <div class="method-num">02</div>
+        <h3>Hard assertions, not judge scores</h3>
+        <p>Each case carries <code>mustExclude</code> and <code>shouldOnlyInclude</code> constraints evaluated directly against retrieved belief IDs. No generative model scores the output. A pass requires all asserted tiers to be simultaneously satisfied.</p>
+      </div>
+      <div class="method-card">
+        <div class="method-num">03</div>
+        <h3>Schema-aware wrapper for fairness</h3>
+        <p>Comparison systems receive pin-status filtering, open-question routing, and scope isolation applied from Tenure's metadata. They do not fail due to structural technicalities — only because cosine similarity produces 10–18 irrelevant beliefs per query.</p>
+      </div>
+      <div class="method-card">
+        <div class="method-num">04</div>
+        <h3>Pinned Docker digests</h3>
+        <p>Mem0, Zep, and Hindsight were run from pinned image digests without modification. All embedding-dependent configurations use mxbai-embed-large, ensuring differences reflect architecture, not embedding model choice.</p>
+      </div>
+    </div>
+
+    <div class="tldr-box" style="margin-top: 2rem;">
+      <h3>Case taxonomy</h3>
+      <ul>
+        <li>Alias resolution (23) — variant surface forms, short-form, natural-language, multi-word</li>
+        <li>Scope disambiguation (12) — hard scope isolation between domain contexts</li>
+        <li>Session noise isolation (12) — 10-turn drift sessions with per-turn assertions</li>
+        <li>Fuzzy matching &amp; prefix guards (7) — transpositions, near-miss, intentional prefix blocks</li>
+        <li>Type routing &amp; open questions (6) — routing logic by belief type</li>
+        <li>Design boundary cases (6) — intentional empty returns and edge behavior</li>
+        <li>Budget eviction &amp; capacity (5) — slot constraints, priority, flooding resistance</li>
+        <li>Relation expansion (4) — one-hop participant joins with scope filtering</li>
+        <li>Persona prelude content (4) — unconditional belief injection</li>
+        <li>Supersession chain exclusion (3) — three-hop chain, active terminal only</li>
+        <li>Ranking stability (3) — consistent ordering across equivalent queries</li>
+        <li>Counter-signal retrieval (2) — rejected terms surfacing active replacements</li>
+        <li>Cross-user isolation (1) — structural exclusion regardless of semantic proximity</li>
+        <li>Cold start behavior (1) — empty store, no error</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── PAPER ── -->
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="label">Research</span>
+    <h2>Published on arXiv</h2>
+
+    <div class="paper-card">
+      <div class="paper-meta">
+        <span class="paper-venue">arXiv:2605.11325 [cs.IR] · May 2026</span>
+        <a href="https://arxiv.org/abs/2605.11325" target="_blank" rel="noopener" class="paper-link">Full paper →</a>
+      </div>
+      <h3 class="paper-title">Structured Belief State and the First Precision-Aware Benchmark for LLM Memory Retrieval</h3>
+      <p class="paper-abstract">Every major benchmark for LLM memory systems measures whether a model answered correctly, not whether the memory system retrieved correctly. We demonstrate that memory baselines achieve mean retrieval precision of just 0.05 to 0.08 on cases referencing their own extractions. We present PrecisionMemBench, an 89-case benchmark measuring retrieval precision independently of generative models, and Tenure, a local-first structured belief store achieving 89/89 passes with mean precision 1.0 and sub-15ms retrieval latency.</p>
+
+      <div class="bibtex-block">
+        <div class="bibtex-header">
+          <span class="bibtex-label">BibTeX</span>
+          <button class="bibtex-copy" onclick="copyBibtex(this)">Copy</button>
+        </div>
+        <pre class="bibtex-pre"><code>@article&#123;flynt2026tenure,
+  title=&#123;Structured Belief State and the First
+         Precision-Aware Benchmark for LLM
+         Memory Retrieval&#125;,
+  author=&#123;Flynt, Jeffrey&#125;,
+  journal=&#123;arXiv preprint arXiv:2605.11325&#125;,
+  year=&#123;2026&#125;
+&#125;</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUN IT ── -->
+<section class="bench-section">
+  <div class="container" style="text-align:center;">
+    <span class="label">Reproducible</span>
+    <h2>Run it yourself</h2>
+    <p>The benchmark is published as a reusable artifact. Run it against any memory implementation — including your own.</p>
+
+    <div class="terminal" style="max-width: 660px; margin: 2rem auto; text-align:left;">
+      <div class="terminal-bar">
+        <span class="term-dot term-dot-red"></span>
+        <span class="term-dot term-dot-yellow"></span>
+        <span class="term-dot term-dot-green"></span>
+        <span class="terminal-title">precisionmembench</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">$</span> <span class="t-cmd">git clone https://github.com/tenurehq/precisionMemBench</span></div>
+        <div><span class="t-prompt">$</span> <span class="t-cmd">cd precisionMemBench</span></div>
+        <div><span class="t-prompt">$</span> <span class="t-cmd">npm install</span></div>
+        <div><span class="t-prompt">$</span> <span class="t-cmd">MEMORY_PROVIDER=PROVIDER npx ava retrieval.external.eval.test.ts</span></div>
+        <div><span class="t-prompt">$</span> <span class="t-cmd">MEMORY_PROVIDER=PROVIDER npx ava session-retrieval.external.eval.test.ts</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-ok">✓</span> <span class="t-muted">Seeding corpus (35 beliefs)...</span></div>
+        <div><span class="t-ok">✓</span> <span class="t-muted">Running 89 cases...</span></div>
+        <div><span class="t-ok">✓</span> <span class="t-muted">Results written to test-results/</span></div>
+      </div>
+    </div>
+
+    <div class="bench-cta-row" style="justify-content:center;">
+      <a href="https://github.com/tenurehq/precisionMemBench" class="btn-primary" target="_blank" rel="noopener">
+        GitHub →
+      </a>
+      <a href="https://huggingface.co/spaces/tenurehq/precisionmembench" class="btn-secondary" target="_blank" rel="noopener">
+        HuggingFace leaderboard
+      </a>
+      <a href="https://huggingface.co/datasets/tenurehq/precisionmembench" class="btn-secondary" target="_blank" rel="noopener">
+        Dataset
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+function copyBibtex(btn) {
+  const pre = btn.closest('.bibtex-block').querySelector('pre code');
+  const text = pre.textContent
+    .replace(/&#123;/g, '{')
+    .replace(/&#125;/g, '}');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+
+<style>
+/* ── BENCHMARK PAGE STYLES ── */
+.bench-hero {
+  padding: 7rem 2rem 5rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(0,168,173,0.04) 0%, var(--bg) 100%);
+}
+
+.bench-hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 3rem auto 2.5rem;
+  max-width: 700px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+
+.bench-hero-stat {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: 1.75rem 1.25rem;
+  border-right: 1px solid var(--border);
+}
+
+.bench-hero-stat:last-child {
+  border-right: none;
+}
+
+.bench-hero-value {
+  font-family: var(--mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  display: block;
+}
+
+.bench-hero-value.good {
+  color: var(--accent);
+}
+
+.bench-hero-label {
+  font-size: 0.75rem;
+  color: var(--dim);
+  display: block;
+  margin-top: 0.3rem;
+  line-height: 1.4;
+}
+
+.bench-cta-row {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.btn-primary:hover {
+  background: var(--accent2);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+}
+
+.bench-section {
+  padding: 5rem 2rem;
+}
+
+/* Gap cards */
+.gap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 700px) {
+  .gap-grid { grid-template-columns: 1fr; }
+  .bench-hero-stats { gap: 0; }
+}
+
+.gap-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+}
+
+.gap-card-bad {
+  border-color: rgba(196,83,83,0.25);
+}
+
+.gap-card-good {
+  border-color: rgba(0,168,173,0.3);
+  background: rgba(0,168,173,0.03);
+}
+
+.gap-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.gap-icon {
+  font-size: 1.1rem;
+  color: var(--red);
+  font-weight: 700;
+}
+.gap-icon.good { color: var(--accent); }
+
+.gap-card h3 {
+  margin: 0;
+  color: var(--text);
+}
+
+.gap-card p {
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.gap-terminal {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+
+/* Pass type cards */
+.pass-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 700px) {
+  .pass-type-grid { grid-template-columns: 1fr; }
+}
+
+.pass-type-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.pass-type-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.pass-type-card p {
+  font-size: 0.83rem;
+  margin: 0;
+}
+
+/* Value coloring */
+.val-good {
+  color: var(--accent);
+  font-weight: 600;
+  font-family: var(--mono);
+}
+
+.val-bad {
+  color: var(--dim);
+  font-family: var(--mono);
+}
+
+/* Leaderboard badges */
+.badge-yours {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(0,168,173,0.1);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.badge-note {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--dim);
+  margin-left: 0.4rem;
+  font-weight: 400;
+}
+
+/* Methodology cards */
+.method-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 700px) {
+  .method-grid { grid-template-columns: 1fr; }
+}
+
+.method-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+}
+
+.method-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.method-card h3 {
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.method-card p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Paper card */
+.paper-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.paper-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.paper-venue {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--dim);
+  letter-spacing: 0.05em;
+}
+
+.paper-link {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.paper-title {
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+}
+
+.paper-authors {
+  font-size: 0.85rem;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+
+.paper-abstract {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.bibtex-block {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bibtex-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.bibtex-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bibtex-copy {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.bibtex-copy:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.bibtex-pre {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.8;
+  color: var(--muted);
+  overflow-x: auto;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  background: rgba(0,168,173,0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+.bibtex-pre code {
+  background: none;
+  padding: 0;
+  color: var(--muted);
+  font-size: 1em;
+}
+</style>
+
+</Base>

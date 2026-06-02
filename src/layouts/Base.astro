@@ -1,0 +1,168 @@
+---
+const { title, description } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {title}
+    </title>
+    <meta
+      name="description"
+      content={description}
+    />
+    <meta
+      name="keywords"
+      content="AI memory, developer memory tool, local LLM memory, persistent AI context, VS Code AI memory, localhost AI, coding assistant memory, AI context injection, no RAG memory, AI productivity"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tenureai.dev" />
+    <meta
+      property="og:title"
+      content="Tenure | Brainstorm in your chat client. Open your IDE. It already knows."
+    />
+    <meta
+      property="og:description"
+      content="Persistent AI memory that runs entirely on localhost. 1.0 retrieval precision. No RAG. No MCP. No cloud. Works across VS Code, Open WebUI, LibreChat, and any OpenAI-compatible client."
+    />
+    <meta property="og:image" content="https://tenureai.dev/og-image.png" />
+    <meta property="og:site_name" content="Tenure" />
+    <meta name="robots" content="index, follow" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://tenureai.dev" />
+    <meta
+      name="twitter:title"
+      content="Tenure | AI Memory That Runs on Localhost"
+    />
+    <meta
+      name="twitter:description"
+      content="Stop re-explaining yourself. Tenure gives your AI tools persistent, structured memory with 1.0 retrieval precision. Fully local. Zero cloud. Works across every client."
+    />
+    <meta name="twitter:image" content="https://tenureai.dev/og-image.png" />
+    <meta
+      name="description:extended"
+      content="Tenure is a local-first AI memory proxy that sits between your LLM client and your provider. It automatically extracts beliefs from conversations, stores them locally with BM25 retrieval, and injects the right context on every request — without MCP, RAG pipelines, or cloud dependencies. Precision: 1.0. Latency: under 15ms."
+    />
+    <meta
+      name="ai:product-type"
+      content="developer tool, AI memory layer, LLM proxy"
+    />
+    <meta
+      name="ai:use-case"
+      content="persistent memory across AI coding assistants, context injection, belief store for developers"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://tenureai.dev/#software",
+            "name": "Tenure",
+            "url": "https://tenureai.dev",
+            "codeRepository": "https://github.com/tenurehq/tenure",
+            "image": "https://tenureai.dev/og-image.png",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Linux, macOS, Windows",
+            "description": "Fully local AI memory layer for developers. Persistent, structured memory that follows you across every tool and every session. 1.0 retrieval precision. Zero cloud.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock"
+            },
+            "license": "https://opensource.org/licenses/MIT"
+          },
+          {
+            "@type": "Dataset",
+            "@id": "https://tenureai.dev/#dataset",
+            "name": "precisionMemBench",
+            "description": "A multi-dimensional retrieval benchmark for LLM memory systems measuring retrieval precision, noise isolation, session-turn latency, and belief mutability across 89 cases and 11 providers.",
+            "url": "https://huggingface.co/datasets/tenurehq/precisionmembench",
+            "sameAs": [
+              "https://arxiv.org/abs/2605.11325",
+              "https://github.com/tenurehq/precisionMemBench"
+            ],
+            "license": "https://opensource.org/licenses/MIT",
+            "creator": {
+              "@type": "Organization",
+              "name": "Tenure",
+              "url": "https://tenureai.dev"
+            },
+            "about": {
+              "@id": "https://tenureai.dev/#software"
+            }
+          }
+        ]
+      }
+    </script>
+    <link rel="canonical" href="https://tenureai.dev" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/index.css" />
+  </head>
+  <body>
+
+     <nav>
+      <span class="nav-logo logo-container">
+        <a href="/" class="logo-container">
+          <img
+            src="/images/tenure-logo-small.svg"
+            class="logo-icon"
+            alt="tenure"
+          />
+          tenure
+        </a>
+      </span>
+      <div class="nav-links">
+        <a href="/docs">Docs</a>
+        <a href="https://github.com/tenurehq/tenure">GitHub</a>
+        
+        <div class="dropdown">
+          <button class="dropdown-trigger">
+            Research <span class="dropdown-arrow">▼</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="/benchmark">Benchmark</a>
+            <a href="https://arxiv.org/abs/2605.11325">Paper</a>
+          </div>
+        </div>
+
+        <a href="https://github.com/tenurehq/tenure" class="nav-cta">Install Free</a>
+      </div>
+    </nav>
+
+    <slot />  
+
+   <footer>
+      <div class="footer-container">
+        <div class="footer-brand">
+          <span class="footer-logo">tenure &middot; MIT License</span>
+        </div>
+        
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <a href="/docs">Docs</a>
+            <a href="https://github.com/tenurehq/tenure">GitHub</a>
+            <a href="https://arxiv.org/abs/2605.11325">Paper</a>
+            <a href="/benchmark">Benchmark</a>
+          </div>
+          
+          <div class="footer-col">
+            <h4>Comparisons</h4>
+            <a href="/compare/mem0">vs Mem0</a>
+            <a href="/compare/agentmemory">vs AgentMemory</a>
+            <a href="/compare/gbrain">vs Gbrain</a>
+            <a href="/compare/hindsight">vs Hindsight</a>
+            <a href="/compare/supermemory">vs Supermemory</a>
+            <a href="/compare/zep">vs Zep</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+   
+  </body>
+</html>

@@ -1,0 +1,168 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs Hindsight (Vectorize) | AI Memory Comparison" description="Hindsight achieves 0.06 mean precision at 672ms latency despite bundling a cross-encoder reranker. Tenure achieves 1.00 at sub-15ms.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>Tenure vs. Hindsight</h1>
+    <p>Hindsight is Vectorize's MCP-based agent memory. It bundles a cross-encoder reranker that adds 672ms mean latency without improving precision past 0.06.</p>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <div class="tldr-box">
+        <h3>TL;DR</h3>
+        <ul>
+          <li>Cross-encoder reranker is the architectural feature designed to address precision. It doesn't close the gap.</li>
+          <li>Mean precision 0.06 with zero active retrieval passes. On alias resolution cases, returns 18 beliefs with the correct one absent entirely.</li>
+          <li>672ms mean single-turn latency. Session turns: 2,736ms mean, p95 above 6,000ms.</li>
+          <li>Drift score 1.0 on implicit re-entry: correct belief missing, 100% noise.</li>
+          <li>Full image bundles ~130MB BGE embedder + ~90MB MiniLM cross-encoder. 3-4GB RAM minimum.</li>
+        </ul>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure precision</div>
+          <div class="metric-value good">1.00</div>
+          <div class="metric-context">43/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Hindsight precision</div>
+          <div class="metric-value bad">0.06</div>
+          <div class="metric-context">0/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure latency</div>
+          <div class="metric-value good">9.77ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Hindsight latency</div>
+          <div class="metric-value bad">589.86ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>The reranker doesn't fix it</h2>
+      <p>Hindsight's cross-encoder reranker is the architectural feature that most distinguishes it from a standard embedding retrieval stack. The benchmark results show it does not close the precision gap.</p>
+      <p>On alias resolution cases (a query using <code>k8s</code> to retrieve the Kubernetes entity belief), Hindsight returns 18 beliefs with precision 0 and recall 0: the correct belief does not appear at all. This is not a ranking failure; it is a retrieval failure. The correct belief is absent from the candidate set before the reranker runs.</p>
+
+      <div class="compare-verdict">
+        <p><strong>You cannot rerank your way out of a retrieval failure.</strong> A cross-encoder can only reorder candidates that are already in the result set. If the initial retrieval stage misses the correct belief entirely, no amount of reranking recovers it. The fix must happen at the primary retrieval signal, not downstream.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>MCP: the model has to decide to call it</h2>
+      <p>Hindsight relies on MCP for memory access. The model must decide to call the memory tool. If it does not recognize that it needs prior information, it does not ask. Your memory sits idle while the model hallucinates decisions you already made.</p>
+      <p>Tenure sits between your client and your provider as a proxy. Every request is enriched before it reaches the model. No tool call to trigger. No prompt engineering required. Your beliefs are in context on every single request, automatically.</p>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Full comparison</h2>
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenure</th>
+              <th>Hindsight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td>Mean retrieval precision</td>
+              <td><span class="check">1.00</span></td>
+              <td><span class="cross">0.06</span></td>
+            </tr>
+            <tr>
+              <td>Active retrieval passes</td>
+              <td><span class="check">43/43</span></td>
+              <td><span class="cross">0/43</span></td>
+            </tr>
+            <tr>
+              <td>Retrieval latency (p50)</td>
+              <td><span class="check">9.77ms</span></td>
+              <td><span class="cross">589.86ms</span></td>
+            </tr>
+            <tr>
+              <td>Session latency (mean)</td>
+              <td><span class="check">49.02ms</span></td>
+              <td><span class="cross">2,735.84ms</span></td>
+            </tr>
+            <tr>
+              <td>Session latency (p95)</td>
+              <td><span class="check">134.63ms</span></td>
+              <td><span class="cross">6,162.57ms</span></td>
+            </tr>
+            <tr>
+              <td>Drift score</td>
+              <td><span class="check">0.00</span></td>
+              <td><span class="cross">0.93</span></td>
+            </tr>
+            <tr>
+              <td>Ingestion (35 beliefs)</td>
+              <td><span class="check">1.0s</span></td>
+              <td>173.3s</td>
+            </tr>
+            <tr>
+              <td>Memory in context</td>
+              <td><span class="check">Every request (proxy)</span></td>
+              <td>Only when model calls MCP tool</td>
+            </tr>
+            <tr>
+              <td>RAM requirement</td>
+              <td>~512MB</td>
+              <td>3-4GB (BGE + cross-encoder)</td>
+            </tr>
+            <tr>
+              <td>Deployment</td>
+              <td><span class="check">Single container</span></td>
+              <td>Single container (heavy)</td>
+            </tr>
+            <tr>
+              <td>Scope isolation</td>
+              <td><span class="check">Hard filter</span></td>
+              <td><span class="cross">None</span></td>
+            </tr>
+            <tr>
+              <td>Per-turn injection audit</td>
+              <td><span class="check">Yes</span></td>
+              <td><span class="cross">No</span></td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>MIT</td>
+              <td>MIT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="methodology-note">
+        Hindsight evaluated against pinned Docker image digest <code>ghcr.io/vectorize-io/hindsight@sha256:f0f9e9a73d6a</code>. Full methodology: <a href="https://arxiv.org/abs/2605.11325">arXiv:2605.11325</a>. Dataset: <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="compare-cta">
+    <div class="container">
+      <h2>68x faster. Actually precise.</h2>
+      <p>No MCP tool call required. No reranker to wait on. No 6-second session turns. Thirty seconds to install.</p>
+      <div class="cta-buttons">
+        <a href="/#cta" class="btn-primary">Install Tenure</a>
+        <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

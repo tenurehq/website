@@ -1,0 +1,173 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs Agentmemory | AI Memory Comparison" description="Agentmemory's triple-stream retrieval achieves 0.17 precision with zero active passes. Tenure achieves 1.00 precision at 43/43.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>Tenure vs. Agentmemory</h1>
+    <p>Agentmemory is a zero-database memory runtime for coding agents. Triple-stream retrieval (BM25 + vector + knowledge graph). Zero active retrieval passes. Drift score: 0.81.</p>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <div class="tldr-box">
+        <h3>TL;DR</h3>
+        <ul>
+          <li>Triple-stream retrieval sounds impressive. It achieves 0.17 precision and zero active passes.</li>
+          <li>Recall of 0.97 confirms the pattern: everything comes back. Retrieval is not selectivity.</li>
+          <li>Drift score 0.81. Off-topic turns contaminate subsequent retrieval heavily.</li>
+          <li>MCP-only interface: the model decides when to fetch memory. Tenure injects automatically on every request.</li>
+          <li>No scope isolation. No supersession handling. No per-turn audit trail.</li>
+        </ul>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure precision</div>
+          <div class="metric-value good">1.00</div>
+          <div class="metric-context">43/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Agentmemory precision</div>
+          <div class="metric-value bad">0.17</div>
+          <div class="metric-context">0/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure latency</div>
+          <div class="metric-value good">9.77ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Agentmemory latency</div>
+          <div class="metric-value bad">82.28ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>More retrieval paths does not mean better precision</h2>
+      <p>Agentmemory combines BM25, vector search, and a knowledge graph into a triple-stream retrieval pipeline with on-device reranking. The architecture adds complexity at every stage. The result: 0.17 mean precision with zero active passes on 43 precision-assertion cases.</p>
+      <p>The three streams all share the same fundamental limitation: they cannot structurally exclude beliefs that are semantically proximate but irrelevant. Adding more retrieval paths with the same limitation compounds noise rather than improving precision.</p>
+
+      <div class="compare-verdict">
+        <p><strong>Tenure uses a single retrieval path (alias-weighted BM25 with hard scope isolation) and achieves 1.00 precision.</strong> The architectural difference is not "more paths" vs. "fewer paths." It is that Tenure's primary signal is orthogonal to semantic similarity: term matching over indexed aliases where the user coined the vocabulary. That signal is precise by construction in bounded vocabulary contexts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>MCP vs. proxy: when memory fires</h2>
+      <p>Agentmemory exposes memory through MCP tools (<code>memory_recall</code>, <code>memory_smart_search</code>). The model must decide to call them. In practice, models frequently do not recognize when they need prior context, especially on questions where the user assumes shared history.</p>
+      <p>Tenure operates as a proxy between your client and your provider. Memory is injected into every request automatically, before the model sees the prompt. No tool call to trigger. No prompt engineering. No silent failures where memory was available but never fetched.</p>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Full comparison</h2>
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenure</th>
+              <th>Agentmemory</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td>Mean retrieval precision</td>
+              <td><span class="check">1.00</span></td>
+              <td><span class="cross">0.17</span></td>
+            </tr>
+            <tr>
+              <td>Active retrieval passes</td>
+              <td><span class="check">43/43</span></td>
+              <td><span class="cross">0/43</span></td>
+            </tr>
+            <tr>
+              <td>Total passes (77 non-session)</td>
+              <td><span class="check">77/77</span></td>
+              <td>7/77</td>
+            </tr>
+            <tr>
+              <td>Retrieval latency (p50)</td>
+              <td><span class="check">9.77ms</span></td>
+              <td>82.28ms</td>
+            </tr>
+            <tr>
+              <td>Session latency (p50)</td>
+              <td><span class="check">47.79ms</span></td>
+              <td>98.49ms</td>
+            </tr>
+            <tr>
+              <td>Drift score</td>
+              <td><span class="check">0.00</span></td>
+              <td><span class="cross">0.81</span></td>
+            </tr>
+            <tr>
+              <td>Memory delivery</td>
+              <td><span class="check">Automatic (proxy)</span></td>
+              <td>MCP tool call (model decides)</td>
+            </tr>
+            <tr>
+              <td>Scope isolation</td>
+              <td><span class="check">Hard filter</span></td>
+              <td><span class="cross">Project tagging (soft)</span></td>
+            </tr>
+            <tr>
+              <td>Supersession</td>
+              <td><span class="check">Chain with audit trail</span></td>
+              <td><span class="cross">Decay scoring</span></td>
+            </tr>
+            <tr>
+              <td>Per-turn injection audit</td>
+              <td><span class="check">Yes</span></td>
+              <td><span class="cross">No</span></td>
+            </tr>
+            <tr>
+              <td>Works across every client</td>
+              <td><span class="check">Any OpenAI-compatible</span></td>
+              <td>MCP-capable agents only</td>
+            </tr>
+            <tr>
+              <td>Runs locally</td>
+              <td><span class="check">Always</span></td>
+              <td><span class="check">Always</span></td>
+            </tr>
+            <tr>
+              <td>External databases</td>
+              <td>None (single container)</td>
+              <td>None (single process)</td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>MIT</td>
+              <td>Apache-2.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="methodology-note">
+        Full methodology: <a href="https://arxiv.org/abs/2605.11325">arXiv:2605.11325</a>. Dataset: <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>. Live leaderboard: <a href="https://huggingface.co/spaces/tenurehq/precisionmembench">HuggingFace Spaces</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="compare-cta">
+    <div class="container">
+      <h2>Precise by construction. Not by luck.</h2>
+      <p>No MCP. No tool calls. Memory in context on every request. Zero config. Thirty seconds.</p>
+      <div class="cta-buttons">
+        <a href="/#cta" class="btn-primary">Install Tenure</a>
+        <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

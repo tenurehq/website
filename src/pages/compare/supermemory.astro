@@ -1,0 +1,173 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs Supermemory | AI Memory Comparison" description="Supermemory is the best-performing competitor at 0.43 precision and 17/43 active passes. Tenure achieves 1.00 with 43/43.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>Tenure vs. Supermemory</h1>
+    <p>Supermemory is the best-performing competitor in PrecisionMemBench. Memory graph with dynamic dreaming. Mean precision: 0.43. Still returns 2-3 irrelevant beliefs per correct one.</p>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <div class="tldr-box">
+        <h3>TL;DR</h3>
+        <ul>
+          <li>Best competitor precision at 0.43 (Tenure: 1.00). The only other system with any active retrieval passes.</li>
+          <li>17/43 active passes vs. Tenure's 43/43. Still fails on more than half of precision-assertion cases.</li>
+          <li>Retrieval latency: 819.48ms p50 vs. Tenure's 9.77ms (84x slower).</li>
+          <li>Session performance: 2/12 turns passed, drift score 0.17 (better than most, still not isolated).</li>
+          <li>Cloud-first SaaS. Requires account and API key. Data leaves your machine.</li>
+        </ul>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure precision</div>
+          <div class="metric-value good">1.00</div>
+          <div class="metric-context">43/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Supermemory precision</div>
+          <div class="metric-value bad">0.43</div>
+          <div class="metric-context">17/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure latency</div>
+          <div class="metric-value good">9.77ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Supermemory latency</div>
+          <div class="metric-value bad">819.48ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Credit where it's due</h2>
+      <p>Supermemory is architecturally more sophisticated than Mem0, Zep, or Hindsight. Its memory graph and dynamic dreaming mechanism provide better signal than raw cosine similarity. 17 active retrieval passes is meaningful; no other competitor scores above zero.</p>
+      <p>But 0.43 precision still means that for every correct belief returned, there are 1-2 irrelevant ones alongside it. On 26 of 43 precision-assertion cases, the system fails. The memory graph helps, but it does not resolve the fundamental problem: semantic proximity within a domain-specific corpus cannot be discriminated by any similarity-based mechanism.</p>
+
+      <div class="compare-verdict">
+        <p><strong>0.43 precision means your model still has to sort signal from noise on most queries.</strong> Every irrelevant belief in context is tokens you are paying for and latency you are waiting on. Tenure's structural approach (alias-weighted BM25 + hard scope isolation) does not degrade with corpus growth. It gets more precise as the alias set expands.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>Latency and deployment</h2>
+      <p>Supermemory's p50 retrieval latency of 819.48ms is 84x slower than Tenure's 9.77ms. Session-turn latency averages 867.83ms. This is the cost of running a memory graph traversal and dynamic dreaming pipeline on every query.</p>
+      <p>Supermemory is a cloud-first SaaS product. Your data leaves your machine. Tenure runs entirely on localhost. Nothing ever leaves your machine. No account required.</p>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Full comparison</h2>
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenure</th>
+              <th>Supermemory</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td>Mean retrieval precision</td>
+              <td><span class="check">1.00</span></td>
+              <td><span class="cross">0.43</span></td>
+            </tr>
+            <tr>
+              <td>Active retrieval passes</td>
+              <td><span class="check">43/43</span></td>
+              <td>17/43</td>
+            </tr>
+            <tr>
+              <td>Total passes (77 non-session)</td>
+              <td><span class="check">77/77</span></td>
+              <td>44/77</td>
+            </tr>
+            <tr>
+              <td>Session turns passed</td>
+              <td><span class="check">12/12</span></td>
+              <td>2/12</td>
+            </tr>
+            <tr>
+              <td>Retrieval latency (p50)</td>
+              <td><span class="check">9.77ms</span></td>
+              <td><span class="cross">819.48ms</span></td>
+            </tr>
+            <tr>
+              <td>Session latency (p50)</td>
+              <td><span class="check">47.79ms</span></td>
+              <td>867.83ms</td>
+            </tr>
+            <tr>
+              <td>Drift score</td>
+              <td><span class="check">0.00</span></td>
+              <td>0.17</td>
+            </tr>
+            <tr>
+              <td>Runs locally</td>
+              <td><span class="check">Always</span></td>
+              <td><span class="cross">Cloud SaaS</span></td>
+            </tr>
+            <tr>
+              <td>Account required</td>
+              <td><span class="check">No</span></td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Data leaves machine</td>
+              <td><span class="check">Never</span></td>
+              <td><span class="cross">Always (cloud)</span></td>
+            </tr>
+            <tr>
+              <td>Scope isolation</td>
+              <td><span class="check">Hard filter</span></td>
+              <td>Partial (graph-based)</td>
+            </tr>
+            <tr>
+              <td>Per-turn injection audit</td>
+              <td><span class="check">Yes</span></td>
+              <td><span class="cross">No</span></td>
+            </tr>
+            <tr>
+              <td>Pricing</td>
+              <td><span class="check">Free (MIT)</span></td>
+              <td>$19-$399+/mo</td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>MIT</td>
+              <td>Proprietary</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="methodology-note">
+        Full methodology: <a href="https://arxiv.org/abs/2605.11325">arXiv:2605.11325</a>. Dataset: <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>. Live leaderboard: <a href="https://huggingface.co/spaces/tenurehq/precisionmembench">HuggingFace Spaces</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="compare-cta">
+    <div class="container">
+      <h2>2.3x more precise. 84x faster. Free.</h2>
+      <p>No cloud. No account. No monthly bill. Thirty seconds to install. Runs on your machine forever.</p>
+      <div class="cta-buttons">
+        <a href="/#cta" class="btn-primary">Install Tenure</a>
+        <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

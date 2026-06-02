@@ -1,0 +1,193 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs Mem0 | AI Memory Comparison" description="Mem0 achieves 0.06 mean retrieval precision with zero active retrieval passes. Tenure achieves 1.00. Here's why.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>Tenure vs. Mem0</h1>
+    <p>Mem0 is a cloud-first memory SDK backed by Y Combinator. It extracts facts well, then retrieves them poorly. Mean precision: 0.06. Every query returns the entire store.</p>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <div class="tldr-box">
+        <h3>TL;DR</h3>
+        <ul>
+          <li>Mem0's extraction is architecturally correct. Its retrieval reintroduces the noise extraction was designed to eliminate.</li>
+          <li>Mean precision 0.06 means ~16 irrelevant beliefs returned per query alongside the correct one.</li>
+          <li>Zero active retrieval passes out of 43 cases that carry a precision assertion.</li>
+          <li>Recall of 0.99 is not a feature. Returning everything is not retrieval.</li>
+          <li>Ingestion cost: 114 seconds for 35 beliefs (mean 3,263ms per belief).</li>
+        </ul>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure precision</div>
+          <div class="metric-value good">1.00</div>
+          <div class="metric-context">43/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Mem0 precision</div>
+          <div class="metric-value bad">0.06</div>
+          <div class="metric-context">0/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure drift</div>
+          <div class="metric-value good">0.00</div>
+          <div class="metric-context">Perfect isolation</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Mem0 drift</div>
+          <div class="metric-value bad">0.94</div>
+          <div class="metric-context">Near-total contamination</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>The architectural problem</h2>
+      <p>Mem0 commits to write-time extraction: facts are extracted from conversation turns and stored as natural language strings rather than raw transcripts. This is architecturally correct.</p>
+      <p>Mem0 then retrieves at read time using embedding similarity, which reintroduces the noise that structured extraction was designed to eliminate. A query about Redis returns the Redis belief alongside beliefs about MongoDB, TypeScript, Fastify, Kubernetes, and GitHub Actions, with cosine scores between 0.65 and 0.83. The scores reflect genuine semantic relatedness. They are measuring the wrong thing.</p>
+
+      <div class="compare-verdict">
+        <p><strong>The failure is structural, not parametric.</strong> A more capable embedding model cannot eliminate genuine semantic proximity within a domain-specific corpus. Tested across a 20x range in embedding model scale: precision stays at 0.09 regardless. The fix is not a better ruler. It is a different measurement instrument.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>Concrete failure: the relation-type case</h2>
+      <p>A relation-type belief (<code>b-auth-depends-redis</code>) was ingested with full content. Mem0's extraction produced a faithful, high-quality stored memory preserving every operationally significant fact.</p>
+      <p>Query: <em>"what are the auth service dependencies and failure modes?"</em></p>
+      <p>Mem0 returns <code>b-auth-depends-redis</code> correctly, then returns <code>b-linting-v0</code>, <code>b-react-expertise</code>, <code>b-vitest-pref</code>, <code>b-comm-pushback</code>, and <code>b-sqlalchemy-superseded</code>. The structurally necessary participant (<code>b-redis-code</code>) is absent entirely.</p>
+      <p><strong>Retrieval precision: 0.056.</strong> Not caused by poor extraction. The stored memory text is accurate and complete.</p>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Session-level noise isolation</h2>
+      <p>After 8 consecutive off-topic drift turns, Mem0 produces a drift score of 1.0 on the implicit re-entry turn and 1.0 on the explicit re-entry turn. Every retrieved belief originates from drift-turn topics. The correct belief about the original topic is gone.</p>
+      <p>Session-turn latency: 377.93ms p50 (4.8x degradation over single-turn baseline of 78.81ms).</p>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>Full comparison</h2>
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenure</th>
+              <th>Mem0</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td>Mean retrieval precision</td>
+              <td><span class="check">1.00</span></td>
+              <td><span class="cross">0.06</span></td>
+            </tr>
+            <tr>
+              <td>Active retrieval passes</td>
+              <td><span class="check">43/43</span></td>
+              <td><span class="cross">0/43</span></td>
+            </tr>
+            <tr>
+              <td>Total passes (89 cases)</td>
+              <td><span class="check">89/89</span></td>
+              <td><span class="cross">9/89</span></td>
+            </tr>
+            <tr>
+              <td>Mean recall</td>
+              <td>1.00</td>
+              <td>0.99</td>
+            </tr>
+            <tr>
+              <td>Retrieval latency (p50)</td>
+              <td><span class="check">9.77ms</span></td>
+              <td>64.94ms</td>
+            </tr>
+            <tr>
+              <td>Session latency (p50)</td>
+              <td><span class="check">47.79ms</span></td>
+              <td>377.93ms</td>
+            </tr>
+            <tr>
+              <td>Drift score (re-entry)</td>
+              <td><span class="check">0.00</span></td>
+              <td><span class="cross">0.94</span></td>
+            </tr>
+            <tr>
+              <td>Ingestion (35 beliefs)</td>
+              <td>1.0s</td>
+              <td>114.2s</td>
+            </tr>
+            <tr>
+              <td>Runs locally</td>
+              <td><span class="check">Yes, always</span></td>
+              <td>Optional (self-host available)</td>
+            </tr>
+            <tr>
+              <td>Account required</td>
+              <td><span class="check">No</span></td>
+              <td>Yes (API key)</td>
+            </tr>
+            <tr>
+              <td>Scope isolation</td>
+              <td><span class="check">Hard filter</span></td>
+              <td><span class="cross">None</span></td>
+            </tr>
+            <tr>
+              <td>Supersession handling</td>
+              <td><span class="check">Chain with audit</span></td>
+              <td><span class="cross">Overwrite</span></td>
+            </tr>
+            <tr>
+              <td>Per-turn injection audit</td>
+              <td><span class="check">Yes</span></td>
+              <td><span class="cross">No</span></td>
+            </tr>
+            <tr>
+              <td>Works across every client</td>
+              <td><span class="check">Proxy layer, any client</span></td>
+              <td>SDK integration per client</td>
+            </tr>
+            <tr>
+              <td>Memory in context every request</td>
+              <td><span class="check">Always (proxy)</span></td>
+              <td>Only if code calls search()</td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>MIT</td>
+              <td>Apache-2.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="methodology-note">
+        Mem0 evaluated against pinned Docker image digest <code>memohq/mem0@sha256:276964b172d2</code>. Extraction and retrieval used Claude Sonnet 4.6, a more capable model than Mem0 uses in its own published evaluations. Full methodology: <a href="https://arxiv.org/abs/2605.11325">arXiv:2605.11325</a>. Dataset: <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="compare-cta">
+    <div class="container">
+      <h2>Stop paying the noise tax</h2>
+      <p>Thirty seconds to install. First session already better. No account. No cloud. No noise.</p>
+      <div class="cta-buttons">
+        <a href="/#cta" class="btn-primary">Install Tenure</a>
+        <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

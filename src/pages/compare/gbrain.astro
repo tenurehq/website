@@ -1,0 +1,286 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs GBrain | AI Memory Comparison" description="GBrain's hybrid retrieval achieves 0.14 precision with 5 active passes. Tenure achieves 1.00 with 43/43. Different tools, different problems.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>Tenure vs. GBrain</h1>
+    <p class="hero-rag-line">
+         Precision 1.0 vs 0.14. Default behavior, no flags.
+        </p>
+    <p class="hero-sub">GBrain is Garry Tan's opinionated agent brain for OpenClaw and Hermes deployments. A full knowledge management system. Different scope than Tenure, but overlapping retrieval claims.</p>
+    <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value good">9.77ms</span>
+            <span class="hero-stat-label">Retrieval latency</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">543.84ms</span>
+            <span class="hero-stat-label">Retrieval latency</span>
+          </div>
+  </section>
+
+  <section class="compare-section" id="tldr">
+    <div class="container">
+      <div class="tldr-box">
+        <h3>TL;DR</h3>
+        <ul>
+          <li>GBrain is a knowledge management system (146K+ pages, entity graph, synthesis layer). Tenure is a memory proxy for LLM sessions.</li>
+          <li>Where they overlap (retrieval precision for memory): GBrain scores 0.14 mean precision, 5/43 active passes.</li>
+          <li>GBrain's uncapped hybrid retrieval (~20 results default) produces the noise floor. Adaptive-return mode helps but fails on migrated/noisy cases.</li>
+          <li>GBrain requires an agent platform (OpenClaw/Hermes) and significant setup. Tenure: one container, thirty seconds.</li>
+          <li>GBrain excels at synthesis and gap analysis across large corpora. Tenure excels at precise, low-latency belief injection for coding sessions.</li>
+        </ul>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure precision</div>
+          <div class="metric-value good">1.00</div>
+          <div class="metric-context">43/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">GBrain precision</div>
+          <div class="metric-value bad">0.14</div>
+          <div class="metric-context">5/43 active passes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure latency</div>
+          <div class="metric-value good">9.77ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">GBrain latency</div>
+          <div class="metric-value bad">543.84ms</div>
+          <div class="metric-context">p50 retrieval</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+  <div class="container">
+    <h2>GBrain's own assessment</h2>
+    <p>GBrain ran PrecisionMemBench independently using Tenure's MIT-licensed scorer, vendored byte-for-byte. Their published results confirm the default precision problem and identify Tenure's architecture as the solution.</p>
+
+    <div class="compare-verdict">
+      <p><strong>From GBrain's own benchmark report:</strong> "gbrain's default retrieval scores 0.076 — right in the mem0/zep/vector cluster. Top-K hybrid returns ~20 results, recall is 0.99, and precision collapses. That is the benchmark working as designed: it punishes returning a pile and letting a downstream model sort it out."</p>
+    </div>
+
+    <p>GBrain built an opt-in adaptive return-sizing feature directly from PrecisionMemBench results. With aggressive settings (entity-max=1, other-max=1), it reaches 0.582 precision and 29/43 active passes, the strongest competitor result on the benchmark.</p>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">Tenure</div>
+        <div class="metric-value good">1.00</div>
+        <div class="metric-context">43/43 · default behavior</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">GBrain adaptive (tight)</div>
+        <div class="metric-value bad">0.58</div>
+        <div class="metric-context">29/43 · opt-in, default OFF</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">GBrain default</div>
+        <div class="metric-value bad">0.08</div>
+        <div class="metric-context">0/43 · out of box</div>
+      </div>
+    </div>
+
+    <p>The adaptive feature is <strong>default-off</strong>. The 0.076 default is what users get without knowing about the flag. GBrain's own internal design document proposes adopting a "tiered belief-state contract (tenure)" as the structural fix, calling it the "biggest single precision lever, mostly architecture not model."</p>
+  </div>
+</section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Different tools, overlapping claims</h2>
+      <p>GBrain and Tenure solve different primary problems. GBrain is a full knowledge management system: 146K+ pages, entity graph, synthesis with citations, gap analysis, autonomous enrichment cron jobs. It is designed to be an institutional brain operated by an AI agent.</p>
+      <p>Tenure is a memory proxy for LLM sessions. It learns from your conversations and injects what it knows on every request. One container. Sub-15ms. The narrower scope is intentional: do one thing with precision 1.0 rather than many things at 0.14.</p>
+
+      <div class="compare-verdict">
+        <p><strong>Where they overlap is retrieval precision for structured beliefs.</strong> GBrain's hybrid retrieval (vector + BM25 + RRF + reranker) returns ~20 results by default. The uncapped return set is the precision killer. GBrain's own internal analysis identifies this problem and proposes adopting a tenure-style tiered belief-state contract as the solution.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>The uncapped retrieval problem</h2>
+      <p>GBrain's default retrieval returns approximately 20 results per query. This is the "query your database vs. filter in application code" distinction. When retrieval returns 20 candidates for a query that has 1 correct answer, precision is 0.05 before the synthesis layer even runs.</p>
+      <p>GBrain's <code>--adaptive-return</code> mode (v0.41.33) tightens the result set, but tight only helps if the top result is correct. On noisy or migrated cases, it makes a wrong answer more confident by hiding the alternatives.</p>
+      <p>Tenure does not have this problem because retrieval is structurally precise: alias-weighted BM25 against indexed short fields with hard scope filtering. The correct belief is the only candidate. There is no ranking to get wrong.</p>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>When to use which</h2>
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Use case</th>
+              <th>Better fit</th>
+              <th>Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cross-session memory for coding</td>
+              <td><span class="check">Tenure</span></td>
+              <td>Precision 1.0, sub-15ms, zero config</td>
+            </tr>
+            <tr>
+              <td>Large knowledge base with synthesis</td>
+              <td>GBrain</td>
+              <td>146K+ pages, gap analysis, citations</td>
+            </tr>
+            <tr>
+              <td>Multi-client shared memory</td>
+              <td><span class="check">Tenure</span></td>
+              <td>Proxy layer, any OpenAI-compatible client</td>
+            </tr>
+            <tr>
+              <td>Autonomous agent with cron jobs</td>
+              <td>GBrain</td>
+              <td>Dream cycle, enrichment, 43 skills</td>
+            </tr>
+            <tr>
+              <td>Privacy-first, fully local</td>
+              <td><span class="check">Tenure</span></td>
+              <td>Single container, no cloud, no agent platform</td>
+            </tr>
+            <tr>
+              <td>Team/company institutional memory</td>
+              <td>GBrain</td>
+              <td>Multi-user scoping, schema packs, federation</td>
+            </tr>
+            <tr>
+              <td>Mobile aha-moment capture</td>
+              <td><span class="check">Tenure</span></td>
+              <td>OpenClaw/WhatsApp into same belief store</td>
+            </tr>
+            <tr>
+              <td>Meeting prep and entity research</td>
+              <td>GBrain</td>
+              <td>Graph traversal, find_trajectory, synthesis</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+  <div class="container">
+    <h2>The "narrow-win" counterargument</h2>
+    <p>GBrain's benchmark report makes a fair point: PrecisionMemBench measures one property (return the exact right belief ID and nothing else) against a 35-belief store. Their position is that general-purpose agentic memory needs recall, temporal reasoning, contradiction handling, and synthesis across thousands of pages. A system tuned to top this test would be "actively worse at most of that."</p>
+
+    <div class="compare-verdict">
+      <p><strong>This is correct, and it is why Tenure and GBrain solve different problems.</strong> Tenure is not a knowledge management system. It is a session memory proxy. For that use case, the 35-belief scale is representative: a typical developer accumulates 30-80 active beliefs per project. Precision 1.0 at that scale means zero noise in your coding session. The "narrow win" is the entire product.</p>
+    </div>
+
+    <p>If you need a 146K-page institutional brain with synthesis, graph traversal, and autonomous enrichment, GBrain is designed for that. If you need your IDE to know what you decided yesterday without re-explaining it, and you need that memory to be precise enough that it never injects the wrong context, that is Tenure.</p>
+  </div>
+</section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>Full retrieval comparison</h2>
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenure</th>
+              <th>GBrain</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td>Mean retrieval precision</td>
+              <td><span class="check">1.00</span></td>
+              <td><span class="cross">0.14</span></td>
+            </tr>
+            <tr>
+              <td>Active retrieval passes</td>
+              <td><span class="check">43/43</span></td>
+              <td>5/43</td>
+            </tr>
+            <tr>
+              <td>Total passes (77 non-session)</td>
+              <td><span class="check">77/77</span></td>
+              <td>34/77</td>
+            </tr>
+            <tr>
+              <td>Retrieval latency (p50)</td>
+              <td><span class="check">9.77ms</span></td>
+              <td>543.84ms</td>
+            </tr>
+            <tr>
+              <td>Ingestion (35 beliefs)</td>
+              <td><span class="check">1.0s</span></td>
+              <td>28.6s</td>
+            </tr>
+            <tr>
+              <td>Memory delivery</td>
+              <td>Automatic (proxy)</td>
+              <td>MCP / agent-initiated</td>
+            </tr>
+            <tr>
+              <td>Setup time</td>
+              <td><span class="check">30 seconds</span></td>
+              <td>~30 minutes (with agent)</td>
+            </tr>
+            <tr>
+              <td>Requires agent platform</td>
+              <td><span class="check">No</span></td>
+              <td>Yes (OpenClaw/Hermes/Claude Code)</td>
+            </tr>
+            <tr>
+              <td>Scope isolation</td>
+              <td><span class="check">Hard filter</span></td>
+              <td>Source-based separation</td>
+            </tr>
+            <tr>
+              <td>Supersession</td>
+              <td><span class="check">Chain with audit</span></td>
+              <td><span class="cross">None native</span></td>
+            </tr>
+            <tr>
+              <td>Knowledge graph</td>
+              <td>Not applicable (belief store)</td>
+              <td><span class="check">Self-wiring entity graph</span></td>
+            </tr>
+            <tr>
+              <td>Synthesis layer</td>
+              <td>Not applicable (injection only)</td>
+              <td><span class="check">Cited prose + gap analysis</span></td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>MIT</td>
+              <td>MIT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="methodology-note">
+        GBrain results from PrecisionMemBench evaluation. Full methodology: <a href="https://arxiv.org/abs/2605.11325">arXiv:2605.11325</a>. Dataset: <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>. GBrain source: <a href="https://github.com/garrytan/gbrain">github.com/garrytan/gbrain</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="compare-cta">
+    <div class="container">
+      <h2>Need precise memory, not a knowledge base?</h2>
+      <p>One container. Sub-15ms. Precision 1.0. No agent platform required. Thirty seconds to install.</p>
+      <div class="cta-buttons">
+        <a href="/#cta" class="btn-primary">Install Tenure</a>
+        <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

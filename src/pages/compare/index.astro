@@ -1,0 +1,76 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs. AI Memory Tools | Comparison" description="How Tenure compares to Mem0, Zep, Hindsight, Supermemory, Agentmemory, and GBrain on retrieval precision, latency, and noise isolation.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>How Tenure compares</h1>
+    <p>Reproducible benchmark results from PrecisionMemBench. 89 cases measuring retrieval precision independently of any generative model. Run it yourself on <a href="https://huggingface.co/datasets/tenurehq/precisionmembench" style="color: var(--accent);">HuggingFace</a>.</p>
+  </section>
+
+  <section class="compare-section">
+    <div class="container-wide">
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure precision</div>
+          <div class="metric-value good">1.00</div>
+          <div class="metric-context">89/89 cases passed</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Best competitor</div>
+          <div class="metric-value bad">0.43</div>
+          <div class="metric-context">Supermemory — 44/77 non-session</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Median competitor</div>
+          <div class="metric-value bad">0.06</div>
+          <div class="metric-context">10-18 irrelevant beliefs per query</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure latency</div>
+          <div class="metric-value good">&lt;15ms</div>
+          <div class="metric-context">p50: 9.77ms</div>
+        </div>
+      </div>
+
+      <h2>Choose a comparison</h2>
+      <div class="compare-hub-grid">
+        <a href="/compare/mem0" class="compare-hub-card">
+          <h3>Tenure vs. Mem0</h3>
+          <div class="hub-precision">Precision: 0.06 · Active passes: 0/43</div>
+          <p>Cloud-first memory SDK. Good extraction, broken retrieval. Recall of 0.99 means everything comes back, including 16 irrelevant beliefs per query.</p>
+        </a>
+        <a href="/compare/zep" class="compare-hub-card">
+          <h3>Tenure vs. Zep</h3>
+          <div class="hub-precision">Precision: 0.09 · Active passes: 0/43</div>
+          <p>Temporal knowledge graph. 897-second ingestion across 35 beliefs. Multi-container deployment. Drift score 0.89 on re-entry turns.</p>
+        </a>
+        <a href="/compare/hindsight" class="compare-hub-card">
+          <h3>Tenure vs. Hindsight</h3>
+          <div class="hub-precision">Precision: 0.06 · Active passes: 0/43</div>
+          <p>MCP-based agent memory from Vectorize. Cross-encoder reranker adds 672ms mean latency without improving precision. Drift score: 0.93.</p>
+        </a>
+        <a href="/compare/supermemory" class="compare-hub-card">
+          <h3>Tenure vs. Supermemory</h3>
+          <div class="hub-precision">Precision: 0.43 · Active passes: 17/43</div>
+          <p>The best-performing competitor. Memory graph with dynamic dreaming. Still returns 2-3 irrelevant beliefs per correct one on average.</p>
+        </a>
+        <a href="/compare/agentmemory" class="compare-hub-card">
+          <h3>Tenure vs. Agentmemory</h3>
+          <div class="hub-precision">Precision: 0.17 · Active passes: 0/43</div>
+          <p>Zero-database memory runtime for coding agents. Triple-stream retrieval (BM25 + vector + graph). High recall, low precision. Drift score: 0.81.</p>
+        </a>
+        <a href="/compare/gbrain" class="compare-hub-card">
+          <h3>Tenure vs. GBrain</h3>
+          <div class="hub-precision">Precision: 0.14 · Active passes: 5/43</div>
+          <p>Garry Tan's opinionated agent brain. Hybrid search + knowledge graph + synthesis layer. Precision limited by uncapped retrieval default.</p>
+        </a>
+      </div>
+
+      <p class="methodology-note">
+        All results from <a href="https://arxiv.org/abs/2605.11325">PrecisionMemBench (arXiv:2605.11325)</a>. Dataset on <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>. Live leaderboard on <a href="https://huggingface.co/spaces/tenurehq/precisionmembench">HuggingFace Spaces</a>. Run it yourself: <code style="color: var(--accent);">npm run test:eval</code>
+      </p>
+    </div>
+  </section>
+</Layout>
