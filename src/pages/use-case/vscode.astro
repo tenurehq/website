@@ -1,0 +1,606 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure for VS Code — AI Memory That Follows You Into Your IDE"
+  description="Tenure registers as a native LLM provider inside VS Code. Bring your own API key. Every decision you made in any chat client is already there when you open a file. No copy-paste. No re-explanation."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Tenure for VS Code",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "url": "https://tenureai.dev/use-cases/vscode",
+  "downloadUrl": "https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode",
+  "description": "Persistent AI memory as a native VS Code LLM provider. Beliefs captured across every chat client are available in your IDE automatically.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<section class="uc-hero">
+  <div class="container" style="text-align:center;">
+    <div class="uc-breadcrumb">
+      <a href="/use-cases">Use cases</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>VS Code</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Use case</span>
+    <h1>You thought it through in chat.<br/>Your IDE already knows.</h1>
+    <p class="hero-sub">
+      Tenure registers as a native LLM provider inside VS Code.
+      Decisions made in OpenWebUI, LibreChat, or any chat client
+      are injected automatically the moment you open a file — with no
+      copy-paste, no priming, no step in between.
+    </p>
+    <div class="uc-hero-ctas">
+      <a href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode" class="btn-primary" target="_blank" rel="noopener">
+        Install from Marketplace →
+      </a>
+      <a href="https://open-vsx.org/extension/tenureai/tenure-vscode" class="btn-secondary" target="_blank" rel="noopener">
+        Open VSX (Windsurf / Cursor)
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE WORKFLOW ── -->
+<section class="uc-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">The workflow</span>
+    <h2>From thinking to building without the gap in between.</h2>
+    <p>You spend an hour in a chat client thinking through an architecture problem. You explore options, rule some out, land on a direction. Then you open VS Code to start building.</p>
+    <p>Tenure is already there. It knows what you decided, what you rejected, and why. You don't re-explain anything. You just build.</p>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <h3>Brainstorm in chat</h3>
+        <p>OpenWebUI, LibreChat, or any OpenAI-compatible client. Say: "Redis for sessions, TTL-based expiry, skip Postgres." Tenure extracts it quietly.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <h3>Open VS Code</h3>
+        <p>The extension pushes your project scope the moment you switch files. Tenure resolves which beliefs belong to this project before your first message is sent.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <h3>Just build</h3>
+        <p>Every AI request is enriched before it reaches the model. Your stack, your decisions, your rejected alternatives — all in context. No prompt engineering required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VSCODE MOCKUP ── -->
+<section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container-wide">
+    <div style="padding: 0 0 2rem;">
+      <span class="label">Beliefs panel</span>
+      <h2>Your beliefs. Right in the sidebar.</h2>
+      <p>The Tenure side panel shows you exactly what the model knows, per file and globally, directly inside VS Code. Click any belief to see every turn it was injected and the exact query that surfaced it.</p>
+    </div>
+
+    <div class="vscode-mockup">
+      <div class="vscode-titlebar">
+        <span class="term-dot term-dot-red"></span>
+        <span class="term-dot term-dot-yellow"></span>
+        <span class="term-dot term-dot-green"></span>
+        <div class="vscode-tabs" style="margin-left: 1rem">
+          <div class="vscode-tab active">userRepository.ts</div>
+          <div class="vscode-tab">authService.ts</div>
+          <div class="vscode-tab">README.md</div>
+        </div>
+      </div>
+
+      <div class="vscode-body">
+        <div class="vscode-editor">
+          <div>
+            <span class="vscode-line-num">1</span><span class="code-kw">import</span><span class="code-punct"> &#123; </span><span class="code-type">Db</span><span class="code-punct">, </span><span class="code-type">ObjectId</span><span class="code-punct"> &#125; </span><span class="code-kw">from</span><span class="code-str"> 'mongodb'</span>
+          </div>
+          <div>
+            <span class="vscode-line-num">2</span><span class="code-comment">// Tenure knows: MongoDB raw driver, no ORM</span>
+          </div>
+          <div><span class="vscode-line-num">3</span></div>
+          <div>
+            <span class="vscode-line-num">4</span><span class="code-kw">export function</span><span class="code-fn"> makeUserRepository</span><span class="code-punct">(</span><span class="code-type">db</span><span class="code-punct">: </span><span class="code-type">Db</span><span class="code-punct">) &#123;</span>
+          </div>
+          <div>
+            <span class="vscode-line-num">5</span><span style="margin-left:1.5rem"></span><span class="code-kw">const</span><span class="code-type"> col</span><span class="code-punct"> = </span><span class="code-type">db</span><span class="code-punct">.</span><span class="code-fn">collection</span><span class="code-punct">(</span><span class="code-str">"users"</span><span class="code-punct">)</span>
+          </div>
+          <div>
+            <span class="vscode-line-num">6</span><span style="margin-left:1.5rem"></span><span class="code-kw">return</span><span class="code-punct"> &#123;</span>
+          </div>
+          <div>
+            <span class="vscode-line-num">7</span><span style="margin-left:3rem"></span><span class="code-kw">async</span><span class="code-fn"> findById</span><span class="code-punct">(</span><span class="code-type">id</span><span class="code-punct">, </span><span class="code-type">ctx</span><span class="code-punct">) &#123; ... &#125;</span>
+          </div>
+          <div>
+            <span class="vscode-line-num">8</span><span style="margin-left:1.5rem"></span><span class="code-punct">&#125;</span>
+          </div>
+          <div>
+            <span class="vscode-line-num">9</span><span class="code-punct">&#125;</span>
+          </div>
+        </div>
+
+        <div class="vscode-panel-side">
+          <div class="panel-header">
+            <span>Tenure Beliefs</span>
+            <span class="panel-header-badge">9 active</span>
+          </div>
+
+          <div class="panel-section">
+            <div class="panel-section-label">&#128196; This file — userRepository.ts</div>
+            <div class="belief-item">
+              <span class="belief-type type-decision">decision</span>
+              <span class="belief-text">MongoDB raw driver — no Mongoose</span>
+            </div>
+            <div class="belief-item">
+              <span class="belief-type type-preference">preference</span>
+              <span class="belief-text">Factory functions over classes</span>
+            </div>
+            <div class="belief-item">
+              <span class="belief-type type-entity">entity</span>
+              <span class="belief-text">users collection → ObjectId</span>
+            </div>
+          </div>
+
+          <div class="panel-global">
+            <div class="panel-section-label">&#127760; Global — project beliefs</div>
+            <div class="belief-item">
+              <span class="belief-type type-preference">preference</span>
+              <span class="belief-text">TypeScript strict mode</span>
+            </div>
+            <div class="belief-item">
+              <span class="belief-type type-decision">decision</span>
+              <span class="belief-text">Fastify over Express</span>
+            </div>
+            <div class="belief-item">
+              <span class="belief-type type-decision">decision</span>
+              <span class="belief-text">Vitest — Jest ruled out</span>
+            </div>
+            <div class="belief-item">
+              <span class="belief-type type-entity">entity</span>
+              <span class="belief-text">auth service → Redis session store</span>
+            </div>
+            <div class="belief-item">
+              <span class="belief-type type-preference">preference</span>
+              <span class="belief-text">No ORMs. No magic.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.8rem; color:var(--dim); margin-top:1.25rem; text-align:center;">
+      ● Click any belief to see every turn it was injected. ● The exact query that surfaced it is persisted alongside it. ● Edit, pin, or delete directly from the panel. ● Per-file and global beliefs stay scoped — project A never bleeds into project B.
+    </p>
+  </div>
+</section>
+
+<!-- ── HOW IT'S REGISTERED ── -->
+<section class="uc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Provider-level integration</span>
+    <h2>Registered as your LLM provider. Not a wrapper.</h2>
+    <p>Tenure doesn't sit on top of Copilot or intercept keystrokes. It registers at the provider level — the same place you'd set an OpenAI or Anthropic endpoint. Your existing tools route through it automatically.</p>
+
+    <div class="uc-feature-grid">
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">⚡</div>
+        <h3>BYOK</h3>
+        <p>Anthropic, OpenAI, or any OpenAI-compatible endpoint. Your key goes into VS Code's native secret store, not a config file. Zero plaintext keys floating around.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🔁</div>
+        <h3>Automatic scope sync</h3>
+        <p>On every file switch, the extension pushes your current workspace context — project name, active file, language — so Tenure resolves the right project scope before your first message is sent. Critical in monorepos.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🧠</div>
+        <h3>Works with every client inside VS Code</h3>
+        <p>Continue, Cline, Windsurf — any client where you control the base URL. Point it at <code>localhost:5757/v1</code> and it routes through Tenure automatically. No configuration per-client.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">📋</div>
+        <h3>Record beliefs from selection</h3>
+        <p>Highlight any code or comment and run <strong>Tenure: Record Belief from Selection</strong> from the command palette. The belief is scoped to the active project instantly.</p>
+      </div>
+    </div>
+
+    <!-- Commands table -->
+    <h3 style="margin-top:3rem; margin-bottom:1rem; color:var(--text);">Commands</h3>
+    <div class="compare-table-section">
+      <table class="compare-table-full">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Tenure: Set API Token</code></td>
+            <td>Store your Tenure token securely in VS Code's secret store</td>
+          </tr>
+          <tr>
+            <td><code>Tenure: Sync Workspace State</code></td>
+            <td>Manually push current project scope to Tenure</td>
+          </tr>
+          <tr>
+            <td><code>Tenure: Open Beliefs Dashboard</code></td>
+            <td>Open <code>localhost:5757/beliefs</code> in your browser</td>
+          </tr>
+          <tr>
+            <td><code>Tenure: Record Project Belief</code></td>
+            <td>Record a belief directly from the command palette</td>
+          </tr>
+          <tr>
+            <td><code>Tenure: Record Belief from Selection</code></td>
+            <td>Record a belief from selected code or text</td>
+          </tr>
+          <tr>
+            <td><code>Tenure: Create .tenure File</code></td>
+            <td>Scaffold a <code>.tenure</code> file with your resolved project name</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── DRIFT PROBLEM ── -->
+<section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">The drift problem</span>
+    <h2>It also fixes the way coding sessions break.</h2>
+    <p>Beyond cross-interface continuity, Tenure fixes the way AI coding sessions drift in practice — not dramatically, but through accumulation. A script gets renamed. A config file moves. A rule you wrote for Cline never makes it into Windsurf. The agent doesn't know any of this.</p>
+
+    <div class="uc-drift-grid">
+      <div class="uc-drift-card uc-drift-bad">
+        <div class="uc-drift-header">
+          <span class="uc-drift-icon">✗</span>
+          <h3>AGENTS.md / shared context files</h3>
+        </div>
+        <p>Works until it drifts. Stale paths, renamed scripts, instructions nobody updated after a refactor. The more it tries to duplicate what's already in your config, the more it becomes a liability.</p>
+        <div class="uc-drift-note">Anything that <em>copies</em> information already in your code will go stale. Anything that <em>points to</em> that information tends to stay correct.</div>
+      </div>
+      <div class="uc-drift-card uc-drift-good">
+        <div class="uc-drift-header">
+          <span class="uc-drift-icon good">✓</span>
+          <h3>Tenure</h3>
+        </div>
+        <p>Doesn't duplicate. Learns. When you change a decision, the old belief is superseded — never deleted, never injected again. The correct belief surfaces automatically. Your stack description is never wrong.</p>
+        <div class="uc-drift-note">Superseded beliefs are retained for audit. They never inject again. <code>!extract off</code> pauses learning for a session. Your existing memory still works.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SETUP ── -->
+<section class="uc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Setup</span>
+    <h2>Four steps. Then nothing.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">01</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Install Tenure</div>
+          <h3>Docker container. Thirty seconds.</h3>
+          <div class="terminal" style="max-width:520px; margin-top:1rem;">
+            <div class="terminal-bar">
+              <span class="term-dot term-dot-red"></span>
+              <span class="term-dot term-dot-yellow"></span>
+              <span class="term-dot term-dot-green"></span>
+              <span class="terminal-title">macOS / Linux</span>
+            </div>
+            <div class="terminal-body">
+              <div><span class="t-prompt">$</span> <span class="t-cmd">docker run --rm -v "$HOME/.tenure:/app/.tenure" \</span></div>
+              <div><span class="t-dim">&nbsp;&nbsp;tenureai/tenure:latest init</span></div>
+              <div><span class="t-prompt">$</span> <span class="t-cmd">docker run -d -v "$HOME/.tenure:/app/.tenure" \</span></div>
+              <div><span class="t-dim">&nbsp;&nbsp;-p 5757:5757 tenureai/tenure:latest</span></div>
+              <div>&nbsp;</div>
+              <div><span class="t-ok">✓</span> <span class="t-muted">Token saved to ~/.tenure/token</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">02</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Install the extension</div>
+          <h3>One click from the Marketplace.</h3>
+          <p>Search for <strong>Tenure</strong> in the VS Code Extensions panel, or install directly from the Marketplace. Works in VS Code, Windsurf, and any VS Code fork via Open VSX.</p>
+          <div style="margin-top:1rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <a href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode" class="btn-primary" target="_blank" rel="noopener" style="font-size:0.85rem;">VS Code Marketplace →</a>
+            <a href="https://open-vsx.org/extension/tenureai/tenure-vscode" class="btn-secondary" target="_blank" rel="noopener" style="font-size:0.85rem;">Open VSX</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">03</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Set your token</div>
+          <h3>Command palette → Tenure: Set API Token.</h3>
+          <p>Paste your token from <code>~/.tenure/token</code>. It goes into VS Code's native secret store. No config files. No environment variables left in plain text.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">04</div>
+        </div>
+        <div>
+          <div class="step-label">Point your client</div>
+          <h3>Base URL: <code>http://localhost:5757/v1</code>. That's it.</h3>
+          <p>Set this in Continue, Cline, Windsurf, or any OpenAI-compatible client inside VS Code. The extension handles scope sync on every file switch. Memory is active.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="uc-section" style="text-align:center;">
+  <div class="container">
+    <span class="label">Get started</span>
+    <h2>Stop re-explaining your stack.</h2>
+    <p style="max-width:520px; margin:0 auto 2rem;">Thirty seconds to install. First session already better. Turn injection on when you're ready, not before.</p>
+    <div class="uc-hero-ctas" style="justify-content:center;">
+      <a href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode" class="btn-primary" target="_blank" rel="noopener">
+        Install for VS Code →
+      </a>
+      <a href="/docs" class="btn-secondary">Read the docs</a>
+    </div>
+    <p style="font-size:0.8rem; color:var(--dim); margin-top:1.5rem;">Requires Docker · MIT licensed · Fully local · No account needed</p>
+  </div>
+</section>
+
+<style>
+.uc-hero {
+  padding: 6rem 2rem 4rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(0,168,173,0.04) 0%, var(--bg) 100%);
+}
+
+.uc-breadcrumb {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.uc-breadcrumb a { color: var(--accent); }
+.uc-breadcrumb-sep { color: var(--border2); }
+
+.uc-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--accent2); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+.uc-section { padding: 5rem 2rem; }
+
+/* Flow grid */
+.flow-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 1rem;
+  align-items: start;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .flow-grid { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); justify-self: center; }
+}
+
+.flow-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+}
+
+.flow-step-num {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.flow-step h3 { color: var(--text); margin-bottom: 0.5rem; }
+.flow-step p { font-size: 0.875rem; margin: 0; }
+
+.flow-arrow {
+  font-size: 1.25rem;
+  color: var(--border2);
+  align-self: center;
+  padding: 0 0.25rem;
+}
+
+/* Feature grid */
+.uc-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 680px) { .uc-feature-grid { grid-template-columns: 1fr; } }
+
+.uc-feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.uc-feature-icon {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.uc-feature-card h3 { color: var(--text); margin-bottom: 0.4rem; }
+.uc-feature-card p { font-size: 0.875rem; margin: 0; }
+
+/* Drift grid */
+.uc-drift-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 680px) { .uc-drift-grid { grid-template-columns: 1fr; } }
+
+.uc-drift-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+  background: var(--bg);
+}
+
+.uc-drift-card.uc-drift-bad { border-color: rgba(196,83,83,0.2); }
+.uc-drift-card.uc-drift-good {
+  border-color: rgba(0,168,173,0.3);
+  background: rgba(0,168,173,0.03);
+}
+
+.uc-drift-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.uc-drift-icon { font-size: 1rem; color: var(--red); font-weight: 700; }
+.uc-drift-icon.good { color: var(--accent); }
+.uc-drift-card h3 { margin: 0; color: var(--text); }
+.uc-drift-card p { font-size: 0.875rem; margin-bottom: 1rem; }
+
+.uc-drift-note {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--dim);
+  background: var(--surface2);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  line-height: 1.6;
+}
+
+/* Steps (reuse from index) */
+.steps { margin-top: 3rem; display: flex; flex-direction: column; gap: 2.5rem; }
+
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.5rem;
+}
+
+.step-num-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.step-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.2);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-line {
+  width: 1px;
+  flex: 1;
+  background: var(--border);
+  margin-top: 0.5rem;
+}
+
+.step-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.step h3 { color: var(--text); margin-bottom: 0.5rem; }
+.step p { font-size: 0.875rem; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  background: rgba(0,168,173,0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--accent);
+}
+</style>
+
+</Base>

@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base
-  title="PrecisionMemBench — LLM Memory Retrieval Benchmark | Tenure"
+  title="PrecisionMemBench - LLM Memory Retrieval Benchmark | Tenure"
   description="89-case benchmark measuring retrieval precision independently of generative models. Tenure: 1.0 precision, 89/89 passes. Mem0, Zep, Hindsight: 0 active retrieval passes. Published on arXiv."
 >
 
@@ -147,7 +147,7 @@ import Base from '../layouts/Base.astro';
     </div>
 
     <div class="compare-verdict" style="margin-top: 2rem;">
-      <p>Strip the generative model out and route retrieved context to a classifier, rules engine, or structured pipeline: current retrieval implementations fail immediately. The generative model was never a neutral consumer — it was load-bearing infrastructure compensating for retrieval noise.</p>
+      <p>Strip the generative model out and route retrieved context to a classifier, rules engine, or structured pipeline: current retrieval implementations fail immediately. The generative model was never a neutral consumer, it was load-bearing infrastructure compensating for retrieval noise.</p>
     </div>
   </div>
 </section>
@@ -157,7 +157,7 @@ import Base from '../layouts/Base.astro';
   <div class="container-wide">
     <span class="label">Results</span>
     <h2>Leaderboard</h2>
-    <p>89 cases. 11 systems. One metric that matters: active retrieval passes — cases where a <code>retrievalPrecision</code> assertion was satisfied.</p>
+    <p>89 cases. 11 systems. One metric that matters: active retrieval passes: cases where a <code>retrievalPrecision</code> assertion was satisfied.</p>
 
     <!-- Main leaderboard table -->
     <div class="compare-table-section" style="margin-top: 2rem;">
@@ -299,7 +299,6 @@ import Base from '../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── BY CATEGORY ── -->
 <section class="bench-section" style="border-bottom: 1px solid var(--border);">
   <div class="container-wide">
     <span class="label">Results by category</span>
@@ -466,7 +465,7 @@ import Base from '../layouts/Base.astro';
   <div class="container">
     <span class="label">Embedding model invariance</span>
     <h2>A bigger model doesn't fix this</h2>
-    <p>The natural objection: use a more capable embedding model. We tested across a 20× range in scale. Precision is identical. The fix is not a better ruler — it is a different measurement instrument.</p>
+    <p>The natural objection: use a more capable embedding model. We tested across a 20× range in scale. Precision is identical. The fix is not a better ruler, it is a different measurement instrument.</p>
 
     <div class="compare-table-section" style="margin-top: 2rem;">
       <table class="compare-table-full">
@@ -563,7 +562,7 @@ import Base from '../layouts/Base.astro';
       </table>
     </div>
 
-    <p style="margin-top: 1.5rem; font-size: 0.875rem;">Hindsight at turn 10: drift score 1.0 with the correct belief absent entirely (recall 0). Not ranked low — missing from the result set, with 4 explicit noise belief violations flagged on top of a full-corpus return.</p>
+    <p style="margin-top: 1.5rem; font-size: 0.875rem;">Hindsight at turn 10: drift score 1.0 with the correct belief absent entirely (recall 0). Not ranked low, missing from the result set, with 4 explicit noise belief violations flagged on top of a full-corpus return.</p>
 
     <!-- Session latency -->
     <h3 style="margin-top: 3rem; margin-bottom: 0.5rem;">Session-turn latency</h3>
@@ -775,7 +774,6 @@ function copyBibtex(btn) {
   margin: 3rem auto 2.5rem;
   max-width: 700px;
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
   flex-wrap: wrap;
