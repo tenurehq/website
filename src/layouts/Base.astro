@@ -1,5 +1,6 @@
 ---
-const { title, description } = Astro.props;
+const { title, description, canonical } = Astro.props;
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.dev").href;
 ---
 
 <!DOCTYPE html>
@@ -8,7 +9,7 @@ const { title, description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <meta name="description" content="{description}" />
+    <meta name="description" content={description} />
     <meta
       name="keywords"
       content="AI memory, developer memory tool, local LLM memory, persistent AI context, VS Code AI memory, localhost AI, coding assistant memory, AI context injection, no RAG memory, AI productivity"
@@ -94,7 +95,7 @@ const { title, description } = Astro.props;
         ]
       }
     </script>
-    <link rel="canonical" href="https://tenureai.dev" />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles/index.css" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -121,12 +122,9 @@ const { title, description } = Astro.props;
             <a href="/use-case/vscode">VSCode</a>
           </div>
         </div>
-
         <a href="/docs">Docs</a>
         <a href="https://github.com/tenurehq/tenure">GitHub</a>
-
         <a href="/writing">Writing</a>
-
         <div class="dropdown">
           <button class="dropdown-trigger">
             Research <span class="dropdown-arrow">▼</span>
@@ -136,12 +134,39 @@ const { title, description } = Astro.props;
             <a href="https://arxiv.org/abs/2605.11325">Paper</a>
           </div>
         </div>
-
-        <a href="https://github.com/tenurehq/tenure" class="nav-cta"
-          >Install Free</a
-        >
+        <a href="https://github.com/tenurehq/tenure" class="nav-cta">Install Free</a>
       </div>
+
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
+
+    <div class="nav-mobile-menu" id="nav-mobile-menu">
+      <a href="/use-case/mobile">Mobile</a>
+      <a href="/use-case/vscode">VSCode</a>
+      <a href="/docs">Docs</a>
+      <a href="https://github.com/tenurehq/tenure">GitHub</a>
+      <a href="/writing">Writing</a>
+      <a href="/benchmark">Benchmark</a>
+      <a href="https://arxiv.org/abs/2605.11325">Paper</a>
+      <a href="https://github.com/tenurehq/tenure" class="nav-mobile-cta">Install Free</a>
+    </div>
+
+    <script>
+      const btn = document.getElementById('nav-hamburger');
+      const menu = document.getElementById('nav-mobile-menu');
+      btn?.addEventListener('click', () => {
+        const open = menu?.classList.toggle('open');
+        btn.classList.toggle('open', open);
+      });
+      menu?.querySelectorAll('a').forEach(a =>
+        a.addEventListener('click', () => {
+          menu.classList.remove('open');
+          btn?.classList.remove('open');
+        })
+      );
+    </script>
 
     <slot />
 

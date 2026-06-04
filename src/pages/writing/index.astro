@@ -2,7 +2,28 @@
 import Base from '../../layouts/Base.astro';
 
 const posts = [
-    {
+  {
+    slug: "embedding-invariance-problem",
+    category: "Benchmarks",
+    title: "The Embedding Invariance Problem: Why Bigger Models Don't Fix Retrieval Noise",
+    description: "A 20x increase in embedding model scale produces identical retrieval precision. The problem is not the ruler. It is what we are measuring.",
+    date: "Jun 2026",
+  },
+  {
+    slug: "why-memory-is-state-management",
+    category: "Architecture",
+    title: "Why Memory Is a State Management Problem, Not a Search Problem",
+    description: "The dominant paradigm in AI memory treats persistence as a search index. That framing produces approximate retrieval, probabilistic isolation, and compounding noise. The alternative is simpler: treat memory as typed, scoped, versioned state.",
+    date: "Jun 2026",
+  },
+  {
+    slug: "why-precision-matters",
+    category: "Architecture",
+    title: "Why Precision Is All That Matters in AI Memory",
+    description: "Retrieval precision is the difference between a memory system that works and one that only appears to. Why noise accumulation destroys value at scale, and why no downstream model can compensate for bad retrieval forever.",
+    date: "Jun 2026",
+  },
+  {
     slug: "alias-enrichment-flywheel",
     category: "Architecture",
     title: "How the alias enrichment flywheel works",
