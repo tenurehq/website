@@ -1,0 +1,728 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Why MCP Is the Wrong Abstraction for Memory | Tenure"
+  description="MCP treats memory as a tool call. That's the wrong model. Memory isn't something you invoke — it's something that should already be there. A technical argument for why the abstraction matters."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why MCP Is the Wrong Abstraction for Memory",
+  "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "url": "https://tenureai.dev/writing/why-mcp-memory",
+  "description": "MCP treats memory as a tool call. That's the wrong model. Memory isn't something you invoke — it's something that should already be there."
+}
+</script>
+
+<section class="essay-hero">
+  <div class="container">
+    <div class="uc-breadcrumb">
+      <a href="/writing">Writing</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>MCP and memory</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Architecture</span>
+    <h1>Why MCP is the wrong abstraction for memory</h1>
+    <p class="hero-sub-title" style="margin-top:1rem;">
+      MCP treats memory as a tool call. That's the wrong model.
+      Memory isn't something you invoke. It's something that should already be there.
+    </p>
+    <div class="essay-meta">
+      <span class="essay-meta-item">Tenure research</span>
+      <span class="essay-meta-sep">·</span>
+      <span class="essay-meta-item">~8 min read</span>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface);">
+  <div class="container">
+    <div class="tldr-box">
+      <h3>TL;DR</h3>
+      <ul>
+        <li>MCP is a tool protocol. Memory is not a tool.</li>
+        <li>Tool calls are explicit, discrete, and optional. Memory is implicit, continuous, and always relevant.</li>
+        <li>When memory requires an invocation, it becomes a second-class input; loaded too late, shaped by the wrong query, and absent when the model doesn't know to ask.</li>
+        <li>The correct layer for memory is the proxy: present before the first token, invisible to both the model and the user, and structurally separate from the AI client.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 1 ── -->
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The premise</span>
+    <h2>MCP is a good protocol for the wrong job</h2>
+    <p>
+      The Model Context Protocol is well-designed for what it was built to do: give a model structured,
+      on-demand access to external systems. Fetch a file. Query a database. Create a calendar event.
+      These are discrete actions that should happen when explicitly requested, and MCP handles them well.
+    </p>
+    <p>
+      Memory is not that. Memory is not a resource you fetch on request. It is context that should
+      be present before the conversation starts, without the model or the user having to think about it.
+      When a developer tells their AI assistant that the auth service uses Redis for sessions, they are not
+      creating a tool result. They are establishing a belief that should shape every future response
+      about that system, across every future session, without any explicit retrieval step.
+    </p>
+    <p>
+      The distinction matters more than it appears. A tool call is optional input. Memory is
+      structural context. Treating one as the other produces a system that technically works but
+      behaviorally fails in ways that are hard to articulate and harder to fix.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        A tool call is optional input. Memory is structural context.
+        The difference is not cosmetic. It determines when the information arrives,
+        how it is weighted, and whether the model knows to use it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 2 ── -->
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The retrieval problem</span>
+    <h2>Tool-based memory retrieves at the wrong time</h2>
+    <p>
+      When memory is implemented as an MCP tool, retrieval happens inside the conversation turn.
+      The model receives a user message, decides (or is instructed) to call the memory tool,
+      gets results back, and then formulates a response incorporating those results.
+    </p>
+    <p>
+      This creates three concrete failure modes that do not exist when memory is injected at the proxy layer.
+    </p>
+
+    <div class="failure-grid">
+      <div class="failure-card">
+        <div class="failure-num">01</div>
+        <h3>Late arrival</h3>
+        <p>
+          The model has already begun processing the user's message before memory is consulted.
+          In practice, the system prompt and user message establish a reasoning trajectory.
+          Memory retrieved mid-turn is appended context, not foundational context.
+          It does not shape the initial interpretation of the query.
+        </p>
+      </div>
+      <div class="failure-card">
+        <div class="failure-num">02</div>
+        <h3>Query dependency</h3>
+        <p>
+          The model must construct a query to retrieve relevant memory. That query is derived
+          from the current message, which means memory retrieval is only as good as the
+          model's ability to predict what context it needs before it has that context.
+          This is circular in ways that matter at the edges.
+        </p>
+      </div>
+      <div class="failure-card">
+        <div class="failure-num">03</div>
+        <h3>Discretionary skipping</h3>
+        <p>
+          Tool calls are optional. A model that has been given a memory tool will call it
+          inconsistently. Faster responses, shorter system prompts, ambiguous instructions,
+          and temperature variation all affect whether the tool is invoked. Memory that is
+          sometimes consulted is not memory the system can be said to have.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 3 ── -->
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The architecture argument</span>
+    <h2>Memory belongs at the proxy layer, not the tool layer</h2>
+    <p>
+      An AI client sends a request to a provider. That request contains a system prompt and
+      a conversation history. Before any of that reaches the model, it passes through the network.
+    </p>
+    <p>
+      A proxy that sits in that path can intercept the outbound request, extract beliefs from
+      the conversation history, retrieve relevant context from a local store, and inject that
+      context into the system prompt before the request continues. From the model's perspective,
+      the context was always there. From the user's perspective, nothing happened.
+      There was no tool call. No retrieval step. No prompt modification visible to either party.
+    </p>
+    <p>
+      This is not a minor architectural variation on MCP-based memory. It is a different model
+      of what memory is. The proxy treats memory as ambient context. MCP treats memory as a
+      resource. These produce different systems with different failure modes, different
+      precision properties, and different relationships to the conversation.
+    </p>
+
+    <!-- Architecture diagram -->
+    <div class="arch-diagram">
+      <div class="arch-label-row">
+        <span class="arch-section-label">Without a memory proxy</span>
+      </div>
+      <div class="arch-flow arch-flow-bad">
+        <div class="arch-node">User message</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node arch-node-model">Model</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node arch-node-tool">MCP memory tool call</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node arch-node-model">Model resumes</div>
+      </div>
+      <div class="arch-note arch-note-bad">Memory arrives after initial processing. Query is model-generated. Invocation is discretionary.</div>
+
+      <div class="arch-label-row" style="margin-top:2rem;">
+        <span class="arch-section-label">With a memory proxy</span>
+      </div>
+      <div class="arch-flow arch-flow-good">
+        <div class="arch-node">User message</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node arch-node-proxy">Proxy injects context</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node arch-node-model">Model sees enriched prompt</div>
+      </div>
+      <div class="arch-note arch-note-good">Memory is structural. Arrives before first token. No tool call. No discretion.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 4 ── -->
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The precision argument</span>
+    <h2>Retrieval precision collapses when you use the wrong index</h2>
+    <p>
+      Most MCP memory implementations use vector search. The belief store is an embedding index.
+      Retrieval is semantic similarity. This is the standard approach for RAG pipelines,
+      and it is wrong for memory for the same reasons it is right for document retrieval.
+    </p>
+    <p>
+      Document retrieval is a recall problem. You have many documents, you want the ones most
+      likely to contain relevant information, and approximate similarity is an appropriate
+      proxy for relevance. Some noise is acceptable because the model can filter.
+    </p>
+    <p>
+      Memory retrieval is a precision problem. You have a set of structured beliefs about a
+      specific user, project, and domain. You want exactly the beliefs that apply to this
+      query and none that do not. Approximate similarity produces noise, and that noise
+      is injected into the model's context where it compounds. On PrecisionMemBench,
+      vector-based memory systems return 8 to 18 irrelevant beliefs per query at a mean
+      precision of 0.05 to 0.09. The model compensates, until the context window
+      fills or the contradictions accumulate.
+    </p>
+
+    <div class="precision-compare">
+      <div class="precision-card precision-bad">
+        <div class="precision-header">
+          <span class="precision-tag precision-tag-bad">Vector search</span>
+        </div>
+        <div class="precision-stat">
+          <span class="precision-value" style="color:var(--dim);">0.05–0.09</span>
+          <span class="precision-label">Retrieval precision (PrecisionMemBench)</span>
+        </div>
+        <p>8–18 irrelevant beliefs returned per query. Model compensates via in-context reasoning. Fails as context window fills.</p>
+      </div>
+      <div class="precision-card precision-good">
+        <div class="precision-header">
+          <span class="precision-tag precision-tag-good">BM25 + typed beliefs</span>
+        </div>
+        <div class="precision-stat">
+          <span class="precision-value" style="color:var(--accent);">1.0</span>
+          <span class="precision-label">Retrieval precision (PrecisionMemBench)</span>
+        </div>
+        <p>Exact beliefs returned. No noise. No irrelevant context injected. Precision holds as the belief store grows.</p>
+      </div>
+    </div>
+
+    <p>
+      BM25 over typed, structured beliefs is not a novel idea. It is the correct application of
+      a well-understood technique to a problem where precision is the primary requirement.
+      The reason the field defaulted to vector search is that vector search is the standard
+      tool for semantic retrieval, and memory was framed as a semantic retrieval problem.
+      It is not. It is a structured lookup problem with strong typing requirements and
+      hard scope constraints.
+    </p>
+  </div>
+</section>
+
+<!-- ── SECTION 5 ── -->
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The scope argument</span>
+    <h2>Scope isolation requires a structural guarantee, not a semantic one</h2>
+    <p>
+      In a multi-project or multi-user environment, belief isolation is a correctness requirement.
+      A session in <code>project:client-a</code> must not surface beliefs from <code>project:client-b</code>,
+      regardless of semantic proximity. An engineer working on a billing system must not see
+      injected context from a different team's codebase, even if the embedding distances are small.
+    </p>
+    <p>
+      Vector search cannot provide this guarantee. Semantic proximity is a continuous measure.
+      You can down-rank out-of-scope results, but you cannot structurally exclude them.
+      The boundary is probabilistic.
+    </p>
+    <p>
+      A typed belief store with hard scope filters applied before retrieval scoring can provide
+      this guarantee. Out-of-scope beliefs are not down-ranked. They are absent. This is not
+      a tuning parameter. It is a consequence of the data model.
+    </p>
+    <p>
+      The practical implication is that MCP-based memory systems with vector search cannot make
+      a verifiable isolation claim, only a probabilistic one. For regulated environments, audit
+      requirements, or any use case where cross-project contamination is a real risk, a
+      probabilistic claim is not a claim at all.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        Vector search cannot provide scope isolation as a guarantee.
+        It can provide it as a tendency. For most engineering contexts, the difference matters.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 6 ── -->
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The client coupling argument</span>
+    <h2>MCP memory couples persistence to the AI client</h2>
+    <p>
+      A developer uses VS Code with Copilot in the morning and Claude.ai in the browser
+      in the afternoon. Both sessions concern the same codebase, the same constraints,
+      the same beliefs. An MCP memory tool connected to VS Code accumulates context there.
+      Claude.ai knows none of it.
+    </p>
+    <p>
+      This is not a limitation of MCP specifically. It is a consequence of placing memory
+      at the application layer rather than the network layer. Any memory system that lives
+      inside a client, or is accessible only via a protocol that clients must explicitly
+      support, fragments context across the tools a developer actually uses.
+    </p>
+    <p>
+      A proxy operates below the client. It intercepts requests from any OpenAI-compatible
+      client, regardless of which application generated the request. VS Code, Claude.ai,
+      Open WebUI, LibreChat, a custom script — they all pass through the same proxy,
+      which means they all share the same belief store. Memory accumulates regardless
+      of which tool the developer is using, and is injected regardless of which tool
+      they use next.
+    </p>
+    <p>
+      This is cross-client persistence without any client cooperation. It requires no plugin,
+      no integration, no explicit MCP support. The protocol is HTTP. Every AI client already speaks it.
+    </p>
+  </div>
+</section>
+
+<!-- ── CONCLUSION ── -->
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Conclusion</span>
+    <h2>The abstraction you choose determines what you can build</h2>
+    <p>
+      None of this is an argument against MCP. MCP is the right abstraction for tools.
+      The argument is narrower: memory is not a tool, and treating it as one produces
+      a system with the wrong properties in the places that matter most.
+    </p>
+    <p>
+      Memory should arrive before the first token, not after the model decides to fetch it.
+      It should be precise, not approximate. It should enforce scope structurally, not probabilistically.
+      It should accumulate across every client a developer uses, not just the one that has the plugin installed.
+    </p>
+    <p>
+      These are not nice-to-have properties. They are the properties that determine whether
+      a memory system actually changes how a developer works, or whether it is infrastructure
+      that technically runs and practically disappears.
+    </p>
+    <p>
+      The proxy layer provides them. The tool layer does not. That is the argument.
+    </p>
+
+    <div class="essay-cta-row">
+      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
+        See how Tenure does it →
+      </a>
+      <a href="/benchmark" class="btn-secondary">
+        PrecisionMemBench results
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── RELATED ── -->
+<section class="essay-section" style="background:var(--surface);">
+  <div class="container">
+    <span class="label">Related</span>
+    <h2 style="margin-bottom:2rem;">More from Tenure</h2>
+    <div class="related-grid">
+      <a href="/benchmark" class="related-card">
+        <div class="related-tag">Research</div>
+        <h3>PrecisionMemBench</h3>
+        <p>The benchmark that measures retrieval precision, noise isolation, and drift across 11 memory providers and 89 cases.</p>
+        <span class="related-link">Read the benchmark →</span>
+      </a>
+      <a href="/teams" class="related-card">
+        <div class="related-tag">Use case</div>
+        <h3>Tenure for teams</h3>
+        <p>Self-hosted memory for engineering orgs. OIDC, Helm chart, per-user isolation, full audit trail.</p>
+        <span class="related-link">See the deployment guide →</span>
+      </a>
+      <a href="https://arxiv.org/abs/2605.11325" class="related-card" target="_blank" rel="noopener">
+        <div class="related-tag">Paper</div>
+        <h3>The retrieval precision paper</h3>
+        <p>Formal treatment of belief typing, BM25 retrieval, and scope isolation as memory system requirements.</p>
+        <span class="related-link">Read on arXiv →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.uc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+.uc-breadcrumb a { color: var(--dim); transition: color 0.15s; }
+.uc-breadcrumb a:hover { color: var(--text); }
+.uc-breadcrumb-sep { color: var(--border2); }
+
+.essay-hero {
+  padding: 5rem 2rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.essay-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--dim);
+  font-family: var(--mono);
+}
+.essay-meta-sep { color: var(--border2); }
+
+.essay-section { padding: 5rem 2rem; }
+
+.essay-prose p { margin-bottom: 1.25rem; }
+.essay-prose p:last-of-type { margin-bottom: 0; }
+
+.essay-callout {
+  border-left: 2px solid var(--accent);
+  padding: 1rem 1.5rem;
+  margin: 2.5rem 0;
+  background: rgba(0, 168, 173, 0.04);
+  border-radius: 0 8px 8px 0;
+}
+.essay-callout p {
+  color: var(--text) !important;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 !important;
+}
+
+.failure-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+
+.failure-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.failure-num {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+
+.failure-card h3 { color: var(--text); margin-bottom: 0.5rem; }
+.failure-card p { font-size: 0.875rem; margin: 0; }
+
+.arch-diagram {
+  margin: 2.5rem 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.arch-label-row { margin-bottom: 1rem; }
+
+.arch-section-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.arch-flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.arch-node {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 0.4rem 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.arch-node-model {
+  border-color: rgba(0, 168, 173, 0.3);
+  color: var(--text);
+}
+
+.arch-node-tool {
+  border-color: rgba(196, 83, 83, 0.3);
+  color: var(--muted);
+}
+
+.arch-node-proxy {
+  border-color: rgba(0, 168, 173, 0.4);
+  background: rgba(0, 168, 173, 0.06);
+  color: var(--accent);
+}
+
+.arch-arrow {
+  color: var(--dim);
+  font-size: 0.85rem;
+}
+
+.arch-note {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+}
+
+.arch-note-bad {
+  color: var(--dim);
+  background: rgba(196, 83, 83, 0.05);
+  border: 1px solid rgba(196, 83, 83, 0.12);
+}
+
+.arch-note-good {
+  color: var(--muted);
+  background: rgba(0, 168, 173, 0.05);
+  border: 1px solid rgba(0, 168, 173, 0.15);
+}
+
+.precision-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+
+@media (max-width: 680px) { .precision-compare { grid-template-columns: 1fr; } }
+
+.precision-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+}
+
+.precision-card.precision-bad { border-color: rgba(196, 83, 83, 0.2); }
+.precision-card.precision-good {
+  border-color: rgba(0, 168, 173, 0.3);
+  background: rgba(0, 168, 173, 0.03);
+}
+
+.precision-header { margin-bottom: 1.25rem; }
+
+.precision-tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+}
+.precision-tag-bad {
+  background: rgba(196, 83, 83, 0.1);
+  color: var(--red);
+}
+.precision-tag-good {
+  background: rgba(0, 168, 173, 0.1);
+  color: var(--accent);
+}
+
+.precision-stat {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.precision-value {
+  font-family: var(--mono);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.precision-label {
+  font-size: 0.75rem;
+  color: var(--dim);
+  margin-top: 0.3rem;
+  font-family: var(--mono);
+}
+
+.precision-card p { font-size: 0.875rem; margin: 0; }
+
+.essay-cta-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--accent2); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+  text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.related-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.15s;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.related-card:hover { border-color: var(--accent); }
+
+.related-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.related-card h3 { color: var(--text); margin: 0; font-size: 1rem; }
+.related-card p { font-size: 0.85rem; margin: 0; flex: 1; }
+
+.related-link {
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-top: 0.25rem;
+}
+
+.tldr-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.tldr-box h3 {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.tldr-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tldr-box li {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0.35rem 0;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.tldr-box li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  background: rgba(0, 168, 173, 0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+@media (max-width: 680px) {
+  .failure-grid { grid-template-columns: 1fr; }
+  .arch-flow { flex-direction: column; align-items: flex-start; }
+  .arch-arrow { transform: rotate(90deg); margin-left: 0.5rem; }
+  .essay-cta-row { flex-direction: column; }
+  .btn-primary, .btn-secondary { justify-content: center; }
+}
+</style>
+
+</Base>

@@ -1,0 +1,642 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure for Teams | Air-Gapped AI Memory for Engineering Orgs"
+  description="Tenure deploys inside your infrastructure. OIDC authentication, full audit trail, per-user belief isolation, and an orientation tax dashboard your engineering leads can actually read. No data leaves your network."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Tenure for Teams",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux",
+  "url": "https://tenureai.dev/teams",
+  "description": "Self-hosted AI memory for engineering teams. OIDC, Helm chart, full audit trail, orientation tax dashboard. No data leaves your network.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<!-- ── HERO ── -->
+<section class="uc-hero">
+  <div class="container" style="text-align:center;">
+    <div class="uc-breadcrumb">
+      <a href="/use-cases">Use cases</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Teams</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">For engineering teams</span>
+    <h1>Your engineers stop re-explaining.<br/>Your infra never leaves the building.</h1>
+    <p class="hero-sub">
+      Tenure deploys inside your Kubernetes cluster. OIDC authentication,
+      hard scope isolation between engineers and projects, a complete
+      per-turn audit trail, and an orientation tax dashboard that makes
+      the productivity case without anyone having to construct it.
+    </p>
+    <div class="uc-hero-ctas">
+      <a href="/docs/teams" class="btn-primary">
+        Read the deployment guide →
+      </a>
+      <a href="https://github.com/tenurehq/tenure" class="btn-secondary" target="_blank" rel="noopener">
+        GitHub
+      </a>
+    </div>
+    <p style="font-size:0.8rem; color:var(--dim); margin-top:1.5rem;">
+      Helm chart · OIDC / SSO · No egress · MIT licensed
+    </p>
+  </div>
+</section>
+
+<!-- ── THE PROBLEM ── -->
+<section class="uc-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">The problem</span>
+    <h2>Every session starts from zero. That cost compounds.</h2>
+    <p>
+      An engineer established last week that the auth service uses Redis for sessions,
+      that Postgres is off the table for this use case, that the failure mode is fail-open.
+      This session: the AI doesn't know any of it. They explain it again.
+      Then again tomorrow. Then a new engineer joins and explains it from scratch.
+    </p>
+    <p>
+      That's the orientation tax — the fraction of every AI session spent
+      re-establishing context the system should already have. Tenure measures it,
+      shows it decreasing, and makes it go away.
+    </p>
+
+    <div class="ent-stat-grid">
+      <div class="ent-stat-card">
+        <div class="ent-stat-value" style="color:var(--accent);">1.0</div>
+        <div class="ent-stat-name">Retrieval precision</div>
+        <div class="ent-stat-desc">The right belief surfaces. Nothing else. Verified on PrecisionMemBench across 89 cases.</div>
+      </div>
+      <div class="ent-stat-card">
+        <div class="ent-stat-value" style="color:var(--accent);">&lt;15ms</div>
+        <div class="ent-stat-name">Retrieval latency</div>
+        <div class="ent-stat-desc">Sub-15ms per query. No embedding model. No reranking pass. Precision improves as the store grows.</div>
+      </div>
+      <div class="ent-stat-card">
+        <div class="ent-stat-value" style="color:var(--accent);">0</div>
+        <div class="ent-stat-name">Egress</div>
+        <div class="ent-stat-desc">No data leaves your network. No call-home. No telemetry. Beliefs are encrypted at rest inside your cluster.</div>
+      </div>
+      <div class="ent-stat-card">
+        <div class="ent-stat-value" style="color:var(--accent);">0.0</div>
+        <div class="ent-stat-name">Drift score</div>
+        <div class="ent-stat-desc">Off-topic turns do not contaminate later retrieval. Session noise is structurally isolated, not probabilistically suppressed.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AUDIT + VISIBILITY ── -->
+<section class="uc-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Visibility</span>
+    <h2>The AI context window is no longer a black box.</h2>
+    <p>
+      Most enterprise AI deployments have no answer for the question security teams
+      always ask eventually: <em>what exactly is being injected into the model's context,
+      for which engineers, and when?</em> Tenure answers it completely — because
+      making injection visible only makes sense if you're confident in what it shows.
+    </p>
+
+    <div class="uc-feature-grid" style="margin-top:2.5rem;">
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">📋</div>
+        <h3>Per-turn audit trail</h3>
+        <p>Every belief injected into every session is logged — which belief, which query surfaced it, which engineer, which turn. Not reconstructed from logs after the fact. Recorded as it happened.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">👁️</div>
+        <h3>Try before you inject</h3>
+        <p>Engineers run with extraction on and injection off for as long as they need. They see exactly what Tenure learned before it ever changes a response. No surprises. No behavior change until they're ready.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">📊</div>
+        <h3>Orientation tax dashboard</h3>
+        <p>Re-explanations prevented, time saved, tax still paid — per engineer, across the org, trending over time. The productivity case builds itself from real usage data. No narrative required.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🔐</div>
+        <h3>Admin belief visibility</h3>
+        <p>Admins see all users' beliefs, audit logs, and injection history from a single dashboard. Understand what the AI knows about your codebase and your engineers before anyone asks you to prove it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCOPE ISOLATION ── -->
+<section class="uc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Isolation</span>
+    <h2>Project A never bleeds into Project B. Structurally.</h2>
+    <p>
+      Scope isolation in Tenure is a hard filter, not a probabilistic one. A session
+      in <code>project:client-a</code> cannot surface beliefs from <code>project:client-b</code>
+      regardless of semantic proximity. When an engineer switches projects, the belief
+      context pivots immediately with no residual injection from the previous scope.
+    </p>
+    <p>
+      This is not a tuning parameter. It is an architectural consequence of treating
+      memory as typed state rather than a search index. No surveyed memory system
+      provides an equivalent guarantee.
+    </p>
+
+    <div class="uc-drift-grid" style="margin-top:2.5rem;">
+      <div class="uc-drift-card uc-drift-bad">
+        <div class="uc-drift-header">
+          <span class="uc-drift-icon">✗</span>
+          <h3>Vector-based memory systems</h3>
+        </div>
+        <p>Scope is probabilistic. Semantically proximate beliefs from other projects can surface regardless of which project is active. Drift scores of 0.92–1.0 on session re-entry in independent evaluation.</p>
+        <div class="uc-drift-note">Mean retrieval precision: 0.05–0.09 on PrecisionMemBench. 8–18 irrelevant beliefs returned per query. The downstream model compensates — until it can't.</div>
+      </div>
+      <div class="uc-drift-card uc-drift-good">
+        <div class="uc-drift-header">
+          <span class="uc-drift-icon good">✓</span>
+          <h3>Tenure</h3>
+        </div>
+        <p>Scope is a hard filter applied before retrieval scoring. Out-of-scope beliefs are structurally absent — not down-ranked, absent. Drift score: 0.0 across all session turns in independent evaluation.</p>
+        <div class="uc-drift-note">For regulated environments: a session in <code>project:client-a</code> cannot surface beliefs from <code>project:client-b</code> regardless of query content. Verifiable, not claimed.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEPLOYMENT ── -->
+<section class="uc-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Deployment</span>
+    <h2>Inside your cluster. On your terms.</h2>
+    <p>
+      Tenure ships as a Helm chart. One HTTPS endpoint. No egress.
+      OIDC delegates authentication to whatever your org already uses —
+      Okta, Azure AD, Google Workspace, anything that speaks OIDC.
+      Your IT team approves it once. Engineers connect through their
+      existing identity.
+    </p>
+
+    <div class="steps" style="margin-top:3rem;">
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">01</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Deploy the Helm chart</div>
+          <h3>Single service. Single port. Standard TLS.</h3>
+          <div class="terminal" style="max-width:560px; margin-top:1rem;">
+            <div class="terminal-bar">
+              <span class="term-dot term-dot-red"></span>
+              <span class="term-dot term-dot-yellow"></span>
+              <span class="term-dot term-dot-green"></span>
+              <span class="terminal-title">Kubernetes</span>
+            </div>
+            <div class="terminal-body">
+              <div><span class="t-prompt">$</span> <span class="t-cmd">helm repo add tenure https://charts.tenureai.dev</span></div>
+              <div><span class="t-prompt">$</span> <span class="t-cmd">helm install tenure tenure/tenure \</span></div>
+              <div><span class="t-dim">&nbsp;&nbsp;--set oidc.issuer=https://your-idp.example.com \</span></div>
+              <div><span class="t-dim">&nbsp;&nbsp;--set oidc.clientId=tenure \</span></div>
+              <div><span class="t-dim">&nbsp;&nbsp;--set ingress.host=tenure.internal.example.com</span></div>
+              <div>&nbsp;</div>
+              <div><span class="t-ok">✓</span> <span class="t-muted">Tenure running at tenure.internal.example.com</span></div>
+              <div><span class="t-ok">✓</span> <span class="t-muted">OIDC active. Zero plaintext credentials.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">02</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Engineers connect from VS Code</div>
+          <h3>Enter your org's Tenure endpoint. Everything else is automatic.</h3>
+          <p>
+            On first install, the VS Code extension asks for an existing Tenure endpoint.
+            Engineers enter the domain your IT team deployed to. The extension validates it,
+            handles the OIDC browser flow, and stores the scoped token in VS Code's native
+            secret store. No config files. No plaintext credentials. No IT ticket per engineer.
+          </p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">03</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Observe before committing</div>
+          <h3>Extraction on. Injection off. See what it learns.</h3>
+          <p>
+            Engineers run in observe mode for as long as they need — days, weeks.
+            Tenure extracts beliefs silently. Nothing changes about their AI responses.
+            When they open the beliefs panel and see exactly what the model will know,
+            they turn injection on. Your admins see the same panel, org-wide, from day one.
+          </p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">04</div>
+        </div>
+        <div>
+          <div class="step-label">The dashboard makes the case</div>
+          <h3>The orientation tax goes down. The numbers show it.</h3>
+          <p>
+            The admin dashboard tracks re-explanations prevented, time saved, and tax
+            still paid — per engineer and across the org, trending over time.
+            You don't need to argue for continued investment. The metrics do it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECURITY REVIEW ── -->
+<section class="uc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Security review</span>
+    <h2>The answers to the questions your security team will ask.</h2>
+
+    <div class="compare-table-section" style="margin-top:2rem;">
+      <table class="compare-table-full">
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Answer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Does data leave our network?</td>
+            <td>No. Zero egress. The Helm chart has no outbound connections. Beliefs are stored inside your cluster.</td>
+          </tr>
+          <tr>
+            <td>How is authentication handled?</td>
+            <td>OIDC. Tenure delegates to your existing IdP. No new credential store. User provisioning, MFA, and offboarding are inherited from whatever you already use.</td>
+          </tr>
+          <tr>
+            <td>What ports does it open?</td>
+            <td>One HTTPS endpoint on the port you configure. The VS Code panel uses SSE over the same connection. No other open ports.</td>
+          </tr>
+          <tr>
+            <td>Can one engineer's context bleed into another's?</td>
+            <td>No. Scope isolation is a hard filter at the architecture level, not a threshold or probabilistic suppression. Verifiable against the published benchmark.</td>
+          </tr>
+          <tr>
+            <td>What is stored and where?</td>
+            <td>Structured beliefs extracted from AI sessions. Stored in a PersistentVolume inside your cluster. Encrypted at rest. Exportable as an encrypted archive.</td>
+          </tr>
+          <tr>
+            <td>Is there an audit trail?</td>
+            <td>Complete per-turn injection log. Every belief injected, which query surfaced it, which engineer, which session. Admins have full visibility across the org.</td>
+          </tr>
+          <tr>
+            <td>What is the license?</td>
+            <td>MIT. No vendor lock-in. No licensing server. No call-home on startup.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEV ENV PATH ── -->
+<section class="uc-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Starting small</span>
+    <h2>Deploy in your dev environment first. The dashboard makes the case for prod.</h2>
+    <p>
+      You don't need a procurement process to start. Deploy the Helm chart in your
+      existing dev environment — the one your IT team has already provisioned and
+      security has already reviewed. Engineers try it there. The orientation tax
+      dashboard generates the numbers. Those numbers become the internal case
+      for production without anyone having to construct a narrative.
+    </p>
+    <p>
+      The path from dev environment to org-wide deployment tends to be pull, not push.
+      Engineers who stop re-explaining their stack don't want to go back.
+    </p>
+
+    <div class="uc-feature-grid" style="margin-top:2.5rem;">
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🏗️</div>
+        <h3>Standard dev environment deploy</h3>
+        <p>The Helm chart is the same chart you'd use in prod. Deploy it in dev first. Same security properties, same OIDC config, same audit trail. Nothing changes when you graduate it.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">📈</div>
+        <h3>The numbers build the case</h3>
+        <p>After a few weeks in dev, the orientation tax dashboard has real data. Re-explanations prevented. Time saved. Tax trending down. That's a business case without a slide deck.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🔒</div>
+        <h3>No surprises in the security review</h3>
+        <p>By the time procurement is involved, your security team has already reviewed the same Helm chart running in dev. The review is a formality, not a discovery process.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">👥</div>
+        <h3>Engineer-driven adoption</h3>
+        <p>Engineers who found Tenure individually and want to bring it to work have a path. Point IT at this page. Hand them the Helm chart. The conversation starts from evidence, not promises.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="uc-section" style="text-align:center;">
+  <div class="container">
+    <span class="label">Get started</span>
+    <h2>Deploy in your dev environment this week.</h2>
+    <p style="max-width:540px; margin:0 auto 2rem;">
+      Helm chart, OIDC configuration reference, and security review documentation
+      are in the deployment guide. MIT licensed. No account needed. Nothing calls home.
+    </p>
+    <div class="uc-hero-ctas" style="justify-content:center;">
+      <a href="/docs/teams" class="btn-primary">
+        Deployment guide →
+      </a>
+      <a href="https://github.com/tenurehq/tenure" class="btn-secondary" target="_blank" rel="noopener">
+        GitHub
+      </a>
+    </div>
+    <p style="font-size:0.8rem; color:var(--dim); margin-top:1.5rem;">
+      Helm chart · OIDC · MIT licensed · No egress · No account needed
+    </p>
+  </div>
+</section>
+
+<style>
+.uc-hero {
+  padding: 6rem 2rem 4rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(0,168,173,0.04) 0%, var(--bg) 100%);
+}
+
+.uc-breadcrumb {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.uc-breadcrumb a { color: var(--accent); }
+.uc-breadcrumb-sep { color: var(--border2); }
+
+.uc-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--accent2); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+.uc-section { padding: 5rem 2rem; }
+
+/* Stat grid */
+.ent-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+.ent-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.ent-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.ent-stat-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+
+.ent-stat-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Feature grid */
+.uc-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 680px) { .uc-feature-grid { grid-template-columns: 1fr; } }
+
+.uc-feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.uc-feature-icon {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.uc-feature-card h3 { color: var(--text); margin-bottom: 0.4rem; }
+.uc-feature-card p { font-size: 0.875rem; margin: 0; }
+
+/* Drift grid */
+.uc-drift-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 680px) { .uc-drift-grid { grid-template-columns: 1fr; } }
+
+.uc-drift-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+  background: var(--bg);
+}
+
+.uc-drift-card.uc-drift-bad { border-color: rgba(196,83,83,0.2); }
+.uc-drift-card.uc-drift-good {
+  border-color: rgba(0,168,173,0.3);
+  background: rgba(0,168,173,0.03);
+}
+
+.uc-drift-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.uc-drift-icon { font-size: 1rem; color: var(--red); font-weight: 700; }
+.uc-drift-icon.good { color: var(--accent); }
+.uc-drift-card h3 { margin: 0; color: var(--text); }
+.uc-drift-card p { font-size: 0.875rem; margin-bottom: 1rem; }
+
+.uc-drift-note {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--dim);
+  background: var(--surface2);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  line-height: 1.6;
+}
+
+/* Steps */
+.steps { margin-top: 3rem; display: flex; flex-direction: column; gap: 2.5rem; }
+
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.5rem;
+}
+
+.step-num-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.step-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.2);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-line {
+  width: 1px;
+  flex: 1;
+  background: var(--border);
+  margin-top: 0.5rem;
+}
+
+.step-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.step h3 { color: var(--text); margin-bottom: 0.5rem; }
+.step p { font-size: 0.875rem; }
+
+/* Table */
+.compare-table-section { overflow-x: auto; }
+
+.compare-table-full {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.compare-table-full th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.compare-table-full td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.compare-table-full td:first-child {
+  color: var(--muted);
+  white-space: nowrap;
+  width: 30%;
+}
+
+.compare-table-full tr:last-child td { border-bottom: none; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  background: rgba(0,168,173,0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--accent);
+}
+</style>
+
+</Base>

@@ -1,18 +1,14 @@
 ---
 const { title, description } = Astro.props;
 ---
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      {title}
-    </title>
-    <meta
-      name="description"
-      content={description}
-    />
+    <title>{title}</title>
+    <meta name="description" content="{description}" />
     <meta
       name="keywords"
       content="AI memory, developer memory tool, local LLM memory, persistent AI context, VS Code AI memory, localhost AI, coding assistant memory, AI context injection, no RAG memory, AI productivity"
@@ -104,8 +100,7 @@ const { title, description } = Astro.props;
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
-
-     <nav>
+    <nav>
       <span class="nav-logo logo-container">
         <a href="/" class="logo-container">
           <img
@@ -117,9 +112,21 @@ const { title, description } = Astro.props;
         </a>
       </span>
       <div class="nav-links">
+        <div class="dropdown">
+          <button class="dropdown-trigger">
+            Use Cases <span class="dropdown-arrow">▼</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="/use-case/mobile">Mobile</a>
+            <a href="/use-case/vscode">VSCode</a>
+          </div>
+        </div>
+
         <a href="/docs">Docs</a>
         <a href="https://github.com/tenurehq/tenure">GitHub</a>
-        
+
+        <a href="/writing">Writing</a>
+
         <div class="dropdown">
           <button class="dropdown-trigger">
             Research <span class="dropdown-arrow">▼</span>
@@ -130,27 +137,30 @@ const { title, description } = Astro.props;
           </div>
         </div>
 
-        <a href="https://github.com/tenurehq/tenure" class="nav-cta">Install Free</a>
+        <a href="https://github.com/tenurehq/tenure" class="nav-cta"
+          >Install Free</a
+        >
       </div>
     </nav>
 
-    <slot />  
+    <slot />
 
-   <footer>
+    <footer>
       <div class="footer-container">
         <div class="footer-brand">
           <span class="footer-logo">tenure &middot; MIT License</span>
         </div>
-        
+
         <div class="footer-grid">
           <div class="footer-col">
             <h4>Resources</h4>
             <a href="/docs">Docs</a>
+            <a href="/writing">Writing</a>
             <a href="https://github.com/tenurehq/tenure">GitHub</a>
             <a href="https://arxiv.org/abs/2605.11325">Paper</a>
             <a href="/benchmark">Benchmark</a>
           </div>
-          
+
           <div class="footer-col">
             <h4>Comparisons</h4>
             <a href="/compare/mem0">vs Mem0</a>
@@ -163,7 +173,5 @@ const { title, description } = Astro.props;
         </div>
       </div>
     </footer>
-
-   
   </body>
 </html>

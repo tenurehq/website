@@ -1,0 +1,195 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const posts = [
+    {
+    slug: "alias-enrichment-flywheel",
+    category: "Architecture",
+    title: "How the alias enrichment flywheel works",
+    description: "BM25 retrieval is only as good as the alias set it searches against. The flywheel is how that set grows, passively, continuously, and without any effort from the user.",
+    date: "Jun 2026",
+  },
+  {
+    slug: "why-mcp-is-the-wrong-abstraction",
+    category: "Architecture",
+    title: "Why MCP is the wrong abstraction for memory",
+    description: "MCP treats memory as a tool call. Memory isn't something you invoke, it's something that should already be there. A technical argument for why the abstraction matters.",
+    date: "Jun 2026",
+  },
+];
+---
+
+<Base
+  title="Writing | Tenure"
+  description="Technical arguments, architecture decisions, and benchmark results from the team building Tenure."
+>
+
+<section class="writing-hero">
+  <div class="container">
+    <span class="label">Writing</span>
+    <p class="writing-sub">Technical arguments and architecture decisions from the team.</p>
+  </div>
+</section>
+
+<section class="writing-list-section">
+  <div class="container">
+    <ul class="writing-list">
+      {posts.map(post => (
+        <li class="writing-item">
+          <a href={`/writing/${post.slug}`} class="writing-link">
+            <div class="writing-main">
+              <span class={`writing-tag writing-tag-${post.category.toLowerCase()}`}>{post.category}</span>
+              <span class="writing-title">{post.title}</span>
+              <span class="writing-desc">{post.description}</span>
+            </div>
+            <div class="writing-right">
+              <span class="writing-date">{post.date}</span>
+              <span class="writing-arrow">→</span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+.writing-hero {
+  padding: 5rem 2rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.writing-sub {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 480px;
+}
+
+.writing-list-section {
+  padding: 0 2rem 6rem;
+}
+
+.writing-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.writing-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.writing-item:last-child {
+  border-bottom: none;
+}
+
+.writing-link {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.75rem 0;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.writing-link:hover .writing-title {
+  color: var(--accent);
+}
+
+.writing-link:hover .writing-arrow {
+  transform: translateX(3px);
+}
+
+.writing-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.writing-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.writing-tag-architecture {
+  background: rgba(0, 168, 173, 0.1);
+  color: var(--accent);
+}
+
+.writing-tag-benchmarks {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--amber);
+}
+
+.writing-tag-comparisons {
+  background: rgba(232, 232, 232, 0.07);
+  color: var(--muted);
+}
+
+.writing-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+  transition: color 0.15s;
+}
+
+.writing-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 580px;
+}
+
+.writing-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  padding-top: 0.2rem;
+}
+
+.writing-date {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.writing-arrow {
+  font-size: 0.85rem;
+  color: var(--dim);
+  transition: transform 0.15s, color 0.15s;
+}
+
+.writing-link:hover .writing-arrow {
+  color: var(--accent);
+}
+
+@media (max-width: 580px) {
+  .writing-link {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .writing-right {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+</style>
+
+</Base>
