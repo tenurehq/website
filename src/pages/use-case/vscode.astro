@@ -281,83 +281,82 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── SETUP ── -->
 <section class="uc-section" style="border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">Setup</span>
     <h2>Four steps. Then nothing.</h2>
 
     <div class="steps">
-      <div class="step">
-        <div class="step-num-col">
-          <div class="step-num">01</div>
-          <div class="step-line"></div>
-        </div>
-        <div>
-          <div class="step-label">Install Tenure</div>
-          <h3>Docker container. Thirty seconds.</h3>
-          <div class="terminal" style="max-width:520px; margin-top:1rem;">
-            <div class="terminal-bar">
-              <span class="term-dot term-dot-red"></span>
-              <span class="term-dot term-dot-yellow"></span>
-              <span class="term-dot term-dot-green"></span>
-              <span class="terminal-title">macOS / Linux</span>
+          <div class="step">
+            <div class="step-num-col">
+              <div class="step-num">01</div>
+              <div class="step-line"></div>
             </div>
-            <div class="terminal-body">
-              <div><span class="t-prompt">$</span> <span class="t-cmd">docker run --rm -v "$HOME/.tenure:/app/.tenure" \</span></div>
-              <div><span class="t-dim">&nbsp;&nbsp;tenureai/tenure:latest init</span></div>
-              <div><span class="t-prompt">$</span> <span class="t-cmd">docker run -d -v "$HOME/.tenure:/app/.tenure" \</span></div>
-              <div><span class="t-dim">&nbsp;&nbsp;-p 5757:5757 tenureai/tenure:latest</span></div>
-              <div>&nbsp;</div>
-              <div><span class="t-ok">✓</span> <span class="t-muted">Token saved to ~/.tenure/token</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="step-num-col">
-          <div class="step-num">02</div>
-          <div class="step-line"></div>
-        </div>
-        <div>
-          <div class="step-label">Install the extension</div>
-          <h3>One click from the Marketplace.</h3>
-          <p>Search for <strong>Tenure</strong> in the VS Code Extensions panel, or install directly from the Marketplace. Works in VS Code, Windsurf, and any VS Code fork via Open VSX.</p>
-          <div style="margin-top:1rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <div>
+              <div class="step-label">Install</div>
+              <h3>One click. That's the only manual step.</h3>
+              <p>Search for <strong>Tenure</strong> in the VS Code Extensions panel, or install directly from the Marketplace. Works in VS Code, Windsurf, and any VS Code fork via Open VSX.</p>
+              <div style="margin-top:1rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
             <a href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode" class="btn-primary" target="_blank" rel="noopener" style="font-size:0.85rem;">VS Code Marketplace →</a>
             <a href="https://open-vsx.org/extension/tenureai/tenure-vscode" class="btn-secondary" target="_blank" rel="noopener" style="font-size:0.85rem;">Open VSX</a>
           </div>
-        </div>
-      </div>
+            </div>
+          </div>
 
-      <div class="step">
-        <div class="step-num-col">
-          <div class="step-num">03</div>
-          <div class="step-line"></div>
-        </div>
-        <div>
-          <div class="step-label">Set your token</div>
-          <h3>Command palette → Tenure: Set API Token.</h3>
-          <p>Paste your token from <code>~/.tenure/token</code>. It goes into VS Code's native secret store. No config files. No environment variables left in plain text.</p>
-        </div>
-      </div>
+          <div class="step">
+            <div class="step-num-col">
+              <div class="step-num">02</div>
+              <div class="step-line"></div>
+            </div>
+            <div>
+              <div class="step-label">Automatic Provisioning</div>
+              <h3>The daemon starts itself.</h3>
+              <p>
+                The extension securely spins up the local daemon on port 5757
+                and hooks up the proxy layer. The daemon starts itself. No
+                terminal required.
+              </p>
+            </div>
+          </div>
 
-      <div class="step">
-        <div class="step-num-col">
-          <div class="step-num">04</div>
+          <div class="step">
+            <div class="step-num-col">
+              <div class="step-num">03</div>
+              <div class="step-line"></div>
+            </div>
+            <div>
+              <div class="step-label">Zero plaintext keys</div>
+              <h3>
+                Your key goes into the IDE's secret store. Not a config file.
+              </h3>
+              <p>
+                Tenure generates your local bearer token and automatically
+                injects it directly into your IDE's native secret store. Zero
+                plain-text keys left floating around in your global config
+                files.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col">
+              <div class="step-num">04</div>
+            </div>
+            <div>
+              <div class="step-label">Work</div>
+              <h3>There is no step four.</h3>
+              <p>
+                Tenure learns in the background. The first session is good. The
+                tenth is noticeably better. By the fiftieth, it knows you. Every
+                session compounds. The store gets more precise, not less, as it
+                grows.
+              </p>
+            </div>
+          </div>
         </div>
-        <div>
-          <div class="step-label">Point your client</div>
-          <h3>Base URL: <code>http://localhost:5757/v1</code>. That's it.</h3>
-          <p>Set this in Continue, Cline, Windsurf, or any OpenAI-compatible client inside VS Code. The extension handles scope sync on every file switch. Memory is active.</p>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- ── CTA ── -->
 <section class="uc-section" style="text-align:center;">
   <div class="container">
     <span class="label">Get started</span>
@@ -542,7 +541,6 @@ import Base from '../../layouts/Base.astro';
   line-height: 1.6;
 }
 
-/* Steps (reuse from index) */
 .steps { margin-top: 3rem; display: flex; flex-direction: column; gap: 2.5rem; }
 
 .step {
