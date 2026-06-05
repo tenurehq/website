@@ -57,7 +57,6 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── SECTION 1 ── -->
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The search default</span>
@@ -65,7 +64,7 @@ import Base from '../../layouts/Base.astro';
     <p>
       Every mainstream AI memory system implements some variant of retrieval-augmented generation.
       Transcripts or extracted facts are embedded, stored in a vector index, and retrieved by semantic
-      similarity. ChatGPT memory, Mem0, Memori, Zep, and Hindsight all follow this pattern [1].
+      similarity. ChatGPT memory, Mem0, Memori, Zep, and Hindsight all follow this pattern.
       It is document retrieval mapped onto personal memory, and the mismatch is deeper than it appears.
     </p>
     <p>
@@ -99,14 +98,14 @@ import Base from '../../layouts/Base.astro';
       In a state management model, the atomic unit is a typed belief with explicit boundaries.
       Beliefs carry a type (preference, decision, entity, open question, or relation), an epistemic
       status (active, inferred, exploratory, or superseded), and a scope label that determines
-      where they are valid [1]. This is not metadata attached to a document. It is schema enforced
+      where they are valid. This is not metadata attached to a document. It is schema enforced
       by the storage layer itself.
     </p>
     <p>
       The consequences of that schema are architectural, not cosmetic. A superseded belief is
       structurally absent from retrieval. It is not down-ranked, not filtered at the application layer,
       and not left to a re-ranker to discard. It is excluded before scoring begins because the data
-      model says it is retired [1]. A system that deletes stale beliefs cannot distinguish between
+      model says it is retired. A system that deletes stale beliefs cannot distinguish between
       "we never had this belief" and "we had this belief and moved past it." State management
       preserves the audit chain while guaranteeing the belief never injects again.
     </p>
@@ -115,7 +114,7 @@ import Base from '../../layouts/Base.astro';
       absent from a session in <code>project:client-b</code>. Vector search cannot provide this
       guarantee: semantic proximity is continuous, and you can only down-rank out-of-scope results.
       A hard filter applied before retrieval scoring makes isolation a property of the data model,
-      not a tuning parameter [1].
+      not a tuning parameter.
     </p>
   </div>
 </section>
@@ -130,13 +129,13 @@ import Base from '../../layouts/Base.astro';
       generative model's ability to sort through noise. This is the hidden coupling that answer-quality
       benchmarks obscure. A system returning its entire belief store achieves recall of 1.0 trivially;
       a capable model locates the right answer in the noise and scores well on F1 or LLM-as-a-Judge
-      metrics [1]. The model was never a neutral consumer. It was load-bearing infrastructure
+      metrics. The model was never a neutral consumer. It was load-bearing infrastructure
       compensating for retrieval imprecision.
     </p>
     <p>
       The failure only becomes visible when you route retrieved context to a consumer that is not
       a frontier LLM. A classifier, a rules engine, a structured pipeline, or a fine-tuning dataset
-      cannot compensate for a retrieval system that returns 8 to 18 irrelevant beliefs per query [1].
+      cannot compensate for a retrieval system that returns 8 to 18 irrelevant beliefs per query.
       The system does not merely underperform. It fails outright.
     </p>
     <p>
@@ -166,7 +165,7 @@ import Base from '../../layouts/Base.astro';
       Search-based memory has no concept of session boundaries. After eight consecutive off-topic
       drift turns, returning to the original topic produces drift scores of 0.92 to 1.0 across vector
       comparison systems: beliefs introduced during unrelated turns contaminate re-entry retrieval
-      because they share semantic mass [1].
+      because they share semantic mass.
     </p>
     <p>
       In a state management model, topic drift is a scope transition, not a similarity event. Beliefs
@@ -176,15 +175,14 @@ import Base from '../../layouts/Base.astro';
     </p>
     <p>
       Single-turn latency metrics conceal this cost. One comparison system reports sub-700ms single-turn
-      latency but exceeds 2,700ms mean per session turn, with p95 above 6,000ms [1]. The session load
+      latency but exceeds 2,700ms mean per session turn, with p95 above 6,000ms. The session load
       degrades retrieval paths that were already imprecise. State management flattens this curve:
       retrieval latency remains sub-15ms regardless of session depth because the lookup is indexed,
-      not similarity-scanned [1].
+      not similarity-scanned.
     </p>
   </div>
 </section>
 
-<!-- ── SECTION 5 ── -->
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The proxy layer</span>
@@ -192,21 +190,21 @@ import Base from '../../layouts/Base.astro';
     <p>
       An AI memory proxy sits between the client and the provider. It intercepts the outbound request,
       observes the conversation history, and injects a pre-computed context block into the system
-      prompt before the request continues [3]. From the model's perspective, the memory was always
+      prompt before the request continues. From the model's perspective, the memory was always
       there. From the user's perspective, nothing happened. There was no tool call, no retrieval step,
       no visible latency.
     </p>
     <p>
       This is only possible because the store is state, not a search result. The system prompt is
       assembled from pinned preferences, scoped active beliefs, and open questions whose validity
-      has already been determined by schema and scope [1]. There is no ranking stage, no similarity
+      has already been determined by schema and scope. There is no ranking stage, no similarity
       score threshold, and no re-ranker. The proxy performs a lookup and an injection, not a query
       and a sort.
     </p>
     <p>
       The architectural consequence is cross-client persistence without plugin cooperation. VS Code,
       Claude.ai, Open WebUI, LibreChat, and any OpenAI-compatible client all pass through the same
-      proxy and share the same belief state [3]. Memory accumulates regardless of which tool the
+      proxy and share the same belief state. Memory accumulates regardless of which tool the
       developer uses, because the state lives at the network layer rather than inside any application.
     </p>
 
@@ -227,21 +225,21 @@ import Base from '../../layouts/Base.astro';
     <h2>Search degrades with scale. State improves.</h2>
     <p>
       Vector-based AI memory degrades as the store grows. More beliefs mean more semantic mass,
-      broader cosine overlap, and lower precision on every query [1]. The standard response is to add
+      broader cosine overlap, and lower precision on every query. The standard response is to add
       filtering, re-ranking, and hierarchy: infrastructure built to compensate for the wrong primary
-      signal [1].
+      signal.
     </p>
     <p>
       Structured state moves in the opposite direction. Alias-weighted term matching improves as
       observed surface forms accumulate. Every session is a vocabulary observation; new aliases are
-      captured continuously and added to the belief they describe [1]. When two beliefs merge during
+      captured continuously and added to the belief they describe. When two beliefs merge during
       compaction, every term that previously retrieved either belief continues to retrieve the merged
       one. The store becomes more findable with each session, not less.
     </p>
     <p>
       Compaction itself is a state management operation, not a garbage collection pass. It prevents
       noise floor accumulation by collapsing duplicates and enforcing supersession chains, rather than
-      relying on retrieval to suppress redundant context after the fact [1].
+      relying on retrieval to suppress redundant context after the fact.
     </p>
   </div>
 </section>

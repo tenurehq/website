@@ -47,8 +47,8 @@ import Base from '../../layouts/Base.astro';
     <div class="tldr-box">
       <h3>TL;DR</h3>
       <ul>
-        <li>nomic-embed-text, mxbai-embed-large, and qwen3-8b all achieve 0.09 mean retrieval precision on the same benchmark [1].</li>
-        <li>At 8 billion parameters and 1,131ms mean latency, qwen3 produces the same precision as a 768-dimension model at 43ms [1].</li>
+        <li>nomic-embed-text, mxbai-embed-large, and qwen3-8b all achieve 0.09 mean retrieval precision on the same benchmark</li>
+        <li>At 8 billion parameters and 1,131ms mean latency, qwen3 produces the same precision as a 768-dimension model at 43ms</li>
         <li>Semantic proximity within a domain-specific corpus is structural; it cannot be embedded away.</li>
         <li>Higher-capability embeddings redistribute scores but do not isolate distinct concepts that occupy the same semantic region.</li>
         <li>The fix is not a better embedding model. It is a different retrieval signal entirely.</li>
@@ -57,7 +57,6 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── SECTION 1 ── -->
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The scale assumption</span>
@@ -70,7 +69,7 @@ import Base from '../../layouts/Base.astro';
     </p>
     <p>
       This intuition is wrong. On PrecisionMemBench, three embedding models spanning a 20x range
-      in scale produce identical mean retrieval precision: 0.09 [1]. The smallest model runs at 43ms
+      in scale produce identical mean retrieval precision: 0.09. The smallest model runs at 43ms
       mean latency. The largest runs at 1,131ms. They fail in exactly the same way, returning the
       same irrelevant beliefs on the same queries with the same score distributions.
     </p>
@@ -85,7 +84,6 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── SECTION 2 ── -->
 <section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The invariance result</span>
@@ -93,7 +91,7 @@ import Base from '../../layouts/Base.astro';
     <p>
       We evaluated three configurations on PrecisionMemBench, all using cosine similarity with no
       additional pipeline infrastructure: nomic-embed-text at 768 dimensions, mxbai-embed-large at
-      1024 dimensions, and qwen3 at the 8-billion parameter scale with 4096 dimensions [1].
+      1024 dimensions, and qwen3 at the 8-billion parameter scale with 4096 dimensions.
     </p>
 
     <div class="precision-compare">
@@ -122,13 +120,13 @@ import Base from '../../layouts/Base.astro';
     <p>
       All 11 passes in every configuration are trivially empty or budget-forced cases: cases where
       the expected relevant belief set is empty by design, so any system returning nothing passes
-      by construction [1]. On the 48 cases that carry an active retrieval assertion, all three models
+      by construction. On the 48 cases that carry an active retrieval assertion, all three models
       score zero. Not near-zero. Zero.
     </p>
     <p>
       The qwen3 result is the clearest demonstration that this is not a capability problem. At roughly
       20 times the mean latency of nomic-embed-text and over 1,100ms per query, the 8-billion
-      parameter model produces identical precision to the smallest embedding tested [1]. The
+      parameter model produces identical precision to the smallest embedding tested. The
       additional parameters buy no discrimination. They buy only delay.
     </p>
   </div>
@@ -143,7 +141,7 @@ import Base from '../../layouts/Base.astro';
       In any belief store where participants share a technical domain, all beliefs about that domain
       occupy a common semantic region. A query about Redis is semantically close to a belief about
       Redis as intended, and also semantically close to beliefs about MongoDB, TypeScript, Fastify,
-      Kubernetes, and GitHub Actions, with cosine scores between 0.65 and 0.83 [1].
+      Kubernetes, and GitHub Actions, with cosine scores between 0.65 and 0.83.
     </p>
     <p>
       Those scores reflect genuine semantic relatedness. They are not errors. An engineering codebase
@@ -171,18 +169,18 @@ import Base from '../../layouts/Base.astro';
       or incomplete facts, of course retrieval struggles. But the benchmark directly decouples these
       variables. Mem0's extraction pipeline produced a relation belief that preserved every
       operationally significant fact: the service name, dependency target, fail-open behavior, and
-      coupling assertion [1]. By any standard, this was a high-quality extraction.
+      coupling assertion. By any standard, this was a high-quality extraction.
     </p>
     <p>
       Retrieval precision on that exact stored memory was 0.056. The system returned the correctly
       extracted belief alongside 16 additional irrelevant beliefs including a linting preference, a
-      React expertise entry, and a superseded SQLAlchemy note [1]. In a second case referencing the
+      React expertise entry, and a superseded SQLAlchemy note. In a second case referencing the
       same belief, recall dropped to 0.5: the structurally necessary participant was missing entirely
       despite being directly referenced in the stored text.
     </p>
     <p>
       The precision failure occurs in both high-recall and low-recall conditions, which means the
-      floor is structural rather than query-dependent [1]. Write-time extraction has no bearing on
+      floor is structural rather than query-dependent. Write-time extraction has no bearing on
       the failure because the failure happens at read time, in the geometry of the embedding space,
       not in the content of the beliefs.
     </p>
@@ -196,7 +194,7 @@ import Base from '../../layouts/Base.astro';
     <h2>What higher latency actually buys you</h2>
     <p>
       When you upgrade from nomic-embed-text to qwen3-8b for memory retrieval, you trade 43ms mean
-      latency for 1,131ms [1]. You trade 85ms p95 for 2,605ms. The additional compute purchases no
+      latency for 1,131ms. You trade 85ms p95 for 2,605ms. The additional compute purchases no
       retrieval benefit. It purchases only inference cost and a slower user experience.
     </p>
     <p>
@@ -217,19 +215,18 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── SECTION 6 ── -->
 <section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The orthogonal signal</span>
     <h2>Named entities, not semantic neighbors</h2>
     <p>
-      Resolving relevance requires a retrieval signal orthogonal to semantic similarity [1]. In bounded
+      Resolving relevance requires a retrieval signal orthogonal to semantic similarity. In bounded
       vocabulary contexts where the user coined the terminology and authored aliases to match expected
-      query surfaces, BM25 with alias-weighted term matching provides higher precision by construction [1].
+      query surfaces, BM25 with alias-weighted term matching provides higher precision by construction.
     </p>
     <p>
       Embedding similarity retrieves what is semantically related. Alias-weighted BM25 retrieves what
-      the user named. In a single-user persistent memory context, the latter is more often correct [1].
+      the user named. In a single-user persistent memory context, the latter is more often correct.
       If a user names their Kubernetes belief with canonical name <code>kubernetes</code> and aliases
       <code>k8s</code> and <code>kube</code>, then a query containing <code>k8s</code> should retrieve
       that belief with high precision regardless of semantic distance. There is no ambiguity to resolve:
@@ -239,14 +236,13 @@ import Base from '../../layouts/Base.astro';
       The predictable objection is vocabulary coverage: what if the user refers to a belief using a
       term not yet in the alias set? This misidentifies a correct behavior as a limitation. On first
       encounter the system returns silence rather than noise. The extraction worker captures the new
-      term as an alias. Every subsequent query using that term resolves correctly [1]. The alias
+      term as an alias. Every subsequent query using that term resolves correctly. The alias
       enrichment flywheel means the system improves organically through use, while vector systems
-      degrade as semantic mass accumulates [1].
+      degrade as semantic mass accumulates.
     </p>
   </div>
 </section>
 
-<!-- ── CONCLUSION ── -->
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">Conclusion</span>
@@ -259,9 +255,9 @@ import Base from '../../layouts/Base.astro';
     </p>
     <p>
       The benchmark evidence is unambiguous: three models spanning a 20x scale range produce
-      identical mean precision of 0.09, identical pass counts, and identical failure modes [1].
+      identical mean precision of 0.09, identical pass counts, and identical failure modes.
       The field has responded by adding re-ranking stages, temporal trees, and hierarchical graphs:
-      infrastructure compensating for the wrong primary signal [1].
+      infrastructure compensating for the wrong primary signal.
     </p>
     <p>
       Until memory systems stop treating memory as semantic retrieval and start treating it as named
@@ -280,7 +276,6 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── RELATED ── -->
 <section class="essay-section" style="background:var(--surface);">
   <div class="container">
     <span class="label">Related</span>
