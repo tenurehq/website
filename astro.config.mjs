@@ -39,6 +39,10 @@ export default defineConfig({
           items: [{ autogenerate: { directory: "docs/clients" } }],
         },
         {
+          label: "Teams",
+          items: [{ autogenerate: { directory: "docs/teams" } }],
+        },
+        {
           label: "Reference",
           items: [{ autogenerate: { directory: "docs/reference" } }],
         },

@@ -1,0 +1,1042 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="AI Governance for Teams | Tenure"
+  description="Nobody asks who owns the Anthropic keys until someone leaves. Tenure gives every engineer their own PAT, a central proxy, SCIM deprovisioning, and a full audit trail. Access governance for AI that actually works."
+  canonical="https://tenureai.dev/teams/ai-governance"
+>
+
+<style>
+.gov-hero {
+  padding: 6rem 2rem 5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.gov-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+.gov-breadcrumb a { color: var(--muted); transition: color 0.15s; }
+.gov-breadcrumb a:hover { color: var(--text); }
+.gov-breadcrumb-sep { color: var(--border2); }
+
+.gov-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.gov-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0 0 1.5rem;
+}
+
+.gov-hero h1 .accent { color: var(--accent); }
+
+.gov-hero-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0 0 2.5rem;
+}
+
+.gov-ctas {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--accent2); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border2);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+  text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+/* ── QUIET PROBLEM SECTION ── */
+.quiet-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.quiet-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 1.25rem;
+  line-height: 1.2;
+}
+
+.quiet-section p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 1rem;
+}
+
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin-top: 3.5rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+@media (max-width: 680px) { .scenario-grid { grid-template-columns: 1fr; } }
+
+.scenario-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  position: relative;
+}
+
+.scenario-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.scenario-card:hover::before {
+  background: var(--red);
+}
+
+.scenario-who {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+.scenario-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.6rem;
+  line-height: 1.35;
+}
+
+.scenario-card p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.scenario-card code {
+  font-family: var(--mono);
+  font-size: 0.78em;
+  background: rgba(196, 83, 83, 0.1);
+  color: var(--red);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+/* ── PROBLEM LIST (the blunt inventory) ── */
+.problem-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.problem-section h2 {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 3rem;
+  line-height: 1.2;
+}
+
+.problem-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.problem-item {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+  background: var(--bg);
+  transition: background 0.15s;
+}
+.problem-item:last-child { border-bottom: none; }
+.problem-item:hover { background: rgba(196,83,83,0.03); }
+
+.problem-num {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--red);
+  opacity: 0.6;
+  padding-top: 0.15rem;
+  letter-spacing: 0.05em;
+}
+
+.problem-text {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.problem-text strong {
+  color: var(--text);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.92rem;
+}
+
+.question-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.question-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  margin-top: 2rem;
+}
+
+.question-line {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.question-line:last-child { border-bottom: none; padding-bottom: 0; }
+.question-line:first-child { padding-top: 0; }
+
+.question-q {
+  font-size: 0.9rem;
+  color: var(--muted);
+  flex: 1;
+  line-height: 1.5;
+}
+
+.question-a {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--red);
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.question-a.ok {
+  color: var(--accent);
+}
+
+.solution-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.solution-section h2 {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.solution-section > .container > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 3rem;
+}
+
+.solution-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 680px) { .solution-grid { grid-template-columns: 1fr; } }
+
+.solution-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.solution-card:hover {
+  border-color: rgba(0,168,173,0.3);
+}
+
+.solution-card-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.solution-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.75rem 0 0.5rem;
+}
+
+.solution-card p {
+  font-size: 0.83rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 0 0 1rem;
+}
+
+.solution-pill {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.15);
+  padding: 0.25em 0.6em;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.solution-icon {
+  font-size: 1.2rem;
+  display: block;
+}
+
+.audit-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.audit-section h2 {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.audit-section > .container > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 3rem;
+}
+
+.audit-log {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.audit-log-header {
+  display: grid;
+  grid-template-columns: 160px 1fr 110px 90px;
+  gap: 1rem;
+  padding: 0.6rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.audit-log-header span {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.audit-log-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 110px 90px;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background 0.1s;
+}
+.audit-log-row:last-child { border-bottom: none; }
+.audit-log-row:hover { background: var(--surface2); }
+
+.audit-ts {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+
+.audit-user {
+  font-size: 0.82rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.audit-user-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.audit-user-dot.revoked {
+  background: var(--red);
+}
+
+.audit-action {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.audit-status {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.audit-badge {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.audit-badge.ok {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--green);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.audit-badge.revoked {
+  background: rgba(196, 83, 83, 0.1);
+  color: var(--red);
+  border: 1px solid rgba(196, 83, 83, 0.2);
+}
+
+.audit-badge.active {
+  background: rgba(0,168,173,0.08);
+  color: var(--accent);
+  border: 1px solid rgba(0,168,173,0.2);
+}
+
+@media (max-width: 680px) {
+  .audit-log-header { grid-template-columns: 1fr 1fr; }
+  .audit-log-header span:nth-child(3),
+  .audit-log-header span:nth-child(4) { display: none; }
+  .audit-log-row { grid-template-columns: 1fr 1fr; }
+  .audit-log-row > .audit-action,
+  .audit-log-row > .audit-status { display: none; }
+}
+
+.offboard-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.offboard-section h2 {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.offboard-section > .container > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 3rem;
+}
+
+.offboard-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.offboard-step {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+  position: relative;
+}
+
+.offboard-step-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.offboard-node {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.offboard-node.trigger {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: var(--amber);
+}
+
+.offboard-node.auto {
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.2);
+  color: var(--accent);
+}
+
+.offboard-connector {
+  width: 1px;
+  height: 2rem;
+  background: var(--border2);
+  margin: 0.25rem 0;
+}
+
+.offboard-content {
+  padding-bottom: 2rem;
+}
+
+.offboard-content h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.3rem 0 0.3rem;
+  line-height: 1.3;
+}
+
+.offboard-content p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.offboard-tag {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--amber);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+  display: block;
+}
+
+.offboard-tag.auto { color: var(--accent); }
+
+.last-used-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.last-used-section h2 {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.last-used-section > .container > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 3rem;
+}
+
+.pat-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pat-table th {
+  padding: 0.65rem 1.1rem;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.pat-table td {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.83rem;
+  vertical-align: middle;
+}
+
+.pat-table tr:last-child td { border-bottom: none; }
+.pat-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.pat-name {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text);
+}
+
+.pat-owner { color: var(--muted); }
+
+.pat-last {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.pat-last.stale { color: var(--amber); }
+.pat-last.fresh { color: var(--green); }
+.pat-last.never { color: var(--red); opacity: 0.7; }
+
+.pat-scope {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+
+.gov-cta-section {
+  padding: 6rem 2rem;
+}
+
+.gov-cta-inner {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.gov-cta-inner h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+
+.gov-cta-inner p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.75;
+  margin: 0 0 2rem;
+}
+
+.gov-cta-btns {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+</style>
+
+<section class="gov-hero">
+  <div class="container">
+    <div class="gov-breadcrumb">
+      <a href="/teams">Teams</a>
+      <span class="gov-breadcrumb-sep">›</span>
+      <span>AI Governance</span>
+    </div>
+    <span class="gov-eyebrow">AI Governance</span>
+    <h1>Who owns the <span class="accent">API key</span>?</h1>
+    <p class="gov-hero-sub">
+      Everyone on the team is using AI. Nobody is sure which credentials they're using, whose name the account is under, or what happens when someone leaves. This is the governance problem teams don't talk about until it becomes urgent.
+    </p>
+    <div class="gov-ctas">
+      <a href="/docs/teams/governance" class="btn-primary">Read the deployment guide →</a>
+      <a href="https://github.com/tenurehq/tenure" class="btn-secondary" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<section class="quiet-section">
+  <div class="container">
+    <span class="section-label">The situation</span>
+    <h2>AI access at most companies is an accident waiting to happen.</h2>
+    <p>
+      It starts with one person creating an API key. Then a second person needs access, so they get the key too. Then a contractor needs it. Then someone pastes it into a shared <code>.env</code> file in the repo. Then that person leaves.
+    </p>
+    <p>
+      At no point did anyone say this was fine. It just happened, incrementally, because there was no structured alternative.
+    </p>
+
+    <div class="scenario-grid">
+      <div class="scenario-card">
+        <div class="scenario-who">The engineer</div>
+        <h3>The key is in the <code>.env.local</code>. Everyone has a copy.</h3>
+        <p>It was the path of least resistance. Now it's in six engineers' home directories, maybe a few editor config files, probably the CI logs from that one incident in March.</p>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-who">The contractor</div>
+        <h3>They finished the project four months ago. The key still works.</h3>
+        <p>Nobody thought to revoke it. There's no list of who has which keys. The contractor probably still has access and either doesn't know it or doesn't care.</p>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-who">The security team</div>
+        <h3>Someone asks: can you show me who has access to the AI APIs?</h3>
+        <p>The honest answer is no. There's a billing dashboard that shows usage, but nothing that maps requests to identities, and no way to know which keys are still live.</p>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-who">The offboarding checklist</div>
+        <h3>There's no line item for AI credentials.</h3>
+        <p>The IT runbook covers email, GitHub, Slack, AWS. It has not been updated for the reality that engineers now have personal access to a dozen AI provider accounts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="question-section">
+  <div class="container">
+    <span class="section-label">The question you can't answer</span>
+    <h2>What happens when someone asks you to prove control?</h2>
+    <p style="color:var(--muted); font-size:0.95rem; max-width:580px; line-height:1.75; margin:0 0 0.5rem;">
+      Not "what do you think is probably true." Prove it. With a timestamp and a name.
+    </p>
+
+    <div class="question-block">
+      <div class="question-line">
+        <span class="question-q">Which engineers currently have access to your Anthropic API?</span>
+        <span class="question-a">unknown</span>
+      </div>
+      <div class="question-line">
+        <span class="question-q">When did the contractor who left in February last make a request?</span>
+        <span class="question-a">no record</span>
+      </div>
+      <div class="question-line">
+        <span class="question-q">Who made the 4am request that spiked your bill last month?</span>
+        <span class="question-a">no record</span>
+      </div>
+      <div class="question-line">
+        <span class="question-q">How many active tokens exist right now?</span>
+        <span class="question-a">unknown</span>
+      </div>
+      <div class="question-line">
+        <span class="question-q">Can you revoke a single engineer's access in under a minute?</span>
+        <span class="question-a">no</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="solution-section">
+  <div class="container">
+    <span class="section-label">How Tenure solves it</span>
+    <h2>One key at the proxy. One token per person.</h2>
+    <p>
+      Tenure sits between your engineers and the AI provider. Your org's real API key lives in one place. Every engineer authenticates through their own personal access token. Access is per-identity from the start.
+    </p>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <div class="solution-card-accent"></div>
+        <span class="solution-icon">🔑</span>
+        <h3>Personal access tokens</h3>
+        <p>Every engineer gets their own PAT. Their token is theirs. Their requests are attributed to them. Revoking one person's access doesn't require rotating a shared key or touching anyone else's setup.</p>
+        <span class="solution-pill">PAT per user</span>
+      </div>
+
+      <div class="solution-card">
+        <div class="solution-card-accent"></div>
+        <span class="solution-icon">🌐</span>
+        <h3>Central proxy</h3>
+        <p>The actual provider API key lives in one place: the Tenure deployment inside your cluster. Engineers never see it. It never lives in a <code>.env</code> file. It never leaves your infrastructure.</p>
+        <span class="solution-pill">Zero credential scatter</span>
+      </div>
+
+      <div class="solution-card">
+        <div class="solution-card-accent"></div>
+        <span class="solution-icon">⚡</span>
+        <h3>SCIM deprovisioning</h3>
+        <p>Tenure integrates with your identity provider via SCIM. When you deprovision an engineer in Okta, Azure AD, or Google Workspace, their Tenure access is revoked automatically. No manual step. No gap.</p>
+        <span class="solution-pill">Automatic offboarding</span>
+      </div>
+
+      <div class="solution-card">
+        <div class="solution-card-accent"></div>
+        <span class="solution-icon">📋</span>
+        <h3>Full audit trail</h3>
+        <p>Every request through the proxy is logged with identity, timestamp, and <code>last_used_at</code> per token. Stale tokens are visible. Active sessions are visible. Nothing is inferred from billing data.</p>
+        <span class="solution-pill">last_used_at per token</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AUDIT LOG VISUAL ── -->
+<section class="audit-section">
+  <div class="container">
+    <span class="section-label">Auditability</span>
+    <h2>Every request. Every identity. Every timestamp.</h2>
+    <p>
+      The audit log isn't something you construct after an incident. It's written as requests happen. When someone asks who made a request at 4am, you open the log and show them.
+    </p>
+
+    <div class="audit-log">
+      <div class="audit-log-header">
+        <span>Timestamp</span>
+        <span>Identity</span>
+        <span>Action</span>
+        <span>Status</span>
+      </div>
+      <div class="audit-log-row">
+        <div class="audit-ts">2025-06-07 04:13:22</div>
+        <div class="audit-user"><span class="audit-user-dot"></span>marcus.chen</div>
+        <div class="audit-action">proxy.request</div>
+        <div class="audit-status"><span class="audit-badge ok">active</span></div>
+      </div>
+      <div class="audit-log-row">
+        <div class="audit-ts">2025-06-07 09:41:05</div>
+        <div class="audit-user"><span class="audit-user-dot"></span>priya.nair</div>
+        <div class="audit-action">proxy.request</div>
+        <div class="audit-status"><span class="audit-badge ok">active</span></div>
+      </div>
+      <div class="audit-log-row">
+        <div class="audit-ts">2025-06-07 10:02:48</div>
+        <div class="audit-user"><span class="audit-user-dot"></span>priya.nair</div>
+        <div class="audit-action">token.issued</div>
+        <div class="audit-status"><span class="audit-badge active">issued</span></div>
+      </div>
+      <div class="audit-log-row">
+        <div class="audit-ts">2025-06-07 11:15:33</div>
+        <div class="audit-user"><span class="audit-user-dot revoked"></span>j.contractor (ext)</div>
+        <div class="audit-action">token.revoked</div>
+        <div class="audit-status"><span class="audit-badge revoked">revoked</span></div>
+      </div>
+      <div class="audit-log-row">
+        <div class="audit-ts">2025-06-07 14:27:11</div>
+        <div class="audit-user"><span class="audit-user-dot"></span>dev.team (scim)</div>
+        <div class="audit-action">scim.deprovision</div>
+        <div class="audit-status"><span class="audit-badge revoked">auto</span></div>
+      </div>
+      <div class="audit-log-row">
+        <div class="audit-ts">2025-06-07 16:55:09</div>
+        <div class="audit-user"><span class="audit-user-dot"></span>marcus.chen</div>
+        <div class="audit-action">proxy.request</div>
+        <div class="audit-status"><span class="audit-badge ok">active</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OFFBOARDING FLOW ── -->
+<section class="offboard-section">
+  <div class="container">
+    <span class="section-label">Offboarding</span>
+    <h2>One step in your IdP. Zero manual cleanup.</h2>
+    <p>
+      The offboarding gap exists because AI credentials were granted outside the identity system. Tenure closes that gap by making your IdP the source of truth for access.
+    </p>
+
+    <div class="offboard-flow">
+      <div class="offboard-step">
+        <div class="offboard-step-track">
+          <div class="offboard-node trigger">HR</div>
+          <div class="offboard-connector"></div>
+        </div>
+        <div class="offboard-content">
+          <span class="offboard-tag">Trigger</span>
+          <h4>Engineer is offboarded in your IdP</h4>
+          <p>One step in Okta, Azure AD, or Google Workspace. The same step that revokes their email and GitHub access.</p>
+        </div>
+      </div>
+
+      <div class="offboard-step">
+        <div class="offboard-step-track">
+          <div class="offboard-node auto">⚡</div>
+          <div class="offboard-connector"></div>
+        </div>
+        <div class="offboard-content">
+          <span class="offboard-tag auto">Automatic</span>
+          <h4>SCIM pushes a deprovision event to Tenure</h4>
+          <p>The identity provider calls Tenure's SCIM endpoint. No webhook configuration. No cron job. No manual step from your engineering team.</p>
+        </div>
+      </div>
+
+      <div class="offboard-step">
+        <div class="offboard-step-track">
+          <div class="offboard-node auto">✓</div>
+          <div class="offboard-connector"></div>
+        </div>
+        <div class="offboard-content">
+          <span class="offboard-tag auto">Automatic</span>
+          <h4>All PATs for that identity are revoked</h4>
+          <p>Every personal access token associated with the user is invalidated immediately. Existing sessions are terminated. The audit log records the event with the SCIM caller as the actor.</p>
+        </div>
+      </div>
+
+      <div class="offboard-step">
+        <div class="offboard-step-track">
+          <div class="offboard-node auto">📋</div>
+        </div>
+        <div class="offboard-content">
+          <span class="offboard-tag auto">Result</span>
+          <h4>Provable. Timestamped. Done.</h4>
+          <p>The audit log shows exactly when access was revoked, by which mechanism, and confirms zero successful requests after that timestamp. You can show this to anyone who asks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LAST_USED_AT ── -->
+<section class="last-used-section">
+  <div class="container">
+    <span class="section-label">Token hygiene</span>
+    <h2>See which tokens are dormant before they become a liability.</h2>
+    <p>
+      <code>last_used_at</code> is stored on every PAT. Admins can see, at a glance, which tokens haven't been used in weeks or months. Stale tokens can be rotated or revoked on a schedule, not reactively after an incident.
+    </p>
+
+    <table class="pat-table">
+      <thead>
+        <tr>
+          <th>Token name</th>
+          <th>Owner</th>
+          <th>Last used</th>
+          <th>Scope</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pat-name">tok_mc_vscode_01</span></td>
+          <td class="pat-owner">marcus.chen</td>
+          <td><span class="pat-last fresh">2 hours ago</span></td>
+          <td class="pat-scope">proxy:read</td>
+        </tr>
+        <tr>
+          <td><span class="pat-name">tok_pn_cursor_01</span></td>
+          <td class="pat-owner">priya.nair</td>
+          <td><span class="pat-last fresh">today</span></td>
+          <td class="pat-scope">proxy:read</td>
+        </tr>
+        <tr>
+          <td><span class="pat-name">tok_ak_ci_agent</span></td>
+          <td class="pat-owner">alex.kim</td>
+          <td><span class="pat-last stale">47 days ago</span></td>
+          <td class="pat-scope">proxy:read</td>
+        </tr>
+        <tr>
+          <td><span class="pat-name">tok_jc_vscode_01</span></td>
+          <td class="pat-owner">j.contractor (ext)</td>
+          <td><span class="pat-last never">never (revoked)</span></td>
+          <td class="pat-scope">none</td>
+        </tr>
+        <tr>
+          <td><span class="pat-name">tok_tr_shared_dev</span></td>
+          <td class="pat-owner">tom.r</td>
+          <td><span class="pat-last stale">61 days ago</span></td>
+          <td class="pat-scope">proxy:read</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="gov-cta-section">
+  <div class="container">
+    <div class="gov-cta-inner">
+      <span class="section-label" style="text-align:center; display:block;">Get started</span>
+      <h2>AI access that your security team can actually audit.</h2>
+      <p>
+        Deploy Tenure inside your cluster. Connect your identity provider. Every engineer gets their own PAT, every request is attributed, and offboarding is one step in your IdP.
+      </p>
+      <div class="gov-cta-btns">
+        <a href="/docs/teams/governance" class="btn-primary">Read the deployment guide →</a>
+        <a href="/teams" class="btn-secondary">Back to Teams overview</a>
+      </div>
+      <p style="font-size:0.78rem; color:var(--dim); margin-top:1.5rem;">
+        Helm chart · OIDC / SCIM · MIT licensed · No call-home telemetry
+      </p>
+    </div>
+  </div>
+</section>
+
+</Base>

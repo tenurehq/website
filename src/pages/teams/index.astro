@@ -1,5 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
+import Base from '../../layouts/Base.astro';
 ---
 
 <Base
@@ -20,21 +20,15 @@ import Base from '../layouts/Base.astro';
 }
 </script>
 
-<!-- ── HERO ── -->
 <section class="uc-hero">
   <div class="container" style="text-align:center;">
     <div class="uc-breadcrumb">
-      <a href="/use-cases">Use cases</a>
-      <span class="uc-breadcrumb-sep">›</span>
       <span>Teams</span>
     </div>
     <span class="label" style="margin-top:1.5rem; display:inline-block;">For engineering teams</span>
-    <h1>Your engineers stop re-explaining.<br/>Your infra never leaves the building.</h1>
+    <h1>Know what your AI knows.</h1>
     <p class="hero-sub">
-      Tenure deploys inside your Kubernetes cluster. OIDC authentication,
-      hard scope isolation between engineers and projects, a complete
-      per-turn audit trail, and an orientation tax dashboard that makes
-      the productivity case without anyone having to construct it.
+     Observe memory before it changes responses, audit every retrieval, and measure the cost of forgotten context.
     </p>
     <div class="uc-hero-ctas">
       <a href="/docs/teams" class="btn-primary">
@@ -45,12 +39,11 @@ import Base from '../layouts/Base.astro';
       </a>
     </div>
     <p style="font-size:0.8rem; color:var(--dim); margin-top:1.5rem;">
-      Helm chart · OIDC / SSO · No egress · MIT licensed
+      Helm chart · OIDC / SSO · No call-home telemetry. · MIT licensed
     </p>
   </div>
 </section>
 
-<!-- ── THE PROBLEM ── -->
 <section class="uc-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">The problem</span>
@@ -62,7 +55,7 @@ import Base from '../layouts/Base.astro';
       Then again tomorrow. Then a new engineer joins and explains it from scratch.
     </p>
     <p>
-      That's the orientation tax — the fraction of every AI session spent
+      That's the orientation tax; the fraction of every AI session spent
       re-establishing context the system should already have. Tenure measures it,
       shows it decreasing, and makes it go away.
     </p>
@@ -92,7 +85,6 @@ import Base from '../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── AUDIT + VISIBILITY ── -->
 <section class="uc-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">Visibility</span>
@@ -100,7 +92,7 @@ import Base from '../layouts/Base.astro';
     <p>
       Most enterprise AI deployments have no answer for the question security teams
       always ask eventually: <em>what exactly is being injected into the model's context,
-      for which engineers, and when?</em> Tenure answers it completely — because
+      for which engineers, and when?</em> Tenure answers it completely, because
       making injection visible only makes sense if you're confident in what it shows.
     </p>
 
@@ -108,7 +100,7 @@ import Base from '../layouts/Base.astro';
       <div class="uc-feature-card">
         <div class="uc-feature-icon">📋</div>
         <h3>Per-turn audit trail</h3>
-        <p>Every belief injected into every session is logged — which belief, which query surfaced it, which engineer, which turn. Not reconstructed from logs after the fact. Recorded as it happened.</p>
+        <p>Every belief injected into every session is logged, which belief, which query surfaced it, which engineer, which turn. Not reconstructed from logs after the fact. Recorded as it happened.</p>
       </div>
       <div class="uc-feature-card">
         <div class="uc-feature-icon">👁️</div>
@@ -118,7 +110,7 @@ import Base from '../layouts/Base.astro';
       <div class="uc-feature-card">
         <div class="uc-feature-icon">📊</div>
         <h3>Orientation tax dashboard</h3>
-        <p>Re-explanations prevented, time saved, tax still paid — per engineer, across the org, trending over time. The productivity case builds itself from real usage data. No narrative required.</p>
+        <p>Re-explanations prevented, time saved, tax still paid, per engineer, across the org, trending over time. The productivity case builds itself from real usage data. No narrative required.</p>
       </div>
       <div class="uc-feature-card">
         <div class="uc-feature-icon">🔐</div>
@@ -160,21 +152,20 @@ import Base from '../layouts/Base.astro';
           <span class="uc-drift-icon good">✓</span>
           <h3>Tenure</h3>
         </div>
-        <p>Scope is a hard filter applied before retrieval scoring. Out-of-scope beliefs are structurally absent — not down-ranked, absent. Drift score: 0.0 across all session turns in independent evaluation.</p>
+        <p>Scope is a hard filter applied before retrieval scoring. Out-of-scope beliefs are structurally absent, not down-ranked, absent. Drift score: 0.0 across all session turns in independent evaluation.</p>
         <div class="uc-drift-note">For regulated environments: a session in <code>project:client-a</code> cannot surface beliefs from <code>project:client-b</code> regardless of query content. Verifiable, not claimed.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── DEPLOYMENT ── -->
 <section class="uc-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">Deployment</span>
     <h2>Inside your cluster. On your terms.</h2>
     <p>
       Tenure ships as a Helm chart. One HTTPS endpoint. No egress.
-      OIDC delegates authentication to whatever your org already uses —
+      OIDC delegates authentication to whatever your org already uses:
       Okta, Azure AD, Google Workspace, anything that speaks OIDC.
       Your IT team approves it once. Engineers connect through their
       existing identity.
