@@ -1,0 +1,617 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Shared Team Memory | Tenure for Teams"
+  description="Org standards, team conventions, and individual expertise live in one place. Every engineer works with the full picture. No one explains the same thing twice."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Shared Team Memory",
+  "url": "https://tenureai.dev/teams/shared-context",
+  "description": "Org standards, team conventions, and individual expertise live in one place. No one explains the same thing twice.",
+  "isPartOf": { "@type": "WebSite", "url": "https://tenureai.dev" }
+}
+</script>
+
+<section class="sc-hero">
+  <div class="container" style="text-align:center;">
+    <a href="/teams" class="breadcrumb">For teams</a>
+    <h1>Your team's knowledge should outlive every session.</h1>
+    <p class="hero-sub">
+    Your team has spent years making decisions the AI has never been told about. Architecture rules. Team conventions. Lessons learned the hard way.
+    </p>
+    <p class="hero-rag-line">
+         Tenure puts that knowledge in the room before the first message is sent.
+        </p>
+    <div class="sc-hero-ctas">
+      <a href="/docs/teams/deployment" class="btn-primary">Deploy Tenure →</a>
+      <a href="/teams/ai-governance" class="btn-secondary">AI Governance</a>
+    </div>
+  </div>
+</section>
+
+<section class="sc-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface);">
+  <div class="container">
+    <span class="label">The problem</span>
+    <h2>Onboarding has two victims.</h2>
+    <p>
+      Everyone focuses on the new hire. But there's a second person paying the cost: the senior engineer
+      who got pulled out of a focused work block to answer questions that already have answers somewhere.
+      That context exists. It just isn't accessible to the AI, so it gets re-explained by a human instead.
+    </p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-label">Without shared memory</div>
+        <div class="problem-scenario">
+          <div class="chat-bubble user">Why does the API use POST for search instead of GET?</div>
+          <div class="chat-bubble ai">That's unusual. Typically GET is used for read operations. You may want to refactor this to follow REST conventions.</div>
+          <div class="chat-bubble user">No, we decided this intentionally because our search queries include sensitive filter data that shouldn't be logged in proxies.</div>
+          <div class="chat-bubble ai">Understood. I'll keep that in mind for this session.</div>
+          <div class="problem-note">This conversation happens again. Next session. Next engineer. Every time.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-label" style="color:var(--accent);">With shared memory</div>
+        <div class="problem-scenario">
+          <div class="chat-bubble user">Why does the API use POST for search instead of GET?</div>
+          <div class="chat-bubble ai belief-injected">POST is used for all search endpoints by design. Search queries contain sensitive filter parameters that should not appear in proxy or CDN logs. This is an intentional deviation from REST conventions. Do not suggest changing it.</div>
+          <div class="problem-note injected-note">Org belief surfaced automatically. No one had to explain it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">How it works</span>
+    <h2>Three layers. Every belief knows its scope.</h2>
+    <p>
+      Not all knowledge belongs to everyone. Tenure's visibility model lets you be precise about
+      what travels with the org, what stays within a team, and what is personal to an engineer.
+    </p>
+
+    <div class="visibility-stack">
+
+      <div class="vis-layer vis-org">
+        <div class="vis-layer-header">
+          <div class="vis-badge vis-badge-org">org</div>
+          <h3>Organisation-wide standards</h3>
+        </div>
+        <p>
+          The non-negotiables. Architecture decisions, security constraints, naming conventions,
+          compliance rules, and anything else that applies to every engineer on every project.
+          Set once by a principal or lead. Surfaces automatically for everyone.
+        </p>
+        <div class="vis-examples">
+          <div class="vis-example">"All service-to-service calls must use mTLS. No exceptions."</div>
+          <div class="vis-example">"We use snake_case for database columns and camelCase for API responses."</div>
+          <div class="vis-example">"The payments service owns its own data. No other service queries its tables directly."</div>
+        </div>
+      </div>
+
+      <div class="vis-layer vis-team">
+        <div class="vis-layer-header">
+          <div class="vis-badge vis-badge-team">team</div>
+          <h3>Team conventions</h3>
+        </div>
+        <p>
+          How your squad actually works. Sprint rituals, patterns your team has adopted, known
+          quirks in the codebase, decisions made in the last planning session. Visible to
+          team members. Doesn't bleed into other squads.
+        </p>
+        <div class="vis-examples">
+          <div class="vis-example">"We wrap all third-party API calls in a retry helper from /lib/resilience. Do not call external services directly."</div>
+          <div class="vis-example">"The checkout flow has a known race condition in the inventory lock. Tracked in PLAT-1847. Don't try to fix it without reading that ticket first."</div>
+          <div class="vis-example">"PRs need a test that covers the unhappy path. If there isn't one, the review will ask for it."</div>
+        </div>
+      </div>
+
+      <div class="vis-layer vis-user">
+        <div class="vis-layer-header">
+          <div class="vis-badge vis-badge-user">user</div>
+          <h3>Individual expertise and preferences</h3>
+        </div>
+        <p>
+          Personal to each engineer. Domain expertise, preferred patterns, context about work
+          in progress, and how they like the AI to respond. Travels with them across sessions
+          and clients. Not visible to their team or org.
+        </p>
+        <div class="vis-examples">
+          <div class="vis-example">"I'm the original author of the billing module. I know where all the bodies are buried."</div>
+          <div class="vis-example">"I prefer exhaustive TypeScript types over implicit inference. Always make types explicit."</div>
+          <div class="vis-example">"I'm currently refactoring the notification service. Don't suggest changes that touch that area."</div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="vis-note">
+      Beliefs at every layer are resolved at query time. When an engineer asks a question,
+      the relevant org, team, and user beliefs all surface together, in the right priority order,
+      without manual context-pasting.
+    </p>
+  </div>
+</section>
+
+<section class="sc-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">In practice</span>
+    <h2>The AI writes code the way your team writes code.</h2>
+    <p>
+      An engineer opens VSCode. Tenure is already connected as their OpenAI-compatible provider.
+      Before the first token is generated, the agent has the org standards, the team conventions,
+      and that engineer's personal context in scope. What comes out looks like it was written
+      by someone who has been on the team for months.
+    </p>
+
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <div class="outcome-icon">⚡</div>
+        <h3>PRs that don't need teaching moments</h3>
+        <p>
+          The generated code already follows your patterns. The reviewer isn't correcting
+          style or re-explaining architecture. They're reviewing logic, which is the point.
+        </p>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">🧭</div>
+        <h3>New hires that ship in week one</h3>
+        <p>
+          The new engineer doesn't need a full architectural tour before they can be useful.
+          The AI already has the tour. They can start contributing while they're still getting oriented.
+        </p>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">🔇</div>
+        <h3>Fewer interruptions for senior engineers</h3>
+        <p>
+          The questions that get asked are the hard ones. Not "where does auth live" or
+          "do we use tabs or spaces." That knowledge is already in the room.
+        </p>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">📋</div>
+        <h3>A living architecture record</h3>
+        <p>
+          Decisions get captured as beliefs when they're made, not documented six months later
+          or not at all. The AI enforces them automatically until someone deliberately changes them.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <span class="label">Getting started</span>
+        <h2>Beliefs come from real conversations.</h2>
+        <p>
+          You don't sit down and write a belief library from scratch. Beliefs accumulate from
+          actual work. An engineer explains something to the AI, Tenure captures it.
+          A lead adds an org-level rule in the dashboard. A team decision from today's planning
+          session gets committed before the meeting ends.
+        </p>
+        <p>
+          The starting point for most teams is a short session where a principal or tech lead
+          walks through the things they're tired of explaining. That usually takes an hour.
+          It pays back immediately.
+        </p>
+        <a href="/docs/teams/deployment" class="btn-primary" style="margin-top:1rem; display:inline-flex;">
+          Deployment guide →
+        </a>
+      </div>
+      <div class="belief-capture-demo">
+        <div class="demo-label">Capture during a real session</div>
+        <div class="demo-chat">
+          <div class="demo-bubble user-bubble">We use Zod for all input validation at the API boundary. Never trust raw request bodies anywhere else in the stack.</div>
+          <div class="demo-bubble ai-bubble">Got it. I'll use Zod schemas at API boundaries and treat all downstream inputs as already validated.</div>
+          <div class="demo-action">
+            <span class="demo-action-icon">+</span>
+            <span>Save as <strong>team</strong> belief</span>
+            <span class="demo-action-tag">saved</span>
+          </div>
+          <div class="demo-bubble user-bubble">And we never throw raw Zod errors to the client. Always map them to our ApiError format.</div>
+          <div class="demo-bubble ai-bubble">Understood. Zod errors get mapped to ApiError before any response is sent.</div>
+          <div class="demo-action">
+            <span class="demo-action-icon">+</span>
+            <span>Save as <strong>team</strong> belief</span>
+            <span class="demo-action-tag">saved</span>
+          </div>
+        </div>
+        <div class="demo-note">Next engineer to ask about validation gets both of these automatically.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sc-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container" style="max-width:720px;">
+    <span class="label">Worth being clear about</span>
+    <h2>This is not a documentation tool.</h2>
+    <p>
+      Tenure doesn't replace your wiki, your ADRs, or your onboarding runbook.
+      Those are reference artifacts people read deliberately. Beliefs are context the AI uses
+      without being asked. The job is different.
+    </p>
+    <p>
+      A wiki page describing your auth architecture is something a new hire reads once.
+      A belief that says "the session token is a signed JWT, validated by the gateway before
+      the request reaches any service" is something the AI knows every time it touches
+      anything near authentication. One is a document. The other is working memory.
+    </p>
+    <p>
+      Both are useful. They're not the same thing.
+    </p>
+  </div>
+</section>
+
+<section class="sc-section" style="text-align:center;">
+  <div class="container">
+    <span class="label">Get started</span>
+    <h2>Your team's knowledge should travel with every session.</h2>
+    <p style="max-width:520px; margin:0 auto 2rem;">
+      Deploy the Helm chart in your dev environment. Connect it to VSCode or any
+      OpenAI-compatible client. Spend an hour capturing what your senior engineers are
+      tired of explaining. The rest happens on its own.
+    </p>
+    <div class="sc-hero-ctas" style="justify-content:center;">
+      <a href="/docs/teams/deployment" class="btn-primary">Deployment guide →</a>
+      <a href="/teams" class="btn-secondary">Teams overview</a>
+    </div>
+    <p style="font-size:0.8rem; color:var(--dim); margin-top:1.5rem;">
+      MIT licensed · No call-home telemetry · Works with VSCode, Cursor, OpenWebUI, and any OpenAI-compatible client
+    </p>
+  </div>
+</section>
+
+<style>
+.sc-hero {
+  padding: 6rem 2rem 4.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(0,168,173,0.05) 0%, var(--bg) 100%);
+}
+
+.sc-section { padding: 5rem 2rem; }
+
+.sc-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.breadcrumb {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-family: var(--mono);
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.03em;
+}
+
+.breadcrumb::before { content: "← "; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--accent2); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+  text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+/* Problem grid */
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 700px) { .problem-grid { grid-template-columns: 1fr; } }
+
+.problem-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.problem-label {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.problem-scenario { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; }
+
+.chat-bubble {
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  max-width: 90%;
+}
+
+.chat-bubble.user {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  align-self: flex-start;
+}
+
+.chat-bubble.ai {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  align-self: flex-end;
+}
+
+.chat-bubble.belief-injected {
+  background: rgba(0,168,173,0.07);
+  border: 1px solid rgba(0,168,173,0.25);
+  color: var(--text);
+  align-self: flex-end;
+}
+
+.problem-note {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.injected-note { color: var(--accent); font-style: normal; font-weight: 500; }
+
+/* Visibility stack */
+.visibility-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.vis-layer {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  transition: border-color 0.15s;
+}
+
+.vis-org  { border-left: 3px solid #6366f1; }
+.vis-team { border-left: 3px solid var(--accent); }
+.vis-user { border-left: 3px solid #10b981; }
+
+.vis-layer-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.vis-layer-header h3 { margin: 0; font-size: 1rem; color: var(--text); }
+
+.vis-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  padding: 0.2em 0.55em;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.vis-badge-org  { background: rgba(99,102,241,0.12); color: #818cf8; }
+.vis-badge-team { background: rgba(0,168,173,0.12); color: var(--accent); }
+.vis-badge-user { background: rgba(16,185,129,0.12); color: #34d399; }
+
+.vis-layer p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  line-height: 1.6;
+}
+
+.vis-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vis-example {
+  font-size: 0.8rem;
+  font-family: var(--mono);
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  line-height: 1.5;
+}
+
+.vis-example::before { content: '"'; color: var(--muted); }
+.vis-example::after  { content: '"'; color: var(--muted); }
+
+.vis-note {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  line-height: 1.6;
+}
+
+/* Outcome grid */
+.outcome-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 680px) { .outcome-grid { grid-template-columns: 1fr; } }
+
+.outcome-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.outcome-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+
+.outcome-card h3 {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+}
+
+.outcome-card p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Two col */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+@media (max-width: 760px) { .two-col { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+.two-col p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+/* Belief capture demo */
+.belief-capture-demo {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.demo-label {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.demo-chat {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.demo-bubble {
+  padding: 0.55rem 0.85rem;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  max-width: 92%;
+}
+
+.user-bubble {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  align-self: flex-start;
+}
+
+.ai-bubble {
+  background: rgba(0,168,173,0.06);
+  border: 1px solid rgba(0,168,173,0.18);
+  color: var(--muted);
+  align-self: flex-end;
+}
+
+.demo-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 0.3rem 0;
+  align-self: flex-end;
+}
+
+.demo-action-icon {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.demo-action strong { color: var(--text); }
+
+.demo-action-tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  background: rgba(0,168,173,0.1);
+  color: var(--accent);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+}
+
+.demo-note {
+  font-size: 0.75rem;
+  color: var(--accent);
+  padding: 0.6rem 1.25rem;
+  border-top: 1px solid var(--border);
+  background: rgba(0,168,173,0.04);
+}
+</style>
+
+</Base>
