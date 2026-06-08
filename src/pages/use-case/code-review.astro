@@ -1,0 +1,754 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure: Shorter PR Reviews Start With Better Code Generation"
+  description="AI code review tools catch problems after the PR is opened. Tenure prevents them before the PR exists. Teach your AI how your team writes code: naming, folder structure, abstractions, patterns, and watch review cycles shrink."
+  canonical="https://tenureai.dev/use-case/pr-review"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Tenure: AI Memory for Faster PR Reviews",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "url": "https://tenureai.dev/use-case/pr-review",
+  "description": "Tenure gives AI coding assistants persistent memory of your team's conventions, patterns, and architecture decisions. Code is generated closer to how your team would have written it, so PR reviews spend less time on style and avoidable rework.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<section class="uc-hero">
+  <div class="container" style="text-align:center;">
+    <div class="uc-breadcrumb">
+      <a href="/use-cases">Use cases</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>PR Review</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Use case</span>
+    <h1>Shorter PR reviews start<br/>with better code generation.</h1>
+    <p class="hero-sub">
+      AI code review catches mistakes after the PR is opened.<br/>
+      Tenure prevents them before the PR exists.
+    </p>
+    <div class="uc-hero-ctas">
+      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
+        Install Free →
+      </a>
+      <a href="/docs" class="btn-secondary">
+        Read the Docs
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section contrast-section">
+  <div class="container">
+    <span class="label">The difference</span>
+    <h2>Two different theories of where time gets lost.</h2>
+    <p>Most AI code review tools assume the problem happens at review time. Tenure assumes it happens earlier: at generation time.</p>
+
+    <div class="contrast-grid">
+      <div class="contrast-card contrast-bad">
+        <div class="contrast-header">
+          <span class="contrast-icon bad">✗</span>
+          <h3>AI code review</h3>
+        </div>
+        <p class="contrast-tag">Review the PR after it's opened</p>
+        <p>The PR opens with naming inconsistencies, wrong folder placement, an abstraction your team already has, and error handling that doesn't match your patterns. A bot flags some of it. The reviewer flags the rest. The author fixes, pushes again. Cycle repeats.</p>
+        <div class="contrast-note">Catches problems. Doesn't prevent them.</div>
+      </div>
+
+      <div class="contrast-card contrast-good">
+        <div class="contrast-header">
+          <span class="contrast-icon good">✓</span>
+          <h3>AI memory (Tenure)</h3>
+        </div>
+        <p class="contrast-tag">Align the code before the PR exists</p>
+        <p>Your team's naming conventions, folder structure, existing abstractions, error handling style, and testing expectations are in context when the code is generated. The PR opens closer to how your team would have written it. Less to debate. Fewer round-trips.</p>
+        <div class="contrast-note">Prevents problems. Doesn't just catch them.</div>
+      </div>
+    </div>
+
+    <div class="contrast-callout">
+      <span class="contrast-callout-mono">The fastest review is the one that doesn't require fixing avoidable problems.</span>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Where review time goes</span>
+    <h2>Reviewers spend most of their time on things AI already knows. If you tell it.</h2>
+    <p>The comments that slow review cycles aren't logic bugs. They're convention violations. Things that should have been obvious from context but weren't, because the AI generating the code didn't have that context.</p>
+
+    <div class="review-items">
+      <div class="review-item">
+        <div class="review-item-left">
+          <span class="review-num">01</span>
+          <span class="review-name">Naming</span>
+        </div>
+        <div class="review-item-right">
+          <p>Your team uses <code>getUser</code> not <code>fetchUser</code>. <code>handleError</code> not <code>onError</code>. Service files are <code>*.service.ts</code>, not <code>*Service.ts</code>. Tenure stores this. Every AI request that touches these files gets it injected automatically.</p>
+        </div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-left">
+          <span class="review-num">02</span>
+          <span class="review-name">Folder placement</span>
+        </div>
+        <div class="review-item-right">
+          <p>Auth logic belongs in <code>/services/auth/</code>, not <code>/utils/</code>. Shared hooks go in <code>/hooks/shared/</code>. Tenure tracks where things live so AI stops generating files in the wrong place.</p>
+        </div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-left">
+          <span class="review-num">03</span>
+          <span class="review-name">Existing abstractions</span>
+        </div>
+        <div class="review-item-right">
+          <p>You already have a <code>withRetry</code> wrapper. You already have a <code>parseApiError</code> utility. Reviewers spend time pointing this out. Tenure stores it once. AI uses it every time.</p>
+        </div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-left">
+          <span class="review-num">04</span>
+          <span class="review-name">Architectural patterns</span>
+        </div>
+        <div class="review-item-right">
+          <p>Factory functions over classes. Repository pattern for data access. No direct DB calls from route handlers. These decisions were made in a planning doc two months ago. Tenure remembers them.</p>
+        </div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-left">
+          <span class="review-num">05</span>
+          <span class="review-name">Error handling</span>
+        </div>
+        <div class="review-item-right">
+          <p>Your team throws structured errors with <code>&lbrace; code, message, context &rbrace;</code>. Always. Not bare strings, not generic <code>Error</code> objects. Tenure knows. The AI you're using knows, because Tenure tells it.</p>
+        </div>
+      </div>
+
+      <div class="review-item" style="border-bottom:none;">
+        <div class="review-item-left">
+          <span class="review-num">06</span>
+          <span class="review-name">Testing expectations</span>
+        </div>
+        <div class="review-item-right">
+          <p>Vitest, not Jest. Unit tests in <code>__tests__/</code> adjacent to the module. Integration tests in <code>/tests/integration/</code>. Mocks using <code>vi.mock()</code>, never manual stubs. All stored. All injected.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">How it works</span>
+    <h2>Conventions go in once. They're in context forever.</h2>
+    <p>You don't configure rules or maintain a linting config for Tenure. You capture decisions as they happen, in the same chat sessions where you already work. Tenure extracts them, stores them locally, and injects the right ones on every AI request, before the prompt reaches the model.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">01</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Capture</div>
+          <h3>Decisions land in Tenure automatically</h3>
+          <p>When you tell your AI "we use factory functions, not classes" or "don't use Mongoose, raw driver only", Tenure extracts that belief from the conversation. No extra step. It just works in the background.</p>
+          <div class="step-mono">// You say it once. Tenure remembers it forever.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">02</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Scope</div>
+          <h3>Beliefs are scoped to projects, not globally polluted</h3>
+          <p>The MongoDB convention for your API project doesn't bleed into your data pipeline project. Tenure scopes beliefs to workspaces, so every project gets exactly the context it needs. Nothing more.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">03</div>
+        </div>
+        <div>
+          <div class="step-label">Inject</div>
+          <h3>Every AI request arrives pre-loaded with your conventions</h3>
+          <p>Before the request reaches the model, Tenure injects the relevant beliefs automatically. The AI generating your code already knows your team's patterns, so PRs arrive closer to correct.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container-wide">
+    <div style="padding: 0 0 2.5rem;">
+      <span class="label">Before &amp; after</span>
+      <h2>What changes in code review.</h2>
+      <p>Same AI tool. Same task. Different outcome when the AI has your conventions in context.</p>
+    </div>
+
+    <div class="pr-compare">
+      <div class="pr-panel">
+        <div class="pr-panel-header bad">
+          <span class="pr-panel-dot bad"></span>
+          <span class="pr-panel-title">Without Tenure</span>
+          <span class="pr-panel-sub">AI generated, no convention context</span>
+        </div>
+        <div class="pr-panel-body">
+          <div class="pr-diff-line added">+ import UserService from '../../UserService'</div>
+          <div class="pr-diff-line added">+ export class UserController {`{`}</div>
+          <div class="pr-diff-line added">+   async fetchUser(id: string) {`{`}</div>
+          <div class="pr-diff-line added">+     try {`{`}</div>
+          <div class="pr-diff-line added">+       return await UserService.getById(id)</div>
+          <div class="pr-diff-line added">+     } catch (e) {`{`}</div>
+          <div class="pr-diff-line added">+       throw new Error(e.message)</div>
+          <div class="pr-diff-line added">+     }</div>
+          <div class="pr-diff-line added">+   }</div>
+          <div class="pr-diff-line added">+ }</div>
+        </div>
+        <div class="pr-comments">
+          <div class="pr-comment">
+            <span class="pr-comment-author">reviewer</span>
+            <span class="pr-comment-text">We use factory functions, not classes. Also <code>fetchUser</code> → <code>getUser</code> per our conventions.</span>
+          </div>
+          <div class="pr-comment">
+            <span class="pr-comment-author">reviewer</span>
+            <span class="pr-comment-text">Errors need <code>{`{ code, message, context }`}</code> shape. See <code>AppError</code> in <code>/lib/errors</code>.</span>
+          </div>
+          <div class="pr-comment">
+            <span class="pr-comment-author">reviewer</span>
+            <span class="pr-comment-text">This should import from the repository layer, not directly from the service. Check the architectural pattern doc.</span>
+          </div>
+          <div class="pr-verdict bad">3 review cycles. Fixed on third push.</div>
+        </div>
+      </div>
+
+      <div class="pr-panel">
+        <div class="pr-panel-header good">
+          <span class="pr-panel-dot good"></span>
+          <span class="pr-panel-title">With Tenure</span>
+          <span class="pr-panel-sub">AI generated, conventions in context</span>
+        </div>
+        <div class="pr-panel-body">
+          <div class="pr-diff-line added">+ import {`{ makeUserRepository }`} from '../repositories/user'</div>
+          <div class="pr-diff-line added">+ </div>
+          <div class="pr-diff-line added">+ export function makeUserController(db: Db) {`{`}</div>
+          <div class="pr-diff-line added">+   const users = makeUserRepository(db)</div>
+          <div class="pr-diff-line added">+   return {`{`}</div>
+          <div class="pr-diff-line added">+     async getUser(id: string) {`{`}</div>
+          <div class="pr-diff-line added">+       return users.findById(id)</div>
+          <div class="pr-diff-line added">+     }</div>
+          <div class="pr-diff-line added">+   }</div>
+          <div class="pr-diff-line added">+ }</div>
+        </div>
+        <div class="pr-comments">
+          <div class="pr-comment good">
+            <span class="pr-comment-author good">reviewer</span>
+            <span class="pr-comment-text good">LGTM. Factory pattern, correct naming, proper layer separation. Approved.</span>
+          </div>
+          <div class="pr-verdict good">1 review cycle. Merged same day.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">What Tenure actually is</span>
+    <h2>Not a code reviewer. The memory layer that makes AI-generated code look like your team's code.</h2>
+
+    <div class="positioning-grid">
+      <div class="positioning-card">
+        <div class="positioning-label wrong">AI code review tools say:</div>
+        <div class="positioning-quote">"We'll catch the mistakes in your PR."</div>
+        <p>They sit at the end of the pipeline, after the code exists, after the PR is open, after the review clock has started. They're useful. But they're reactive.</p>
+      </div>
+      <div class="positioning-card highlight-card">
+        <div class="positioning-label right">Tenure says:</div>
+        <div class="positioning-quote">"PRs move faster when AI already knows your conventions."</div>
+        <p>Tenure sits at generation time, before the code is written. The reduction in PR review time is a consequence of better-aligned output, not a bolt-on review step.</p>
+      </div>
+    </div>
+
+    <div class="compare-verdict" style="margin-top:2.5rem;">
+      <p>PR review time becomes a consequence of better code generation.</p>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">For teams</span>
+    <h2>Shared memory means every engineer's AI starts from the same baseline.</h2>
+    <p>When one engineer captures "we use Zod for input validation, not Joi", every other engineer's AI knows it too. Conventions propagate through the team without a style guide meeting, without a Confluence page nobody reads, without a linting rule that fires after the fact.</p>
+
+    <div class="uc-feature-grid" style="margin-top:2.5rem;">
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🏗️</div>
+        <h3>Architecture decisions</h3>
+        <p>Monorepo structure, layer boundaries, forbidden patterns, approved libraries. Stored once. Injected for every engineer on the project.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">📐</div>
+        <h3>Naming conventions</h3>
+        <p>Function prefixes, file naming, event naming, prop naming. The kind of thing that lives in a Notion doc nobody opens. Now it's in context automatically.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🧩</div>
+        <h3>Existing abstractions</h3>
+        <p>The utilities, hooks, and services that already exist. AI stops reinventing them and starts using them because Tenure tells it they're there.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🚫</div>
+        <h3>Rejected approaches</h3>
+        <p>"We evaluated Prisma and ruled it out." That decision lives in Tenure too. Not just what you chose, but what you rejected and why.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:2.5rem; text-align:center;">
+      <a href="/teams/shared-memory" class="btn-secondary">Learn about shared memory for teams →</a>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="text-align:center; background: var(--surface);">
+  <div class="container">
+    <span class="label">Get started</span>
+    <h2>Teach AI how your team writes code.</h2>
+    <p style="max-width:500px; margin:0 auto 2rem;">Free, open source, fully local. Works with VS Code, Cursor, Windsurf, Continue, Cline, and any OpenAI-compatible client.</p>
+    <div class="uc-hero-ctas">
+      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
+        Install from GitHub →
+      </a>
+      <a href="/use-case/vscode" class="btn-secondary">VS Code setup guide</a>
+    </div>
+    <p style="margin-top:2rem; font-family:var(--mono); font-size:0.78rem; color:var(--dim);">
+     Helm chart · OIDC / SCIM · MIT licensed · No call-home telemetry
+    </p>
+  </div>
+</section>
+
+<style>
+/* BREADCRUMB / HERO */
+.uc-hero {
+  padding: 5rem 2rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.uc-breadcrumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  margin-bottom: 1.5rem;
+  color: var(--dim);
+}
+.uc-breadcrumb a { color: var(--accent); }
+.uc-breadcrumb-sep { color: var(--border2); }
+
+.uc-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--accent2); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+.uc-section { padding: 5rem 2rem; }
+
+/* CONTRAST SECTION */
+.contrast-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 680px) { .contrast-grid { grid-template-columns: 1fr; } }
+
+.contrast-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+  background: var(--bg);
+}
+.contrast-card.contrast-bad { border-color: rgba(196,83,83,0.25); }
+.contrast-card.contrast-good {
+  border-color: rgba(0,168,173,0.3);
+  background: rgba(0,168,173,0.03);
+}
+
+.contrast-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.4rem;
+}
+.contrast-icon { font-weight: 700; font-size: 1rem; }
+.contrast-icon.bad { color: var(--red); }
+.contrast-icon.good { color: var(--accent); }
+.contrast-card h3 { margin: 0; color: var(--text); }
+
+.contrast-tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+  margin-top: 0.1rem;
+}
+
+.contrast-card p { font-size: 0.875rem; margin-bottom: 1rem; }
+
+.contrast-note {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 6px;
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.contrast-callout {
+  margin-top: 2.5rem;
+  padding: 1.5rem 2rem;
+  background: rgba(0,168,173,0.04);
+  border: 1px solid rgba(0,168,173,0.15);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.contrast-callout-mono {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* REVIEW ITEMS */
+.review-items {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.review-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+
+@media (max-width: 680px) {
+  .review-item { grid-template-columns: 1fr; gap: 0.75rem; }
+}
+
+.review-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-top: 0.1rem;
+}
+
+.review-num {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.review-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.review-item-right p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* STEPS */
+.steps { margin-top: 3rem; display: flex; flex-direction: column; gap: 2.5rem; }
+
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.5rem;
+}
+
+.step-num-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.2);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-line {
+  width: 1px;
+  flex: 1;
+  background: var(--border);
+  margin-top: 0.5rem;
+}
+
+.step-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.step h3 { color: var(--text); margin-bottom: 0.5rem; }
+.step p { font-size: 0.875rem; }
+
+.step-mono {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--dim);
+  background: var(--surface2);
+  border-radius: 6px;
+  padding: 0.65rem 1rem;
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+}
+
+/* PR COMPARE */
+.pr-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 720px) { .pr-compare { grid-template-columns: 1fr; } }
+
+.pr-panel {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: #0d0d0d;
+}
+
+.pr-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.pr-panel-header.bad { border-bottom-color: rgba(196,83,83,0.2); }
+.pr-panel-header.good { border-bottom-color: rgba(0,168,173,0.2); }
+
+.pr-panel-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pr-panel-dot.bad { background: var(--red); }
+.pr-panel-dot.good { background: var(--accent); }
+
+.pr-panel-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pr-panel-sub {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--dim);
+  margin-left: auto;
+}
+
+.pr-panel-body {
+  padding: 1.25rem 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.8;
+  border-bottom: 1px solid var(--border);
+}
+
+.pr-diff-line { white-space: pre; }
+.pr-diff-line.added { color: #4ade80; }
+
+.pr-comments {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pr-comment {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+}
+
+.pr-comment.good {
+  background: rgba(0,168,173,0.05);
+  border-color: rgba(0,168,173,0.2);
+}
+
+.pr-comment-author {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--dim);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.pr-comment-author.good { color: var(--accent); }
+.pr-comment-text { color: var(--muted); line-height: 1.5; }
+.pr-comment-text.good { color: var(--text); }
+
+.pr-verdict {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+}
+.pr-verdict.bad { background: rgba(196,83,83,0.1); color: var(--red); border: 1px solid rgba(196,83,83,0.2); }
+.pr-verdict.good { background: rgba(0,168,173,0.08); color: var(--accent); border: 1px solid rgba(0,168,173,0.2); }
+
+/* POSITIONING */
+.positioning-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 680px) { .positioning-grid { grid-template-columns: 1fr; } }
+
+.positioning-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+}
+
+.positioning-card.highlight-card {
+  background: rgba(0,168,173,0.03);
+  border-color: rgba(0,168,173,0.25);
+}
+
+.positioning-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.positioning-label.wrong { color: var(--dim); }
+.positioning-label.right { color: var(--accent); }
+
+.positioning-quote {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.positioning-card p { font-size: 0.875rem; margin: 0; }
+
+/* FEATURE GRID */
+.uc-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+@media (max-width: 680px) { .uc-feature-grid { grid-template-columns: 1fr; } }
+
+.uc-feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.uc-feature-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
+.uc-feature-card h3 { color: var(--text); margin-bottom: 0.4rem; }
+.uc-feature-card p { font-size: 0.875rem; margin: 0; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  background: rgba(0,168,173,0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--accent);
+}
+</style>
+
+</Base>
