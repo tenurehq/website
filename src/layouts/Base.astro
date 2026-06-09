@@ -118,17 +118,75 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
         </a>
       </span>
       <div class="nav-links">
-        <div class="dropdown">
-          <button class="dropdown-trigger">
-            Use Cases <span class="dropdown-arrow">▼</span>
-          </button>
-          <div class="dropdown-content">
-            <a href="/use-case/mobile">Mobile</a>
-            <a href="/use-case/code-review">PR Review</a>
-            <a href="/use-case/vscode">VSCode</a>
-            <a href="/use-case/vscodium">VSCodium</a>
-          </div>
-        </div>
+
+
+<div class="dropdown dropdown--mega">
+  <button class="dropdown-trigger">
+    Use Cases <span class="dropdown-arrow">▼</span>
+  </button>
+
+  <div class="mega-menu">
+    <div class="mega-menu__bridge"></div>
+
+    <div class="mega-menu__panel">
+
+      <div class="mega-col">
+        <p class="mega-col__label">How Teams Build Trust</p>
+        <div class="mega-col__divider"></div>
+
+        <a href="/use-case/memory-modes" class="mega-item">
+          <span class="mega-item__title">Memory Modes</span>
+          <span class="mega-item__desc">Adapt memory to your team's trust level.</span>
+        </a>
+
+        <a href="/use-case/code-review" class="mega-item">
+          <span class="mega-item__title">PR Review</span>
+          <span class="mega-item__desc">Persistent knowledge for code reviews.</span>
+        </a>
+
+        <a href="/use-case/mobile" class="mega-item">
+          <span class="mega-item__title">Mobile</span>
+          <span class="mega-item__desc">Capture context anywhere.</span>
+        </a>
+      </div>
+
+      <div class="mega-col__separator"></div>
+
+      <div class="mega-col">
+        <p class="mega-col__label">Where Tenure Runs</p>
+        <div class="mega-col__divider"></div>
+
+        <a href="/use-case/vscode" class="mega-item">
+          <span class="mega-item__title">VS Code</span>
+          <span class="mega-item__desc">Native AI provider integration.</span>
+        </a>
+
+        <a href="/use-case/vscodium" class="mega-item">
+          <span class="mega-item__title">VSCodium</span>
+          <span class="mega-item__desc">Open-source editor support.</span>
+        </a>
+      </div>
+
+      <div class="mega-col__separator"></div>
+
+      <div class="mega-col">
+        <p class="mega-col__label">Compatible Clients</p>
+        <div class="mega-col__divider"></div>
+
+        <a href="/docs/clients/open-webui" class="mega-item">
+          <span class="mega-item__title">Open WebUI</span>
+          <span class="mega-item__desc">Browser-based chat interface.</span>
+        </a>
+
+        <a href="/docs/clients/openclaw" class="mega-item">
+          <span class="mega-item__title">OpenClaw</span>
+          <span class="mega-item__desc">Self-hosted agent gateway.</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
         <div class="dropdown">
           <button class="dropdown-trigger">
             Teams <span class="dropdown-arrow">▼</span>

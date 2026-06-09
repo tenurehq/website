@@ -1,0 +1,1024 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure: Flexible Memory Modes for Every Team"
+  description="Tenure supports multiple memory approaches, from fully curated document-driven knowledge to continuously adaptive learning. You decide what gets learned, what gets injected, and what stays human-facing."
+  canonical="https://tenureai.dev/use-case/memory-modes"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Tenure: Flexible Memory Modes",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "url": "https://tenureai.dev/use-case/memory-modes",
+  "description": "Tenure supports multiple memory approaches, from fully curated document-driven knowledge to continuously adaptive learning. Teams choose how much AI autonomy fits their comfort level.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<section class="mm-hero">
+  <div class="container" style="text-align:center;">
+    <div class="uc-breadcrumb">
+      <a href="/use-cases">Use cases</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Memory Modes</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">How teams build trust</span>
+    <h1>One memory platform.<br/>Multiple trust models.</h1>
+    <p class="hero-sub">
+      Every team has a different comfort level with AI memory.<br/>
+      Tenure meets you where you are, and evolves as you're ready.
+    </p>
+    <div class="uc-hero-ctas">
+      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
+        Install Free →
+      </a>
+      <a href="/docs" class="btn-secondary">
+        Read the Docs
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="mm-modes-intro">
+  <div class="container">
+    <div class="mm-trust-row">
+      <div class="mm-trust-item">
+        <span class="mm-trust-label">Document-Driven</span>
+        <span class="mm-trust-desc">Docs only, no learning</span>
+      </div>
+      <div class="mm-trust-arrow">→</div>
+      <div class="mm-trust-item">
+        <span class="mm-trust-label">Curated</span>
+        <span class="mm-trust-desc">AI proposes, humans approve</span>
+      </div>
+      <div class="mm-trust-arrow">→</div>
+      <div class="mm-trust-item">
+        <span class="mm-trust-label">Adaptive</span>
+        <span class="mm-trust-desc">Evolves with the team</span>
+      </div>
+      <div class="mm-trust-arrow">→</div>
+      <div class="mm-trust-item">
+        <span class="mm-trust-label">Reflective</span>
+        <span class="mm-trust-desc">Insights, no injection</span>
+      </div>
+    </div>
+    <p class="mm-intro-note">These aren't tiers. They're different philosophies. You can mix them, run them in parallel, or start with one and expand as your team gains confidence.</p>
+  </div>
+</section>
+
+<section class="mm-mode-section" id="document-driven">
+  <div class="container">
+    <div class="mm-mode-header">
+      <div class="mm-mode-tag">
+        <span class="mm-mode-num">01</span>
+        <span class="mm-mode-name">Document-Driven Memory</span>
+      </div>
+      <div class="mm-ideal-chips">
+        <span class="mm-chip">Enterprises</span>
+        <span class="mm-chip">Regulated environments</span>
+        <span class="mm-chip">Teams starting with AI memory</span>
+      </div>
+    </div>
+
+    <h2>Extract beliefs from existing documentation.<br/>Inject only approved knowledge.</h2>
+    <p class="mm-mode-lead">For organizations that want AI grounded in Confluence, ADRs, READMEs, and coding standards. Nothing the model receives was learned from conversation or behavior. It was written down by a human and explicitly approved.</p>
+
+    <div class="mm-detail-grid">
+      <div class="mm-detail-card">
+        <div class="mm-detail-label">Sources</div>
+        <ul class="mm-list">
+          <li>Confluence</li>
+          <li>ADRs</li>
+          <li>Internal docs</li>
+          <li>Repository documentation</li>
+        </ul>
+      </div>
+      <div class="mm-detail-card">
+        <div class="mm-detail-label">Memory Behavior</div>
+        <ul class="mm-list mm-list-dim">
+          <li><span class="mm-cross">✗</span> No conversational learning</li>
+          <li><span class="mm-cross">✗</span> No automatic updates</li>
+          <li><span class="mm-check">✓</span> Only documented knowledge reaches the model</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mm-callout">
+      <span class="mm-callout-mono">The model knows exactly what your documentation says. Nothing it hasn't been given.</span>
+    </div>
+  </div>
+</section>
+
+<section class="mm-mode-section mm-mode-alt" id="curated">
+  <div class="container">
+    <div class="mm-mode-header">
+      <div class="mm-mode-tag">
+        <span class="mm-mode-num">02</span>
+        <span class="mm-mode-name">Curated Memory</span>
+      </div>
+      <div class="mm-ideal-chips">
+        <span class="mm-chip">Growing teams</span>
+        <span class="mm-chip">Engineering organizations</span>
+        <span class="mm-chip">Teams that want oversight</span>
+      </div>
+    </div>
+
+    <h2>AI proposes beliefs.<br/>Humans decide what becomes institutional knowledge.</h2>
+    <p class="mm-mode-lead">Tenure continuously discovers conventions and patterns from documentation, code, and conversations. But nothing reaches the model until a human approves it. The memory evolves intentionally, not automatically.</p>
+
+    <div class="mm-detail-grid">
+      <div class="mm-detail-card">
+        <div class="mm-detail-label">Sources</div>
+        <ul class="mm-list">
+          <li>Documentation</li>
+          <li>Code patterns</li>
+          <li>Conversations</li>
+        </ul>
+      </div>
+      <div class="mm-detail-card">
+        <div class="mm-detail-label">Memory Behavior</div>
+        <ul class="mm-list">
+          <li><span class="mm-check">✓</span> Suggested beliefs require approval</li>
+          <li><span class="mm-check">✓</span> Full evidence and confidence shown</li>
+          <li><span class="mm-check">✓</span> Institutional memory evolves intentionally</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mm-approval-demo">
+      <div class="mm-approval-bar">
+        <span class="mm-approval-dot"></span>
+        <span class="mm-approval-title">Proposed belief</span>
+      </div>
+      <div class="mm-approval-body">
+        <div class="mm-approval-belief">Use Zod for validation.</div>
+        <div class="mm-approval-evidence-row">
+          <div class="mm-approval-section">
+            <div class="mm-approval-section-label">Evidence</div>
+            <div class="mm-approval-evidence-list">
+              <span>· 9 PR reviews</span>
+              <span>· 84 code generations</span>
+              <span>· 2 team discussions</span>
+            </div>
+          </div>
+          <div class="mm-approval-section">
+            <div class="mm-approval-section-label">Confidence</div>
+            <div class="mm-approval-confidence">
+              <div class="mm-confidence-bar">
+                <div class="mm-confidence-fill" style="width:88%"></div>
+              </div>
+              <span class="mm-confidence-val">0.88</span>
+            </div>
+          </div>
+        </div>
+        <div class="mm-approval-actions">
+          <button class="mm-btn-approve">Approve</button>
+          <button class="mm-btn-reject">Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mm-mode-section" id="adaptive">
+  <div class="container">
+    <div class="mm-mode-header">
+      <div class="mm-mode-tag">
+        <span class="mm-mode-num">03</span>
+        <span class="mm-mode-name">Adaptive Memory</span>
+      </div>
+      <div class="mm-ideal-chips">
+        <span class="mm-chip">Fast-moving teams</span>
+        <span class="mm-chip">Startups</span>
+        <span class="mm-chip">AI-first organizations</span>
+      </div>
+    </div>
+
+    <h2>Continuously learn from how<br/>the team actually works.</h2>
+    <p class="mm-mode-lead">Tenure discovers conventions, decisions, and expertise automatically. Context is retrieved per turn, so topic switches don't drag irrelevant memory into the conversation. Memory doesn't sit static. It reflects how the team actually builds.</p>
+
+    <div class="mm-detail-grid">
+      <div class="mm-detail-card">
+        <div class="mm-detail-label">Sources</div>
+        <ul class="mm-list">
+          <li>Documentation</li>
+          <li>Conversations</li>
+          <li>Generated code</li>
+          <li>Team interactions</li>
+        </ul>
+      </div>
+      <div class="mm-detail-card">
+        <div class="mm-detail-label">Memory Behavior</div>
+        <ul class="mm-list">
+          <li><span class="mm-check">✓</span> Beliefs evolve naturally</li>
+          <li><span class="mm-check">✓</span> Retrieval happens per turn</li>
+          <li><span class="mm-check">✓</span> Context changes with the task</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mm-drift-examples">
+      <div class="mm-drift-label">How memory shifts over time</div>
+      <div class="mm-drift-list">
+        <div class="mm-drift-item">
+          <span class="mm-drift-arrow">→</span>
+          <span>A recurring error pattern becomes the dominant belief about error handling.</span>
+        </div>
+        <div class="mm-drift-item">
+          <span class="mm-drift-arrow">→</span>
+          <span>gRPC gradually replaces GraphQL as the team's preferred transport.</span>
+        </div>
+        <div class="mm-drift-item">
+          <span class="mm-drift-arrow">→</span>
+          <span>New expertise around event sourcing surfaces as a team-level belief.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mm-mode-section mm-mode-alt" id="reflective">
+  <div class="container">
+    <div class="mm-mode-header">
+      <div class="mm-mode-tag">
+        <span class="mm-mode-num">04</span>
+        <span class="mm-mode-name">Reflective Memory</span>
+      </div>
+      <div class="mm-ideal-chips">
+        <span class="mm-chip">Engineering leadership</span>
+        <span class="mm-chip">Knowledge management</span>
+        <span class="mm-chip">Organizations exploring AI memory</span>
+      </div>
+    </div>
+
+    <h2>Generate insights without<br/>injecting memory into models.</h2>
+    <p class="mm-mode-lead">Turn work into weekly summaries, expertise maps, and organizational insights. The model never receives memory. You do. Reflective Intelligence is for teams that want to understand what's happening before deciding whether to act on it.</p>
+
+    <div class="mm-detail-grid">
+      <div class="mm-detail-card">
+        <div class="mm-detail-label">Sources</div>
+        <ul class="mm-list">
+          <li>Conversations</li>
+          <li>Code generation</li>
+          <li>Team interactions</li>
+        </ul>
+      </div>
+      <div class="mm-detail-card">
+        <div class="mm-detail-label">Memory Behavior</div>
+        <ul class="mm-list mm-list-dim">
+          <li><span class="mm-cross">✗</span> No memory injection required</li>
+          <li><span class="mm-cross">✗</span> No behavioral changes to AI</li>
+          <li><span class="mm-check">✓</span> Human-facing summaries and trends</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mm-insights-grid">
+      <div class="mm-detail-label" style="grid-column:1/-1; margin-bottom:0.25rem;">Insights include</div>
+      <div class="mm-insight-item">
+        <span class="mm-insight-icon">↑</span>
+        <span>Emerging expertise</span>
+      </div>
+      <div class="mm-insight-item">
+        <span class="mm-insight-icon">~</span>
+        <span>Architectural drift</span>
+      </div>
+      <div class="mm-insight-item">
+        <span class="mm-insight-icon">!</span>
+        <span>Repeated friction points</span>
+      </div>
+      <div class="mm-insight-item">
+        <span class="mm-insight-icon">?</span>
+        <span>Knowledge gaps</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mm-mix-section">
+  <div class="container">
+    <span class="label">Mix and match</span>
+    <h2>Learning and injection are independent.</h2>
+    <p>You don't have to learn from everything you inject from, or inject everything you learn from. Configure each axis separately, per team or per project.</p>
+
+    <div class="mm-config-demo">
+      <div class="mm-config-col">
+        <div class="mm-config-label">Learn From</div>
+        <div class="mm-config-row on">
+          <span class="mm-config-check">✓</span>
+          <span>Docs</span>
+        </div>
+        <div class="mm-config-row on">
+          <span class="mm-config-check">✓</span>
+          <span>Code</span>
+        </div>
+        <div class="mm-config-row on">
+          <span class="mm-config-check">✓</span>
+          <span>Conversations</span>
+        </div>
+      </div>
+      <div class="mm-config-divider"></div>
+      <div class="mm-config-col">
+        <div class="mm-config-label">Inject From</div>
+        <div class="mm-config-row on">
+          <span class="mm-config-check">✓</span>
+          <span>Docs</span>
+        </div>
+        <div class="mm-config-row on">
+          <span class="mm-config-check">✓</span>
+          <span>Approved beliefs</span>
+        </div>
+        <div class="mm-config-row off">
+          <span class="mm-config-cross">✗</span>
+          <span>Conversations</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="mm-config-note">Start conservatively. Expand as trust is earned. The configuration is yours to change at any point.</p>
+  </div>
+</section>
+
+<section class="mm-closing-section">
+  <div class="container" style="text-align:center;">
+    <span class="label">The real question</span>
+    <h2>How much control do you have?</h2>
+    <p class="mm-closing-lead">You set the terms. You decide what gets learned, what gets injected, and what stays human-facing.</p>
+
+    <div class="mm-closing-modes">
+      <div class="mm-closing-mode">Some teams begin with documentation.</div>
+      <div class="mm-closing-mode">Others want human approval on every belief.</div>
+      <div class="mm-closing-mode">Some embrace continuous learning.</div>
+      <div class="mm-closing-mode">And some use Tenure purely for insight.</div>
+    </div>
+
+    <p class="mm-closing-sub">Trust isn't binary. It's configurable. Tenure is built for teams that want to set the terms.</p>
+
+    <div class="uc-hero-ctas" style="justify-content:center; margin-top:2.5rem;">
+      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
+        Install Free →
+      </a>
+      <a href="/docs" class="btn-secondary">
+        Read the Docs
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.mm-hero {
+  padding: 7rem 2rem 5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.uc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin-bottom: 1.5rem;
+}
+
+.uc-breadcrumb a {
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.uc-breadcrumb a:hover {
+  color: var(--text);
+}
+
+.uc-breadcrumb-sep {
+  color: var(--border2);
+}
+
+.uc-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.btn-primary:hover {
+  background: var(--accent2);
+  color: #fff;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.mm-modes-intro {
+  padding: 3rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.mm-trust-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.mm-trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.mm-trust-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+
+.mm-trust-desc {
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+
+.mm-trust-arrow {
+  color: var(--border2);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.mm-intro-note {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.mm-mode-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.mm-mode-alt {
+  background: var(--surface);
+}
+
+.mm-mode-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.mm-mode-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.mm-mode-num {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.2);
+  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+
+.mm-mode-name {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mm-ideal-chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mm-chip {
+  font-size: 0.72rem;
+  color: var(--dim);
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 100px;
+  padding: 0.2rem 0.65rem;
+}
+
+.mm-mode-section h2 {
+  margin-bottom: 0.75rem;
+}
+
+.mm-mode-lead {
+  font-size: 0.95rem;
+  margin-bottom: 2.5rem;
+}
+
+.mm-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 680px) {
+  .mm-detail-grid { grid-template-columns: 1fr; }
+}
+
+.mm-detail-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.mm-mode-alt .mm-detail-card {
+  background: var(--surface2);
+}
+
+.mm-detail-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.mm-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mm-list li {
+  font-size: 0.875rem;
+  color: var(--muted);
+  padding-left: 1rem;
+  position: relative;
+}
+
+.mm-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--dim);
+}
+
+.mm-list-dim li { color: var(--dim); }
+
+.mm-check {
+  color: var(--accent);
+  margin-right: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.mm-cross {
+  color: var(--dim);
+  margin-right: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.mm-list li .mm-check,
+.mm-list li .mm-cross {
+  position: static;
+}
+
+.mm-list li:has(.mm-check),
+.mm-list li:has(.mm-cross) {
+  padding-left: 0;
+}
+
+.mm-list li:has(.mm-check)::before,
+.mm-list li:has(.mm-cross)::before {
+  display: none;
+}
+
+.mm-callout {
+  background: rgba(0,168,173,0.04);
+  border: 1px solid rgba(0,168,173,0.15);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+}
+
+.mm-callout-mono {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.mm-approval-demo {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 480px;
+}
+
+.mm-approval-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.65rem 1.25rem;
+}
+
+.mm-approval-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s infinite;
+}
+
+.mm-approval-title {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mm-approval-body {
+  padding: 1.5rem;
+}
+
+.mm-approval-belief {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.mm-approval-evidence-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.mm-approval-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mm-approval-section-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mm-approval-evidence-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mm-approval-evidence-list span {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.mm-approval-confidence {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.mm-confidence-bar {
+  width: 80px;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.mm-confidence-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.mm-confidence-val {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--accent);
+}
+
+.mm-approval-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.mm-btn-approve {
+  background: rgba(0,168,173,0.12);
+  border: 1px solid rgba(0,168,173,0.3);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.mm-btn-approve:hover {
+  background: rgba(0,168,173,0.2);
+}
+
+.mm-btn-reject {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.mm-btn-reject:hover {
+  border-color: var(--muted);
+  color: var(--muted);
+}
+
+.mm-drift-examples {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.mm-drift-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.mm-drift-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mm-drift-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.mm-drift-arrow {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.mm-drift-item span:last-child {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.mm-insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.mm-insight-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.mm-mode-alt .mm-insight-item {
+  background: var(--surface2);
+}
+
+.mm-insight-icon {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.mm-insight-item span:last-child {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.mm-mix-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.mm-mix-section h2 {
+  margin-bottom: 0.75rem;
+}
+
+.mm-config-demo {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 2.5rem;
+  font-family: var(--mono);
+}
+
+.mm-config-col {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.mm-config-divider {
+  width: 1px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.mm-config-label {
+  font-size: 0.65rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.mm-config-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+}
+
+.mm-config-row.on { color: var(--muted); }
+.mm-config-row.off { color: var(--border2); }
+
+.mm-config-check {
+  color: var(--accent);
+  font-size: 0.78rem;
+  width: 14px;
+}
+
+.mm-config-cross {
+  color: var(--border2);
+  font-size: 0.78rem;
+  width: 14px;
+}
+
+.mm-config-note {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--dim);
+  max-width: 500px;
+}
+
+.mm-closing-section {
+  padding: 6rem 2rem;
+  background: var(--surface);
+}
+
+.mm-closing-lead {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 3rem;
+}
+
+.mm-closing-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 440px;
+  margin: 0 auto 2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mm-closing-mode {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  position: relative;
+  padding-left: 2.25rem;
+}
+
+.mm-closing-mode:last-child {
+  border-bottom: none;
+}
+
+.mm-closing-mode::before {
+  content: "→";
+  position: absolute;
+  left: 1rem;
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+.mm-closing-sub {
+  font-size: 0.95rem;
+  color: var(--dim);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+@media (max-width: 680px) {
+  .mm-hero { padding: 5rem 1.25rem 3.5rem; }
+  .mm-mode-section { padding: 3.5rem 1.25rem; }
+  .mm-mix-section { padding: 3.5rem 1.25rem; }
+  .mm-closing-section { padding: 4rem 1.25rem; }
+  .mm-modes-intro { padding: 2rem 1.25rem; }
+  .mm-trust-arrow { display: none; }
+  .mm-trust-row { gap: 0.75rem; }
+  .mm-mode-header { flex-direction: column; gap: 0.75rem; }
+  .mm-config-demo { flex-direction: column; }
+  .mm-config-divider { width: auto; height: 1px; }
+}
+</style>
+
+</Base>

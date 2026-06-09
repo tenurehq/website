@@ -10,6 +10,7 @@ export default defineConfig({
     starlight({
       defaultLocale: "en",
       title: "Tenure",
+      favicon: "/favicon.ico",
       logo: {
         src: "./src/assets/tenure-logo-small.svg",
       },
