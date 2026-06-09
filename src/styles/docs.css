@@ -24,3 +24,9 @@
 :root {
   color-scheme: dark;
 }
+
+.header {
+  padding: 0;
+  padding-inline-end: 0;
+  z-index: var(--sl-z-index-navbar);
+}

@@ -6,17 +6,18 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   output: "static",
   site: "https://tenureai.dev",
+  redirects: {
+    "/docs": "/docs/quickstart",
+  },
   integrations: [
     starlight({
       defaultLocale: "en",
       title: "Tenure",
       favicon: "/favicon.ico",
-      logo: {
-        src: "./src/assets/tenure-logo-small.svg",
-      },
       customCss: ["./src/styles/docs.css"],
       components: {
         ThemeSelect: "./src/components/EmptyComponent.astro",
+        Header: "./src/components/DocsHeader.astro",
       },
       social: [
         {
