@@ -15,32 +15,32 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
       content="AI memory, developer memory tool, local LLM memory, persistent AI context, VS Code AI memory, localhost AI, coding assistant memory, AI context injection, no RAG memory, AI productivity"
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://tenureai.dev" />
+    <meta property="og:url" content={canonicalURL} />
     <meta
       property="og:title"
-      content="Tenure | Persistent, Governable, Scoped State for AI Systems"
+      content={title}
     />
     <meta
       property="og:description"
-      content="Your memory system will drift in ways you cannot detect. Persistent, governable, scoped state for AI systems. Hard boundaries. Full provenance. Audit trails from day one."
+      content={description}
     />
     <meta property="og:image" content="https://tenureai.dev/og-image.png" />
     <meta property="og:site_name" content="Tenure" />
     <meta name="robots" content="index, follow" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://tenureai.dev" />
+    <meta name="twitter:url" content={canonicalURL} />
     <meta
       name="twitter:title"
-      content="Tenure | Persistent, Governable, Scoped State for AI Systems"
+      content={title}
     />
     <meta
       name="twitter:description"
-      content="Your memory system will drift in ways you cannot detect. Persistent, governable, scoped state for AI systems. Hard boundaries. Full provenance. Audit trails from day one."
+      content={description}
     />
     <meta name="twitter:image" content="https://tenureai.dev/og-image.png" />
     <meta
       name="description:extended"
-      content="Your memory system will drift in ways you cannot detect. Persistent, governable, scoped state for AI systems. Hard boundaries. Full provenance. Audit trails from day one."
+      content={description}
     />
     <meta
   name="ai:product-type"

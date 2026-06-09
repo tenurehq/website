@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 ---
 
 <Base
-  title="Tenure for VS Code — AI Memory That Follows You Into Your IDE"
+  title="Tenure for VS Code | AI Memory That Follows You Into Your IDE"
   description="Tenure registers as a native LLM provider inside VS Code. Bring your own API key. Every decision you made in any chat client is already there when you open a file. No copy-paste. No re-explanation."
 >
 
@@ -33,7 +33,7 @@ import Base from '../../layouts/Base.astro';
     <p class="hero-sub">
       Tenure registers as a native LLM provider inside VS Code.
       Decisions made in OpenWebUI, LibreChat, or any chat client
-      are injected automatically the moment you open a file — with no
+      are injected automatically the moment you open a file, with no
       copy-paste, no priming, no step in between.
     </p>
     <div class="uc-hero-ctas">
@@ -47,7 +47,6 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
-<!-- ── THE WORKFLOW ── -->
 <section class="uc-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">The workflow</span>
@@ -71,13 +70,12 @@ import Base from '../../layouts/Base.astro';
       <div class="flow-step">
         <div class="flow-step-num">03</div>
         <h3>Just build</h3>
-        <p>Every AI request is enriched before it reaches the model. Your stack, your decisions, your rejected alternatives — all in context. No prompt engineering required.</p>
+        <p>Every AI request is enriched before it reaches the model. Your stack, your decisions, your rejected alternatives, all in context. No prompt engineering required.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── VSCODE MOCKUP ── -->
 <section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
   <div class="container-wide">
     <div style="padding: 0 0 2rem;">
@@ -134,10 +132,10 @@ import Base from '../../layouts/Base.astro';
           </div>
 
           <div class="panel-section">
-            <div class="panel-section-label">&#128196; This file — userRepository.ts</div>
+            <div class="panel-section-label">&#128196; This file - userRepository.ts</div>
             <div class="belief-item">
               <span class="belief-type type-decision">decision</span>
-              <span class="belief-text">MongoDB raw driver — no Mongoose</span>
+              <span class="belief-text">MongoDB raw driver - no Mongoose</span>
             </div>
             <div class="belief-item">
               <span class="belief-type type-preference">preference</span>
@@ -150,7 +148,7 @@ import Base from '../../layouts/Base.astro';
           </div>
 
           <div class="panel-global">
-            <div class="panel-section-label">&#127760; Global — project beliefs</div>
+            <div class="panel-section-label">&#127760; Global - project beliefs</div>
             <div class="belief-item">
               <span class="belief-type type-preference">preference</span>
               <span class="belief-text">TypeScript strict mode</span>
@@ -161,7 +159,7 @@ import Base from '../../layouts/Base.astro';
             </div>
             <div class="belief-item">
               <span class="belief-type type-decision">decision</span>
-              <span class="belief-text">Vitest — Jest ruled out</span>
+              <span class="belief-text">Vitest - Jest ruled out</span>
             </div>
             <div class="belief-item">
               <span class="belief-type type-entity">entity</span>
@@ -177,17 +175,16 @@ import Base from '../../layouts/Base.astro';
     </div>
 
     <p style="font-size:0.8rem; color:var(--dim); margin-top:1.25rem; text-align:center;">
-      ● Click any belief to see every turn it was injected. ● The exact query that surfaced it is persisted alongside it. ● Edit, pin, or delete directly from the panel. ● Per-file and global beliefs stay scoped — project A never bleeds into project B.
+      ● Click any belief to see every turn it was injected. ● The exact query that surfaced it is persisted alongside it. ● Edit, pin, or delete directly from the panel. ● Per-file and global beliefs stay scoped; project A never bleeds into project B.
     </p>
   </div>
 </section>
 
-<!-- ── HOW IT'S REGISTERED ── -->
 <section class="uc-section" style="border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">Provider-level integration</span>
     <h2>Registered as your LLM provider. Not a wrapper.</h2>
-    <p>Tenure doesn't sit on top of Copilot or intercept keystrokes. It registers at the provider level — the same place you'd set an OpenAI or Anthropic endpoint. Your existing tools route through it automatically.</p>
+    <p>Tenure doesn't sit on top of Copilot or intercept keystrokes. It registers at the provider level, the same place you'd set an OpenAI or Anthropic endpoint. Your existing tools route through it automatically.</p>
 
     <div class="uc-feature-grid">
       <div class="uc-feature-card">
@@ -198,12 +195,12 @@ import Base from '../../layouts/Base.astro';
       <div class="uc-feature-card">
         <div class="uc-feature-icon">🔁</div>
         <h3>Automatic scope sync</h3>
-        <p>On every file switch, the extension pushes your current workspace context — project name, active file, language — so Tenure resolves the right project scope before your first message is sent. Critical in monorepos.</p>
+        <p>On every file switch, the extension pushes your current workspace context: project name, active file, language — so Tenure resolves the right project scope before your first message is sent. Critical in monorepos.</p>
       </div>
       <div class="uc-feature-card">
         <div class="uc-feature-icon">🧠</div>
         <h3>Works with every client inside VS Code</h3>
-        <p>Continue, Cline, Windsurf — any client where you control the base URL. Point it at <code>localhost:5757/v1</code> and it routes through Tenure automatically. No configuration per-client.</p>
+        <p>Continue, Cline, Windsurf, any client where you control the base URL. Point it at <code>localhost:5757/v1</code> and it routes through Tenure automatically. No configuration per-client.</p>
       </div>
       <div class="uc-feature-card">
         <div class="uc-feature-icon">📋</div>
@@ -258,7 +255,7 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <span class="label">The drift problem</span>
     <h2>It also fixes the way coding sessions break.</h2>
-    <p>Beyond cross-interface continuity, Tenure fixes the way AI coding sessions drift in practice — not dramatically, but through accumulation. A script gets renamed. A config file moves. A rule you wrote for Cline never makes it into Windsurf. The agent doesn't know any of this.</p>
+    <p>Beyond cross-interface continuity, Tenure fixes the way AI coding sessions drift in practice, not dramatically, but through accumulation. A script gets renamed. A config file moves. A rule you wrote for Cline never makes it into Windsurf. The agent doesn't know any of this.</p>
 
     <div class="uc-drift-grid">
       <div class="uc-drift-card uc-drift-bad">
@@ -274,7 +271,7 @@ import Base from '../../layouts/Base.astro';
           <span class="uc-drift-icon good">✓</span>
           <h3>Tenure</h3>
         </div>
-        <p>Doesn't duplicate. Learns. When you change a decision, the old belief is superseded — never deleted, never injected again. The correct belief surfaces automatically. Your stack description is never wrong.</p>
+        <p>Doesn't duplicate. Learns. When you change a decision, the old belief is superseded, never deleted, never injected again. The correct belief surfaces automatically. Your stack description is never wrong.</p>
         <div class="uc-drift-note">Superseded beliefs are retained for audit. They never inject again. <code>!extract off</code> pauses learning for a session. Your existing memory still works.</div>
       </div>
     </div>
