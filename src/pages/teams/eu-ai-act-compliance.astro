@@ -1,0 +1,735 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="EU AI Act Compliance | Tenure"
+  description="The EU AI Act requires transparency, traceability, human oversight, and accountability. Tenure provides persistent, governable, scoped state — the architectural foundation compliance depends on."
+  canonical="https://tenureai.dev/teams/eu-ai-act-compliance"
+>
+
+<style>
+.eu-hero {
+  padding: 6rem 2rem 5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.eu-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+.eu-breadcrumb a { color: var(--muted); transition: color 0.15s; }
+.eu-breadcrumb a:hover { color: var(--text); }
+.eu-breadcrumb-sep { color: var(--border2); }
+
+.eu-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.eu-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0 0 1.5rem;
+}
+
+.eu-hero h1 .accent { color: var(--accent); }
+
+.eu-hero-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.75;
+  margin: 0 0 0.85rem;
+}
+
+.eu-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--accent2); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border2);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+  text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* ── DRIFT PROBLEM ── */
+.drift-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.drift-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 1.25rem;
+  line-height: 1.2;
+}
+
+.drift-section > .container > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 3rem;
+  max-width: 620px;
+}
+
+.drift-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+.drift-item {
+  background: var(--surface);
+  padding: 1.5rem 1.75rem;
+  position: relative;
+}
+
+.drift-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.drift-item:hover::before {
+  background: var(--red);
+}
+
+.drift-item-icon {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.drift-item h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.4rem;
+}
+
+.drift-item p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── FEATURES GRID ── */
+.features-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.features-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.features-section > .container > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 3rem;
+  max-width: 580px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.feature-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.15s;
+}
+
+.feature-card:hover {
+  border-color: rgba(0, 168, 173, 0.35);
+}
+
+.feature-card-title {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.65rem;
+  text-transform: uppercase;
+}
+
+.feature-card h3 {
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+}
+
+.feature-card p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── MAPPING TABLE ── */
+.mapping-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.mapping-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.mapping-section > .container > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 2.5rem;
+  max-width: 580px;
+}
+
+.mapping-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.mapping-table thead tr {
+  background: var(--surface);
+}
+
+.mapping-table th {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 0.9rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.mapping-table td {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.mapping-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.mapping-table tbody tr {
+  background: var(--bg);
+  transition: background 0.12s;
+}
+
+.mapping-table tbody tr:hover {
+  background: rgba(0, 168, 173, 0.03);
+}
+
+.mapping-table .principle {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.mapping-table .capability {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+/* ── STATE PROBLEMS ── */
+.state-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.state-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 1.25rem;
+  line-height: 1.2;
+}
+
+.state-section > .container > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 2.5rem;
+  max-width: 620px;
+}
+
+.state-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.state-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  gap: 2rem;
+  transition: background 0.12s;
+}
+
+.state-question:last-child {
+  border-bottom: none;
+}
+
+.state-question:hover {
+  background: rgba(0, 168, 173, 0.03);
+}
+
+.state-q {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.state-a {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  white-space: nowrap;
+  background: rgba(0, 168, 173, 0.08);
+  border: 1px solid rgba(0, 168, 173, 0.2);
+  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  flex-shrink: 0;
+}
+
+.faq-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-section h2 {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 3rem;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.faq-item {
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.6rem;
+  line-height: 1.4;
+}
+
+.faq-item p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── CTA ── */
+.eu-cta-section {
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.eu-cta-inner {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.eu-cta-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 1rem;
+}
+
+.eu-cta-section p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 2rem;
+}
+
+.eu-cta-btns {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .state-question {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .mapping-table th:last-child,
+  .mapping-table td:last-child {
+    display: none;
+  }
+}
+</style>
+
+<section class="eu-hero">
+  <div class="container">
+    <div class="eu-breadcrumb">
+      <a href="/teams">Teams</a>
+      <span class="eu-breadcrumb-sep">/</span>
+      <span>EU AI Act Compliance</span>
+    </div>
+
+    <span class="eu-eyebrow">EU AI Act</span>
+    <h1>AI compliance starts with<br><span class="accent">governable state.</span></h1>
+
+    <p class="eu-hero-sub">
+      The EU AI Act introduces requirements around transparency, traceability, human oversight, and accountability. Those requirements are difficult to satisfy if AI systems operate with opaque memory and uncontrolled context.
+    </p>
+    <p class="eu-hero-sub">
+      Tenure provides persistent, governable, scoped state for AI systems, helping teams build the foundations required for modern AI governance.
+    </p>
+
+    <div class="eu-hero-ctas">
+      <a href="/docs/teams/deployment" class="btn-primary">Read the deployment guide &rarr;</a>
+      <a href="/teams/ai-governance" class="btn-secondary">Access governance overview</a>
+    </div>
+  </div>
+</section>
+
+<section class="drift-section">
+  <div class="container">
+    <span class="section-label">The underlying problem</span>
+    <h2>Why AI state matters for compliance.</h2>
+    <p>
+      Most AI systems rely on transient context windows and probabilistic retrieval. Over time, context drifts, stale information resurfaces, and teams lose visibility into what influenced a response. Compliance becomes harder because behavior becomes harder to explain.
+    </p>
+
+    <div class="drift-items">
+      <div class="drift-item">
+        <span class="drift-item-icon">⟳</span>
+        <h3>Context drift</h3>
+        <p>Beliefs change across sessions without versioning, making it impossible to reconstruct the state that influenced a prior response.</p>
+      </div>
+      <div class="drift-item">
+        <span class="drift-item-icon">⚠</span>
+        <h3>Stale information resurfaces</h3>
+        <p>Outdated knowledge re-enters context without warning, producing inconsistent outputs that contradict your current records.</p>
+      </div>
+      <div class="drift-item">
+        <span class="drift-item-icon">◌</span>
+        <h3>No injection visibility</h3>
+        <p>Teams have no window into what was actually injected into a prompt, making response attribution and audit reporting guesswork.</p>
+      </div>
+      <div class="drift-item">
+        <span class="drift-item-icon">⊗</span>
+        <h3>Cross-project contamination</h3>
+        <p>Without hard scope boundaries, knowledge from one project, customer, or team can silently bleed into another context.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features-section">
+  <div class="container">
+    <span class="section-label">Governance capabilities</span>
+    <h2>Governance features relevant to EU AI Act readiness.</h2>
+    <p>
+      Tenure was built around the premise that AI state needs the same governance properties as any other enterprise data. These capabilities map directly to the audit, traceability, and oversight requirements the EU AI Act introduces.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card-title">scope-isolation</div>
+        <h3>Scope isolation</h3>
+        <p>Prevent customer, team, and project knowledge from bleeding across boundaries. Hard limits, not probabilistic separation.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card-title">provenance</div>
+        <h3>Provenance</h3>
+        <p>Understand where knowledge came from and why it exists. Every belief carries origin metadata that survives through to audit time.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card-title">injection-visibility</div>
+        <h3>Injection visibility</h3>
+        <p>See exactly what information was injected into a prompt and influenced a response. No reconstruction required after the fact.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card-title">supersession</div>
+        <h3>Supersession</h3>
+        <p>Track how knowledge evolves over time. When a belief changes, the prior version is preserved, not overwritten.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card-title">human-oversight</div>
+        <h3>Human oversight</h3>
+        <p>Review extracted beliefs before allowing them to influence future responses. Approve, reject, or flag for escalation.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card-title">local-deployment</div>
+        <h3>Local deployment</h3>
+        <p>Maintain ownership and control over AI state. Tenure runs inside your infrastructure. Your data does not leave your cluster.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mapping-section">
+  <div class="container">
+    <span class="section-label">Requirement mapping</span>
+    <h2>Mapping Tenure capabilities to EU AI Act requirements.</h2>
+    <p>
+      The table below maps EU AI Act principles to the Tenure capabilities that support them. This is architectural alignment, not a compliance certification.
+    </p>
+
+    <table class="mapping-table">
+      <thead>
+        <tr>
+          <th>EU AI Act principle</th>
+          <th>Tenure capability</th>
+          <th>What it provides</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="principle">Transparency</td>
+          <td class="capability">Injection visibility</td>
+          <td>See exactly what information influenced a given response.</td>
+        </tr>
+        <tr>
+          <td class="principle">Traceability</td>
+          <td class="capability">Provenance</td>
+          <td>Every belief carries origin metadata from extraction through to retrieval.</td>
+        </tr>
+        <tr>
+          <td class="principle">Human oversight</td>
+          <td class="capability">Observe before commit</td>
+          <td>Review extracted beliefs before they are allowed to influence future responses.</td>
+        </tr>
+        <tr>
+          <td class="principle">Record keeping</td>
+          <td class="capability">Versioned beliefs</td>
+          <td>Prior versions of knowledge are preserved, not overwritten, on update.</td>
+        </tr>
+        <tr>
+          <td class="principle">Data separation</td>
+          <td class="capability">Scope boundaries</td>
+          <td>Hard isolation between customer, team, and project knowledge stores.</td>
+        </tr>
+        <tr>
+          <td class="principle">Accountability</td>
+          <td class="capability">State history</td>
+          <td>Reconstruct what the system knew and when for any point in time.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="state-section">
+  <div class="container">
+    <span class="section-label">The core thesis</span>
+    <h2>AI governance begins with state.</h2>
+    <p>
+      You cannot govern AI behavior if you cannot govern what AI knows. Most compliance frameworks ultimately reduce to state-management problems. These are the questions auditors and regulators will ask, and they are only answerable if your AI infrastructure keeps records.
+    </p>
+
+    <div class="state-questions">
+      <div class="state-question">
+        <span class="state-q">What information influenced this answer?</span>
+        <span class="state-a">injection log</span>
+      </div>
+      <div class="state-question">
+        <span class="state-q">Where did that information come from?</span>
+        <span class="state-a">provenance</span>
+      </div>
+      <div class="state-question">
+        <span class="state-q">What changed, and when?</span>
+        <span class="state-a">versioned beliefs</span>
+      </div>
+      <div class="state-question">
+        <span class="state-q">Who reviewed and approved it?</span>
+        <span class="state-a">human oversight</span>
+      </div>
+      <div class="state-question">
+        <span class="state-q">Can boundaries be enforced?</span>
+        <span class="state-a">scope isolation</span>
+      </div>
+      <div class="state-question">
+        <span class="state-q">Can decisions be reconstructed?</span>
+        <span class="state-a">state history</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq-section">
+  <div class="container">
+    <span class="section-label">FAQ</span>
+    <h2>Frequently asked questions.</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>Is Tenure itself EU AI Act certified?</h3>
+        <p>
+          No. The EU AI Act governs AI systems and their use, not memory infrastructure. Tenure provides architectural foundations that support traceability, auditability, and governance requirements. Whether a specific deployment satisfies a given provision depends on how the overall system is built and used.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Can Tenure help support EU AI Act readiness?</h3>
+        <p>
+          Yes. Features such as provenance, scope isolation, auditability, and human review workflows help organizations build more governable AI systems. These capabilities are directly relevant to the transparency, traceability, and oversight provisions the Act introduces.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Does Tenure store data outside my infrastructure?</h3>
+        <p>
+          No. Tenure is designed for local deployment inside your own cluster. Your AI state, belief history, and audit logs stay within your infrastructure. There is no call-home telemetry and no data is processed by Tenure-operated servers.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How does Tenure relate to broader AI governance?</h3>
+        <p>
+          The EU AI Act is one framework, but the underlying problems it addresses appear across most enterprise AI governance requirements: who approved this knowledge, can you reconstruct a past decision, are boundaries enforced. Tenure's state model is designed around those questions. See the <a href="/teams/ai-governance" style="color:var(--accent);">AI Governance overview</a> for access control and credential governance.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="eu-cta-section">
+  <div class="container">
+    <div class="eu-cta-inner">
+      <span class="section-label" style="display:block;">Get started</span>
+      <h2>Build AI systems your compliance team can audit.</h2>
+      <p>
+        Deploy Tenure inside your cluster. Every belief is versioned, every injection is logged, and every boundary is enforced. Governance infrastructure from day one.
+      </p>
+      <div class="eu-cta-btns">
+        <a href="/docs/teams/deployment" class="btn-primary">Read the deployment guide &rarr;</a>
+        <a href="/teams" class="btn-secondary">Back to Teams overview</a>
+      </div>
+      <p style="font-size:0.78rem; color:var(--dim); margin-top:1.5rem;">
+        Local deployment &middot; MIT licensed &middot; No call-home telemetry &middot; Helm chart available
+      </p>
+    </div>
+  </div>
+</section>
+
+</Base>

@@ -187,16 +187,51 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
     </div>
   </div>
 </div>
-        <div class="dropdown">
-          <button class="dropdown-trigger">
-            Teams <span class="dropdown-arrow">▼</span>
-          </button>
-          <div class="dropdown-content">
-            <a href="/teams">Overview</a>
-            <a href="/teams/shared-memory">Shared Memory</a>
-            <a href="/teams/ai-governance">AI Governance</a>
-          </div>
-        </div>
+<div class="dropdown dropdown--mega">
+  <button class="dropdown-trigger">
+    Teams <span class="dropdown-arrow">▼</span>
+  </button>
+
+  <div class="mega-menu">
+    <div class="mega-menu__bridge"></div>
+
+    <div class="mega-menu__panel">
+
+      <div class="mega-col">
+        <p class="mega-col__label">Overview</p>
+        <div class="mega-col__divider"></div>
+
+        <a href="/teams" class="mega-item">
+          <span class="mega-item__title">Teams Overview</span>
+          <span class="mega-item__desc">How Tenure works across engineering teams.</span>
+        </a>
+
+        <a href="/teams/shared-memory" class="mega-item">
+          <span class="mega-item__title">Shared Memory</span>
+          <span class="mega-item__desc">Persistent knowledge shared across your team.</span>
+        </a>
+      </div>
+
+      <div class="mega-col__separator"></div>
+
+      <div class="mega-col">
+        <p class="mega-col__label">Governance</p>
+        <div class="mega-col__divider"></div>
+
+        <a href="/teams/ai-governance" class="mega-item">
+          <span class="mega-item__title">AI Governance</span>
+          <span class="mega-item__desc">Access control, audit trails, SCIM deprovisioning.</span>
+        </a>
+
+        <a href="/teams/eu-ai-act-compliance" class="mega-item">
+          <span class="mega-item__title">EU AI Act Compliance</span>
+          <span class="mega-item__desc">Governable state for transparency and traceability.</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
         <a href="/docs">Docs</a>
         <a href="https://github.com/tenurehq/tenure">GitHub</a>
         <a href="/writing">Writing</a>
@@ -227,6 +262,10 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
       <a href="/use-case/mobile">Mobile</a>
       <a href="/use-case/vscode">VSCode</a>
       <a href="/use-case/vscodium">VSCodium</a>
+      <a href="/teams">Teams Overview</a>
+      <a href="/teams/shared-memory">Shared Memory</a>
+      <a href="/teams/ai-governance">AI Governance</a>
+      <a href="/teams/eu-ai-act-compliance">EU AI Act Compliance</a>
       <a href="/docs">Docs</a>
       <a href="https://github.com/tenurehq/tenure">GitHub</a>
       <a href="/writing">Writing</a>
