@@ -286,14 +286,13 @@ p {
   color: var(--muted);
 }
 
-/* ── TERMINAL BLOCK ── */
 .terminal {
   background: #0d0d0d;
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
   margin-top: 3rem;
-  max-width: 560px;
+  max-width: 750px;
   margin-left: auto;
   margin-right: auto;
   text-align: left;
