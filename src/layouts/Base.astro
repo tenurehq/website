@@ -131,8 +131,13 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
     <div class="mega-menu__panel">
 
       <div class="mega-col">
-        <p class="mega-col__label">How Teams Build Trust</p>
+        <p class="mega-col__label">Core Capabilities</p>
         <div class="mega-col__divider"></div>
+
+        <a href="/use-case/project-resume" class="mega-item">
+          <span class="mega-item__title">Project Resume</span>
+          <span class="mega-item__desc">Pick up where you left off in any repo.</span>
+        </a>
 
         <a href="/use-case/memory-modes" class="mega-item">
           <span class="mega-item__title">Memory Modes</span>
@@ -142,11 +147,6 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
         <a href="/use-case/code-review" class="mega-item">
           <span class="mega-item__title">PR Review</span>
           <span class="mega-item__desc">Persistent knowledge for code reviews.</span>
-        </a>
-
-        <a href="/use-case/mobile" class="mega-item">
-          <span class="mega-item__title">Mobile</span>
-          <span class="mega-item__desc">Capture context anywhere.</span>
         </a>
       </div>
 
@@ -172,6 +172,11 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
       <div class="mega-col">
         <p class="mega-col__label">Compatible Clients</p>
         <div class="mega-col__divider"></div>
+
+        <a href="/use-case/mobile" class="mega-item">
+          <span class="mega-item__title">Mobile</span>
+          <span class="mega-item__desc">Capture context anywhere.</span>
+        </a>
 
         <a href="/docs/clients/open-webui" class="mega-item">
           <span class="mega-item__title">Open WebUI</span>
@@ -259,19 +264,46 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
     </nav>
 
     <div class="nav-mobile-menu" id="nav-mobile-menu">
-      <a href="/use-case/mobile">Mobile</a>
-      <a href="/use-case/vscode">VSCode</a>
-      <a href="/use-case/vscodium">VSCodium</a>
-      <a href="/teams">Teams Overview</a>
-      <a href="/teams/shared-memory">Shared Memory</a>
-      <a href="/teams/ai-governance">AI Governance</a>
-      <a href="/teams/eu-ai-act-compliance">EU AI Act Compliance</a>
-      <a href="/docs">Docs</a>
-      <a href="https://github.com/tenurehq/tenure">GitHub</a>
-      <a href="/writing">Writing</a>
-      <a href="/benchmark">Benchmark</a>
-      <a href="https://arxiv.org/abs/2605.11325">Paper</a>
-      <a href="https://github.com/tenurehq/tenure" class="nav-mobile-cta">Install Free</a>
+      <div class="nav-mobile-section">
+        <p class="nav-mobile-label">Platform</p>
+        <a href="/use-case/project-resume">Project Resume</a>
+        <a href="/use-case/memory-modes">Memory Modes</a>
+        <a href="/use-case/code-review">PR Review</a>
+      </div>
+
+      <div class="nav-mobile-section">
+        <p class="nav-mobile-label">Editor Integrations</p>
+        <a href="/use-case/vscode">VS Code</a>
+        <a href="/use-case/vscodium">VSCodium</a>
+      </div>
+
+      <div class="nav-mobile-section">
+        <p class="nav-mobile-label">Compatible Clients</p>
+        <a href="/use-case/mobile">Mobile</a>
+        <a href="/docs/clients/open-webui">Open WebUI</a>
+        <a href="/docs/clients/openclaw">OpenClaw</a>
+      </div>
+
+      <div class="nav-mobile-section">
+        <p class="nav-mobile-label">Teams</p>
+        <a href="/teams">Teams Overview</a>
+        <a href="/teams/shared-memory">Shared Memory</a>
+        <a href="/teams/ai-governance">AI Governance</a>
+        <a href="/teams/eu-ai-act-compliance">EU AI Act Compliance</a>
+      </div>
+
+      <div class="nav-mobile-section">
+        <p class="nav-mobile-label">Resources</p>
+        <a href="/docs">Docs</a>
+        <a href="/writing">Writing</a>
+        <a href="/benchmark">Benchmark</a>
+        <a href="https://arxiv.org/abs/2605.11325">Paper</a>
+        <a href="https://github.com/tenurehq/tenure">GitHub</a>
+      </div>
+
+      <a href="https://github.com/tenurehq/tenure" class="nav-mobile-cta">
+        Install Free
+      </a>
     </div>
 
     <script>

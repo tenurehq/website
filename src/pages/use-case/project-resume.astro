@@ -1,0 +1,693 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure Project Resume | The Handoff You Never Have to Write"
+  description="Developers lose 20+ minutes every time they return to a repo reconstructing where they left off. Tenure Project Resume eliminates the orientation tax: file activity, project beliefs, and past queries reconstructed automatically when you open your IDE."
+  canonical="https://tenureai.dev/use-case/project-resume"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Tenure Project Resume",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "url": "https://tenureai.dev/use-case/project-resume",
+  "description": "Tenure reconstructs your last working session when you return to a repo. File activity, project beliefs, and audit queries assembled automatically. Resume in seconds, not minutes.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<section class="uc-hero">
+  <div class="container" style="text-align:center;">
+    <div class="uc-breadcrumb">
+      <a href="/use-cases">Use cases</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Project Resume</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Use case</span>
+    <h1>The handoff you<br/>never have to write.</h1>
+    <p class="hero-sub">
+      Every developer pays an orientation tax: the twenty minutes spent
+      reconstructing where you were before you write a single line of code.
+      Tenure generates the handoff automatically, so you can pick up where
+      you left off without re-explaining anything.
+    </p>
+    <div class="uc-hero-ctas">
+      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
+        Install Free →
+      </a>
+      <a href="/docs" class="btn-secondary">
+        Read the Docs
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">The problem</span>
+    <h2>This is a real daily cost. Nobody tracks it.</h2>
+    <p>Context switching between repos isn't free. Neither is returning after a vacation, picking up someone else's ticket, or dipping into a project mid-sprint. The mental work of reconstructing "what state is this work in?" is invisible in velocity metrics and untracked in standups, but developers pay it every single time.</p>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">🔁</div>
+        <h3>Returning after time away</h3>
+        <p>You context-switched to another project for two weeks. Now you're back. Which branch were you on? What was the half-finished thing? What had you decided about the auth flow? You have to re-read your own code to remember.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🎟️</div>
+        <h3>Picking up someone else's ticket</h3>
+        <p>You're handed a ticket mid-sprint. The description says "add rate limiting to the API." It doesn't say where rate limiting lives, what pattern the team uses, or which service owns it. You spend 30 minutes finding out.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🗂️</div>
+        <h3>Multiple repos, all day</h3>
+        <p>You're a solo dev bouncing between three repos. Claude Code, Cursor, VS Code: none of them remember where you were in any of them. You re-explain the same context over and over across sessions and tools.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📋</div>
+        <h3>The AGENTS.md trap</h3>
+        <p>You tried keeping context in <code>AGENTS.md</code>, <code>.cursorrules</code>, or a markdown file. It worked for two weeks. Then code changed, the file didn't, and now agents confidently follow stale instructions. The community calls this context rot. Maintenance becomes a second job.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔄</div>
+        <h3>The handoff you never wrote</h3>
+        <p>You meant to leave notes before switching to the other repo. You didn't. Two weeks later you're reading your own commit messages trying to remember what "fix auth thing" meant. The context is gone. You start over.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">✍️</div>
+        <h3>The handoff ritual that requires discipline</h3>
+        <p>You built a system: write a handover doc at the end of every session, then <code>/clear</code> and resume from it next time. It works when you remember. Most sessions don't end cleanly. Tenure writes the handoff whether you remembered to or not.</p>
+      </div>
+    </div>
+
+    <div class="contrast-callout" style="margin-top:3rem;">
+      <span class="contrast-callout-mono">The orientation tax isn't laziness. It's the cost of tools with no memory.</span>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container-wide">
+    <div style="padding: 0 0 2.5rem;">
+      <span class="label">Project Resume</span>
+      <h2>Open the repo. Tenure already knows where you were.</h2>
+      <p>When you return to a project, Tenure surfaces a reconstructed summary of your last working session — directly in VS Code. No prompting required. No markdown to maintain. Built from the signals already flowing through Tenure as you work.</p>
+    </div>
+
+    <!-- Resume panel mockup -->
+    <div class="resume-mockup">
+      <div class="resume-mockup-bar">
+        <span class="term-dot term-dot-red"></span>
+        <span class="term-dot term-dot-yellow"></span>
+        <span class="term-dot term-dot-green"></span>
+        <span class="resume-mockup-title">Tenure — Project Resume</span>
+      </div>
+      <div class="resume-mockup-body">
+        <div class="resume-meta">
+          <span class="resume-project">⬡ tenure-site</span>
+          <span class="resume-age">Last active 13 days ago</span>
+        </div>
+
+        <div class="resume-section">
+          <div class="resume-section-label">📂 Files you were in</div>
+          <div class="resume-file-list">
+            <div class="resume-file">
+              <span class="resume-file-path">src/pages/use-case/project-resume.astro</span>
+              <span class="resume-file-visits">4 visits</span>
+            </div>
+            <div class="resume-file">
+              <span class="resume-file-path">src/pages/use-case/vscode.astro</span>
+              <span class="resume-file-visits">2 visits</span>
+            </div>
+            <div class="resume-file">
+              <span class="resume-file-path">src/layouts/Base.astro</span>
+              <span class="resume-file-visits">1 visit</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="resume-section">
+          <div class="resume-section-label">🧠 Beliefs created in this session</div>
+          <div class="resume-belief-list">
+            <div class="resume-belief">
+              <span class="belief-type type-decision">decision</span>
+              <span class="resume-belief-text">Project Resume uses last N files, not session boundaries</span>
+            </div>
+            <div class="resume-belief">
+              <span class="belief-type type-preference">preference</span>
+              <span class="resume-belief-text">Orientation tax is the core concept — name it early in the hero</span>
+            </div>
+            <div class="resume-belief">
+              <span class="belief-type type-decision">decision</span>
+              <span class="resume-belief-text">Jira integration is roadmap — tease it, don't promise it</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="resume-section">
+          <div class="resume-section-label">💬 Recent queries</div>
+          <div class="resume-query-list">
+            <div class="resume-query">"How is CommandCode positioning against VS Code?"</div>
+            <div class="resume-query">"What are devs searching for around AI context across tools?"</div>
+            <div class="resume-query">"Write the Project Resume use-case page for tenureai.dev"</div>
+          </div>
+        </div>
+
+        <div class="resume-section" style="border-bottom:none;">
+          <div class="resume-section-label">⚡ Likely next steps</div>
+          <div class="resume-next-list">
+            <div class="resume-next">1. Add the Resume mockup section to the page</div>
+            <div class="resume-next">2. Wire up the VS Code sidebar button</div>
+            <div class="resume-next">3. Add internal link from vscode.astro → this page</div>
+          </div>
+        </div>
+
+        <div class="resume-actions">
+          <button class="resume-btn-primary">Resume in Chat</button>
+          <button class="resume-btn-secondary">Open Files</button>
+          <button class="resume-btn-ghost">Dismiss</button>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.8rem; color:var(--dim); margin-top:1.25rem; text-align:center;">
+      ● Built from file activity, beliefs, and audit log turns — no telemetry beyond what Tenure already collects. ● Every bullet is traceable to a source event. ● Click "Resume in Chat" to open your AI client pre-loaded with this context.
+    </p>
+  </div>
+</section>
+
+<section class="uc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">How it works</span>
+    <h2>Derived from signals you're already producing.</h2>
+    <p>Tenure doesn't ask you to maintain context files or write session summaries. Project Resume is built automatically from the activity stream flowing through Tenure every time you work — then summarized on demand when you return.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">01</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Collect</div>
+          <h3>File activity accumulates passively</h3>
+          <p>Every time you switch files in VS Code, Tenure records the path, language, and timestamp. No extra step. This is the same workspace sync that powers scoped belief injection — Project Resume is a derived view over data you're already producing.</p>
+          <div class="step-mono">// src/pages/use-case/project-resume.astro — visited 4× — last active 13d ago</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">02</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Assemble</div>
+          <h3>Last N files, recent beliefs, and past queries</h3>
+          <p>When you return to a repo, Tenure assembles a source bundle: the most recently visited files for this project, beliefs created or updated since your last session, and the queries you sent through the audit log. No LLM needed yet — this is a deterministic query over existing data.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">03</div>
+          <div class="step-line"></div>
+        </div>
+        <div>
+          <div class="step-label">Summarize</div>
+          <h3>One model pass. Facts separated from inference.</h3>
+          <p>A single LLM pass over the source bundle produces the summary: files, beliefs, queries, and inferred next steps. Facts and inferences are kept separate. You can always ask "why am I seeing this?" and every item traces back to a source event in the audit log.</p>
+          <div class="step-mono">// confidence: 0.91 — based on 3 beliefs, 6 file events, 4 audit turns</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-col">
+          <div class="step-num">04</div>
+        </div>
+        <div>
+          <div class="step-label">Resume</div>
+          <h3>"Resume in Chat" opens your AI client pre-loaded</h3>
+          <p>The Resume in Chat button injects the full snapshot as a context block into your AI session. Ask "what should I do next?" and the model answers from your actual last session — not a generic suggestion based on the filename.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Why not just use AGENTS.md?</span>
+    <h2>Static files solve a different problem.</h2>
+    <p>Developers have tried markdown files, <code>.cursorrules</code>, <code>AGENTS.md</code>, Obsidian notes, and MCP memory servers. They all solve part of the problem. None of them solve the returning-to-work problem.</p>
+
+    <div class="alt-grid">
+      <div class="alt-card">
+        <div class="alt-label wrong">AGENTS.md / .cursorrules</div>
+        <p>Great for stable conventions. Breaks when code changes and the file doesn't. Best developers in the Cursor community describe it as "the boring answer" — it works until maintenance becomes its own job.</p>
+        <div class="alt-verdict bad">Solves conventions. Doesn't solve re-orientation.</div>
+      </div>
+      <div class="alt-card">
+        <div class="alt-label wrong">MCP memory servers</div>
+        <p>Promising, but cross-tool reliability isn't there yet. Memory that one tool writes, another reads only works if both are disciplined about when to write and retrieve — and in practice they're not. Mostly experimental outside single-tool setups.</p>
+        <div class="alt-verdict bad">Promising. Not production-grade across tools yet.</div>
+      </div>
+      <div class="alt-card">
+        <div class="alt-label wrong">Obsidian / Notion</div>
+        <p>Good for personal notes. As agent context it goes stale fast. Requires manual updates after every session. The cognitive overhead of maintaining external notes is itself part of the problem.</p>
+        <div class="alt-verdict bad">Needs manual maintenance. Doesn't scale.</div>
+      </div>
+      <div class="alt-card highlight-card">
+        <div class="alt-label right">Tenure Project Resume</div>
+        <p>Derived from signals already flowing through Tenure. No file to maintain. Scoped to the active project. Traceable to source events. Works across every tool that routes through Tenure — Cursor, Windsurf, Claude Code, or VS Code Copilot Chat.</p>
+        <div class="alt-verdict good">Always current. Zero maintenance. Cross-tool.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">What's next</span>
+    <h2>The ticket already knows what files need to change.</h2>
+    <p>The next layer of Project Resume connects sprint planning to the IDE. A Jira ticket assigned during standup already contains enough information to know which files, services, and patterns are relevant. Tenure will close that gap — so the developer who sits down to code is already oriented before they've typed a character.</p>
+
+    <div class="roadmap-grid">
+      <div class="roadmap-card">
+        <div class="roadmap-icon">🎟️</div>
+        <h3>Jira + Linear integration</h3>
+        <p>Link a ticket to a Project Resume snapshot. Tenure surfaces which files are likely to need changes, based on the ticket description and your project's belief graph.</p>
+        <span class="roadmap-badge">Coming soon</span>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-icon">📄</div>
+        <h3>Confluence + Notion docs</h3>
+        <p>Architecture decisions in Confluence become part of the context injected when you open a relevant file. The planning doc from last month surfaces when it's actually useful.</p>
+        <span class="roadmap-badge">On the roadmap</span>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-icon">🔀</div>
+        <h3>PR history</h3>
+        <p>Recent commits and open PRs against this project scope fold into the resume. What changed, who changed it, and what review comments were left — visible before you write the next line.</p>
+        <span class="roadmap-badge">On the roadmap</span>
+      </div>
+    </div>
+
+    <div class="contrast-callout" style="margin-top:3rem;">
+      <span class="contrast-callout-mono">The goal: by the time a developer writes their first line of code, they're already oriented. Zero orientation tax.</span>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section">
+  <div class="container" style="text-align:center; max-width:640px; margin:0 auto;">
+    <span class="label">Get started</span>
+    <h2>Tenure is free, local, and MIT licensed.</h2>
+    <p style="margin-bottom:2rem;">Install the VS Code extension, point your AI client at <code>localhost:5757/v1</code>, and Tenure starts building context the moment you open a file. Project Resume is available as a button in the Tenure sidebar panel.</p>
+    <div class="uc-hero-ctas">
+      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
+        Install Free →
+      </a>
+      <a href="/use-case/vscode" class="btn-secondary">
+        See the VS Code integration
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.uc-breadcrumb {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.uc-breadcrumb a { color: var(--accent); }
+.uc-breadcrumb-sep { color: var(--border2); }
+
+.uc-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--accent2); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+.uc-section { padding: 5rem 2rem; }
+
+.pain-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+@media (max-width: 680px) { .pain-grid { grid-template-columns: 1fr; } }
+
+.pain-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.pain-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
+.pain-card h3 { color: var(--text); margin-bottom: 0.4rem; }
+.pain-card p { font-size: 0.875rem; margin: 0; }
+
+.contrast-callout {
+  border-left: 2px solid var(--accent);
+  padding: 1rem 1.5rem;
+  background: rgba(0,168,173,0.04);
+  border-radius: 0 8px 8px 0;
+}
+.contrast-callout-mono {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.resume-mockup {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0d0d0d;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.resume-mockup-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.term-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.term-dot-red    { background: #c45353; }
+.term-dot-yellow { background: #c4a053; }
+.term-dot-green  { background: #53c453; }
+.resume-mockup-title {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  margin-left: 0.5rem;
+}
+.resume-mockup-body { padding: 1.5rem; }
+
+.resume-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.resume-project {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+.resume-age {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+
+.resume-section {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.resume-section-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+}
+
+.resume-file-list { display: flex; flex-direction: column; gap: 0.4rem; }
+.resume-file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+}
+.resume-file-path {
+  font-family: var(--mono);
+  font-size: 0.73rem;
+  color: var(--text);
+}
+.resume-file-visits {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--dim);
+}
+
+.resume-belief-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.resume-belief {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+}
+.resume-belief-text { color: var(--muted); }
+
+.belief-type {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  font-weight: 600;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+}
+.type-decision  { background: rgba(0,168,173,0.1); color: var(--accent); border: 1px solid rgba(0,168,173,0.2); }
+.type-preference { background: rgba(168,100,0,0.1); color: #c47a30; border: 1px solid rgba(168,100,0,0.2); }
+
+.resume-query-list { display: flex; flex-direction: column; gap: 0.4rem; }
+.resume-query {
+  font-family: var(--mono);
+  font-size: 0.73rem;
+  color: var(--dim);
+  padding: 0.4rem 0.75rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.resume-query::before { content: '"'; }
+.resume-query::after  { content: '"'; }
+
+.resume-next-list { display: flex; flex-direction: column; gap: 0.4rem; }
+.resume-next {
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding: 0.3rem 0;
+}
+
+.resume-actions {
+  display: flex;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.resume-btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.resume-btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.resume-btn-ghost {
+  background: transparent;
+  color: var(--dim);
+  border: none;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0.5rem 0.5rem;
+}
+
+.steps { margin-top: 3rem; display: flex; flex-direction: column; gap: 2.5rem; }
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.5rem;
+}
+.step-num-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.step-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.2);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-line {
+  width: 1px;
+  flex: 1;
+  background: var(--border);
+  margin-top: 0.5rem;
+}
+.step-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.step h3 { color: var(--text); margin-bottom: 0.5rem; }
+.step p  { font-size: 0.875rem; }
+.step-mono {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--dim);
+  background: var(--surface2);
+  border-radius: 6px;
+  padding: 0.65rem 1rem;
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+}
+
+.alt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+@media (max-width: 680px) { .alt-grid { grid-template-columns: 1fr; } }
+
+.alt-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.alt-card.highlight-card {
+  background: rgba(0,168,173,0.03);
+  border-color: rgba(0,168,173,0.25);
+}
+.alt-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: block;
+  font-weight: 600;
+}
+.alt-label.wrong { color: var(--dim); }
+.alt-label.right  { color: var(--accent); }
+.alt-card p { font-size: 0.875rem; margin-bottom: 1rem; }
+.alt-verdict {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+.alt-verdict.bad  { background: rgba(196,83,83,0.08); color: #c45353; border: 1px solid rgba(196,83,83,0.15); }
+.alt-verdict.good { background: rgba(0,168,173,0.08); color: var(--accent); border: 1px solid rgba(0,168,173,0.2); }
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+@media (max-width: 800px) { .roadmap-grid { grid-template-columns: 1fr; } }
+
+.roadmap-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.roadmap-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
+.roadmap-card h3 { color: var(--text); margin-bottom: 0.4rem; }
+.roadmap-card p { font-size: 0.875rem; margin-bottom: 1rem; }
+.roadmap-badge {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2em 0.6em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  background: rgba(0,168,173,0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--accent);
+}
+</style>
+
+</Base>

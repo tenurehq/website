@@ -2493,3 +2493,22 @@ footer {
   padding-left: 2.5rem;
   line-height: 1.8;
 }
+
+.nav-mobile-section {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-mobile-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.4rem;
+}
+
+.nav-mobile-section a {
+  display: block;
+  padding: 0.55rem 0;
+}
