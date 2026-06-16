@@ -1,0 +1,1124 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Why Vector Search Became the Default for AI Memory (And Why That Was a Mistake) | Tenure"
+  description="Vector search is the right tool for document retrieval and the wrong tool for memory. Here's how the field made that mistake, what it costs in practice, and what a precision-first design looks like instead."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why Vector Search Became the Default for AI Memory (And Why That Was a Mistake)",
+  "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "url": "https://tenureai.dev/writing/why-vector-search-was-a-mistake",
+  "description": "Vector search is the right tool for document retrieval and the wrong tool for memory. Here's how the field made that mistake, what it costs in practice, and what a precision-first design looks like instead.",
+  "datePublished": "2026-06-16",
+  "dateModified": "2026-06-16"
+}
+</script>
+
+<section class="essay-hero">
+  <div class="container">
+    <div class="uc-breadcrumb">
+      <a href="/writing">Writing</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Vector search and memory</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Architecture</span>
+    <h1>Why vector search became the default for AI memory (and why that was a mistake)</h1>
+    <p class="hero-sub-title" style="margin-top:1rem;">
+      Vector search is the right tool for document retrieval.
+      Memory is not a document retrieval problem.
+      The field conflated the two, and the numbers show what that costs.
+    </p>
+    <div class="essay-meta">
+      <span class="essay-meta-item">Tenure research</span>
+      <span class="essay-meta-sep">·</span>
+      <span class="essay-meta-item">~10 min read</span>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface);">
+  <div class="container">
+    <div class="tldr-box">
+      <h3>TL;DR</h3>
+      <ul>
+        <li>Vector search became the default because AI memory was framed as a search problem. It isn't. It's a state management problem.</li>
+        <li>Cosine similarity measures semantic proximity, not relevance to a specific user's belief store. In a technical domain, those two things are different by construction.</li>
+        <li>On PrecisionMemBench, every vector-based memory system, including Mem0, Zep, and Hindsight, achieves zero active retrieval passes and mean precision of 0.05 to 0.09. Recall is 1.0 because they return everything.</li>
+        <li>Returning everything is not retrieval. The generative model was always compensating for the retrieval layer's imprecision. That only works until the context window fills.</li>
+        <li>The fix is structural, not parametric: typed beliefs, BM25 over alias-weighted identifiers, and hard scope filters applied before scoring.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">How we got here</span>
+    <h2>The framing that locked in the wrong tool</h2>
+    <p>
+      In 2023, the dominant pattern for giving LLMs longer context was retrieval-augmented generation:
+      store documents in a vector index, embed the user's query, pull the nearest neighbors, inject them
+      into the prompt. It worked well enough. Vector search is genuinely good at finding documents that
+      are semantically close to a query, especially across a heterogeneous corpus where you don't know
+      in advance what you're looking for.
+    </p>
+    <p>
+      When the field turned its attention to cross-session memory, the same toolchain was already in place.
+      Embed the facts the user has shared. Store them in the same vector DB. Retrieve on query.
+      The infrastructure was identical, the API was familiar, and the pattern felt like a natural extension
+      of RAG. Nobody asked whether the retrieval problem was actually the same.
+    </p>
+    <p>
+      It isn't. And the difference is the entire problem.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        Document retrieval is a recall problem. You want the documents most likely to contain relevant
+        information, approximate similarity is an acceptable proxy, and some noise is fine because the
+        model can filter. Memory retrieval is a precision problem. You want exactly the beliefs that
+        apply to this query, and none that don't. These require different tools.
+      </p>
+    </div>
+
+    <p>
+      A user's belief store is not a heterogeneous document corpus. It is a dense, typed collection
+      of facts about a specific person, their projects, their preferences, and their domain. Every
+      belief in a developer's store is about software engineering. Redis and MongoDB and TypeScript
+      and Fastify all live in the same semantic region. Cosine similarity cannot tell them apart,
+      because cosine similarity measures something real about them: they are genuinely related.
+      It measures the wrong thing.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The precision problem</span>
+    <h2>Why cosine similarity fails in bounded vocabulary contexts</h2>
+    <p>
+      In any belief store where the user works in a single technical domain, all beliefs about
+      that domain occupy a common semantic region. A query about Redis is semantically proximate
+      to beliefs about MongoDB, TypeScript, Kubernetes, and GitHub Actions, with cosine scores
+      between 0.65 and 0.83. Those scores are accurate. The problem is they're measuring
+      genuine semantic relatedness, not retrieval relevance. The information a developer needs
+      when asking about Redis is not the same as the information they need when asking about
+      Kubernetes, even though the two topics are semantically close.
+    </p>
+    <p>
+      To measure this precisely, we built PrecisionMemBench: 89 cases covering alias resolution,
+      scope disambiguation, supersession chain exclusion, fuzzy matching, cross-user isolation,
+      and session-level noise isolation. Cases carry <code>mustExclude</code> assertions and
+      <code>shouldOnlyInclude</code> constraints that make noise a hard failure rather than
+      an invisible inference cost.
+    </p>
+
+    <!-- Results table -->
+    <div class="results-table-wrap">
+      <div class="results-table-label">PrecisionMemBench results: 89 cases, 5 systems</div>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Mean precision</th>
+            <th>Mean recall</th>
+            <th>Active retrieval passes</th>
+            <th>Total passes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-tenure">
+            <td><span class="system-badge system-badge-good">Tenure</span></td>
+            <td class="stat-good">1.0</td>
+            <td class="stat-good">1.0</td>
+            <td class="stat-good">48/48</td>
+            <td class="stat-good">89/89</td>
+          </tr>
+          <tr>
+            <td><span class="system-badge">Vector baseline</span></td>
+            <td class="stat-bad">0.09</td>
+            <td class="stat-neutral">1.0</td>
+            <td class="stat-bad">0/48</td>
+            <td class="stat-bad">11/89</td>
+          </tr>
+          <tr>
+            <td><span class="system-badge">Mem0</span></td>
+            <td class="stat-bad">0.05</td>
+            <td class="stat-neutral">0.99</td>
+            <td class="stat-bad">0/48</td>
+            <td class="stat-bad">9/89</td>
+          </tr>
+          <tr>
+            <td><span class="system-badge">Zep</span></td>
+            <td class="stat-bad">0.08</td>
+            <td class="stat-neutral">0.95</td>
+            <td class="stat-bad">0/48</td>
+            <td class="stat-bad">9/89</td>
+          </tr>
+          <tr>
+            <td><span class="system-badge">Hindsight</span></td>
+            <td class="stat-bad">0.05</td>
+            <td class="stat-neutral">1.0</td>
+            <td class="stat-bad">0/48</td>
+            <td class="stat-bad">8/89</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="results-table-note">
+        Active retrieval passes require a <code>retrievalPrecision</code> assertion to be satisfied.
+        The 11 passes for the vector baseline are structural or trivially empty cases, not active retrieval.
+        All comparison systems were evaluated using Claude Sonnet 4.6 in the extraction path.
+      </div>
+    </div>
+
+    <p>
+      The striking detail is not just the precision numbers. It's the recall. Every vector-based system
+      achieves recall near 1.0, because they return everything. A memory system that returns its
+      entire belief store trivially achieves recall of 1.0. The benchmark's own framing for this:
+      <em>returning everything is not retrieval.</em>
+    </p>
+    <p>
+      We also tested this across three embedding models at 20x scale difference in parameters:
+      nomic-embed-text (768 dimensions), mxbai-embed-large (1024 dimensions), and qwen3-8b
+      (4096 dimensions). Mean retrieval precision was 0.09 across all three. The 8-billion parameter
+      model ran at 1,130ms mean per query and produced identical precision to the smallest model.
+      A more powerful embedding model distributes scores differently but cannot eliminate genuine
+      semantic proximity within a domain-specific corpus. The fix is not a better ruler.
+      It's a different measurement instrument.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The hidden cost</span>
+    <h2>The generative model was always compensating</h2>
+    <p>
+      Here is why this failure went undetected for so long: when you evaluate memory systems by
+      routing retrieved context through a capable generative model and measuring answer quality,
+      the model compensates for retrieval noise. A system that returns 12 beliefs when 1 was
+      relevant still gets full marks if the model finds the right one.
+    </p>
+    <p>
+      LoCoMo, LongMemEval, and most of the evaluations built on top of them measure whether a
+      model answered correctly given retrieved context. None measures whether the memory system
+      retrieved correctly. These are not the same question, and treating them as interchangeable
+      has allowed a systematic retrieval failure to go undetected across the field.
+    </p>
+
+    <div class="cost-grid">
+      <div class="cost-card">
+        <div class="cost-icon">⚠</div>
+        <h3>At small corpus size</h3>
+        <p>
+          A capable model can locate the correct answer buried in 12 beliefs. It takes extra
+          inference compute, but it works. This is how all published evaluations run: tens to
+          low hundreds of beliefs. The problem is invisible.
+        </p>
+      </div>
+      <div class="cost-card">
+        <div class="cost-icon">✕</div>
+        <h3>At production scale</h3>
+        <p>
+          A real persistent memory use case reaches thousands of beliefs across months of sessions.
+          Full-corpus retrieval becomes architecturally impossible. The model can no longer
+          compensate. The precision problem can no longer be offloaded to inference.
+        </p>
+      </div>
+      <div class="cost-card">
+        <div class="cost-icon">✕</div>
+        <h3>For non-generative consumers</h3>
+        <p>
+          A structured pipeline, a classifier, a rules engine, or a fine-tuning dataset cannot
+          compensate for a retrieval system that returns 12 beliefs when 1 was relevant.
+          The model-compensates-for-noise safety net is a property of frontier models,
+          not a property of retrieval.
+        </p>
+      </div>
+    </div>
+
+    <p>
+      The Hindsight case makes this concrete. In the Hindsight architecture, a 20B intermediary
+      model sits between retrieval and the chat backbone. Its job is to reason over whatever
+      retrieval returns. LoCoMo measures and rewards its ability to find the right answer in
+      noisy context. PrecisionMemBench measures whether the right belief was retrieved at all,
+      without routing through any generative model. The results: Hindsight achieves 0 active
+      retrieval passes, mean precision 0.05, and a session drift score of 1.0 on noise-critical
+      turns, meaning after 8 off-topic drift turns, it returns no relevant beliefs from the
+      original topic on re-entry. The benchmark that LoCoMo cannot detect, PrecisionMemBench
+      surfaces immediately.
+    </p>
+    <p>
+      This isn't a critique of Hindsight specifically. It is evidence that the evaluation gap
+      is present in the most recently published work in the field. The failure mode is structural
+      and shared across every system that uses cosine similarity as its primary retrieval signal.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        A memory system whose correctness depends on a generative model's ability to reason under
+        noise is architecturally coupled to that model's inference capability. That coupling is
+        invisible in answer quality benchmarks precisely because those benchmarks are evaluated
+        using capable generative models.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The drift problem</span>
+    <h2>Semantic mass accumulates and cannot be undone</h2>
+    <p>
+      Session-level noise isolation reveals a second failure mode that single-turn metrics
+      completely conceal. When a conversation drifts across topics, a developer session that
+      starts with Redis, wanders through React, TypeScript, Kubernetes, and SQLAlchemy, then
+      returns to Redis, beliefs from the drift turns accumulate in the vector index. Their
+      semantic mass is now indiscriminable from the re-entry topic.
+    </p>
+    <p>
+      We measured this with a 10-turn session case: one original topic at turn 0, 8 drift turns
+      across unrelated domains, then an implicit return at turn 9 and explicit return at turn 10.
+      The drift score is the fraction of retrieved non-pinned beliefs originating from drift turns.
+      Zero is perfect isolation.
+    </p>
+
+    <div class="drift-diagram">
+      <div class="drift-diagram-label">Session drift scores on noise-critical turns</div>
+      <div class="drift-bars">
+        <div class="drift-row">
+          <span class="drift-system">Tenure</span>
+          <div class="drift-bar-track">
+            <div class="drift-bar drift-bar-good" style="width:0%"></div>
+            <span class="drift-score drift-score-good">0.0</span>
+          </div>
+        </div>
+        <div class="drift-row">
+          <span class="drift-system">Vector</span>
+          <div class="drift-bar-track">
+            <div class="drift-bar drift-bar-bad" style="width:100%"></div>
+            <span class="drift-score drift-score-bad">1.0</span>
+          </div>
+        </div>
+        <div class="drift-row">
+          <span class="drift-system">Mem0</span>
+          <div class="drift-bar-track">
+            <div class="drift-bar drift-bar-bad" style="width:100%"></div>
+            <span class="drift-score drift-score-bad">1.0</span>
+          </div>
+        </div>
+        <div class="drift-row">
+          <span class="drift-system">Zep</span>
+          <div class="drift-bar-track">
+            <div class="drift-bar drift-bar-bad" style="width:92%"></div>
+            <span class="drift-score drift-score-bad">0.92</span>
+          </div>
+        </div>
+        <div class="drift-row">
+          <span class="drift-system">Hindsight</span>
+          <div class="drift-bar-track">
+            <div class="drift-bar drift-bar-bad" style="width:100%"></div>
+            <span class="drift-score drift-score-bad">1.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="drift-note">Turn 9 implicit re-entry. Lower is better. 0.0 = perfect isolation.</div>
+    </div>
+
+    <p>
+      What the table doesn't fully capture: at turn 10, the vector baseline ranks the correct
+      belief first by cosine score (0.853), while simultaneously retrieving all 7 noise beliefs
+      from unrelated drift turns. Hindsight achieves drift score 1.0 at turn 10 with the correct
+      belief absent entirely, not ranked low, missing from the result set. The cross-encoder
+      reranker bundled in Hindsight's full image is the architectural feature designed to address
+      exactly this class of problem. It does not.
+    </p>
+    <p>
+      This is the core structural argument against vector search for memory. A purely semantic
+      system degrades as the store grows: more beliefs means more semantic mass, broader cosine
+      overlap, and lower precision on every query. The noise tax, once paid, cannot be recovered.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The symptom reports</span>
+    <h2>What practitioners are actually running into</h2>
+    <p>
+      The failure mode is recognizable to anyone who has shipped memory in production.
+      A GitHub issue on the Mem0 repo from May 2026 describes it precisely:
+    </p>
+
+    <div class="quote-block">
+      <p>
+        "I'm using Mem0 as the memory layer for task-based agents. It works well for storing and
+        retrieving user context, but I've been running into subtle failures that are hard to debug:
+        the agent should remember a preference but silently retrieves stale or conflicting information
+        instead."
+      </p>
+      <div class="quote-source">
+        <a href="https://github.com/mem0ai/mem0/issues/5235" target="_blank" rel="noopener">
+          mem0ai/mem0 #5235
+        </a>
+        · May 2026
+      </div>
+    </div>
+
+    <p>
+      The issue proposes an eval toolkit to catch these failures. The requested metrics — forgetting,
+      overwrite behavior, temporal relevance, conflict resolution — are exactly what PrecisionMemBench
+      measures at the retrieval layer, before answer quality hides what happened underneath.
+    </p>
+    <p>
+      A discussion on the Hindsight repo from June 2026 surfaces the same tension from a different angle.
+      A software engineer migrating from a prior memory system wants to quantify the win across
+      output quality, token cost reduction, and multi-hop retrieval. A Hindsight maintainer confirms
+      the system runs evaluations with the maximum recall token budget for competitor comparisons —
+      a detail that matters because token cost and retrieval precision are inversely related in any
+      vector-based system. When you increase the recall budget to improve accuracy, you also inject
+      more noise per turn.
+    </p>
+    <p>
+      Another commenter in the same thread captures the right reframing: the meaningful measure is
+      not raw token count but tokens-per-relevant-fact-recalled. A memory system that injects 2,000
+      tokens containing 8 relevant facts is more efficient than one that injects 500 tokens
+      containing 1 relevant fact, even though the latter uses fewer tokens. This is exactly the
+      distinction PrecisionMemBench makes: retrieval precision is what determines whether the
+      tokens you're injecting are useful.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        "The three metrics you want to measure (output quality, token cost reduction, retrieval precision)
+        are the right evaluation axes. The meaningful comparison is not raw token count but
+        tokens-per-relevant-fact-recalled."
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The extraction trap</span>
+    <h2>Good extraction does not produce good retrieval</h2>
+    <p>
+      The most important result in PrecisionMemBench is not the aggregate precision numbers.
+      It is a specific relation-type case that isolates extraction quality from retrieval quality.
+    </p>
+    <p>
+      Consider a belief in the evaluation seed corpus: the auth service depends on Redis for session
+      storage; if Redis goes down, auth fails open. After ingestion with full content, Mem0's
+      extraction pipeline produced a high-quality stored memory — every operationally significant
+      fact was preserved: the service name, the dependency target, the fail-open behavior, and
+      the coupling assertion. This is a good extraction by any measure.
+    </p>
+    <p>
+      The benchmark then issues two queries referencing this belief. On the first, Mem0 returns the
+      correct belief plus 16 additional beliefs including a linting preference, a React expertise
+      note, and a writing-domain open question with no relationship to the auth service. Retrieval
+      precision: 0.056. The structurally necessary participant belief (the Redis entity it references)
+      is absent entirely. Recall: 0.5.
+    </p>
+    <p>
+      On the second query, both beliefs are present. Retrieval precision: 0.111. Sixteen additional
+      beliefs returned alongside the two correct ones.
+    </p>
+    <p>
+      The two cases together isolate the failure precisely: the precision failure is not caused by
+      poor extraction. It occurs on a concrete, operationally specific relation belief whose
+      extraction was faithful and complete. The failure is structural, not query-dependent. Cosine
+      similarity over a domain-specific corpus cannot discriminate relevant beliefs from
+      semantically proximate ones. That is an invariance, not a tuning problem.
+    </p>
+
+    <div class="code-comparison">
+      <div class="code-block">
+        <div class="code-block-label">What Mem0 stores (faithful extraction)</div>
+        <pre><code>"User's auth service depends on Redis for session storage.
+If Redis goes down, auth fails open by denying all requests.
+Auth resilience discussions must address Redis availability —
+the two are tightly coupled."</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-block-label">What Tenure indexes (precision-first)</div>
+        <pre><code>auth_service_depends_on_redis  auth redis  session backend  auth</code></pre>
+        <div class="code-block-note">Four tokens. Participant expansion via deterministic one-hop join on the participants array. Not semantic search.</div>
+      </div>
+    </div>
+
+    <p>
+      Tenure's indexed representation of the same belief is four tokens. The content and
+      <em>why it matters</em> fields are not indexed. The participant expansion is executed as
+      a deterministic one-hop join on the participants array rather than as a semantic search.
+      Both benchmark cases pass with precision 1.0: the correct two beliefs are returned,
+      the 16 noise beliefs are absent, and participant routing is enforced structurally rather
+      than inferred from content similarity.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The precision-first argument</span>
+    <h2>Why alias-weighted BM25 works where cosine similarity fails</h2>
+    <p>
+      The fix is grounded in a documented property of how people refer to their own work.
+      Corpus-based idiolect research establishes that individual speakers maintain stable,
+      distinctive lexical choices across production contexts over periods of one to two years.
+      In a single-user belief store, the query author and the belief author are the same person.
+      When a developer refers to their Kubernetes setup, they use the same terms they used when
+      they first described it. The query surface and the belief surface converge.
+    </p>
+    <p>
+      If a belief's canonical name is <code>kubernetes</code> and its alias set includes
+      <code>k8s</code> and <code>kube</code>, then a query containing <code>k8s</code> should
+      retrieve that belief with high precision regardless of semantic distance. There is no
+      ambiguity to resolve: the authored terminology is the ground truth.
+    </p>
+    <p>
+      Standard BM25 applied naively to this problem fails because it assumes short queries against
+      long documents. Belief retrieval inverts this: queries are potentially hundreds of tokens of
+      natural language while beliefs are short, a canonical name of one to three tokens and
+      an alias list of three to five terms. The index engineering that makes BM25 work for
+      belief retrieval is what gets skipped when people conclude "BM25 doesn't work for this."
+    </p>
+
+    <div class="three-col-grid">
+      <div class="three-col-card">
+        <div class="three-col-num">I</div>
+        <h3>Index-search asymmetry</h3>
+        <p>
+          The index side decomposes structured identifiers into discrete tokens. The query side
+          uses conventional prose tokenization. Different analyzers at each boundary — required,
+          not optional.
+        </p>
+      </div>
+      <div class="three-col-card">
+        <div class="three-col-num">II</div>
+        <h3>Alias-weighted boosting</h3>
+        <p>
+          A high boost weight on canonical name and alias phrase matches re-calibrates the score
+          distribution so a single precise match on a short field outweighs accumulated term
+          frequency noise from a long query.
+        </p>
+      </div>
+      <div class="three-col-card">
+        <div class="three-col-num">III</div>
+        <h3>Hard scope filters before scoring</h3>
+        <p>
+          Scope, user identity, supersession status, and resolution status are applied as hard
+          filters concurrent with scoring. A superseded or out-of-scope belief is never a
+          candidate regardless of match quality.
+        </p>
+      </div>
+    </div>
+
+    <p>
+      The predictable objection to BM25 for belief retrieval is vocabulary coverage: if a user
+      refers to a belief using a term not yet in the alias set, retrieval fails. This objection
+      is correct as a static description and wrong as a practical one. The alias set is not static.
+      Every session is an observation of how the user refers to their beliefs. New surface forms are
+      captured and added to the alias set of the belief they describe. The system acquires vocabulary
+      from use.
+    </p>
+    <p>
+      This produces a precision flywheel that runs in the opposite direction from the objection.
+      A purely semantic system degrades as the store grows: more beliefs means more semantic mass,
+      broader cosine overlap, lower precision. Alias-weighted BM25 improves as the store grows:
+      more sessions means more observed surface forms, a richer alias set, higher precision on
+      the vocabulary that's actually used.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The latency picture</span>
+    <h2>Structural precision is also faster</h2>
+    <p>
+      A common assumption is that precision comes at a latency cost: rerankers, cross-encoders,
+      and LLM-based re-evaluation are all expensive ways to improve retrieval quality.
+      The benchmark results do not support this for structured belief retrieval.
+    </p>
+
+    <div class="results-table-wrap">
+      <div class="results-table-label">Retrieval latency comparison</div>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Mean single-turn (ms)</th>
+            <th>Mean session-turn (ms)</th>
+            <th>p95 session (ms)</th>
+            <th>Ingestion total (s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-tenure">
+            <td><span class="system-badge system-badge-good">Tenure</span></td>
+            <td class="stat-good">13.49</td>
+            <td class="stat-good">49.02</td>
+            <td class="stat-good">134.63</td>
+            <td class="stat-good">0.98</td>
+          </tr>
+          <tr>
+            <td><span class="system-badge">Mem0</span></td>
+            <td class="stat-neutral">78.81</td>
+            <td class="stat-bad">382.62</td>
+            <td class="stat-bad">692.35</td>
+            <td class="stat-bad">114.19</td>
+          </tr>
+          <tr>
+            <td><span class="system-badge">Zep</span></td>
+            <td class="stat-neutral">139.64</td>
+            <td class="stat-bad">396.89</td>
+            <td class="stat-bad">659.99</td>
+            <td class="stat-bad">897.04</td>
+          </tr>
+          <tr>
+            <td><span class="system-badge">Hindsight</span></td>
+            <td class="stat-bad">672.15</td>
+            <td class="stat-bad">2,735.84</td>
+            <td class="stat-bad">6,162.57</td>
+            <td class="stat-bad">173.28</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="results-table-note">
+        Session-turn latency is measured across 12 session cases. Single-turn mean included for comparison.
+        Ingestion total reflects write-time extraction cost over the 35-belief seed corpus.
+        Hindsight's published evaluation reports sub-700ms single-turn latency; under session load,
+        mean per-turn latency exceeds 2,700ms with p95 above 6,000ms.
+      </div>
+    </div>
+
+    <p>
+      The pattern is consistent: systems that compensate for imprecise primary retrieval with
+      additional infrastructure (cross-encoder rerankers, graph construction, LLM intermediaries)
+      pay latency costs that compound under session load. Tenure's mean single-turn latency of
+      13.49ms is not a design compromise. It is a consequence of not over-retrieving in the first
+      place. You do not need to rerank a result set of 1.
+    </p>
+    <p>
+      Zep's async ingestion creates a structural availability gap worth noting separately.
+      Individual beliefs take up to 125 seconds during ingestion, with a mean of 25,630ms per belief
+      against a conversational turn cadence of 10 to 30 seconds. A belief introduced at turn 1 may
+      not be queryable until the session has largely concluded. The benchmark's pre-ingestion design
+      does not penalize this — all beliefs are confirmed available before any retrieval case runs —
+      so the 897-second ingestion total is a lower bound on the availability gap in practice.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The upshot</span>
+    <h2>This is a retrieval problem, not a generation problem</h2>
+    <p>
+      The field framed AI memory as a search problem. Search tools were applied. Search evaluation
+      was used to measure success. Because search evaluation routes through a generative model,
+      the model's ability to compensate for retrieval noise was mistaken for retrieval quality.
+    </p>
+    <p>
+      The benchmark results quantify what that cost: zero active retrieval passes across every
+      comparison system on 48 cases with precision assertions. The systems that passed accumulate
+      passes only on structurally trivial or empty cases. No vector-based memory system retrieves
+      correctly on cases that actually test retrieval.
+    </p>
+    <p>
+      The correct framing is state management. A belief store is typed state, not a document index.
+      Retrieval is structured lookup over a bounded vocabulary, not open-ended semantic search.
+      The right signal is alias-weighted term matching over user-authored identifiers, not
+      cosine similarity over embedding space. Scope isolation is a hard filter before scoring,
+      not a probabilistic tendency after it.
+    </p>
+    <p>
+      None of this requires new techniques. BM25 is well understood. Alias matching is standard.
+      Hard scope filters are architecture, not inference. What it requires is correctly identifying
+      the problem. Memory is not a search problem.
+    </p>
+
+    <div class="essay-cta-row">
+      <a href="/benchmark" class="btn-primary">
+        PrecisionMemBench results →
+      </a>
+      <a href="https://arxiv.org/abs/2605.11325" class="btn-secondary" target="_blank" rel="noopener">
+        Read the paper
+      </a>
+      <a href="/docs/quickstart" class="btn-secondary" target="_blank" rel="noopener">
+        Try Tenure
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface);">
+  <div class="container">
+    <span class="label">Related</span>
+    <h2 style="margin-bottom:2rem;">More from Tenure</h2>
+    <div class="related-grid">
+      <a href="/benchmark" class="related-card">
+        <div class="related-tag">Research</div>
+        <h3>PrecisionMemBench</h3>
+        <p>The benchmark that measures retrieval precision, noise isolation, and drift across 11 memory providers and 89 cases.</p>
+        <span class="related-link">Read the benchmark →</span>
+      </a>
+      <a href="/writing/why-mcp-memory" class="related-card">
+        <div class="related-tag">Architecture</div>
+        <h3>Why MCP is the wrong abstraction for memory</h3>
+        <p>MCP treats memory as a tool call. Memory isn't something you invoke — it's something that should already be there.</p>
+        <span class="related-link">Read the essay →</span>
+      </a>
+      <a href="https://arxiv.org/abs/2605.11325" class="related-card" target="_blank" rel="noopener">
+        <div class="related-tag">Paper</div>
+        <h3>The retrieval precision paper</h3>
+        <p>Formal treatment of belief typing, BM25 retrieval, and scope isolation as memory system requirements.</p>
+        <span class="related-link">Read on arXiv →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.uc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+.uc-breadcrumb a { color: var(--dim); transition: color 0.15s; }
+.uc-breadcrumb a:hover { color: var(--text); }
+.uc-breadcrumb-sep { color: var(--border2); }
+
+.essay-hero {
+  padding: 5rem 2rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.essay-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--dim);
+  font-family: var(--mono);
+}
+.essay-meta-sep { color: var(--border2); }
+
+.essay-section { padding: 5rem 2rem; }
+
+.essay-prose p { margin-bottom: 1.25rem; }
+.essay-prose p:last-of-type { margin-bottom: 0; }
+
+.essay-callout {
+  border-left: 2px solid var(--accent);
+  padding: 1rem 1.5rem;
+  margin: 2.5rem 0;
+  background: rgba(0, 168, 173, 0.04);
+  border-radius: 0 8px 8px 0;
+}
+.essay-callout p {
+  color: var(--text) !important;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0 !important;
+}
+
+/* ── TL;DR box ── */
+.tldr-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+.tldr-box h3 {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.tldr-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tldr-box li {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0.35rem 0;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.tldr-box li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ── Results table ── */
+.results-table-wrap {
+  margin: 2.5rem 0;
+  overflow-x: auto;
+}
+.results-table-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  margin-bottom: 0.75rem;
+}
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.results-table th {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  padding: 0.6rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.results-table td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  vertical-align: middle;
+}
+.results-table tr.row-tenure td {
+  background: rgba(0, 168, 173, 0.03);
+}
+.results-table tr:last-child td { border-bottom: none; }
+
+.system-badge {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.system-badge-good {
+  background: rgba(0, 168, 173, 0.08);
+  border-color: rgba(0, 168, 173, 0.3);
+  color: var(--accent);
+}
+
+.stat-good {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--accent);
+}
+.stat-bad {
+  font-family: var(--mono);
+  color: var(--red, #c45353);
+}
+.stat-neutral {
+  font-family: var(--mono);
+  color: var(--dim);
+}
+
+.results-table-note {
+  font-size: 0.78rem;
+  color: var(--dim);
+  margin-top: 0.75rem;
+  line-height: 1.55;
+}
+
+/* ── Cost grid ── */
+.cost-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+.cost-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.cost-icon {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--dim);
+}
+.cost-card h3 {
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.cost-card p { font-size: 0.875rem; margin: 0; }
+
+/* ── Drift diagram ── */
+.drift-diagram {
+  margin: 2.5rem 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+}
+.drift-diagram-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  margin-bottom: 1.25rem;
+}
+.drift-bars { display: flex; flex-direction: column; gap: 0.65rem; }
+.drift-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.drift-system {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  width: 76px;
+  flex-shrink: 0;
+  text-align: right;
+}
+.drift-bar-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 22px;
+  background: var(--surface2);
+  border-radius: 4px;
+  overflow: visible;
+  position: relative;
+}
+.drift-bar {
+  height: 100%;
+  border-radius: 4px;
+  min-width: 2px;
+  transition: width 0.3s ease;
+}
+.drift-bar-good { background: rgba(0, 168, 173, 0.25); width: 2px; }
+.drift-bar-bad { background: rgba(196, 83, 83, 0.35); }
+.drift-score {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-left: 0.4rem;
+}
+.drift-score-good { color: var(--accent); }
+.drift-score-bad { color: var(--red, #c45353); }
+.drift-note {
+  font-size: 0.75rem;
+  color: var(--dim);
+  margin-top: 1rem;
+  font-family: var(--mono);
+}
+
+/* ── Quote block ── */
+.quote-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 2.5rem 0;
+}
+.quote-block p {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text) !important;
+  line-height: 1.65;
+  margin: 0 0 0.75rem !important;
+}
+.quote-source {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+.quote-source a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.quote-source a:hover { text-decoration: underline; }
+
+/* ── Code comparison ── */
+.code-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+@media (max-width: 680px) { .code-comparison { grid-template-columns: 1fr; } }
+
+.code-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+.code-block-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  margin-bottom: 0.75rem;
+}
+.code-block pre {
+  margin: 0;
+  overflow-x: auto;
+}
+.code-block code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  background: none;
+  padding: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.code-block-note {
+  font-size: 0.78rem;
+  color: var(--dim);
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+
+/* ── Three-col grid ── */
+.three-col-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+.three-col-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.three-col-num {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+.three-col-card h3 {
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.three-col-card p { font-size: 0.875rem; margin: 0; }
+
+/* ── CTA row ── */
+.essay-cta-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--accent2); }
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.15s;
+  text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+/* ── Related cards ── */
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+.related-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.15s;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.related-card:hover { border-color: var(--accent); }
+.related-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+.related-card h3 { color: var(--text); margin: 0; font-size: 1rem; }
+.related-card p { font-size: 0.85rem; margin: 0; flex: 1; }
+.related-link {
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-top: 0.25rem;
+}
+
+/* ── inline code ── */
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  background: rgba(0, 168, 173, 0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+  .cost-grid { grid-template-columns: 1fr; }
+  .three-col-grid { grid-template-columns: 1fr; }
+  .essay-cta-row { flex-direction: column; }
+  .btn-primary, .btn-secondary { justify-content: center; }
+  .drift-system { width: 60px; font-size: 0.72rem; }
+}
+</style>
+
+</Base>

@@ -2,7 +2,28 @@
 import Base from '../../layouts/Base.astro';
 
 const posts = [
-   {
+  {
+    slug: "why-ai-context-is-a-team-problem-not-a-personal-one",
+    category: "Teams",
+    title: "Why AI Context Is a Team Problem, Not a Personal One",
+    description: "Engineering context is shared state: decisions, constraints, ownership, and exceptions that have to survive across developers, tools, repos, and time. Personal memory tools cannot solve that alone.",
+    date: "Jun 2026",
+  },
+  {
+    slug: "why-vector-search-was-a-mistake",
+    category: "Architecture",
+    title: "Why Vector Search Became the Default for AI Memory (And Why That Was a Mistake)",
+    description: "Vector search is the right tool for document retrieval and the wrong tool for memory. Here's how the field made that mistake, what it costs in practice, and what a precision-first design looks like instead.",
+    date: "Jun 2026",
+  },
+  {
+    slug: "how-ai-memory-breaks-at-scale",
+    category: "Architecture",
+    title: "How AI Memory Systems Break at Scale",
+    description: "The failure modes are structural, not incidental. At scale, similarity search accumulates noise faster than any model can filter it. Here is exactly what breaks, and how we designed around each failure.",
+    date: "Jun 2026",
+  },
+  {
     slug: "healthcare-ai-memory",
     category: "Architecture",
     title: "AI Memory for Healthcare: Why Retrieval Precision Is Non-Negotiable",
@@ -152,6 +173,11 @@ const posts = [
 .writing-tag-architecture {
   background: rgba(0, 168, 173, 0.1);
   color: var(--accent);
+}
+
+.writing-tag-teams {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--green);
 }
 
 .writing-tag-benchmarks {
