@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 
 <Base
   title="Tenure Project Resume | The Handoff You Never Have to Write"
-  description="Developers lose 20+ minutes every time they return to a repo reconstructing where they left off. Tenure Project Resume eliminates the orientation tax: file activity, project beliefs, and past queries reconstructed automatically when you open your IDE."
+  description="Developers lose time every time they return to a repo reconstructing where they left off. Tenure Project Resume eliminates the orientation tax: file activity, project beliefs, and past queries reconstructed automatically when you open your IDE."
   canonical="https://tenureai.dev/use-case/project-resume"
 >
 
@@ -30,15 +30,19 @@ import Base from '../../layouts/Base.astro';
     </div>
     <span class="label" style="margin-top:1.5rem; display:inline-block;">Use case</span>
     <h1>The handoff you<br/>never have to write.</h1>
-    <p class="hero-sub">
-      Every developer pays an orientation tax: the twenty minutes spent
+
+     <p class="hero-rag-line">
+    Every developer pays an orientation tax: the time spent
       reconstructing where you were before you write a single line of code.
+     </p>
+    <p class="hero-sub">
+      
       Tenure generates the handoff automatically, so you can pick up where
       you left off without re-explaining anything.
     </p>
     <div class="uc-hero-ctas">
-      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
-        Install Free →
+      <a href="/#cta" class="btn-primary">
+        Get Started →
       </a>
       <a href="/docs" class="btn-secondary">
         Read the Docs
@@ -97,10 +101,9 @@ import Base from '../../layouts/Base.astro';
     <div style="padding: 0 0 2.5rem;">
       <span class="label">Project Resume</span>
       <h2>Open the repo. Tenure already knows where you were.</h2>
-      <p>When you return to a project, Tenure surfaces a reconstructed summary of your last working session — directly in VS Code. No prompting required. No markdown to maintain. Built from the signals already flowing through Tenure as you work.</p>
+      <p>When you return to a project, Tenure surfaces a reconstructed summary of your last working session, directly in VS Code. No prompting required. No markdown to maintain. Built from the signals already flowing through Tenure as you work.</p>
     </div>
 
-    <!-- Resume panel mockup -->
     <div class="resume-mockup">
       <div class="resume-mockup-bar">
         <span class="term-dot term-dot-red"></span>
@@ -177,7 +180,7 @@ import Base from '../../layouts/Base.astro';
     </div>
 
     <p style="font-size:0.8rem; color:var(--dim); margin-top:1.25rem; text-align:center;">
-      ● Built from file activity, beliefs, and audit log turns — no telemetry beyond what Tenure already collects. ● Every bullet is traceable to a source event. ● Click "Resume in Chat" to open your AI client pre-loaded with this context.
+      ● Built from file activity, beliefs, and audit log turns. No telemetry beyond what Tenure already collects. ● Every bullet is traceable to a source event. ● Click "Resume in Chat" to open your AI client pre-loaded with this context.
     </p>
   </div>
 </section>
@@ -186,7 +189,7 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <span class="label">How it works</span>
     <h2>Derived from signals you're already producing.</h2>
-    <p>Tenure doesn't ask you to maintain context files or write session summaries. Project Resume is built automatically from the activity stream flowing through Tenure every time you work — then summarized on demand when you return.</p>
+    <p>Tenure doesn't ask you to maintain context files or write session summaries. Project Resume is built automatically from the activity stream flowing through Tenure every time you work, then summarized on demand when you return.</p>
 
     <div class="steps">
       <div class="step">
@@ -197,7 +200,7 @@ import Base from '../../layouts/Base.astro';
         <div>
           <div class="step-label">Collect</div>
           <h3>File activity accumulates passively</h3>
-          <p>Every time you switch files in VS Code, Tenure records the path, language, and timestamp. No extra step. This is the same workspace sync that powers scoped belief injection — Project Resume is a derived view over data you're already producing.</p>
+          <p>Every time you switch files in VS Code, Tenure records the path, language, and timestamp. No extra step. This is the same workspace sync that powers scoped belief injection. Project Resume is a derived view over data you're already producing.</p>
           <div class="step-mono">// src/pages/use-case/project-resume.astro — visited 4× — last active 13d ago</div>
         </div>
       </div>
@@ -250,12 +253,12 @@ import Base from '../../layouts/Base.astro';
     <div class="alt-grid">
       <div class="alt-card">
         <div class="alt-label wrong">AGENTS.md / .cursorrules</div>
-        <p>Great for stable conventions. Breaks when code changes and the file doesn't. Best developers in the Cursor community describe it as "the boring answer" — it works until maintenance becomes its own job.</p>
+        <p>Great for stable conventions. Breaks when code changes and the file doesn't. Best developers in the Cursor community describe it as "the boring answer", it works until maintenance becomes its own job.</p>
         <div class="alt-verdict bad">Solves conventions. Doesn't solve re-orientation.</div>
       </div>
       <div class="alt-card">
         <div class="alt-label wrong">MCP memory servers</div>
-        <p>Promising, but cross-tool reliability isn't there yet. Memory that one tool writes, another reads only works if both are disciplined about when to write and retrieve — and in practice they're not. Mostly experimental outside single-tool setups.</p>
+        <p>Promising, but cross-tool reliability isn't there yet. Memory that one tool writes, another reads only works if both are disciplined about when to write and retrieve and in practice they're not. Mostly experimental outside single-tool setups.</p>
         <div class="alt-verdict bad">Promising. Not production-grade across tools yet.</div>
       </div>
       <div class="alt-card">
@@ -265,7 +268,7 @@ import Base from '../../layouts/Base.astro';
       </div>
       <div class="alt-card highlight-card">
         <div class="alt-label right">Tenure Project Resume</div>
-        <p>Derived from signals already flowing through Tenure. No file to maintain. Scoped to the active project. Traceable to source events. Works across every tool that routes through Tenure — Cursor, Windsurf, Claude Code, or VS Code Copilot Chat.</p>
+        <p>Derived from signals already flowing through Tenure. No file to maintain. Scoped to the active project. Traceable to source events. Works across every tool that routes through Tenure: VSCode, Windsurf, or Claude Code.</p>
         <div class="alt-verdict good">Always current. Zero maintenance. Cross-tool.</div>
       </div>
     </div>
@@ -311,8 +314,8 @@ import Base from '../../layouts/Base.astro';
     <h2>Tenure is free, local, and MIT licensed.</h2>
     <p style="margin-bottom:2rem;">Install the VS Code extension, point your AI client at <code>localhost:5757/v1</code>, and Tenure starts building context the moment you open a file. Project Resume is available as a button in the Tenure sidebar panel.</p>
     <div class="uc-hero-ctas">
-      <a href="https://github.com/tenurehq/tenure" class="btn-primary" target="_blank" rel="noopener">
-        Install Free →
+      <a href="/#cta" class="btn-primary">
+        Get Started →
       </a>
       <a href="/use-case/vscode" class="btn-secondary">
         See the VS Code integration
