@@ -1,0 +1,285 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure: Knowledge Sources for AI Memory"
+  description="How teams seed Tenure with trusted knowledge from Confluence, AGENTS.md, ADRs, READMEs, coding standards, imports, and manually created beliefs."
+  canonical="https://tenureai.dev/how-it-works/knowledge-sources"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "How Tenure Uses Knowledge Sources",
+  "description": "A product explainer for how teams seed Tenure with trusted documentation, markdown files, imports, and manually created beliefs.",
+  "url": "https://tenureai.dev/how-it-works/knowledge-sources",
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" }
+}
+</script>
+
+<section class="hiw-hero">
+  <div class="container" style="text-align:center;">
+    <div class="hiw-breadcrumb">
+      <a href="/">Home</a>
+      <span class="hiw-breadcrumb-sep">›</span>
+      <span>How it works</span>
+      <span class="hiw-breadcrumb-sep">›</span>
+      <span>Knowledge Sources</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Source control for memory</span>
+    <h1>Bring the knowledge your team<br/>already trusts into Tenure.</h1>
+    <p class="hero-sub">
+      AGENTS.md, Confluence, ADRs, READMEs, coding standards, and manual beliefs can all seed governed memory.
+      Docs remain sources. Beliefs become the runtime state your AI can use.
+    </p>
+    <div class="hiw-hero-ctas">
+      <a href="/docs/quickstart/" class="btn-primary" target="_blank" rel="noopener">Get Started →</a>
+      <a href="/use-case/memory-modes" class="btn-secondary">Memory Modes</a>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-intro">
+  <div class="container">
+    <div class="hiw-intro-grid">
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">Docs as sources</div>
+        <h3>Keep your documentation.</h3>
+        <p>Tenure does not replace AGENTS.md, ADRs, or Confluence. It turns stable parts of them into scoped beliefs with provenance.</p>
+      </div>
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">Manual control</div>
+        <h3>Create beliefs directly.</h3>
+        <p>Teams can add explicit policies, conventions, decisions, preferences, and constraints without waiting for the system to infer them.</p>
+      </div>
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">Safe adoption</div>
+        <h3>Import does not mean inject.</h3>
+        <p>Start in document-driven, observation, or curated modes so teams can review memory before models act on it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">Supported source types</span>
+      <h2>Tenure starts from the knowledge you already maintain.</h2>
+      <p>Most teams already have useful AI context. The problem is that it lives in scattered files, docs, and decisions that models cannot use consistently across tools.</p>
+    </div>
+
+    <div class="hiw-source-grid">
+      <div class="hiw-source-card">
+        <span class="hiw-source-icon">#</span>
+        <h3>AGENTS.md and CLAUDE.md</h3>
+        <p>Use existing agent instructions as trusted source material, then convert stable guidance into scoped runtime beliefs.</p>
+      </div>
+      <div class="hiw-source-card">
+        <span class="hiw-source-icon">↗</span>
+        <h3>Confluence and internal docs</h3>
+        <p>Extract conventions, architecture rules, and team knowledge from documentation your organization already trusts.</p>
+      </div>
+      <div class="hiw-source-card">
+        <span class="hiw-source-icon">ADR</span>
+        <h3>ADRs and decision logs</h3>
+        <p>Turn architectural decisions into model-facing state so future sessions inherit the why, not just the current code.</p>
+      </div>
+      <div class="hiw-source-card">
+        <span class="hiw-source-icon">&#123; &#125;</span>
+        <h3>README and repo docs</h3>
+        <p>Seed project-specific facts, setup rules, service boundaries, and codebase conventions.</p>
+      </div>
+      <div class="hiw-source-card">
+        <span class="hiw-source-icon">✓</span>
+        <h3>Coding standards</h3>
+        <p>Make lint preferences, testing rules, review expectations, and generated-code conventions available per turn.</p>
+      </div>
+      <div class="hiw-source-card">
+        <span class="hiw-source-icon">+</span>
+        <h3>Manual beliefs</h3>
+        <p>Create explicit beliefs for policies, preferences, decisions, and constraints that should not depend on inference.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section alt">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">Markdown is a source</span>
+      <h2>AGENTS.md is useful. It should not be the entire memory system.</h2>
+      <p>Markdown files are great for human-readable instructions. Tenure gives those instructions governance, scope, provenance, review, and per-turn control.</p>
+    </div>
+
+    <div class="hiw-compare">
+      <div class="hiw-compare-card bad">
+        <div class="hiw-compare-label">Markdown-only memory</div>
+        <h3>Everything sits in one file.</h3>
+        <ul class="hiw-list">
+          <li>Hard to know what was actually used.</li>
+          <li>No per-turn audit trail.</li>
+          <li>Context grows stale unless manually curated.</li>
+          <li>Different tools may read different files.</li>
+        </ul>
+      </div>
+      <div class="hiw-compare-card good">
+        <div class="hiw-compare-label">Tenure memory</div>
+        <h3>Docs become governed state.</h3>
+        <ul class="hiw-list">
+          <li>Source docs remain linked as provenance.</li>
+          <li>Beliefs are scoped by user, team, project, or org.</li>
+          <li>Only relevant beliefs are injected per turn.</li>
+          <li>Teams can review, edit, pin, retire, or reject beliefs.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">Manual belief creation</span>
+      <h2>Some memory should be explicit from day one.</h2>
+      <p>Teams should not have to wait for repeated conversations to establish known rules. Manual belief creation lets admins, team leads, and developers seed memory intentionally.</p>
+    </div>
+
+    <div class="hiw-demo">
+      <div class="hiw-demo-bar">
+        <span class="hiw-demo-dot"></span>
+        <span class="hiw-demo-title">New belief</span>
+      </div>
+      <div class="hiw-demo-body">
+        <div class="hiw-code-form">
+          <div><span class="key">type</span><span class="val">decision</span></div>
+          <div><span class="key">canonical_name</span><span class="val">billing_service_owns_invoice_state</span></div>
+          <div><span class="key">content</span><span class="val">The billing service is the source of truth for invoice state.</span></div>
+          <div><span class="key">why_it_matters</span><span class="val">Models should not add invoice state writes to downstream services.</span></div>
+          <div><span class="key">scope</span><span class="val">team:payments · project:billing-api</span></div>
+          <div><span class="key">source</span><span class="val">ADR-042 · created by human</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hiw-split">
+      <div class="hiw-panel">
+        <div class="hiw-panel-label">Good manual beliefs</div>
+        <ul class="hiw-list">
+          <li>Architecture boundaries the model must respect.</li>
+          <li>Security policies that should override user preference.</li>
+          <li>Team conventions that are already settled.</li>
+          <li>User preferences that should persist across tools.</li>
+        </ul>
+      </div>
+      <div class="hiw-panel">
+        <div class="hiw-panel-label">Better as docs only</div>
+        <ul class="hiw-list">
+          <li>Long procedural guides that should stay human-readable.</li>
+          <li>Reference material that changes constantly.</li>
+          <li>One-off troubleshooting notes.</li>
+          <li>Information the model should search, not assume.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section alt">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">Safe rollout</span>
+      <h2>Start with trusted sources. Expand as trust is earned.</h2>
+      <p>The fastest path is not “let AI learn everything.” It is to seed from sources you trust, observe what Tenure extracts, then approve the beliefs that should become runtime memory.</p>
+    </div>
+
+    <div class="hiw-flow">
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">01</div>
+        <h3>Import sources</h3>
+        <p>Start with AGENTS.md, ADRs, coding standards, and Confluence pages that represent stable team knowledge.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">02</div>
+        <h3>Extract candidates</h3>
+        <p>Tenure proposes structured beliefs with type, scope, confidence, source, and why-it-matters fields.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">03</div>
+        <h3>Review and approve</h3>
+        <p>Pin, edit, reject, or approve before those beliefs become model-facing memory.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">04</div>
+        <h3>Inject per turn</h3>
+        <p>Only relevant approved beliefs are injected into the model, with audit trails showing exactly what was used.</p>
+      </div>
+    </div>
+
+    <div class="hiw-callout">
+      <p><strong>The practical adoption story:</strong> Keep the docs your team already trusts. Use Tenure to make the durable parts inspectable, scoped, and available across every AI client.</p>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-closing">
+  <div class="container">
+    <span class="label">The point</span>
+    <h2>Knowledge sources are where memory starts.<br/>Beliefs are what the model uses.</h2>
+    <p>Tenure lets teams seed memory intentionally, preserve source provenance, and decide exactly what becomes active AI context.</p>
+    <div class="hiw-hero-ctas">
+      <a href="/docs/quickstart" class="btn-primary" target="_blank" rel="noopener">Install Free →</a>
+      <a href="/how-it-works/belief-extraction" class="btn-secondary">Belief Extraction</a>
+    </div>
+  </div>
+</section>
+
+<style>
+.hiw-hero { padding: 7rem 2rem 5rem; border-bottom: 1px solid var(--border); }
+.hiw-breadcrumb { display:flex; align-items:center; gap:.5rem; justify-content:center; font-size:.8rem; color:var(--dim); margin-bottom:1.5rem; }
+.hiw-breadcrumb a { color:var(--muted); transition:color .15s; }
+.hiw-breadcrumb a:hover { color:var(--text); }
+.hiw-breadcrumb-sep { color:var(--border2); }
+.hiw-hero-ctas { display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; margin-top:2rem; }
+.btn-primary { display:inline-flex; align-items:center; gap:.4rem; background:var(--accent); color:#fff; padding:.6rem 1.25rem; border-radius:8px; font-size:.875rem; font-weight:500; transition:background .15s; }
+.btn-primary:hover { background:var(--accent2); color:#fff; }
+.btn-secondary { display:inline-flex; align-items:center; background:var(--surface); border:1px solid var(--border); color:var(--muted); padding:.6rem 1.25rem; border-radius:8px; font-size:.875rem; font-weight:500; transition:border-color .15s,color .15s; }
+.btn-secondary:hover { border-color:var(--accent); color:var(--text); }
+.hiw-intro { padding:3rem 2rem; background:var(--surface); border-bottom:1px solid var(--border); }
+.hiw-intro-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+.hiw-intro-card,.hiw-panel,.hiw-flow-card,.hiw-source-card,.hiw-compare-card { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:1.35rem; }
+.hiw-intro-label,.hiw-panel-label,.hiw-compare-label { font-family:var(--mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:.55rem; }
+.hiw-intro-card h3,.hiw-panel h3,.hiw-flow-card h3,.hiw-source-card h3,.hiw-compare-card h3 { color:var(--text); margin-bottom:.4rem; }
+.hiw-intro-card p,.hiw-panel p,.hiw-flow-card p,.hiw-source-card p,.hiw-compare-card p { font-size:.875rem; margin:0; }
+.hiw-section { padding:5rem 2rem; border-bottom:1px solid var(--border); }
+.hiw-section.alt { background:var(--surface); }
+.hiw-section-header { max-width:760px; margin-bottom:2.5rem; }
+.hiw-source-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+.hiw-source-icon { font-family:var(--mono); font-size:.72rem; color:var(--accent); background:rgba(0,168,173,.08); border:1px solid rgba(0,168,173,.2); border-radius:6px; min-width:36px; height:36px; padding:0 .35rem; display:inline-flex; align-items:center; justify-content:center; margin-bottom:1rem; }
+.hiw-compare,.hiw-split { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1.25rem; }
+.hiw-compare-card.good { background:rgba(0,168,173,.04); border-color:rgba(0,168,173,.25); }
+.hiw-list { margin:1rem 0 0; padding-left:1.1rem; color:var(--muted); font-size:.9rem; }
+.hiw-list li { margin-bottom:.55rem; }
+.hiw-demo { background:#0d0d0d; border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:1.5rem; }
+.hiw-demo-bar { background:var(--surface); border-bottom:1px solid var(--border); padding:.65rem 1rem; display:flex; align-items:center; gap:.5rem; }
+.hiw-demo-dot { width:9px; height:9px; border-radius:50%; background:var(--accent); }
+.hiw-demo-title { font-family:var(--mono); font-size:.72rem; color:var(--dim); }
+.hiw-demo-body { padding:1.25rem; }
+.hiw-code-form { display:grid; gap:.65rem; font-family:var(--mono); font-size:.78rem; }
+.hiw-code-form div { display:grid; grid-template-columns:170px 1fr; gap:1rem; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.75rem .9rem; }
+.hiw-code-form .key { color:var(--accent); }
+.hiw-code-form .val { color:var(--text); }
+.hiw-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+.hiw-flow-num { font-family:var(--mono); font-size:.72rem; color:var(--accent); background:rgba(0,168,173,.08); border:1px solid rgba(0,168,173,.2); border-radius:6px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; }
+.hiw-callout { margin-top:2rem; background:rgba(0,168,173,.05); border:1px solid rgba(0,168,173,.22); border-radius:12px; padding:1.25rem 1.5rem; }
+.hiw-callout p { margin:0; }
+.hiw-callout strong { color:var(--text); }
+.hiw-closing { padding:5rem 2rem; text-align:center; }
+.hiw-closing p { max-width:620px; margin:0 auto; }
+@media (max-width:900px){ .hiw-source-grid,.hiw-flow{grid-template-columns:1fr 1fr;} .hiw-intro-grid{grid-template-columns:1fr;} }
+@media (max-width:680px){ .hiw-source-grid,.hiw-flow,.hiw-compare,.hiw-split{grid-template-columns:1fr;} .hiw-code-form div{grid-template-columns:1fr; gap:.25rem;} }
+</style>
+
+</Base>

@@ -1,0 +1,516 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure: How Belief Merging Works"
+  description="How Tenure merges AI memory without turning it into an untraceable blob. Reinforcement, aliases, supersession, provenance, and conservative compaction for belief-level memory."
+  canonical="https://tenureai.dev/how-it-works/belief-merging"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "How Tenure Merges Beliefs",
+  "description": "A product explainer for how Tenure reinforces, aliases, promotes, and supersedes belief-level AI memory.",
+  "url": "https://tenureai.dev/how-it-works/belief-merging",
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" }
+}
+</script>
+
+<section class="hiw-hero">
+  <div class="container" style="text-align:center;">
+    <div class="hiw-breadcrumb">
+      <a href="/">Home</a>
+      <span class="hiw-breadcrumb-sep">›</span>
+      <span>How it works</span>
+      <span class="hiw-breadcrumb-sep">›</span>
+      <span>Belief Merging</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Memory lifecycle</span>
+    <h1>AI memory should improve over time.<br/></h1>
+
+    <p class="hero-rag-line">
+     Not pile up forever.
+    </p>
+
+    <p class="hero-sub">
+      Tenure treats memory as governed state. Repeated beliefs are reinforced, aliases are added,
+      stale versions are superseded, and uncertain merges are left alone.
+    </p>
+    <div class="hiw-hero-ctas">
+      <a href="/docs/quickstart/" class="btn-primary" target="_blank" rel="noopener">Get Started →</a>
+      <a href="/how-it-works/contradiction-handling" class="btn-secondary">Contradiction Handling</a>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-intro">
+  <div class="container">
+    <div class="hiw-intro-grid">
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">No blind append</div>
+        <h3>Duplicates become evidence.</h3>
+        <p>When a new belief matches an existing one, Tenure reinforces the existing belief instead of creating a second copy.</p>
+      </div>
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">No silent overwrite</div>
+        <h3>Changes become lineage.</h3>
+        <p>When a belief changes, older versions are superseded so the system can preserve what changed and why.</p>
+      </div>
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">No forced certainty</div>
+        <h3>Unclear merges stay separate.</h3>
+        <p>Tenure is conservative by default. If two beliefs might be different, they remain distinct until stronger evidence appears.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">The merge path</span>
+      <h2>Every extracted belief enters a lifecycle.</h2>
+      <p>A new belief is not simply dumped into memory. Tenure checks for canonical and alias matches, fuzzy merge candidates, file context, confidence, and explicit update signals before deciding what to do.</p>
+    </div>
+
+    <div class="hiw-flow">
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">01</div>
+        <h3>Find candidates</h3>
+        <p>Tenure looks for existing beliefs by canonical name, aliases, and scoped merge candidates.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">02</div>
+        <h3>Compare context</h3>
+        <p>File-specific beliefs stay separate when the same name means different things in different files.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">03</div>
+        <h3>Choose action</h3>
+        <p>Insert, reinforce, add aliases, supersede, flag conflict, or skip low-confidence input.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">04</div>
+        <h3>Keep lineage</h3>
+        <p>Changes are recorded with session, turn, model, confidence, and prior belief state.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section alt">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">State transitions</span>
+      <h2>Beliefs are reinforced before they are trusted.</h2>
+      <p>Tenure separates weak signals from durable memory. Inferred beliefs need both repeated evidence and time before they can become active, which keeps one long session from accidentally promoting a fragile assumption.</p>
+    </div>
+
+    <div class="hiw-demo">
+      <div class="hiw-demo-bar">
+        <span class="hiw-demo-dot"></span>
+        <span class="hiw-demo-title">Belief lifecycle</span>
+      </div>
+      <div class="hiw-demo-body">
+        <div class="hiw-belief-stack">
+          <div class="hiw-belief-row">
+            <span class="hiw-belief-status">inferred</span>
+            <span class="hiw-belief-text">Use Zod for validation in API boundaries.</span>
+            <span class="hiw-belief-meta">confidence 0.62 · 1 signal</span>
+          </div>
+          <div class="hiw-belief-row">
+            <span class="hiw-belief-status">reinforced</span>
+            <span class="hiw-belief-text">Use Zod for request and response validation.</span>
+            <span class="hiw-belief-meta">5 signals · aliases added</span>
+          </div>
+          <div class="hiw-belief-row">
+            <span class="hiw-belief-status">active</span>
+            <span class="hiw-belief-text">Use Zod for validation at service boundaries unless a generated schema already exists.</span>
+            <span class="hiw-belief-meta">promoted after time + evidence</span>
+          </div>
+          <div class="hiw-belief-row superseded">
+            <span class="hiw-belief-status">superseded</span>
+            <span class="hiw-belief-text">Use Joi for API validation.</span>
+            <span class="hiw-belief-meta">kept for lineage</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section">
+  <div class="container">
+    <div class="hiw-split">
+      <div class="hiw-panel">
+        <div class="hiw-panel-label">What gets merged</div>
+        <h3>The same underlying belief.</h3>
+        <p>Tenure merges beliefs when they express the same fact, preference, decision, entity, or expertise signal with enough confidence.</p>
+        <ul class="hiw-list">
+          <li>Aliases are carried forward for search continuity.</li>
+          <li>Canonical names are normalized instead of duplicated.</li>
+          <li>Nuance from each source belief is preserved in the merged content.</li>
+          <li>Retired source beliefs point to the new merged belief.</li>
+        </ul>
+      </div>
+      <div class="hiw-panel">
+        <div class="hiw-panel-label">What stays separate</div>
+        <h3>Similar text with different meaning.</h3>
+        <p>Tenure avoids aggressive compaction because false merges are worse than extra memory objects.</p>
+        <ul class="hiw-list">
+          <li>Beliefs tied to distinct active files can remain separate.</li>
+          <li>Low-confidence beliefs can be skipped instead of inserted.</li>
+          <li>Conflicting content can be flagged for review.</li>
+          <li>Uncertain duplicates are left untouched.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hiw-callout">
+      <p><strong>Tenure’s merge rule is intentionally boring:</strong> preserve evidence, promote slowly, and never compress uncertainty into false certainty.</p>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section alt">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">Why this matters</span>
+      <h2>The model is the consumer.</h2>
+      <p>Memory is only useful when the model receives the right belief at the right time. Merging is not just cleanup. It controls what future sessions are allowed to assume.</p>
+    </div>
+
+    <div class="hiw-code">
+      <span class="dim">// before compaction</span><br/>
+      &#123; <span class="key">canonical_name</span>: <span class="val">"zod_validation"</span>, <span class="key">content</span>: <span class="val">"Use Zod for validation."</span> &#125;<br/>
+      &#123; <span class="key">canonical_name</span>: <span class="val">"api_schema_validation"</span>, <span class="key">content</span>: <span class="val">"Use Zod at API boundaries."</span> &#125;<br/><br/>
+      <span class="dim">// after conservative merge</span><br/>
+      &#123; <span class="key">canonical_name</span>: <span class="val">"zod_api_boundary_validation"</span>, <span class="key">content</span>: <span class="val">"Use Zod for validation at API boundaries."</span>, <span class="key">aliases</span>: <span class="val">["zod_validation", "api_schema_validation"]</span> &#125;
+    </div>
+  </div>
+</section>
+
+<section class="hiw-closing">
+  <div class="container">
+    <span class="label">The point</span>
+    <h2>Memory should become clearer as it grows.</h2>
+    <p>Tenure gives teams a memory layer that can accumulate evidence without losing control of provenance, confidence, scope, or lineage.</p>
+    <div class="hiw-hero-ctas">
+      <a href="/docs/quickstart" class="btn-primary" target="_blank" rel="noopener">Install Free →</a>
+      <a href="/how-it-works/contradiction-handling" class="btn-secondary">Next: Contradictions</a>
+    </div>
+  </div>
+</section>
+
+
+<style>
+.hiw-hero {
+  padding: 7rem 2rem 5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hiw-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin-bottom: 1.5rem;
+}
+
+.hiw-breadcrumb a {
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.hiw-breadcrumb a:hover { color: var(--text); }
+.hiw-breadcrumb-sep { color: var(--border2); }
+
+.hiw-hero .hero-sub {
+  max-width: 700px;
+}
+
+.hiw-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.hiw-intro {
+  padding: 3rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.hiw-intro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.hiw-intro-card {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.hiw-intro-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+}
+
+.hiw-intro-card h3 {
+  color: var(--text);
+  margin: 0 0 0.35rem;
+  font-size: 0.98rem;
+}
+
+.hiw-intro-card p {
+  font-size: 0.84rem;
+  margin: 0;
+}
+
+.hiw-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hiw-section.alt { background: var(--surface); }
+
+.hiw-section-header {
+  max-width: 720px;
+  margin-bottom: 2.5rem;
+}
+
+.hiw-section-header p {
+  font-size: 0.95rem;
+}
+
+.hiw-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.hiw-flow-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  position: relative;
+}
+
+.alt .hiw-flow-card { background: var(--surface2); }
+
+.hiw-flow-num {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.2);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+}
+
+.hiw-flow-card h3 {
+  color: var(--text);
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+
+.hiw-flow-card p {
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.hiw-demo {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 2.5rem;
+}
+
+.hiw-demo-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hiw-demo-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.hiw-demo-title {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hiw-demo-body {
+  padding: 1.35rem;
+}
+
+.hiw-belief-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.hiw-belief-row {
+  display: grid;
+  grid-template-columns: 125px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.hiw-belief-status {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hiw-belief-text { color: var(--muted); }
+.hiw-belief-meta { color: var(--dim); font-size: 0.72rem; }
+
+.hiw-belief-row.superseded .hiw-belief-status { color: var(--dim); }
+.hiw-belief-row.flagged .hiw-belief-status { color: var(--amber); }
+
+.hiw-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.hiw-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.alt .hiw-panel { background: var(--surface2); }
+
+.hiw-panel-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.hiw-panel h3 {
+  color: var(--text);
+  margin-bottom: 0.55rem;
+}
+
+.hiw-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.hiw-list li {
+  color: var(--muted);
+  font-size: 0.88rem;
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.hiw-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.hiw-callout {
+  margin-top: 2rem;
+  background: rgba(0,168,173,0.05);
+  border: 1px solid rgba(0,168,173,0.18);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.hiw-callout strong {
+  color: var(--text);
+}
+
+.hiw-callout p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.hiw-code {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: var(--muted);
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  overflow-x: auto;
+}
+
+.hiw-code .key { color: var(--accent); }
+.hiw-code .val { color: var(--text); }
+.hiw-code .dim { color: var(--dim); }
+
+.hiw-closing {
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.hiw-closing p {
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 840px) {
+  .hiw-intro-grid,
+  .hiw-flow,
+  .hiw-split {
+    grid-template-columns: 1fr;
+  }
+  .hiw-belief-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}
+</style>
+
+</Base>

@@ -237,8 +237,62 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
     </div>
   </div>
 </div>
+  <div class="dropdown dropdown--mega">
+    <button class="dropdown-trigger">
+      How it works <span class="dropdown-arrow">▼</span>
+    </button>
+
+    <div class="mega-menu">
+      <div class="mega-menu__bridge"></div>
+
+      <div class="mega-menu__panel">
+
+        <div class="mega-col">
+          <p class="mega-col__label">Memory Lifecycle</p>
+          <div class="mega-col__divider"></div>
+
+          <a href="/how-it-works/belief-extraction" class="mega-item">
+            <span class="mega-item__title">Belief Extraction</span>
+            <span class="mega-item__desc">How conversations, code, and docs become structured memory.</span>
+          </a>
+
+          <a href="/how-it-works/belief-merging" class="mega-item">
+            <span class="mega-item__title">Belief Merging</span>
+            <span class="mega-item__desc">How Tenure reinforces, deduplicates, and supersedes beliefs.</span>
+          </a>
+
+          <a href="/how-it-works/contradiction-handling" class="mega-item">
+            <span class="mega-item__title">Contradiction Handling</span>
+            <span class="mega-item__desc">How conflicting beliefs are flagged instead of silently overwritten.</span>
+          </a>
+        </div>
+
+        <div class="mega-col__separator"></div>
+
+        <div class="mega-col">
+          <p class="mega-col__label">Sources & Control</p>
+          <div class="mega-col__divider"></div>
+
+          <a href="/how-it-works/knowledge-sources" class="mega-item">
+            <span class="mega-item__title">Knowledge Sources</span>
+            <span class="mega-item__desc">Bring in Confluence, AGENTS.md, ADRs, docs, and manual beliefs.</span>
+          </a>
+
+          <a href="/use-case/memory-modes" class="mega-item">
+            <span class="mega-item__title">Memory Modes</span>
+            <span class="mega-item__desc">Choose observe-only, curated, adaptive, or document-driven memory.</span>
+          </a>
+
+          <a href="/teams/ai-governance" class="mega-item">
+            <span class="mega-item__title">AI Governance</span>
+            <span class="mega-item__desc">Control access, audit memory use, and deprovision safely.</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
         <a href="/docs">Docs</a>
-        <a href="https://github.com/tenurehq/tenure">GitHub</a>
         <a href="/writing">Writing</a>
         <div class="dropdown">
           <button class="dropdown-trigger">
@@ -290,6 +344,14 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
         <a href="/teams/shared-memory">Shared Memory</a>
         <a href="/teams/ai-governance">AI Governance</a>
         <a href="/teams/eu-ai-act-compliance">EU AI Act Compliance</a>
+      </div>
+
+      <div class="nav-mobile-section">
+        <p class="nav-mobile-label">How it works</p>
+        <a href="/how-it-works/belief-merging">Belief Merging</a>
+        <a href="/how-it-works/contradiction-handling">Contradiction Handling</a>
+        <a href="/use-case/memory-modes">Memory Modes</a>
+        <a href="/teams/ai-governance">AI Governance</a>
       </div>
 
       <div class="nav-mobile-section">

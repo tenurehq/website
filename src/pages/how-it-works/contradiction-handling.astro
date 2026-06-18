@@ -1,0 +1,536 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure: How Contradiction Handling Works"
+  description="How Tenure handles conflicting AI memory without silently overwriting context. Belief conflicts, confidence margins, pending review, supersession, and organization standards."
+  canonical="https://tenureai.dev/how-it-works/contradiction-handling"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "How Tenure Handles Contradictions",
+  "description": "A product explainer for how Tenure detects, flags, reviews, and resolves contradictory belief-level AI memory.",
+  "url": "https://tenureai.dev/how-it-works/contradiction-handling",
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" }
+}
+</script>
+
+<section class="hiw-hero">
+  <div class="container" style="text-align:center;">
+    <div class="hiw-breadcrumb">
+      <a href="/">Home</a>
+      <span class="hiw-breadcrumb-sep">›</span>
+      <span>How it works</span>
+      <span class="hiw-breadcrumb-sep">›</span>
+      <span>Contradiction Handling</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Conflict resolution</span>
+    <h1>AI memory should not choose winners silently.</h1>
+    <p class="hero-sub">
+      When beliefs conflict, Tenure can flag the contradiction, preserve both sides, apply organization standards,
+      and create a reviewable path to resolution.
+    </p>
+    <div class="hiw-hero-ctas">
+      <a href="/docs/quickstart/" class="btn-primary" target="_blank" rel="noopener">Get Started →</a>
+      <a href="/how-it-works/belief-merging" class="btn-secondary">Belief Merging</a>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-intro">
+  <div class="container">
+    <div class="hiw-intro-grid">
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">Detect</div>
+        <h3>Conflicts are identified explicitly.</h3>
+        <p>Contradictions can come from extraction signals, confidence comparisons, compaction scans, or organization standards.</p>
+      </div>
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">Preserve</div>
+        <h3>Evidence is not erased.</h3>
+        <p>Tenure keeps provenance and lineage so teams can see where conflicting memory came from.</p>
+      </div>
+      <div class="hiw-intro-card">
+        <div class="hiw-intro-label">Resolve</div>
+        <h3>Policy can override preference.</h3>
+        <p>Org standards can act as absolute constraints while user and team preferences remain reviewable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">The conflict path</span>
+      <h2>Contradiction is a state-management problem.</h2>
+      <p>Most memory systems retrieve whichever item scores highest. Tenure treats conflict as a lifecycle event: detect it, record it, keep the evidence, and resolve it without hiding the transition.</p>
+    </div>
+
+    <div class="hiw-flow">
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">01</div>
+        <h3>Compare beliefs</h3>
+        <p>Tenure checks whether two beliefs assert incompatible things about the same subject.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">02</div>
+        <h3>Apply confidence</h3>
+        <p>If content differs within the confidence margin, the conflict is flagged instead of overwritten.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">03</div>
+        <h3>Respect policy</h3>
+        <p>Organization standards can mark a belief as conflicting with policy even without another belief.</p>
+      </div>
+      <div class="hiw-flow-card">
+        <div class="hiw-flow-num">04</div>
+        <h3>Keep it reviewable</h3>
+        <p>Contradictions remain pending until resolved, with belief ids, reason, scope, and timestamps.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section alt">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">Conflict states</span>
+      <h2>A contradiction is not a failed memory. It is useful evidence.</h2>
+      <p>When a team changes its mind, when a user preference conflicts with a team norm, or when a policy disagrees with a local convention, Tenure makes that visible.</p>
+    </div>
+
+    <div class="hiw-demo">
+      <div class="hiw-demo-bar">
+        <span class="hiw-demo-dot"></span>
+        <span class="hiw-demo-title">Contradiction record</span>
+      </div>
+      <div class="hiw-demo-body">
+        <div class="hiw-belief-stack">
+          <div class="hiw-belief-row">
+            <span class="hiw-belief-status">active</span>
+            <span class="hiw-belief-text">Use REST for public API integrations.</span>
+            <span class="hiw-belief-meta">team:platform</span>
+          </div>
+          <div class="hiw-belief-row flagged">
+            <span class="hiw-belief-status">pending conflict</span>
+            <span class="hiw-belief-text">Use GraphQL for public API integrations.</span>
+            <span class="hiw-belief-meta">same subject · incompatible approach</span>
+          </div>
+          <div class="hiw-belief-row superseded">
+            <span class="hiw-belief-status">resolved later</span>
+            <span class="hiw-belief-text">Use REST for public API integrations unless the partner already requires GraphQL.</span>
+            <span class="hiw-belief-meta">supersedes prior versions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section">
+  <div class="container">
+    <div class="hiw-split">
+      <div class="hiw-panel">
+        <div class="hiw-panel-label">Belief conflicts</div>
+        <h3>Same subject. Incompatible claims.</h3>
+        <p>Tenure flags clear conflicts even when the beliefs do not share the same canonical name.</p>
+        <ul class="hiw-list">
+          <li>Preference conflicts stay pending instead of being collapsed.</li>
+          <li>Fact and decision conflicts include a one-sentence reason.</li>
+          <li>Existing pending pairs are deduplicated.</li>
+          <li>Resolution can supersede one or both earlier beliefs.</li>
+        </ul>
+      </div>
+      <div class="hiw-panel">
+        <div class="hiw-panel-label">Org violations</div>
+        <h3>Policy can be an absolute constraint.</h3>
+        <p>When org standards are supplied, a belief can be flagged against the organization standard itself.</p>
+        <ul class="hiw-list">
+          <li>Contradictions can use the organization as the opposing side.</li>
+          <li>Merged content is not allowed to contradict org standards.</li>
+          <li>Non-user-edited violations can be auto-superseded.</li>
+          <li>Teams keep a traceable record of the policy conflict.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hiw-callout">
+      <p><strong>The goal is not to pretend memory is always consistent.</strong> The goal is to make inconsistency observable, reviewable, and resolvable.</p>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section alt">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">Resolution model</span>
+      <h2>Contradictions become decisions, not hidden prompt noise.</h2>
+      <p>A resolved contradiction can produce a more precise belief while keeping older assertions available for audit and lineage.</p>
+    </div>
+
+    <div class="hiw-code">
+      <span class="dim">// detected conflict</span><br/>
+      &#123; <span class="key">belief_ids</span>: <span class="val">["use_rest_public_api", "use_graphql_public_api"]</span>, <span class="key">status</span>: <span class="val">"pending"</span> &#125;<br/><br/>
+      <span class="dim">// resolved state</span><br/>
+      &#123; <span class="key">canonical_name</span>: <span class="val">"public_api_integration_style"</span>, <span class="key">content</span>: <span class="val">"Use REST for public integrations unless a partner contract requires GraphQL."</span>, <span class="key">supersedes</span>: <span class="val">["use_rest_public_api", "use_graphql_public_api"]</span> &#125;
+    </div>
+  </div>
+</section>
+
+<section class="hiw-section">
+  <div class="container">
+    <div class="hiw-section-header">
+      <span class="label">Why teams need this</span>
+      <h2>Shared memory creates shared disagreement.</h2>
+      <p>Solo memory can survive with rough edges. Team memory cannot. As soon as multiple developers, repos, tools, and policies contribute context, contradiction handling becomes part of the infrastructure.</p>
+    </div>
+
+    <div class="hiw-split">
+      <div class="hiw-panel">
+        <div class="hiw-panel-label">Without contradiction handling</div>
+        <h3>The model receives whichever memory wins retrieval.</h3>
+        <ul class="hiw-list">
+          <li>Old decisions can appear beside new decisions.</li>
+          <li>User preferences can override team conventions accidentally.</li>
+          <li>Policy conflicts become invisible prompt noise.</li>
+        </ul>
+      </div>
+      <div class="hiw-panel">
+        <div class="hiw-panel-label">With Tenure</div>
+        <h3>The system knows when memory disagrees.</h3>
+        <ul class="hiw-list">
+          <li>Conflicts are recorded as first-class objects.</li>
+          <li>Org standards can constrain what gets merged and injected.</li>
+          <li>Resolved beliefs preserve a change history.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hiw-closing">
+  <div class="container">
+    <span class="label">The point</span>
+    <h2>Trust requires visible disagreement.</h2>
+    <p>Tenure helps teams keep AI memory useful as facts, preferences, standards, and decisions evolve over time.</p>
+    <div class="hiw-hero-ctas">
+      <a href="/docs/quickstart" class="btn-primary" target="_blank" rel="noopener">Install Free →</a>
+      <a href="/how-it-works/belief-merging" class="btn-secondary">Back to Belief Merging</a>
+    </div>
+  </div>
+</section>
+
+
+<style>
+.hiw-hero {
+  padding: 7rem 2rem 5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hiw-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin-bottom: 1.5rem;
+}
+
+.hiw-breadcrumb a {
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.hiw-breadcrumb a:hover { color: var(--text); }
+.hiw-breadcrumb-sep { color: var(--border2); }
+
+.hiw-hero .hero-sub {
+  max-width: 700px;
+}
+
+.hiw-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.hiw-intro {
+  padding: 3rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.hiw-intro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.hiw-intro-card {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.hiw-intro-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+}
+
+.hiw-intro-card h3 {
+  color: var(--text);
+  margin: 0 0 0.35rem;
+  font-size: 0.98rem;
+}
+
+.hiw-intro-card p {
+  font-size: 0.84rem;
+  margin: 0;
+}
+
+.hiw-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hiw-section.alt { background: var(--surface); }
+
+.hiw-section-header {
+  max-width: 720px;
+  margin-bottom: 2.5rem;
+}
+
+.hiw-section-header p {
+  font-size: 0.95rem;
+}
+
+.hiw-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.hiw-flow-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  position: relative;
+}
+
+.alt .hiw-flow-card { background: var(--surface2); }
+
+.hiw-flow-num {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  background: rgba(0,168,173,0.08);
+  border: 1px solid rgba(0,168,173,0.2);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+}
+
+.hiw-flow-card h3 {
+  color: var(--text);
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+
+.hiw-flow-card p {
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.hiw-demo {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 2.5rem;
+}
+
+.hiw-demo-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hiw-demo-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.hiw-demo-title {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hiw-demo-body {
+  padding: 1.35rem;
+}
+
+.hiw-belief-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.hiw-belief-row {
+  display: grid;
+  grid-template-columns: 125px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.hiw-belief-status {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hiw-belief-text { color: var(--muted); }
+.hiw-belief-meta { color: var(--dim); font-size: 0.72rem; }
+
+.hiw-belief-row.superseded .hiw-belief-status { color: var(--dim); }
+.hiw-belief-row.flagged .hiw-belief-status { color: var(--amber); }
+
+.hiw-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.hiw-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.alt .hiw-panel { background: var(--surface2); }
+
+.hiw-panel-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.hiw-panel h3 {
+  color: var(--text);
+  margin-bottom: 0.55rem;
+}
+
+.hiw-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.hiw-list li {
+  color: var(--muted);
+  font-size: 0.88rem;
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.hiw-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.hiw-callout {
+  margin-top: 2rem;
+  background: rgba(0,168,173,0.05);
+  border: 1px solid rgba(0,168,173,0.18);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.hiw-callout strong {
+  color: var(--text);
+}
+
+.hiw-callout p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.hiw-code {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: var(--muted);
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  overflow-x: auto;
+}
+
+.hiw-code .key { color: var(--accent); }
+.hiw-code .val { color: var(--text); }
+.hiw-code .dim { color: var(--dim); }
+
+.hiw-closing {
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.hiw-closing p {
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 840px) {
+  .hiw-intro-grid,
+  .hiw-flow,
+  .hiw-split {
+    grid-template-columns: 1fr;
+  }
+  .hiw-belief-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}
+</style>
+
+</Base>
