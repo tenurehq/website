@@ -3,6 +3,13 @@ import Base from '../../layouts/Base.astro';
 
 const posts = [
   {
+    slug: "llm-as-judge-became-the-default-for-agent-evaluation",
+    category: "Research",
+    title: "LLM-as-Judge Became the Default for Agent Evaluation (And It Can't See the Failure That Matters)",
+    description: "Final-answer judging tells you whether an agent's output is plausible. It cannot tell you whether the agent was allowed to know what it claimed, when it could have known it, or whether an absence claim was ever actually checked. Here's the evaluation gap and what closes it.",
+    date: "Jun 2026",
+  },
+  {
     slug: "ai-governance-cannot-be-a-tool-call",
     category: "Teams",
     title: "AI Governance Cannot Be a Tool Call",
@@ -197,6 +204,11 @@ const posts = [
   color: var(--muted);
 }
 
+.writing-tag-research {
+  background: rgba(248, 135, 127, 0.2);
+  color: var(--muted);
+}
+
 .writing-title {
   font-size: 1.05rem;
   font-weight: 600;
@@ -209,7 +221,6 @@ const posts = [
   font-size: 0.85rem;
   color: var(--muted);
   line-height: 1.6;
-  max-width: 580px;
 }
 
 .writing-right {

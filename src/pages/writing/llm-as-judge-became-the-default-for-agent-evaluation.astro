@@ -1,0 +1,370 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="LLM-as-Judge Became the Default for Agent Evaluation (And It Can't See the Failure That Matters) | Tenure"
+  description="Final-answer judging tells you whether an agent's output is plausible. It cannot tell you whether the agent was allowed to know what it claimed, when it could have known it, or whether an absence claim was ever actually checked. Here's the evaluation gap and what closes it."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "LLM-as-Judge Became the Default for Agent Evaluation (And It Can't See the Failure That Matters)",
+  "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "url": "https://tenureai.dev/writing/why-llm-as-judge-cant-see-state",
+  "description": "Final-answer judging tells you whether an agent's output is plausible. It cannot tell you whether the agent was allowed to know what it claimed, when it could have known it, or whether an absence claim was ever actually checked.",
+  "datePublished": "2026-06-21",
+  "dateModified": "2026-06-21"
+}
+</script>
+
+<section class="essay-hero">
+  <div class="container">
+    <div class="uc-breadcrumb">
+      <a href="/writing">Writing</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Agent evaluation</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Research</span>
+    <h1>LLM-as-judge became the default for agent evaluation (and it can't see the failure that matters)</h1>
+    <p class="hero-sub-title" style="margin-top:1rem;">
+      A judge model can only see the final answer. It cannot see whether the agent
+      was allowed to know what it claimed, when it could have known it, or whether
+      an absence claim was ever actually checked. The number on the leaderboard is
+      silent on all three.
+    </p>
+    <div class="essay-meta">
+      <span class="essay-meta-item">Tenure research</span>
+      <span class="essay-meta-sep">·</span>
+      <span class="essay-meta-item">~9 min read</span>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface);">
+  <div class="container">
+    <div class="tldr-box">
+      <h3>TL;DR</h3>
+      <ul>
+        <li>LLM-as-judge became the default for agent evaluation because it is the only general-purpose tool available for open-ended tasks. That does not make it the right tool for every failure class.</li>
+        <li>A judge model compares a final answer to a correct answer. It has no visibility into the path the agent took to produce that answer, and no way to check whether the agent was permitted to use the evidence it used.</li>
+        <li>In a case study, two frontier judges scored an agent response 0.85. The agent had never opened the document its answer depended on. It asserted the document didn't exist and answered anyway. GroundEval scored it 0.000, full case study and code in <a href="https://github.com/tenurehq/groundeval" target="_blank" rel="noopener">the repo</a>.</li>
+        <li>This is a distinct failure class from tool-use mechanics. Trajectory-aware benchmarks already check whether an agent called the right tools in the right order. None of them check whether the agent was allowed to know what it claimed, or whether an absence claim was earned by sufficient search.</li>
+        <li>The fix is a deterministic state contract: an access policy, an event log, and artifact timestamps, checked against the trajectory without a judge in the loop.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">How we got here</span>
+    <h2>The framing that locked in the wrong question</h2>
+    <p>
+      When agent benchmarks need to score something with no single correct string, a free-text
+      explanation, a multi-step research task, a tool-using trajectory that could reasonably end
+      a few different ways, the standard move is to hand the question, the response, and a
+      reference answer to a judge model and ask it to grade. Humanity's Last Exam popularized
+      a specific version of this: extract the final answer, compare it to a known correct answer,
+      output yes or no. It is fast, it is general-purpose, and it requires no domain-specific
+      scaffolding. That is exactly why it spread.
+    </p>
+    <p>
+      The judge prompt itself is explicit about what it is checking. It instructs the model to
+      focus only on whether the extracted final answer matches the correct answer, and not to
+      comment on background, not to argue for a different answer, not to solve the problem itself.
+      That scope is deliberate and reasonable for what it is built to do: confirm a string match
+      with tolerance for phrasing and numerical variance. It was never built to check anything
+      about how the answer was produced.
+    </p>
+    <p>
+      Nobody asked whether final-answer matching was sufficient for agents that act in the world
+      rather than just answer questions. The infrastructure was already there, the prompt template
+      was already written, and grading an agent's output looked like grading a model's output.
+      It isn't. The difference is the entire problem.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        A judge model reading a final answer is checking whether the destination matches the map.
+        It has no way to check whether the agent actually walked the route, or teleported there
+        on a lucky guess. Both produce the same string. Only one of them is trustworthy the next
+        time the terrain changes.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The case study</span>
+    <h2>0.85 from two judges. 0.000 from the trace.</h2>
+    <p>
+      An agent was asked a question whose answer depended on a specific Confluence page.
+      The agent responded as though it had checked. It described, in plausible and confident
+      language, why the page in question did not exist and answered the question on that basis.
+    </p>
+    <p>
+      Two separate frontier judge models read the question and the response and scored it 0.85.
+      Both judges found the answer well-reasoned and the explanation coherent. Neither judge had
+      access to anything other than the question and the final response, which is the entire
+      design of the grading prompt: extract the final answer, compare it to ground truth, ignore
+      everything else.
+    </p>
+    <p>
+      The trace told a different story. The agent never fetched the page. It never opened it,
+      never searched for it, never issued a query that would have surfaced it. It asserted absence
+      without having done the work that an absence claim requires, and then reasoned forward from
+      that unverified assertion as though it were fact. Scored against the recorded trajectory and
+      the access policy that governed it, the response receives 0.000.
+    </p>
+
+    <div class="results-table-wrap">
+      <div class="results-table-label">Same response, two scoring methods</div>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Scoring method</th>
+            <th>What it checks</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="system-badge">Judge model A</span></td>
+            <td>Does the final answer match the expected answer</td>
+            <td class="stat-bad">0.85</td>
+          </tr>
+          <tr>
+            <td><span class="system-badge">Judge model B</span></td>
+            <td>Does the final answer match the expected answer</td>
+            <td class="stat-bad">0.85</td>
+          </tr>
+          <tr class="row-tenure">
+            <td><span class="system-badge system-badge-good">Trace-based scoring</span></td>
+            <td>Was the artifact the answer depends on ever retrieved</td>
+            <td class="stat-good">0.000</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="results-table-note">
+        The agent never opened the document its answer depended on. It claimed the document did
+        not exist without searching for it, then answered as though absence were established.
+      </div>
+    </div>
+
+    <p>
+  The scoring logic itself, the access policy contract, the event log schema, lives in the
+  open-source <a href="https://github.com/tenurehq/groundeval" target="_blank" rel="noopener">GroundEval repo</a>.
+  Anyone can run the same case against the same trajectory and get the same 0.000.
+</p>
+
+    <p>
+      This is not a one-off glitch in a single benchmark run. It is the predictable consequence
+      of grading a destination without ever checking the route. A plausible-sounding final answer
+      and a valid evidence path are different properties, and a method that only examines the
+      former will never catch a failure that lives entirely in the latter.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Not the same gap</span>
+    <h2>Trajectory evaluation already exists. This is a different failure class.</h2>
+    <p>
+      It would be easy to mistake this for an argument that final-answer scoring should be replaced
+      with trajectory scoring, and conclude the field has already solved it. It hasn't, because
+      the trajectory-aware benchmarks that already exist are answering a different question.
+    </p>
+    <p>
+      Trajectory-level diagnostics for tool selection, argument correctness, and dependency
+      ordering check whether an agent called the right tools, with the right arguments, in the
+      right sequence. Progress-based multi-turn evaluation checks whether an agent advanced
+      meaningfully toward a goal across turns, rather than just whether it eventually succeeded.
+      Work on whether judge models can reliably grade web-agent trajectories studies the reliability
+      of the grading method itself, applied to the same mechanical question: did the steps make sense.
+    </p>
+    <p>
+      All three are checking mechanics. Did the agent move correctly. None of them check whether
+      the agent was allowed to know what it claimed to know, whether it reasoned from evidence that
+      existed at the time the question was asked rather than evidence from after the fact, or
+      whether an absence claim was earned by searching the places absence should be checked rather
+      than asserted from silence.
+    </p>
+
+    <div class="scope-stack">
+  <div class="scope-row">
+    <div class="scope-name">I</div>
+    <div class="scope-body">
+      <h3>Mechanically flawless, state-invalid</h3>
+      <p>An agent can call the right tools in the right order, with well-formed arguments, and still answer using a document outside its visibility cone, or an artifact created after the question's as-of time. Trajectory mechanics has nothing to say about either.</p>
+    </div>
+  </div>
+  <div class="scope-row">
+    <div class="scope-name">II</div>
+    <div class="scope-body">
+      <h3>The absence problem</h3>
+      <p>Claiming something doesn't exist is only valid if the agent searched the places it would exist. A judge sees a confident negative answer. A mechanics check sees a tool that was never called. Neither one flags insufficient search as the actual failure.</p>
+    </div>
+  </div>
+  <div class="scope-row">
+    <div class="scope-name">III</div>
+    <div class="scope-body">
+      <h3>Causality reversed</h3>
+      <p>An agent can cite a real, accessible, correctly timestamped event and still get the causal direction backward, treating an effect as the cause of an earlier outcome. The citation is real. The reasoning is not. Neither final-answer nor tool-call checking catches this.</p>
+    </div>
+  </div>
+</div>
+
+    <p>
+      Each of these failures has the same shape: a state or governance constraint was violated,
+      not a mechanical step skipped and not a reasoning error a judge could spot by reading
+      carefully. A memory system can retrieve a correct fact from the wrong user's belief store.
+      An agent can answer correctly while citing an artifact it was never permitted to read.
+      Both produce a response that looks identical to a valid one, to a judge and to a tool-call
+      checker alike.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Why this stayed invisible</span>
+    <h2>The judge was never positioned to see it</h2>
+    <p>
+      A judge model verifying that an artifact was outside an agent's visibility cone at a specific
+      timestamp cannot do so from the question and response alone. It would need the access policy,
+      the event log, the artifact timestamps, and the expected search space supplied alongside the
+      response, in a form precise enough to check mechanically. Most evaluation setups don't supply
+      any of that, because the judge prompt was designed for a simpler comparison: does this answer
+      match that answer.
+    </p>
+    <p>
+      Once those structures are supplied, something changes about what's actually doing the work.
+      The correctness signal stops being the judge's plausibility assessment and becomes the state
+      contract itself. A judge model becomes optional at that point, not because judges are unreliable,
+      but because the question being asked, was this evidence path valid under these constraints, has
+      a deterministic answer once the constraints are written down.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        Final-answer correctness is insufficient because correctness has to be evaluated against
+        the evidence path: what the agent was allowed to know, when it could know it, what it
+        searched, what it cited, and whether an absence or causal claim was justified by the
+        state of the world at the time the agent acted.
+      </p>
+    </div>
+
+    <p>
+      This is also why the gap survives even in benchmarks that report clean accuracy or F1 numbers.
+      A percentage on a leaderboard can still be produced by a judge doing narrow answer-matching
+      underneath it. The grading is constrained and the number looks objective, but the question
+      the grading asks is still "does this answer match," not "was this answer validly reached."
+      A clean-looking number and an invisible evidence-path failure are not in tension. They coexist
+      by construction.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The offense argument</span>
+    <h2>Most of what gets built after deployment is defense for a gap that should have been found before it</h2>
+    <p>
+      Walk through the standard response to an agent that can be talked into disclosing something
+      it shouldn't. Treat the query as untrusted input. Run it through a safety classifier that
+      flags exfiltration attempts. Restrict what the retriever can reach in the first place. Filter
+      the output for patterns that look like the thing you're trying to protect. Force the model to
+      answer only from approved context. Five layers, each one a reasonable patch, stacked because
+      nobody knew in advance which boundary the agent would actually fail to hold.
+    </p>
+    <p>
+      That whole posture is downstream of a testing gap, not a separate problem. If the exact
+      scenario, an adversarial instruction paired with a request for data that sits behind a
+      permission boundary, had been run as an evaluation before deployment, scored against a
+      concrete access policy rather than judged for plausibility, the answer to "would this agent
+      hold the boundary" would have been known going in. Not a guess. Not five generic layers
+      built to cover an unknown failure. One safeguard, built around a confirmed gap.
+    </p>
+    <p>
+      This is what testing for state validity before deployment actually buys a team: not the
+      elimination of every future attack, no evaluation suite covers every scenario it wasn't
+      built to test, but the difference between defending against a known weakness and defending
+      against everything because you don't know which weakness is real. Most of the field is
+      still doing the second thing because the tools to do the first, checking access, timing,
+      and evidence boundaries deterministically, are not yet standard.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The upshot</span>
+    <h2>Write the contract before you write the approval</h2>
+    <p>
+      None of this argues that judge models are bad at what they do, or that trajectory-mechanics
+      benchmarks are measuring the wrong thing. Both are doing real work on real questions. The
+      argument is narrower and harder to dismiss: there is a failure class, an agent crossing a
+      permission boundary, reasoning from evidence that didn't exist yet, or claiming absence it
+      never checked for, that neither approach is positioned to see, by construction, regardless
+      of how capable the judge model is or how carefully the trajectory is logged.
+    </p>
+    <p>
+      The fix is not a better judge. It is a different question, asked deterministically: given
+      an access policy, an event log, and artifact timestamps defined ahead of time, did this
+      agent's trajectory stay inside the boundary. That question doesn't need a model to grade it
+      once the contract is written down. It needs the contract to exist at all, which is the step
+      most teams skip, because writing it is slower than pointing a judge at an output and trusting
+      the number that comes back.
+    </p>
+    <p>
+      An approval step, a governance layer, a human in the loop before an agent touches production,
+      all of these only mean something once there's a tested answer underneath them. Approving an
+      agent because it scored well on a judge is approving the destination without ever checking
+      the route.
+    </p>
+
+    <div class="essay-cta-row">
+        <a href="https://github.com/tenurehq/groundeval" class="btn-primary" target="_blank" rel="noopener">
+            GroundEval on GitHub →
+        </a>
+        <a href="#" class="btn-secondary" target="_blank" rel="noopener">
+            Read the paper
+        </a>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface);">
+  <div class="container">
+    <span class="label">Related</span>
+    <h2 style="margin-bottom:2rem;">More from Tenure</h2>
+    <div class="related-grid">
+      <a href="/writing/ai-governance-cannot-be-a-tool-call" class="related-card">
+        <div class="related-tag">Teams</div>
+        <h3>AI governance cannot be a tool call</h3>
+        <p>Enterprise AI needs a context control plane beneath every model request, not a tool the agent can choose to call.</p>
+        <span class="related-link">Read the essay →</span>
+      </a>
+      <a href="/writing/why-vector-search-was-a-mistake" class="related-card">
+        <div class="related-tag">Architecture</div>
+        <h3>Why vector search became the default for AI memory</h3>
+        <p>The field conflated document retrieval with memory retrieval. The numbers show what that costs.</p>
+        <span class="related-link">Read the essay →</span>
+      </a>
+      <a href="#" class="related-card" target="_blank" rel="noopener">
+        <div class="related-tag">Paper</div>
+        <h3>GroundEval</h3>
+        <p>A deterministic framework for evaluating agents against access control, temporal horizon, evidence visibility, and verified absence.</p>
+        <span class="related-link">Read on arXiv →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</Base>
