@@ -349,193 +349,9 @@ import Base from '../../layouts/Base.astro';
       was fetched, what state was available at the time, and whether the action followed from it.
     </p>
   </div>
-<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
-  <div class="container essay-prose">
-    <span class="label">The dependency list</span>
-    <h2>Before the message exists, the system has facts to prove</h2>
-    <p>
-      Outbound email looks simple from the outside. Pick a contact, write a message, send it.
-      But inside a company, sending is not one action. It depends on a stack of facts being true
-      at the same time.
-    </p>
+  </section>
 
-
-<div class="scope-stack">
-  <div class="scope-row">
-    <div class="scope-name">I</div>
-    <div class="scope-body">
-      <h3>Recipient state</h3>
-      <p>Who is this person right now? Are they a prospect, an active customer, a former customer, a partner, an employee, or someone this sequence should never touch?</p>
-    </div>
-  </div>
-  <div class="scope-row">
-    <div class="scope-name">II</div>
-    <div class="scope-body">
-      <h3>Company mapping</h3>
-      <p>Does the company in the email actually match the recipient's domain, the account they belong to, and the current CRM record?</p>
-    </div>
-  </div>
-  <div class="scope-row">
-    <div class="scope-name">III</div>
-    <div class="scope-body">
-      <h3>Account status</h3>
-      <p>Is the account already using the product? Is there an open opportunity? Is there an owner? Is there a rule that says this account should not get automated outreach?</p>
-    </div>
-  </div>
-  <div class="scope-row">
-    <div class="scope-name">IV</div>
-    <div class="scope-body">
-      <h3>Outreach history</h3>
-      <p>How many times has this person already been contacted, through which channel, by which team, and did they ever respond?</p>
-    </div>
-  </div>
-  <div class="scope-row">
-    <div class="scope-name">V</div>
-    <div class="scope-body">
-      <h3>Permission to act</h3>
-      <p>After all of that, is the automation allowed to send, or should it suppress the message, route it to a human, or do nothing?</p>
-    </div>
-  </div>
-</div>
-
-<p>
-  If one of those checks fails, the answer is not to write a better email. The answer is to
-  stop. That is why the email itself is only the visible part. The more important failure is
-  the decision that allowed the email to exist.
-</p>
-
-
-  </div>
-</section>
-
-<section class="essay-section" style="border-bottom:1px solid var(--border);">
-  <div class="container essay-prose">
-    <span class="label">What most evals see</span>
-    <h2>Evaluating the email is too late</h2>
-    <p>
-      Most evals would start with the thing we can see: the final email. Is it polite? Is it
-      personalized? Is it relevant? Does it mention the right product? Does it sound like the
-      brand? Does it avoid obvious hallucinations?
-    </p>
-    <p>
-      Those are reasonable questions. They are just late questions. By the time you are grading
-      the email, the system has already decided that sending was allowed.
-    </p>
-    <p>
-      That is the trap in cases like this. The message could be polished, concise, friendly, and
-      mostly true. It could say nice things about the product. It could even look like something a
-      human sales rep might write. None of that tells you whether this person should have received
-      it in the first place.
-    </p>
-
-
-<div class="results-table-wrap">
-  <div class="results-table-label">Two ways to evaluate the same outbound action</div>
-  <table class="results-table">
-    <thead>
-      <tr>
-        <th>Evaluation target</th>
-        <th>Question being asked</th>
-        <th>What it misses</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="system-badge">Final email</span></td>
-        <td>Does the generated message read well</td>
-        <td class="stat-bad">Whether the email should exist</td>
-      </tr>
-      <tr>
-        <td><span class="system-badge">Model output</span></td>
-        <td>Does the model produce plausible personalization</td>
-        <td class="stat-bad">Whether the personalization was grounded</td>
-      </tr>
-      <tr class="row-tenure">
-        <td><span class="system-badge system-badge-good">Evidence path</span></td>
-        <td>Did the agent verify the facts required to act</td>
-        <td class="stat-good">The action can be blocked before generation</td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="results-table-note">
-    The useful question is not only whether the copy sounds human. It is whether the system
-    checked enough evidence to send at all.
-  </div>
-</div>
-
-<p>
-  This is the same distinction GroundEval makes for question answering agents. A final answer
-  can look plausible while the trace shows the agent never fetched the document, used evidence
-  it was not allowed to use, or claimed something was absent without searching for it. Outbound
-  has the same shape. A final message can look plausible while the pre-send path was already
-  broken.
-</p>
-
-
-  </div>
-</section>
-
-<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
-  <div class="container essay-prose">
-    <span class="label">How GroundEval frames it</span>
-    <h2>Did the agent earn the right to act?</h2>
-    <p>
-      GroundEval treats agent behavior as something you can test against a state contract. The
-      contract says what evidence exists, when it existed, who or what could access it, and which
-      checks have to happen before a claim or action is valid.
-    </p>
-    <p>
-      For an outbound agent, that means the eval does not have to start by asking whether the
-      email was good. It can start one step earlier: before sending, did the agent check the
-      systems it needed to check and make a valid send decision?
-    </p>
-
-
-<div class="results-table-wrap">
-  <div class="results-table-label">A GroundEval-style outbound test</div>
-  <table class="results-table">
-    <thead>
-      <tr>
-        <th>Test component</th>
-        <th>Example</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="system-badge">Question</span></td>
-        <td>Should this outbound agent send a prospecting email to this contact?</td>
-      </tr>
-      <tr>
-        <td><span class="system-badge">Ground truth</span></td>
-        <td>No. The contact belongs to an account that already uses the product.</td>
-      </tr>
-      <tr>
-        <td><span class="system-badge">Required trajectory</span></td>
-        <td>Check customer status, account mapping, email domain, outreach history, and suppression rules.</td>
-      </tr>
-      <tr>
-        <td><span class="system-badge">Failure condition</span></td>
-        <td>The agent sends or drafts outreach without fetching the records needed to justify the send decision.</td>
-      </tr>
-      <tr class="row-tenure">
-        <td><span class="system-badge system-badge-good">Valid behavior</span></td>
-        <td>Suppress the send, cite the blocking record, and route to the account owner if review is needed.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<p>
-  That is not a judge prompt asking whether the email seems reasonable. It is a check against
-  the path that led to the action. What was searched? What was fetched? What state was
-  available at the time? Did the action actually follow from that state?
-</p>
-
-
-  </div>
-</section>
-
-<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The operational lesson</span>
     <h2>Agents need preconditions, not just approvals</h2>
@@ -560,7 +376,6 @@ import Base from '../../layouts/Base.astro';
       generation.
     </p>
 
-
 <div class="essay-callout">
   <p>
     "Looks good to send" is not the same as "the required evidence was checked, and the send
@@ -571,6 +386,7 @@ import Base from '../../layouts/Base.astro';
 
   </div>
 </section>
+
 
 <section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
@@ -611,7 +427,9 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
-<section class="essay-section" style="background:var(--surface);">
+
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">Related</span>
     <h2 style="margin-bottom:2rem;">More from Tenure</h2>
