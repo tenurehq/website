@@ -2,6 +2,13 @@
 import Base from '../../layouts/Base.astro';
 
 const posts = [
+  {
+    slug: "why-most-ai-evals-would-miss-the-linear-sales-email-failure",
+    category: "Evaluation",
+    title: "Why most AI evals would miss the Linear sales email failure",
+    description: "Linear's sales agent emailed an existing customer six times with the wrong company name. An LLM judge would have scored that email highly. Here is why standard evaluation never would have caught it.",
+    date: "Jun 2026",
+  },
    {
     slug: "what-groundeval-tells-you-about-where-hitl-belongs",
     category: "Research",
@@ -194,6 +201,11 @@ const posts = [
 .writing-tag-architecture {
   background: rgba(0, 168, 173, 0.1);
   color: var(--accent);
+}
+
+.writing-tag-evaluation {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--muted);
 }
 
 .writing-tag-teams {
