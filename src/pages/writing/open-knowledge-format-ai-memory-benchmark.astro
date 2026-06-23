@@ -1,0 +1,290 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Open Knowledge Format Benchmark: What Happens When OKF Runs Inside an AI Tool | Tenure"
+  description="We ran Google's Open Knowledge Format through PrecisionMemBench to test the runtime access pattern: markdown files available to an AI tool, model-directed file inspection, and belief-level retrieval scoring."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Open Knowledge Format Benchmark: What Happens When OKF Runs Inside an AI Tool",
+  "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "url": "https://tenureai.dev/writing/open-knowledge-format-ai-memory-benchmark",
+  "description": "We ran Google's Open Knowledge Format through PrecisionMemBench to test the runtime access pattern: markdown files available to an AI tool, model-directed file inspection, and belief-level retrieval scoring.",
+  "datePublished": "2026-06-23",
+  "dateModified": "2026-06-23"
+}
+</script>
+
+<section class="essay-hero">
+  <div class="container">
+    <div class="uc-breadcrumb">
+      <a href="/writing">Writing</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Benchmarks</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Open Knowledge Format</span>
+    <h1>Open Knowledge Format benchmark: what happens when OKF runs inside an AI tool</h1>
+    <p class="hero-sub-title" style="margin-top:1rem;">
+      Google dropped the Open Knowledge Format as a simple markdown standard for AI knowledge.
+      We wanted to test the part that matters in practice: what happens when that bundle is placed
+      inside an AI tool and the model has to decide which files to inspect.
+    </p>
+    <div class="essay-meta">
+      <span class="essay-meta-item">Tenure research</span>
+      <span class="essay-meta-sep">·</span>
+      <span class="essay-meta-item">~7 min read</span>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface);">
+  <div class="container">
+    <div class="tldr-box">
+      <h3>TL;DR</h3>
+      <ul>
+        <li>This was not a test of markdown as a storage format.</li>
+        <li>It was a test of the runtime pattern implied by OKF when a bundle is dropped into an AI tool today.</li>
+        <li>The model received normal tool access to list files and read files. No custom retrieval-agent system prompt.</li>
+        <li>PrecisionMemBench scored the belief IDs corresponding to the files the model actually read.</li>
+        <li>OKF did much better than raw semantic memory retrieval, but it still showed the same core issue: files are a format, not a retrieval policy.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Why test it</span>
+    <h2>I like OKF. I just wanted to see what happens when an AI tool actually has to use it.</h2>
+    <p>
+      I like the direction of the Open Knowledge Format. A directory of markdown files with YAML
+      frontmatter is boring in the best way. It is easy to read, easy to diff, easy to commit, and
+      easy for humans to maintain. That is a real advantage over proprietary memory blobs or hidden
+      vendor indexes.
+    </p>
+    <p>
+      But after reading the spec, the obvious question was not whether markdown is a good interchange
+      format. Markdown is fine. The question was what happens at runtime.
+    </p>
+    <p>
+      Because the moment an OKF bundle gets placed into an AI tool, somebody still has to decide which
+      files enter the model request. Maybe the model lists the files. Maybe it reads one. Maybe it reads
+      several. Maybe it never opens the file that actually contains the needed belief. The format makes
+      the knowledge portable. It does not, by itself, make retrieval precise.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        The thing we tested was not Open Knowledge Format as a storage layer. We tested the access pattern
+        most teams would get if they dropped an OKF bundle into a tool today and let the model inspect it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The setup</span>
+    <h2>How we ran the OKF bundle</h2>
+    <p>
+      The wrapper was intentionally plain. The model got a normal assistant prompt and two tools:
+      one to list available OKF markdown files, and one to read a specific file. The model was not
+      given a custom retrieval-agent prompt telling it how to behave. It just received a user query
+      and decided whether to inspect the bundle.
+    </p>
+    <p>
+      When the model called <code>read_file</code>, the wrapper parsed the file's frontmatter, extracted
+      the <code>beliefId</code>, and returned that ID to PrecisionMemBench as a retrieved belief. That is the
+      whole bridge. Files read by the model became retrieved belief IDs. Files not read did not count.
+    </p>
+    <p>
+      That matters because PrecisionMemBench does not score whether the final answer sounds good.
+      It scores whether the system retrieved the right underlying beliefs. In this run, the question was
+      simple: did model-directed file access pull the right OKF documents into the request?
+    </p>
+
+    <div class="okf-result-grid">
+  <div class="okf-result-card">
+    <div class="okf-result-kicker">Single-turn run</div>
+    <div class="okf-result-main">
+      <span class="okf-result-value">0.47</span>
+      <span class="okf-result-label">Mean precision</span>
+    </div>
+    <p>
+      77 cases, 36 passes, 18 active retrieval passes, 0.91 mean recall, and 4.4s mean latency.
+    </p>
+  </div>
+
+  <div class="okf-result-card">
+    <div class="okf-result-kicker">Session run</div>
+    <div class="okf-result-main">
+      <span class="okf-result-value">0.17</span>
+      <span class="okf-result-label">Pass rate</span>
+    </div>
+    <p>
+      12 session turns, 2 passes, 1 active retrieval pass, 0.45 mean recall, and 59.3s p95 latency.
+    </p>
+  </div>
+</div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The encouraging part</span>
+    <h2>OKF improved the shape of the problem.</h2>
+    <p>
+      The good news is that OKF did not behave like raw vector recall. The model had filenames, titles,
+      descriptions, types, tags, and readable file bodies. That gave it more handles than a cosine search
+      over opaque memory chunks.
+    </p>
+    <p>
+      Alias resolution was the clearest win. Across 23 alias cases, the run reached 0.72 mean precision
+      and 0.92 mean recall. Some short-form queries worked exactly how you would hope. A query for
+      <code>GHA</code> could lead the model to the GitHub Actions belief. A query for <code>Mongo</code> could lead
+      it to the MongoDB decision. In those cases, the filesystem pattern gives the model a real path
+      to the right document.
+    </p>
+    <p>
+      Ranking stability also looked strong. Those cases passed cleanly. That is worth saying because it
+      means the result is not a blanket criticism of OKF. When the query maps cleanly to the file surface,
+      markdown files with frontmatter are a perfectly reasonable representation.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The hard part</span>
+    <h2>But file access is still not memory retrieval.</h2>
+    <p>
+      The failures showed up where memory systems usually fail: scope, supersession, type routing, and
+      session drift. These are not markdown problems. They are state problems.
+    </p>
+    <p>
+      Scope disambiguation had 12 cases and only 4 passed. Mean precision was 0.21. This is the classic
+      Redis problem. If Redis appears in a code context and a writing context, the model has to know
+      which one belongs in the current request. A folder of files can expose both meanings, but it does
+      not enforce which one is valid for this turn.
+    </p>
+    <p>
+      Supersession was even sharper. The run had three supersession chain exclusion cases, and none
+      passed. Again, that is not because markdown cannot store an old belief and a new belief. It can.
+      The issue is that the runtime has to know which belief is current and which belief must be excluded.
+      A stale file sitting next to a current file is still accessible unless the retrieval layer knows the
+      difference.
+    </p>
+    <p>
+      Type routing and open questions had 0.20 mean precision. Fuzzy matching and prefix guards landed
+      at 0.25. Budget eviction and capacity landed at 0.13. This is where the difference between a knowledge
+      format and a memory system becomes very obvious. OKF can describe the knowledge. It does not decide
+      how much of that knowledge should enter the model request.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        The bundle made knowledge inspectable. It did not make retrieval governed. That is the gap.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Session behavior</span>
+    <h2>The session run is where the pattern got shaky.</h2>
+    <p>
+      The single-turn result is the optimistic view. The session run is closer to how people actually use
+      AI tools. Topics move around. Earlier turns create noise. Some later turns are implicit. The model
+      has to keep deciding whether to inspect files, which files matter, and whether the current turn still
+      belongs to the same topic.
+    </p>
+    <p>
+      In that run, only 2 of 12 turns passed. Mean recall dropped to 0.45, and there was only 1 active
+      retrieval pass. The p95 latency reached 59.3 seconds. The exact number matters less than the pattern:
+      once retrieval becomes a repeated model behavior inside a session, the cost and instability compound.
+    </p>
+    <p>
+      This is the part I would watch most closely if I were adopting OKF inside a product. A single query
+      against a clean file bundle can look pretty good. A real session needs continuity, exclusion, recency,
+      scope, and budget control on every turn.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">What it means</span>
+    <h2>OKF solves interchange. It does not solve selection.</h2>
+    <p>
+      This is the main takeaway for me. OKF is a good answer to the interchange problem. It gives people
+      a clean way to write portable knowledge bundles. That is valuable. It means a team can move curated
+      context between tools without depending on one vendor's memory database.
+    </p>
+    <p>
+      But memory retrieval has a second problem: selection. Which beliefs are relevant? Which are current?
+      Which are scoped to this user, team, repo, customer, or task? Which facts are pinned? Which facts are
+      stale? Which open questions should be visible, and which should stay out of the request?
+    </p>
+    <p>
+      A file format can carry the fields needed to answer those questions. It cannot answer them by merely
+      existing. The runtime has to enforce them.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Where Tenure fits</span>
+    <h2>This is exactly why we separate storage from retrieval policy.</h2>
+    <p>
+      Tenure can use readable knowledge representations. I do not think the world needs fewer plain-text
+      standards. If anything, OKF is useful because it makes knowledge portable enough to test across tools.
+    </p>
+    <p>
+      The part Tenure cares about is what happens after the knowledge exists. We treat memory as governed
+      state: typed beliefs, scopes, provenance, supersession, pinned facts, open questions, and a retrieval
+      layer that decides what is allowed into each request before the model sees it.
+    </p>
+    <p>
+      That is the difference between giving the model a folder and giving the system a state layer. The
+      folder is inspectable. The state layer is accountable.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        My read: OKF is a strong interchange format for AI knowledge. It becomes production-grade memory
+        only when paired with a runtime that handles precision, scope, freshness, and exclusion deterministically.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface);">
+  <div class="container essay-prose">
+    <span class="label">Bottom line</span>
+    <h2>The format is not the hard part.</h2>
+    <p>
+      Dropping markdown files into a tool is a great start. It is transparent, portable, and easy to reason
+      about. But once the model has to choose which files to read, you are back in retrieval land.
+    </p>
+    <p>
+      The OKF run did better than naive memory retrieval because files, titles, descriptions, and frontmatter
+      give the model useful handles. But the hard cases remained hard because the hard cases were never about
+      markdown. They were about state.
+    </p>
+    <p>
+      So I am bullish on OKF as a format. I am not bullish on treating the format as the memory system.
+      The next layer has to be the runtime: the thing that decides what gets retrieved, what gets excluded,
+      what is current, what is scoped, and what the model was actually allowed to know.
+    </p>
+  </div>
+</section>
+
+</Base>
