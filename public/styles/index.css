@@ -2879,7 +2879,7 @@ footer {
 
 .score-value {
   width: 60px;
-  text-align: right;
+  text-align: left;
   font-weight: 700;
 }
 
@@ -2896,7 +2896,6 @@ footer {
   padding-left: 0.75rem;
 }
 
-/* ── PAIR EXAMPLES ── */
 .pair-examples {
   margin: 1.5rem 0;
   background: var(--surface2);
