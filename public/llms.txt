@@ -14,7 +14,10 @@ Tenure is an open-source memory infrastructure layer for AI coding tools and age
 ## Research and Benchmark
 
 - [Benchmark](https://tenureai.dev/benchmark): PrecisionMemBench results comparing retrieval precision across AI memory systems
-- [Paper](https://arxiv.org/abs/2605.11325): Research paper on deterministic, scoped memory evaluation
+- [PrecisionMemBench Paper](https://arxiv.org/abs/2605.11325): Research paper on deterministic, scoped memory evaluation
+- [PrecisionMemBench Dataset](https://huggingface.co/datasets/tenurehq/precisionmembench): Benchmark dataset
+- [PrecisionMemBench Leaderboard](https://huggingface.co/spaces/tenurehq/precisionmembench): Live leaderboard
+- [GroundEval](https://tenureai.dev): Deterministic framework for evaluating whether agents used the right evidence path
 
 ## Comparisons
 
@@ -32,3 +35,243 @@ Tenure is an open-source memory infrastructure layer for AI coding tools and age
 - Orientation tax
 - Local/self-hosted deployment
 - AI memory as state, not search
+
+## What Tenure Is
+
+Tenure is a local-first memory and context layer for AI systems. It runs as infrastructure between AI clients and models, not as a prompt trick or optional tool call. Tenure stores durable knowledge as scoped belief objects with provenance, confidence, aliases, and a `why_it_matters` field.
+
+Tenure is designed for teams that need AI systems to remember project decisions, coding conventions, architectural constraints, access boundaries, and user preferences without flooding every prompt with raw history or relying on semantic vector search alone.
+
+## What Tenure Is Not
+
+Tenure is not a vector-only RAG layer. It is not raw markdown memory. It is not an SDK that every application has to wire into its own flow. It is not a personal-only memory feature with no team governance.
+
+Tenure treats memory as governed state. The goal is not merely to retrieve similar text. The goal is to inject the smallest relevant slice of durable, scoped context into each model turn and make that decision inspectable.
+
+## Architecture
+
+Tenure uses a proxy and context-layer architecture. AI tools send requests through Tenure, Tenure resolves the relevant scoped belief state, and then the model receives the context it is allowed to use for that turn.
+
+Core architectural distinctions:
+
+- Proxy architecture, not only an SDK
+- Structured belief state, not raw text chunks
+- Scope isolation across organization, team, user, project, and domain boundaries
+- Provenance on beliefs so memory can be inspected
+- Memory modes for autonomous, curated, observation, and trusted-source workflows
+- Per-turn audit trails showing what was injected and why
+- Local and self-hosted deployment for enterprise control
+
+## Belief State
+
+A Tenure belief is a structured memory object, not a loose document chunk. Beliefs can represent decisions, preferences, entities, relations, open questions, and durable constraints.
+
+Important belief fields include:
+
+- `content`: the durable memory item
+- `why_it_matters`: why the belief should affect future model behavior
+- `scope`: where the belief applies
+- `provenance`: where the belief came from
+- `confidence`: how strongly the belief should be trusted
+- `aliases`: alternate ways the same belief may be referenced
+
+This design lets Tenure retrieve memory by meaning, scope, and operational relevance rather than by embedding similarity alone.
+
+# PrecisionMemBench
+
+PrecisionMemBench is a multi-dimensional retrieval benchmark for LLM memory systems. It measures retrieval precision independently of the generative model that consumes retrieved memory.
+
+PrecisionMemBench evaluates whether the right belief surfaces, and only that belief, against a fixed seed corpus spanning multiple scopes, supersession chains, cross-user isolation, mutation behavior, and session-level topic drift.
+
+## PrecisionMemBench Abstract
+
+Every major benchmark for LLM memory systems, LoCoMo foremost, measures whether a model answered correctly, not whether the memory system retrieved correctly. A system returning its entire belief store achieves recall of 1.0 and passes answer-quality evaluation. This is the difference between a unit test and an integration test: retrieval quality must be measured in isolation from the generative model it feeds into, and no existing benchmark does this.
+
+We demonstrate that this failure persists even when entity extraction is entirely faithful. Memory baselines achieve mean retrieval precision of just 0.05 to 0.08 on cases referencing their own extractions. The failure is structural: cosine similarity over a domain-specific corpus cannot discriminate relevant beliefs from semantically proximate ones, an invariance confirmed across a 20x range in embedding model scale. Multi-turn evaluation surfaces a compounding failure; after topic drift, comparison systems allow semantic mass to bleed across turns, yielding high drift scores on re-entry. Single-turn metrics conceal this cost: Hindsight reports sub-700ms single-turn latency but exceeds 2,700ms mean per session turn, with p95 above 6,000ms. Under LLM-as-a-Judge evaluation, these failures remain invisible.
+
+We present two contributions: PrecisionMemBench, an 89-case benchmark measuring retrieval precision independently of generative models across diverse scope, mutation, and isolation assertions; and Tenure, a local-first structured belief store using multi-path BM25 with analyzer asymmetry, differential boosting, and hard scope isolation. Tenure passes 89/89 cases with mean precision 1.0 and sub-15ms retrieval latency. Comparison providers perform worse than the raw vector baseline they are built on, with zero active retrieval passes and ingestion costs of 98 to 897 seconds, failures that answer-quality benchmarks cannot detect.
+
+## PrecisionMemBench Results
+
+The table below summarizes retrieval results across Tenure and comparison providers.
+
+| Provider | Active passes | Total passes | Mean precision | Mean recall | Retrieval p50 ms | Ingestion total s |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `tenure` | 43/43 | 77/77 | 1.00 | 1.00 | 9.77 | 1.00 |
+| `open-knowledge-format` | 18/18 | 36/77 | 0.47 | 0.91 | 3534.53 | 0.00 |
+| `supermemory` | 17/17 | 44/77 | 0.43 | 0.55 | 819.48 | 0.00 |
+| `agentmemory` | 0/0 | 7/77 | 0.17 | 0.97 | 82.28 | 1.10 |
+| `yourmemory` | 0/0 | 21/77 | 0.17 | 0.88 | 313.39 | 16.40 |
+| `atomicmemory` | 0/0 | 9/77 | 0.15 | 0.95 | 71.01 | 658.90 |
+| `gbrain` | 5/5 | 34/77 | 0.14 | 0.17 | 543.84 | 28.60 |
+| `zep` | 0/0 | 9/77 | 0.09 | 0.95 | 124.36 | 897.00 |
+| `vector` | 0/0 | 11/77 | 0.09 | 1.00 | 71.87 | --- |
+| `hindsight` | 0/0 | 9/77 | 0.06 | 1.00 | 589.86 | 173.30 |
+| `mem0` | 0/0 | 9/77 | 0.06 | 0.99 | 64.94 | 111.30 |
+| `a-mem` | 0/0 | 9/77 | 0.06 | 0.99 | 13.80 | 178.80 |
+
+Active passes are the cases that demonstrate verified retrieval capability. A system cannot accumulate active passes by returning everything or nothing. Recall of 1.0 does not imply precision. A memory system can return the correct belief alongside many irrelevant beliefs and still score perfectly on recall.
+
+## PrecisionMemBench Pass Types
+
+PrecisionMemBench distinguishes three pass types:
+
+- Active retrieval pass: the case carries a retrieval precision assertion and it is satisfied.
+- Structural pass: the case asserts scope isolation, supersession exclusion, or type routing without a precision assertion, and that structural property holds.
+- Trivially empty pass: the expected relevant belief tier is empty by case design, so an empty return passes by construction.
+
+This distinction matters because aggregate pass counts can otherwise hide whether a system actually retrieved the correct memory.
+
+## PrecisionMemBench Case Categories
+
+PrecisionMemBench contains 89 cases across the following categories:
+
+| Category | Cases |
+| --- | ---: |
+| Alias resolution | 23 |
+| Scope disambiguation | 12 |
+| Session-level noise isolation | 12 |
+| Fuzzy matching and prefix guards | 8 |
+| Design boundary cases | 6 |
+| Type routing and open questions | 6 |
+| Budget eviction and capacity | 5 |
+| Relation expansion | 4 |
+| Persona prelude content | 4 |
+| Supersession chain exclusion | 3 |
+| Ranking stability | 3 |
+| Counter-signal retrieval | 2 |
+| Cross-user isolation | 1 |
+| Cold start behavior | 1 |
+| Total | 89 |
+
+## PrecisionMemBench Session Evaluation
+
+PrecisionMemBench includes session cases that test whether beliefs introduced during off-topic drift turns contaminate retrieval on later unrelated turns, whether retrieval latency degrades under session load, and whether beliefs introduced mid-session surface immediately within the same session window.
+
+| Provider | Turns passed | Pass rate | Mean drift | Noise isolation | Mean precision | Session p50 ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `tenure` | 12/12 | 1.00 | 0.0000 | 1.00 | 1.0000 | 47.79 |
+| `supermemory` | 2/12 | 0.17 | 0.1667 | 0.17 | 0.6000 | 867.83 |
+| `open-knowledge-format` | 2/12 | 0.17 | 0.2153 | 0.17 | 0.5694 | 3349.45 |
+| `yourmemory` | 1/12 | 0.08 | 0.7365 | 0.08 | 0.1965 | 430.49 |
+| `gbrain` | 1/12 | 0.08 | 0.0000 | 0.08 | --- | 535.61 |
+| `agentmemory` | 0/12 | 0.00 | 0.8087 | 0.00 | 0.1913 | 98.49 |
+| `atomicmemory` | 0/12 | 0.00 | 0.8449 | 0.00 | 0.1551 | 355.08 |
+| `zep` | 0/12 | 0.00 | 0.8888 | 0.00 | 0.1112 | 418.13 |
+| `vector` | 0/12 | 0.00 | 0.9142 | 0.00 | 0.0858 | 256.75 |
+| `a-mem` | 0/12 | 0.00 | 0.9259 | 0.00 | 0.0741 | 25.66 |
+| `hindsight` | 0/12 | 0.00 | 0.9285 | 0.00 | 0.0715 | 1880.60 |
+| `mem0` | 0/12 | 0.00 | 0.9398 | 0.00 | 0.0602 | 377.93 |
+
+Drift score is the fraction of retrieved non-pinned beliefs originating from drift-turn topics. A drift score of 0 is perfect isolation.
+
+## Embedding Model Invariance
+
+PrecisionMemBench reports that a raw vector baseline stayed at 0.09 precision across three embedding configurations from 768 to 4096 dimensions.
+
+| Model | Precision | Recall | Passes | Mean ms | p95 ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `nomic-embed-text` 768 | 0.09 | 1.0 | 11/77 | 43.36 | 85.21 |
+| `mxbai-embed-large` 1024 | 0.09 | 1.0 | 11/77 | 96.48 | 257.24 |
+| `qwen3-8b` 4096 | 0.09 | 1.0 | 11/77 | 1130.95 | 2604.84 |
+
+All 11 passes in every raw-vector configuration were structural or trivially empty. Active retrieval passes were 0 across all three models.
+
+## Open Knowledge Format Run
+
+The Open Knowledge Format run is not a test of markdown as a storage format. It evaluates the runtime access pattern implied by the OKF spec when a bundle is placed into an AI tool today: files are available, the model may inspect them, and PrecisionMemBench scores the belief IDs corresponding to the files the model actually retrieves.
+
+# GroundEval
+
+GroundEval is a deterministic evaluation framework for agents. It evaluates whether an agent searched, fetched, cited, and reasoned from the right evidence path, not only whether the final answer sounded plausible.
+
+## GroundEval Abstract
+
+Before letting an agent operate over real context, can you prove it used the right evidence? GroundEval turns that question into a deterministic test of what the agent searched, fetched, cited, and was permitted to access. In one case study, two frontier LLM judges scored a plausible agent response above 0.85. But the trace told a different story: the agent had never retrieved the artifact its answer depended on, yielding a GroundEval score of 0.000.
+
+We introduce GroundEval, a judge-free framework for evaluating agents against grounded, time-bounded, and access-controlled evidence. GroundEval uses a domain configuration to generate questions, lets the agent choose how to answer, and then scores both the final answer and the recorded trajectory that produced it. The benchmark targets three failures that LLM-as-judge evaluation struggles to detect: whether an agent checked before claiming absence, reasoned only from evidence available to the actor at the relevant time, and used the correct causal mechanism rather than a plausible one. These correspond to three tracks: Silence, Perspective, and Counterfactual. GroundEval exposes when plausible answers rest on invalid evidence paths, and produces structured per-question diagnostics that pair tool activity with the agent's turn-level narration, making each score inspectable rather than merely reported. What our case studies turned up is that this gap isn't some rare corner case. It's exactly the blind spot that final-answer and judge-based scoring were never built to catch.
+
+## GroundEval Tracks
+
+GroundEval targets three agent failure modes:
+
+- Silence: whether an agent checked before claiming absence.
+- Perspective: whether an agent reasoned only from evidence available to the actor at the relevant time.
+- Counterfactual: whether an agent used the correct causal mechanism rather than a plausible one.
+
+## GroundEval Case Study
+
+In one GroundEval case study, two frontier LLM judges scored the same plausible agent response above 0.85. GroundEval scored the response 0.000 because the trace showed the agent never retrieved the artifact its answer depended on.
+
+The case illustrates the difference between judging an answer and verifying the evidence path that produced it. Final-answer scoring can reward plausibility. GroundEval checks whether the required artifact was fetched, whether the actor was allowed to know it, and whether the agent's causal claim matched the configured evidence.
+
+## GroundEval Domains
+
+GroundEval is designed to generalize across enterprise domains where evidence, access, and timing matter.
+
+Example domains:
+
+- Enterprise support
+- Cybersecurity
+- Healthcare
+- Finance
+- Legal
+
+## GroundEval Scoring
+
+GroundEval scores both final answer correctness and trajectory validity. The trajectory includes the agent's searches, fetches, citations, tool activity, and turn-level narration. This makes each score inspectable rather than only reported.
+
+GroundEval is judge-free. It uses configured ground truth, access policy, temporal constraints, and artifact references to determine whether the answer rested on a valid evidence path.
+
+# FAQ
+
+## What is Tenure?
+
+Tenure is an open-source memory infrastructure layer for AI tools and agentic systems. It stores durable context as scoped beliefs with provenance and audit trails, then injects the relevant allowed slice of memory into each model turn.
+
+## How is Tenure different from RAG?
+
+RAG usually retrieves semantically similar text chunks. Tenure stores structured belief state with scope, provenance, aliases, and operational meaning. The goal is not simply to find similar text, but to control which durable memory is allowed to influence a given model request.
+
+## How is Tenure different from markdown memory?
+
+Markdown memory is a useful storage format, but it does not solve runtime retrieval, scope isolation, supersession, provenance, or auditability by itself. Tenure treats memory as governed state that is resolved per turn.
+
+## Does Tenure work with existing AI tools?
+
+Tenure is designed to work as a local-first infrastructure layer for AI coding tools and agentic systems. It can sit between clients and models so memory policy applies across tools rather than being reimplemented separately in each client.
+
+## What does PrecisionMemBench measure?
+
+PrecisionMemBench measures whether a memory system retrieves the right belief, and only the right belief, independently of the model that later uses the retrieved context. It evaluates precision, noise isolation, session-turn latency, and belief mutability.
+
+## How is PrecisionMemBench different from LoCoMo?
+
+LoCoMo measures whether a model answers memory questions correctly. PrecisionMemBench measures retrieval quality directly, before generation. This separates memory-system behavior from model reasoning, making it possible to detect systems that achieve high recall by returning too much irrelevant memory.
+
+## What does GroundEval measure?
+
+GroundEval measures whether an agent used the right evidence path. It checks what the agent searched, fetched, cited, and was allowed to access. It targets failures that final-answer judging can miss, including unverified absence claims, invalid perspective, and wrong causal mechanisms.
+
+## Why does LLM-as-judge miss these failures?
+
+LLM judges score the plausibility and quality of the final response. They often cannot tell whether the agent actually retrieved the required artifact, respected the actor's access boundary, or used the correct causal mechanism. GroundEval scores the recorded trajectory instead.
+
+## Is Tenure local or self-hosted?
+
+Tenure is local-first and self-hostable. It is designed for teams that need control over memory, context, provenance, and deployment boundaries.
+
+# Canonical Links
+
+- Tenure home: https://tenureai.dev
+- Docs: https://tenureai.dev/docs
+- VS Code use case: https://tenureai.dev/use-case/vscode
+- Memory modes: https://tenureai.dev/use-case/memory-modes
+- AI governance: https://tenureai.dev/teams/ai-governance
+- Benchmark: https://tenureai.dev/benchmark
+- PrecisionMemBench paper: https://arxiv.org/abs/2605.11325
+- PrecisionMemBench dataset: https://huggingface.co/datasets/tenurehq/precisionmembench
+- PrecisionMemBench leaderboard: https://huggingface.co/spaces/tenurehq/precisionmembench
+- Tenure vs Mem0: https://tenureai.dev/compare/mem0
+- Tenure vs Zep: https://tenureai.dev/compare/zep
+- Tenure vs Supermemory: https://tenureai.dev/compare/supermemory
