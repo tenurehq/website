@@ -2935,3 +2935,18 @@ footer {
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
+
+.essay-callout {
+  border-left: 2px solid var(--accent);
+  padding: 1rem 1.5rem;
+  margin: 2.5rem 0;
+  background: rgba(0, 168, 173, 0.04);
+  border-radius: 0 8px 8px 0;
+}
+
+.essay-callout p {
+  color: var(--text) !important;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 !important;
+}
