@@ -51,50 +51,147 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
       content="persistent governable state for AI systems, memory drift prevention, scoped belief isolation, AI access governance for engineering teams"
     />
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "SoftwareApplication",
-            "@id": "https://tenureai.dev/#software",
-            "name": "Tenure",
-            "url": "https://tenureai.dev",
-            "codeRepository": "https://github.com/tenurehq/tenure",
-            "image": "https://tenureai.dev/og-image.png",
-            "applicationCategory": "DeveloperApplication",
-            "operatingSystem": "Linux, macOS, Windows",
-            "description": "Your memory system will drift in ways you cannot detect. Persistent, governable, scoped state for AI systems. Hard boundaries. Full provenance. Audit trails from day one.",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD",
-              "availability": "https://schema.org/InStock"
-            },
-            "license": "https://opensource.org/licenses/MIT"
-          },
-          {
-            "@type": "Dataset",
-            "@id": "https://tenureai.dev/#dataset",
-            "name": "precisionMemBench",
-            "description": "A multi-dimensional retrieval benchmark for LLM memory systems measuring retrieval precision, noise isolation, session-turn latency, and belief mutability across 89 cases and 11 providers.",
-            "url": "https://huggingface.co/datasets/tenurehq/precisionmembench",
-            "sameAs": [
-              "https://arxiv.org/abs/2605.11325",
-              "https://github.com/tenurehq/precisionMemBench"
-            ],
-            "license": "https://opensource.org/licenses/MIT",
-            "creator": {
-              "@type": "Organization",
-              "name": "Tenure",
-              "url": "https://tenureai.dev"
-            },
-            "about": {
-              "@id": "https://tenureai.dev/#software"
-            }
-          }
-        ]
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tenureai.dev/#organization",
+      "name": "Tenure",
+      "url": "https://tenureai.dev",
+      "logo": "https://tenureai.dev/og-image.png",
+      "sameAs": [
+        "https://github.com/tenurehq",
+        "https://huggingface.co/tenurehq"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tenureai.dev/groundeval#software",
+      "name": "GroundEval",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS, Windows",
+      "description": "Deterministic agent evaluation framework for validating evidence paths, tool usage, access control, and causal reasoning.",
+      "creator": {
+        "@id": "https://tenureai.dev/#organization"
+      },
+      "publisher": {
+        "@id": "https://tenureai.dev/#organization"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "codeRepository": "https://github.com/tenurehq/groundeval",
+      "license": "https://opensource.org/licenses/MIT",
+      "citation": {
+        "@type": "ScholarlyArticle",
+        "@id": "https://tenureai.dev/#groundeval-paper",
+        "name": "GroundEval: A Deterministic Replacement for LLM-as-Judge in Stateful Agent Evaluation",
+        "headline": "GroundEval: A Deterministic Replacement for LLM-as-Judge in Stateful Agent Evaluation",
+        "url": "https://arxiv.org/abs/2606.22737",
+        "sameAs": [
+          "https://arxiv.org/abs/2606.22737"
+        ],
+        "author": {
+          "@type": "Person",
+          "name": "Jeffrey Flynt"
+        },
+        "publisher": {
+          "@id": "https://tenureai.dev/#organization"
+        },
+        "datePublished": "2026-06-22"
       }
-    </script>
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tenureai.dev/#software",
+      "name": "Tenure",
+      "url": "https://tenureai.dev",
+      "codeRepository": "https://github.com/tenurehq/tenure",
+      "image": "https://tenureai.dev/og-image.png",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS, Windows",
+      "description": "Your AI tools don't share a memory. Tenure fixes that. One endpoint. Every AI client. Persistent, governable, scoped state for AI systems. Hard boundaries. Full provenance. Audit trails from day one.",
+      "creator": {
+        "@id": "https://tenureai.dev/#organization"
+      },
+      "publisher": {
+        "@id": "https://tenureai.dev/#organization"
+      },
+      "maintainer": {
+        "@id": "https://tenureai.dev/#organization"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "license": "https://opensource.org/licenses/MIT",
+       "citation": {
+        "@type": "ScholarlyArticle",
+        "@id": "https://tenureai.dev/#tenure-paper",
+        "name": "Structured Belief State and the First Precision-Aware Benchmark for LLM Memory Retrieval",
+        "headline": "Structured Belief State and the First Precision-Aware Benchmark for LLM Memory Retrieval",
+        "url": "https://arxiv.org/abs/2605.11325",
+        "sameAs": [
+          "https://arxiv.org/abs/2605.11325"
+        ],
+        "author": {
+          "@type": "Person",
+          "name": "Jeffrey Flynt"
+        },
+        "publisher": {
+          "@id": "https://tenureai.dev/#organization"
+        },
+        "datePublished": "2026-05-11"
+      }
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://tenureai.dev/#dataset",
+      "name": "PrecisionMemBench",
+      "description": "A multi-dimensional retrieval benchmark for LLM memory systems measuring retrieval precision, noise isolation, session-turn latency, and belief mutability across 89 cases and 11 providers.",
+      "url": "https://huggingface.co/datasets/tenurehq/precisionmembench",
+      "sameAs": [
+        "https://huggingface.co/datasets/tenurehq/precisionmembench",
+        "https://github.com/tenurehq/precisionMemBench"
+      ],
+      "license": "https://opensource.org/licenses/MIT",
+      "creator": {
+        "@id": "https://tenureai.dev/#organization"
+      },
+      "publisher": {
+        "@id": "https://tenureai.dev/#organization"
+      },
+      "about": {
+        "@id": "https://tenureai.dev/#software"
+      },
+      "citation": {
+        "@type": "ScholarlyArticle",
+        "@id": "https://tenureai.dev/#precisionmembench-paper",
+        "name": "Structured Belief State and the First Precision-Aware Benchmark for LLM Memory Retrieval",
+        "headline": "Structured Belief State and the First Precision-Aware Benchmark for LLM Memory Retrieval",
+        "url": "https://arxiv.org/abs/2605.11325",
+        "sameAs": [
+          "https://arxiv.org/abs/2605.11325"
+        ],
+        "author": {
+          "@type": "Person",
+          "name": "Jeffrey Flynt"
+        },
+        "publisher": {
+          "@id": "https://tenureai.dev/#organization"
+        },
+        "datePublished": "2026-05-11"
+      }
+    }
+  ]
+}
+</script>
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles/index.css" />
