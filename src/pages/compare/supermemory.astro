@@ -2,11 +2,11 @@
 import Layout from '../../layouts/Base.astro';
 ---
 
-<Layout title="Tenure vs Supermemory | AI Memory Comparison" description="Supermemory is the best-performing competitor at 0.43 precision and 17/43 active passes. Tenure achieves 1.00 with 43/43.">
+<Layout title="Tenure vs Supermemory | AI Memory Comparison" description="Supermemory's default PrecisionMemBench run reaches 0.2183 mean precision, 4/43 active retrieval passes, and 1/12 session turns passed. Tenure achieves 1.00 precision, 43/43 active passes, and 12/12 session turns passed.">
   <section class="compare-hero">
     <span class="label">Comparison</span>
     <h1>Tenure vs. Supermemory</h1>
-    <p>Supermemory is the best-performing competitor in PrecisionMemBench. Memory graph with dynamic dreaming. Mean precision: 0.43. Still returns 2-3 irrelevant beliefs per correct one.</p>
+    <p>Supermemory has a stronger architecture than raw vector memory systems, but its default PrecisionMemBench run still shows the core failure mode: broad recall with low precision. Mean retrieval precision is 0.2183, with 4/43 active retrieval passes. Tenure reaches 1.00 precision with deterministic scoped state.</p>
   </section>
 
   <section class="compare-section">
@@ -14,11 +14,11 @@ import Layout from '../../layouts/Base.astro';
       <div class="tldr-box">
         <h3>TL;DR</h3>
         <ul>
-          <li>Best competitor precision at 0.43 (Tenure: 1.00). The only other system with any active retrieval passes.</li>
-          <li>17/43 active passes vs. Tenure's 43/43. Still fails on more than half of precision-assertion cases.</li>
-          <li>Retrieval latency: 819.48ms p50 vs. Tenure's 9.77ms (84x slower).</li>
-          <li>Session performance: 2/12 turns passed, drift score 0.17 (better than most, still not isolated).</li>
-          <li>Cloud-first SaaS. Requires account and API key. Data leaves your machine.</li>
+          <li>Default Supermemory precision is 0.2183 vs. Tenure's 1.00. That is a 4.6x precision gap.</li>
+          <li>Supermemory records 4/43 active retrieval passes vs. Tenure's 43/43.</li>
+          <li>Supermemory passes 21/77 non-session cases by default. Tenure passes 77/77.</li>
+          <li>Session isolation is the bigger issue: 1/12 turns passed, 0 active retrieval passes, and drift scores reaching 1.00.</li>
+          <li>Supermemory now has a local/self-hosted path, but memory creation is LLM-mediated and observed self-hosted traces emitted outbound PostHog events on memory operations.</li>
         </ul>
       </div>
 
@@ -30,18 +30,18 @@ import Layout from '../../layouts/Base.astro';
         </div>
         <div class="metric-card">
           <div class="metric-label">Supermemory precision</div>
-          <div class="metric-value bad">0.43</div>
-          <div class="metric-context">17/43 active passes</div>
+          <div class="metric-value bad">0.2183</div>
+          <div class="metric-context">4/43 active passes</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Tenure latency</div>
-          <div class="metric-value good">9.77ms</div>
-          <div class="metric-context">p50 retrieval</div>
+          <div class="metric-label">Tenure session turns</div>
+          <div class="metric-value good">12/12</div>
+          <div class="metric-context">0.00 drift</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Supermemory latency</div>
-          <div class="metric-value bad">819.48ms</div>
-          <div class="metric-context">p50 retrieval</div>
+          <div class="metric-label">Supermemory session turns</div>
+          <div class="metric-value bad">1/12</div>
+          <div class="metric-context">drift reaches 1.00</div>
         </div>
       </div>
     </div>
@@ -50,11 +50,31 @@ import Layout from '../../layouts/Base.astro';
   <section class="compare-section" style="background: var(--surface);">
     <div class="container">
       <h2>Credit where it's due</h2>
-      <p>Supermemory is architecturally more sophisticated than Mem0, Zep, or Hindsight. Its memory graph and dynamic dreaming mechanism provide better signal than raw cosine similarity. 17 active retrieval passes is meaningful; no other competitor scores above zero.</p>
-      <p>But 0.43 precision still means that for every correct belief returned, there are 1-2 irrelevant ones alongside it. On 26 of 43 precision-assertion cases, the system fails. The memory graph helps, but it does not resolve the fundamental problem: semantic proximity within a domain-specific corpus cannot be discriminated by any similarity-based mechanism.</p>
+      <p>Supermemory is architecturally more sophisticated than simple vector-memory systems. Its memory graph, local deployment path, and long-horizon positioning are real attempts to move beyond raw cosine recall.</p>
+      <p>But PrecisionMemBench measures what matters at retrieval time: whether the memory layer returns the right belief without flooding the model with nearby but wrong state. In the default no-threshold run, Supermemory reaches 0.2183 mean precision, 0.7065 mean recall, 21/77 total passes, and 4 active retrieval passes.</p>
 
       <div class="compare-verdict">
-        <p><strong>0.43 precision means your model still has to sort signal from noise on most queries.</strong> Every irrelevant belief in context is tokens you are paying for and latency you are waiting on. Tenure's structural approach (alias-weighted BM25 + hard scope isolation) does not degrade with corpus growth. It gets more precise as the alias set expands.</p>
+        <p><strong>Supermemory's default profile is high recall, low precision.</strong> It often finds related material, but it returns too many irrelevant or stale beliefs alongside it. That means the model still has to sort signal from noise inside the prompt. Tenure's structural approach uses scoped state and deterministic retrieval so irrelevant beliefs are excluded before they reach the model.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>Default vs. thresholded benchmark behavior</h2>
+      <p>The default comparison removes wrapper-level retrieval threshold tuning. A previous Supermemory wrapper used <code>threshold: 0.69</code>, which materially changed the benchmark result: 0.5321 mean precision, 0.7492 mean recall, 44/77 total passes, and 18 active retrieval passes.</p>
+      <p>That thresholded result is useful as an optimization data point, but it should not be treated as the out-of-box provider comparison unless the threshold is Supermemory's documented default behavior. PrecisionMemBench should measure what a normal user gets from the provider path, not what a benchmark wrapper can tune after observing failures.</p>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Session isolation is where the failure becomes obvious</h2>
+      <p>In session mode, Supermemory passes 1/12 turns, records 0 active retrieval passes, and reaches only 0.1825 mean precision. Recall remains high at 0.9091, which shows the issue is not forgetting. The issue is over-retrieval.</p>
+      <p>Across drift turns, Supermemory repeatedly pulls in broad topical neighbors: Kubernetes, hosting, Vitest, Redis, auth questions, dead-letter queues, superseded linting beliefs, SQLAlchemy superseded beliefs, and other unrelated state. On re-entry, where the session should return to the earlier Redis topic, the system misses the expected Redis belief and surfaces unrelated/noise beliefs instead.</p>
+
+      <div class="compare-verdict">
+        <p><strong>For agents, remembering too broadly is a production risk.</strong> A memory layer can have high recall and still degrade answers if it cannot isolate the exact state needed for the current turn. The model receives more context, but less certainty.</p>
       </div>
     </div>
   </section>
@@ -62,12 +82,21 @@ import Layout from '../../layouts/Base.astro';
   <section class="compare-section">
     <div class="container">
       <h2>Latency and deployment</h2>
-      <p>Supermemory's p50 retrieval latency of 819.48ms is 84x slower than Tenure's 9.77ms. Session-turn latency averages 867.83ms. This is the cost of running a memory graph traversal and dynamic dreaming pipeline on every query.</p>
-      <p>Supermemory is a cloud-first SaaS product. Your data leaves your machine. Tenure runs entirely on localhost. Nothing ever leaves your machine. No account required.</p>
+      <p>In the latest default run, Supermemory's p50 retrieval latency is 69.41ms and p95 latency is 116.45ms. Tenure's p50 retrieval latency is 9.77ms. In session mode, Supermemory's p50 turn latency is 172.32ms, compared with Tenure's 47.79ms.</p>
+      <p>Supermemory has both cloud-hosted and local/self-hosted deployment paths. The important distinction is not whether a process runs locally; it is whether the full memory pipeline stays local. In observed local traces, memory creation is performed through an LLM agent loop: source chunks are sent to the configured inference backend, and the model decides which memories to search, create, or update.</p>
+      <p>If that backend is local, the extraction path can remain local. If it points to Azure, OpenAI, Anthropic, or another hosted model provider, source chunks leave the machine even though the memory service itself is self-hosted. Observed traces also show outbound PostHog telemetry events for memory operations in a self-hosted run. The observed telemetry payloads were operational metadata rather than raw memory contents, but they still create an outbound network dependency operators should know about.</p>
     </div>
   </section>
 
   <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>The local question is about the whole pipeline</h2>
+      <p>For production teams, "local" has to cover more than the database, graph engine, or embeddings. Memory systems have at least three separate paths: storage, retrieval, and extraction. If extraction is model-authored, raw chunks may be exposed to whichever LLM endpoint is configured. If analytics are enabled, usage metadata may leave the deployment even when memory contents do not.</p>
+      <p>Tenure's position is simpler: memory is governed state in the request path. It does not require an account, cloud memory API, hosted memory service, telemetry stream, or retrieval-time model loop to retrieve the relevant state for a turn.</p>
+    </div>
+  </section>
+
+  <section class="compare-section">
     <div class="container">
       <h2>Full comparison</h2>
       <div class="compare-table-section">
@@ -83,57 +112,97 @@ import Layout from '../../layouts/Base.astro';
             <tr class="highlight-row">
               <td>Mean retrieval precision</td>
               <td><span class="check">1.00</span></td>
-              <td><span class="cross">0.43</span></td>
+              <td><span class="cross">0.2183</span></td>
+            </tr>
+            <tr>
+              <td>Mean retrieval recall</td>
+              <td><span class="check">1.00</span></td>
+              <td>0.7065</td>
             </tr>
             <tr>
               <td>Active retrieval passes</td>
               <td><span class="check">43/43</span></td>
-              <td>17/43</td>
+              <td><span class="cross">4/43</span></td>
             </tr>
             <tr>
               <td>Total passes (77 non-session)</td>
               <td><span class="check">77/77</span></td>
-              <td>44/77</td>
+              <td>21/77</td>
             </tr>
             <tr>
-              <td>Session turns passed</td>
-              <td><span class="check">12/12</span></td>
-              <td>2/12</td>
+              <td>Non-session pass rate</td>
+              <td><span class="check">1.00</span></td>
+              <td>0.2727</td>
             </tr>
             <tr>
               <td>Retrieval latency (p50)</td>
               <td><span class="check">9.77ms</span></td>
-              <td><span class="cross">819.48ms</span></td>
+              <td>69.41ms</td>
+            </tr>
+            <tr>
+              <td>Retrieval latency (p95)</td>
+              <td><span class="check">Low double-digit ms</span></td>
+              <td>116.45ms</td>
+            </tr>
+            <tr>
+              <td>Session turns passed</td>
+              <td><span class="check">12/12</span></td>
+              <td><span class="cross">1/12</span></td>
+            </tr>
+            <tr>
+              <td>Session active retrieval passes</td>
+              <td><span class="check">12/12</span></td>
+              <td><span class="cross">0/12</span></td>
+            </tr>
+            <tr>
+              <td>Session mean precision</td>
+              <td><span class="check">1.00</span></td>
+              <td><span class="cross">0.1825</span></td>
+            </tr>
+            <tr>
+              <td>Session mean recall</td>
+              <td><span class="check">1.00</span></td>
+              <td>0.9091</td>
             </tr>
             <tr>
               <td>Session latency (p50)</td>
               <td><span class="check">47.79ms</span></td>
-              <td>867.83ms</td>
+              <td>172.32ms</td>
             </tr>
             <tr>
-              <td>Drift score</td>
+              <td>Observed max drift</td>
               <td><span class="check">0.00</span></td>
-              <td>0.17</td>
+              <td><span class="cross">1.00</span></td>
             </tr>
             <tr>
-              <td>Runs locally</td>
-              <td><span class="check">Always</span></td>
-              <td><span class="cross">Cloud SaaS</span></td>
+              <td>Local/self-hosted option</td>
+              <td><span class="check">Yes</span></td>
+              <td>Yes</td>
             </tr>
             <tr>
               <td>Account required</td>
               <td><span class="check">No</span></td>
-              <td>Yes</td>
+              <td>Depends on deployment</td>
             </tr>
             <tr>
-              <td>Data leaves machine</td>
-              <td><span class="check">Never</span></td>
-              <td><span class="cross">Always (cloud)</span></td>
+              <td>Memory extraction path</td>
+              <td><span class="check">Deterministic state layer</span></td>
+              <td>LLM-authored memory creation</td>
+            </tr>
+            <tr>
+              <td>Source chunks sent to LLM</td>
+              <td><span class="check">Not required for retrieval</span></td>
+              <td>Yes, to configured provider</td>
+            </tr>
+            <tr>
+              <td>Observed outbound telemetry</td>
+              <td><span class="check">No product telemetry required</span></td>
+              <td>PostHog memory-operation metadata observed</td>
             </tr>
             <tr>
               <td>Scope isolation</td>
               <td><span class="check">Hard filter</span></td>
-              <td>Partial (graph-based)</td>
+              <td>Partial / graph-mediated</td>
             </tr>
             <tr>
               <td>Per-turn injection audit</td>
@@ -143,27 +212,27 @@ import Layout from '../../layouts/Base.astro';
             <tr>
               <td>Pricing</td>
               <td><span class="check">Free (MIT)</span></td>
-              <td>$19-$399+/mo</td>
+              <td>$19-$399+/mo for hosted plans</td>
             </tr>
             <tr>
               <td>License</td>
               <td>MIT</td>
-              <td>Proprietary</td>
+              <td>Proprietary / source-available components vary by deployment</td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <p class="methodology-note">
-        Full methodology: <a href="https://arxiv.org/abs/2605.11325">arXiv:2605.11325</a>. Dataset: <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>. Live leaderboard: <a href="https://huggingface.co/spaces/tenurehq/precisionmembench">HuggingFace Spaces</a>.
+        Supermemory numbers use the default no-threshold provider run. A separate wrapper-tuned run with <code>threshold: 0.69</code> reached 0.5321 mean precision and 18 active retrieval passes, but is not used as the primary out-of-box comparison. Full methodology: <a href="https://arxiv.org/abs/2605.11325">arXiv:2605.11325</a>. Dataset: <a href="https://huggingface.co/datasets/tenurehq/precisionmembench">HuggingFace</a>. Live leaderboard: <a href="https://huggingface.co/spaces/tenurehq/precisionmembench">HuggingFace Spaces</a>.
       </p>
     </div>
   </section>
 
   <section class="compare-cta">
     <div class="container">
-      <h2>2.3x more precise. 84x faster. Free.</h2>
-      <p>No cloud. No account. No monthly bill. Thirty seconds to install. Runs on your machine forever.</p>
+      <h2>4.6x more precise. 12/12 session turns. Deterministic by design.</h2>
+      <p>No memory SaaS account. No hosted memory API. No retrieval-time model loop. Thirty seconds to install. Runs on your machine forever.</p>
       <div class="cta-buttons">
         <a href="/#cta" class="btn-primary">Install Tenure</a>
         <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
