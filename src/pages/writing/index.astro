@@ -1,134 +1,154 @@
 ---
 import Base from '../../layouts/Base.astro';
 
-const posts = [
-  {
-    slug: "every-ai-memory-benchmark-has-an-asterisk",
-    category: "Benchmarks",
-    title: "Every AI memory benchmark has an asterisk",
-    description: "Mem0's CTO says their own benchmark numbers come with an asterisk. He's right, and that admission is the most honest thing in the thread. Here's why shared harnesses with cost and latency reporting are the only real fix.",
-    date: "Jun 23, 2026",
-  },
-  {
-    slug: "how-to-test-agent-perspective",
-    category: "Tutorial",
-    title: "How to Test What an AI Agent Was Allowed to Know",
-    description: "AI agents leak information across role boundaries without realizing it. GroundEval's Perspective track catches access violations deterministically",
-    date: "Jun 23, 2026",
-  },
-  {
-    slug: "how-to-test-agent-checked-before-saying-no",
-    category: "Tutorial",
-    title: "How to Test Whether an Agent Checked Before Saying No",
-    description: "LLM agents confidently claim absence without searching. GroundEval's Silence track catches this deterministically. Here's how to write your first silence test.",
-    date: "Jun 23, 2026",
-  },
-  {
-    slug: "open-knowledge-format-ai-memory-benchmark",
-    category: "Benchmarks",
-    title: "Open Knowledge Format Benchmark: What Happens When OKF Runs Inside an AI Tool",
-    description: "We ran Google's Open Knowledge Format through PrecisionMemBench to test the runtime access pattern: markdown files available to an AI tool, model-directed file inspection, and belief-level retrieval scoring.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "what-did-the-model-know-at-the-time",
-    category: "Teams",
-    title: "What Did the Model Know at the Time?",
-    description: "AI accountability is becoming a context problem. Enterprises need to prove what context a model received, where it came from, whether it was current, and why it was allowed into the request.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "why-most-ai-evals-would-miss-the-linear-sales-email-failure",
-    category: "Evaluation",
-    title: "Why most AI evals would miss the Linear sales email failure",
-    description: "Linear's sales agent emailed an existing customer six times with the wrong company name. An LLM judge would have scored that email highly. Here is why standard evaluation never would have caught it.",
-    date: "Jun 2026",
-  },
-   {
-    slug: "what-groundeval-tells-you-about-where-hitl-belongs",
-    category: "Research",
-    title: "What GroundEval Tells You About Where HITL Belongs",
-    description: "Human-in-the-loop exists because teams don't know what their agent will do in production. GroundEval changes that. When you can characterize failure modes before deployment, HITL stops being a blanket and becomes a deliberate tool.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "llm-as-judge-became-the-default-for-agent-evaluation",
-    category: "Research",
-    title: "LLM-as-Judge Became the Default for Agent Evaluation (And It Can't See the Failure That Matters)",
-    description: "Final-answer judging tells you whether an agent's output is plausible. It cannot tell you whether the agent was allowed to know what it claimed, when it could have known it, or whether an absence claim was ever actually checked. Here's the evaluation gap and what closes it.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "ai-governance-cannot-be-a-tool-call",
-    category: "Teams",
-    title: "AI Governance Cannot Be a Tool Call",
-    description: "Enterprise AI needs a context control plane beneath every model request. Not a tool the agent can choose to call, but a layer every request has to pass through.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "why-ai-context-is-a-team-problem-not-a-personal-one",
-    category: "Teams",
-    title: "Why AI Context Is a Team Problem, Not a Personal One",
-    description: "Engineering context is shared state: decisions, constraints, ownership, and exceptions that have to survive across developers, tools, repos, and time. Personal memory tools cannot solve that alone.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "why-vector-search-was-a-mistake",
-    category: "Architecture",
-    title: "Why Vector Search Became the Default for AI Memory (And Why That Was a Mistake)",
-    description: "Vector search is the right tool for document retrieval and the wrong tool for memory. Here's how the field made that mistake, what it costs in practice, and what a precision-first design looks like instead.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "how-ai-memory-breaks-at-scale",
-    category: "Architecture",
-    title: "How AI Memory Systems Break at Scale",
-    description: "The failure modes are structural, not incidental. At scale, similarity search accumulates noise faster than any model can filter it. Here is exactly what breaks, and how we designed around each failure.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "healthcare-ai-memory",
-    category: "Architecture",
-    title: "AI Memory for Healthcare: Why Retrieval Precision Is Non-Negotiable",
-    description: "Healthcare AI memory cannot rely on semantic search. Precision, scope isolation, and deterministic retrieval are safety requirements, not optimizations.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "embedding-invariance-problem",
-    category: "Benchmarks",
-    title: "The Embedding Invariance Problem: Why Bigger Models Don't Fix Retrieval Noise",
-    description: "A 20x increase in embedding model scale produces identical retrieval precision. The problem is not the ruler. It is what we are measuring.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "why-memory-is-state-management",
-    category: "Architecture",
-    title: "Why Memory Is a State Management Problem, Not a Search Problem",
-    description: "The dominant paradigm in AI memory treats persistence as a search index. That framing produces approximate retrieval, probabilistic isolation, and compounding noise. The alternative is simpler: treat memory as typed, scoped, versioned state.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "why-precision-matters",
-    category: "Architecture",
-    title: "Why Precision Is All That Matters in AI Memory",
-    description: "Retrieval precision is the difference between a memory system that works and one that only appears to. Why noise accumulation destroys value at scale, and why no downstream model can compensate for bad retrieval forever.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "alias-enrichment-flywheel",
-    category: "Architecture",
-    title: "How the alias enrichment flywheel works",
-    description: "BM25 retrieval is only as good as the alias set it searches against. The flywheel is how that set grows, passively, continuously, and without any effort from the user.",
-    date: "Jun 2026",
-  },
-  {
-    slug: "why-mcp-is-the-wrong-abstraction",
-    category: "Architecture",
-    title: "Why MCP is the wrong abstraction for memory",
-    description: "MCP treats memory as a tool call. Memory isn't something you invoke, it's something that should already be there. A technical argument for why the abstraction matters.",
-    date: "Jun 2026",
-  },
-];
+const tenure = {
+  label: "Tenure",
+  description: "Persistent, governable, scoped state for AI systems.",
+  groups: [
+    {
+      label: "Architecture",
+      posts: [
+        {
+          slug: "why-memory-is-state-management",
+          title: "Why Memory Is a State Management Problem, Not a Search Problem",
+          description: "The dominant paradigm in AI memory treats persistence as a search index. That framing produces approximate retrieval, probabilistic isolation, and compounding noise. The alternative is simpler: treat memory as typed, scoped, versioned state.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "why-precision-matters",
+          title: "Why Precision Is All That Matters in AI Memory",
+          description: "Retrieval precision is the difference between a memory system that works and one that only appears to. Why noise accumulation destroys value at scale, and why no downstream model can compensate for bad retrieval forever.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "why-vector-search-was-a-mistake",
+          title: "Why Vector Search Became the Default for AI Memory (And Why That Was a Mistake)",
+          description: "Vector search is the right tool for document retrieval and the wrong tool for memory. Here's how the field made that mistake, what it costs in practice, and what a precision-first design looks like instead.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "how-ai-memory-breaks-at-scale",
+          title: "How AI Memory Systems Break at Scale",
+          description: "The failure modes are structural, not incidental. At scale, similarity search accumulates noise faster than any model can filter it. Here is exactly what breaks, and how we designed around each failure.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "alias-enrichment-flywheel",
+          title: "How the alias enrichment flywheel works",
+          description: "BM25 retrieval is only as good as the alias set it searches against. The flywheel is how that set grows, passively, continuously, and without any effort from the user.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "why-mcp-is-the-wrong-abstraction",
+          title: "Why MCP is the wrong abstraction for memory",
+          description: "MCP treats memory as a tool call. Memory isn't something you invoke, it's something that should already be there. A technical argument for why the abstraction matters.",
+          date: "Jun 2026",
+        },
+      ],
+    },
+    {
+      label: "Benchmarks",
+      posts: [
+        {
+          slug: "embedding-invariance-problem",
+          title: "The Embedding Invariance Problem: Why Bigger Models Don't Fix Retrieval Noise",
+          description: "A 20x increase in embedding model scale produces identical retrieval precision. The problem is not the ruler. It is what we are measuring.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "open-knowledge-format-ai-memory-benchmark",
+          title: "Open Knowledge Format Benchmark: What Happens When OKF Runs Inside an AI Tool",
+          description: "We ran Google's Open Knowledge Format through PrecisionMemBench to test the runtime access pattern: markdown files available to an AI tool, model-directed file inspection, and belief-level retrieval scoring.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "every-ai-memory-benchmark-has-an-asterisk",
+          title: "Every AI memory benchmark has an asterisk",
+          description: "Mem0's CTO says their own benchmark numbers come with an asterisk. He's right, and that admission is the most honest thing in the thread. Here's why shared harnesses with cost and latency reporting are the only real fix.",
+          date: "Jun 23, 2026",
+        },
+      ],
+    },
+    {
+      label: "Teams",
+      posts: [
+        {
+          slug: "ai-governance-cannot-be-a-tool-call",
+          title: "AI Governance Cannot Be a Tool Call",
+          description: "Enterprise AI needs a context control plane beneath every model request. Not a tool the agent can choose to call, but a layer every request has to pass through.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "why-ai-context-is-a-team-problem-not-a-personal-one",
+          title: "Why AI Context Is a Team Problem, Not a Personal One",
+          description: "Engineering context is shared state: decisions, constraints, ownership, and exceptions that have to survive across developers, tools, repos, and time. Personal memory tools cannot solve that alone.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "what-did-the-model-know-at-the-time",
+          title: "What Did the Model Know at the Time?",
+          description: "AI accountability is becoming a context problem. Enterprises need to prove what context a model received, where it came from, whether it was current, and why it was allowed into the request.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "healthcare-ai-memory",
+          title: "AI Memory for Healthcare: Why Retrieval Precision Is Non-Negotiable",
+          description: "Healthcare AI memory cannot rely on semantic search. Precision, scope isolation, and deterministic retrieval are safety requirements, not optimizations.",
+          date: "Jun 2026",
+        },
+      ],
+    },
+  ],
+};
+
+const groundeval = {
+  label: "GroundEval",
+  description: "Deterministic agent evaluation against access control, evidence paths, and verified absence.",
+  groups: [
+    {
+      label: "Evaluation",
+      posts: [
+        {
+          slug: "llm-as-judge-became-the-default-for-agent-evaluation",
+          title: "LLM-as-Judge Became the Default for Agent Evaluation (And It Can't See the Failure That Matters)",
+          description: "Final-answer judging tells you whether an agent's output is plausible. It cannot tell you whether the agent was allowed to know what it claimed, when it could have known it, or whether an absence claim was ever actually checked. Here's the evaluation gap and what closes it.",
+          date: "Jun 2026",
+        },
+        {
+          slug: "why-most-ai-evals-would-miss-the-linear-sales-email-failure",
+          title: "Why most AI evals would miss the Linear sales email failure",
+          description: "Linear's sales agent emailed an existing customer six times with the wrong company name. An LLM judge would have scored that email highly. Here is why standard evaluation never would have caught it.",
+          date: "Jun 23, 2026",
+        },
+        {
+          slug: "what-groundeval-tells-you-about-where-hitl-belongs",
+          title: "What GroundEval Tells You About Where HITL Belongs",
+          description: "Human-in-the-loop exists because teams don't know what their agent will do in production. GroundEval changes that. When you can characterize failure modes before deployment, HITL stops being a blanket and becomes a deliberate tool.",
+          date: "Jun 2026",
+        },
+      ],
+    },
+    {
+      label: "Tutorials",
+      posts: [
+        {
+          slug: "how-to-test-agent-perspective",
+          title: "How to Test What an AI Agent Was Allowed to Know",
+          description: "AI agents leak information across role boundaries without realizing it. GroundEval's Perspective track catches access violations deterministically.",
+          date: "Jun 23, 2026",
+        },
+        {
+          slug: "how-to-test-agent-checked-before-saying-no",
+          title: "How to Test Whether an Agent Checked Before Saying No",
+          description: "LLM agents confidently claim absence without searching. GroundEval's Silence track catches this deterministically. Here's how to write your first silence test.",
+          date: "Jun 23, 2026",
+        },
+      ],
+    },
+  ],
+};
+
+const tracks = [tenure, groundeval];
 ---
 
 <Base
@@ -140,34 +160,56 @@ const posts = [
   <div class="container">
     <span class="label">Writing</span>
     <p class="writing-sub">Technical arguments and architecture decisions from the team.</p>
+    <div class="track-nav" role="navigation" aria-label="Writing tracks">
+      {tracks.map(track => (
+        <a href={`#track-${track.label.toLowerCase()}`} class="track-nav-item">
+          {track.label}
+        </a>
+      ))}
+    </div>
   </div>
 </section>
 
-<section class="writing-list-section">
-  <div class="container">
-    <ul class="writing-list">
-      {posts.map(post => (
-        <li class="writing-item">
-          <a href={`/writing/${post.slug}`} class="writing-link">
-            <div class="writing-main">
-              <span class={`writing-tag writing-tag-${post.category.toLowerCase()}`}>{post.category}</span>
-              <span class="writing-title">{post.title}</span>
-              <span class="writing-desc">{post.description}</span>
-            </div>
-            <div class="writing-right">
-              <span class="writing-date">{post.date}</span>
-              <span class="writing-arrow">→</span>
-            </div>
-          </a>
-        </li>
+{tracks.map(track => (
+  <section class="track-section" id={`track-${track.label.toLowerCase()}`}>
+    <div class="container">
+      <div class="track-header">
+        <h2 class="track-title">{track.label}</h2>
+        <p class="track-desc">{track.description}</p>
+      </div>
+
+      {track.groups.map(group => (
+        <div class="group-block">
+          <div class="group-label-row">
+            <span class={`writing-tag writing-tag-${group.label.toLowerCase()}`}>{group.label}</span>
+            <div class="group-rule"></div>
+          </div>
+
+          <ul class="writing-list">
+            {group.posts.map(post => (
+              <li class="writing-item">
+                <a href={`/writing/${post.slug}`} class="writing-link">
+                  <div class="writing-main">
+                    <span class="writing-title">{post.title}</span>
+                    <span class="writing-desc">{post.description}</span>
+                  </div>
+                  <div class="writing-right">
+                    <span class="writing-date">{post.date}</span>
+                    <span class="writing-arrow">→</span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
-  </div>
-</section>
+    </div>
+  </section>
+))}
 
 <style>
 .writing-hero {
-  padding: 5rem 2rem 2.5rem;
+  padding: 5rem 2rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -178,10 +220,126 @@ const posts = [
   max-width: 480px;
 }
 
-.writing-list-section {
-  padding: 0 2rem 6rem;
+
+.track-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+  width: fit-content; /* add this */
 }
 
+.track-nav-item {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  text-decoration: none;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.track-nav-item:first-child {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.track-nav-item:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+/* Track sections */
+.track-section {
+  padding: 4rem 2rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.track-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 6rem;
+}
+
+.track-header {
+  margin-bottom: 3rem;
+}
+
+.track-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.4rem;
+}
+
+.track-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Group blocks */
+.group-block {
+  margin-bottom: 3rem;
+}
+
+.group-block:last-child {
+  margin-bottom: 0;
+}
+
+.group-label-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.group-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Tags */
+.writing-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.writing-tag-architecture {
+  background: rgba(0, 168, 173, 0.1);
+  color: var(--accent);
+}
+
+.writing-tag-benchmarks {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--amber);
+}
+
+.writing-tag-teams {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--green);
+}
+
+.writing-tag-evaluation {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--muted);
+}
+
+.writing-tag-tutorials {
+  background: rgba(248, 135, 127, 0.15);
+  color: var(--muted);
+}
+
+/* Post list */
 .writing-list {
   list-style: none;
   padding: 0;
@@ -201,7 +359,7 @@ const posts = [
   align-items: flex-start;
   justify-content: space-between;
   gap: 2rem;
-  padding: 1.75rem 0;
+  padding: 1.5rem 0;
   text-decoration: none;
   transition: opacity 0.15s;
 }
@@ -222,49 +380,8 @@ const posts = [
   min-width: 0;
 }
 
-.writing-tag {
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0.2rem 0.55rem;
-  border-radius: 4px;
-  width: fit-content;
-}
-
-.writing-tag-architecture {
-  background: rgba(0, 168, 173, 0.1);
-  color: var(--accent);
-}
-
-.writing-tag-evaluation {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--muted);
-}
-
-.writing-tag-teams {
-  background: rgba(34, 197, 94, 0.1);
-  color: var(--green);
-}
-
-.writing-tag-benchmarks {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--amber);
-}
-
-.writing-tag-comparisons {
-  background: rgba(232, 232, 232, 0.07);
-  color: var(--muted);
-}
-
-.writing-tag-research {
-  background: rgba(248, 135, 127, 0.2);
-  color: var(--muted);
-}
-
 .writing-title {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text);
   line-height: 1.35;
@@ -314,6 +431,12 @@ const posts = [
     align-items: center;
     justify-content: space-between;
     width: 100%;
+  }
+
+  .track-nav-item {
+    padding: 0.5rem 0;
+    font-size: 0.7rem;
+    margin-right: 1.25rem;
   }
 }
 </style>

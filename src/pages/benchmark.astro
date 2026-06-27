@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 
 <Base
   title="PrecisionMemBench - LLM Memory Retrieval Benchmark | Tenure"
-  description="89-case benchmark measuring retrieval precision independently of generative models. Tenure: 1.0 precision, 89/89 passes. Mem0, Zep, Hindsight: 0 active retrieval passes. Published on arXiv."
+  description="89-case benchmark measuring retrieval precision independently of generative models. Tenure: 1.0 precision, 77/77 non-session passes, and 12/12 session passes. Includes the latest supermemory and Open Knowledge Format runs."
 >
 
 <script type="application/ld+json">
@@ -79,13 +79,13 @@ import Base from '../layouts/Base.astro';
       </div>
       <div class="bench-hero-stat-div"></div>
       <div class="bench-hero-stat">
-        <span class="bench-hero-value good">5</span>
+        <span class="bench-hero-value good">12</span>
         <span class="bench-hero-label">Systems evaluated</span>
       </div>
       <div class="bench-hero-stat-div"></div>
       <div class="bench-hero-stat">
-        <span class="bench-hero-value good">0</span>
-        <span class="bench-hero-label">Active retrieval passes</span>
+        <span class="bench-hero-value good">43</span>
+        <span class="bench-hero-label">Active retrieval cases</span>
       </div>
       <div class="bench-hero-stat-div"></div>
       <div class="bench-hero-stat">
@@ -156,7 +156,7 @@ import Base from '../layouts/Base.astro';
   <div class="container-wide">
     <span class="label">Results</span>
     <h2>Leaderboard</h2>
-    <p>89 cases. 11 systems. One metric that matters: active retrieval passes: cases where a <code>retrievalPrecision</code> assertion was satisfied.</p>
+    <p>89 cases. 12 systems. One metric that matters: active retrieval passes, which are cases where a <code>retrievalPrecision</code> assertion was satisfied.</p>
 
     <!-- Main leaderboard table -->
     <div class="compare-table-section" style="margin-top: 2rem;">
@@ -183,22 +183,22 @@ import Base from '../layouts/Base.astro';
             <td>1.00s</td>
           </tr>
           <tr>
-            <td>supermemory</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">17/17</span></td>
-            <td>44/77</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">0.43</span></td>
-            <td>0.55</td>
-            <td>819.48ms</td>
+            <td>open-knowledge-format</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">18/18</span></td>
+            <td>36/77</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">0.47</span></td>
+            <td>0.91</td>
+            <td>3534.53ms</td>
             <td>0.00s</td>
           </tr>
           <tr>
-            <td>gbrain</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">5/5</span></td>
-            <td>34/77</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">0.14</span></td>
-            <td>0.17</td>
-            <td>543.84ms</td>
-            <td>28.60s</td>
+            <td>supermemory</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">4/4</span></td>
+            <td>21/77</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">0.22</span></td>
+            <td>0.71</td>
+            <td>69.41ms</td>
+            <td>5.20s</td>
           </tr>
           <tr>
             <td>agentmemory</td>
@@ -226,6 +226,15 @@ import Base from '../layouts/Base.astro';
             <td>0.95</td>
             <td>71.01ms</td>
             <td>658.90s</td>
+          </tr>
+          <tr>
+            <td>gbrain</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">5/5</span></td>
+            <td>34/77</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">0.14</span></td>
+            <td>0.17</td>
+            <td>543.84ms</td>
+            <td>28.60s</td>
           </tr>
           <tr>
             <td>zep</td>
@@ -292,8 +301,35 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
 
+    <div class="compare-table-section" style="margin-top: 2rem;">
+      <table class="compare-table-full">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Active retrieval</th>
+            <th>Structural</th>
+            <th>Trivially empty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row"><td><strong>tenure</strong></td><td><span class="val-good">43</span></td><td>25</td><td>9</td></tr>
+          <tr><td>open-knowledge-format</td><td><span style="color:var(--amber);font-family:var(--mono);">18</span></td><td>13</td><td>5</td></tr>
+          <tr><td>gbrain</td><td><span style="color:var(--amber);font-family:var(--mono);">5</span></td><td>20</td><td>9</td></tr>
+          <tr><td>supermemory</td><td><span style="color:var(--amber);font-family:var(--mono);">4</span></td><td>14</td><td>3</td></tr>
+          <tr><td>a-mem</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+          <tr><td>agentmemory</td><td><span class="val-bad">0</span></td><td>5</td><td>2</td></tr>
+          <tr><td>atomicmemory</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+          <tr><td>hindsight</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+          <tr><td>mem0</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+          <tr><td>vector</td><td><span class="val-bad">0</span></td><td>8</td><td>3</td></tr>
+          <tr><td>yourmemory</td><td><span class="val-bad">0</span></td><td>15</td><td>6</td></tr>
+          <tr><td>zep</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="methodology-note">
-      All comparison systems received a schema-aware wrapper granting them pin-status filtering, open-question routing, and scope isolation for free at evaluation time. Competitors fail purely on retrieval precision — the structural routing logic was given to them. Results reflect pinned Docker image digests. <a href="https://github.com/tenurehq/precisionMemBench" target="_blank" rel="noopener">Reproduce locally →</a>
+      All comparison systems received a schema-aware wrapper granting them pin-status filtering, open-question routing, and scope isolation for free at evaluation time where those concepts apply. Results reflect pinned, reproducible artifacts. <a href="https://github.com/tenurehq/precisionMemBench" target="_blank" rel="noopener">Reproduce locally →</a>
     </div>
   </div>
 </section>
@@ -459,6 +495,19 @@ import Base from '../layouts/Base.astro';
   </div>
 </section>
 
+
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="label">Open Knowledge Format run</span>
+    <h2>A format is not the same thing as a retrieval layer</h2>
+    <p>The Open Knowledge Format run is not a test of markdown as a storage format. It evaluates the runtime access pattern implied when an OKF-style bundle is placed into an AI tool today: files are available, the model may inspect them, and PrecisionMemBench scores the belief IDs corresponding to the files the model actually retrieves.</p>
+
+    <div class="compare-verdict" style="margin-top: 1.5rem;">
+      <p>OKF is the strongest non-Tenure run on active retrieval with 18/18 active passes, but it pays for that access pattern in latency: 3,534.53ms retrieval p50 and 3,349.45ms session p50. The result supports the distinction this benchmark is meant to expose: storage format, runtime access, and precision-controlled retrieval are separate layers.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ── EMBEDDING INVARIANCE ── -->
 <section class="bench-section" style="border-bottom: 1px solid var(--border);">
   <div class="container">
@@ -515,108 +564,82 @@ import Base from '../layouts/Base.astro';
 
 <!-- ── SESSION DRIFT ── -->
 <section class="bench-section" style="border-bottom: 1px solid var(--border);">
-  <div class="container">
+  <div class="container-wide">
     <span class="label">Multi-turn noise isolation</span>
-    <h2>After 8 off-topic turns, can you get your context back?</h2>
-    <p>The session cases test one thing: whether beliefs introduced during off-topic drift turns contaminate retrieval on subsequent unrelated turns. A drift score of 0 is perfect isolation. All competitors score 0.92–1.0.</p>
+    <h2>After 8 off-topic turns, can the system get the right context back?</h2>
+    <p>The session eval tests whether off-topic drift turns contaminate later retrieval, whether latency degrades under session load, and whether beliefs updated mid-session surface immediately. The drift score is the fraction of retrieved non-pinned beliefs that came from drift-turn topics. A drift score of 0 is perfect isolation.</p>
 
     <div class="compare-table-section" style="margin-top: 2rem;">
       <table class="compare-table-full">
         <thead>
           <tr>
-            <th>Turn</th>
-            <th>Tenure</th>
-            <th>Vector</th>
-            <th>Mem0</th>
-            <th>Zep</th>
-            <th>Hindsight</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Turn 9 — implicit re-entry</td>
-            <td><span class="val-good">0.00</span></td>
-            <td><span class="val-bad">1.00</span></td>
-            <td><span class="val-bad">1.00</span></td>
-            <td><span class="val-bad">1.00</span></td>
-            <td><span class="val-bad">1.00</span></td>
-          </tr>
-          <tr>
-            <td>Turn 10 — explicit re-entry</td>
-            <td><span class="val-good">0.00</span></td>
-            <td><span class="val-bad">0.94</span></td>
-            <td><span class="val-bad">1.00</span></td>
-            <td><span class="val-bad">1.00</span></td>
-            <td><span class="val-bad">0.94</span></td>
-          </tr>
-          <tr>
-            <td>Cross-session formative</td>
-            <td><span class="val-good">0.00</span></td>
-            <td><span class="val-bad">0.94</span></td>
-            <td><span class="val-bad">1.00</span></td>
-            <td><span class="val-bad">0.92</span></td>
-            <td><span class="val-bad">1.00</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p style="margin-top: 1.5rem; font-size: 0.875rem;">Hindsight at turn 10: drift score 1.0 with the correct belief absent entirely (recall 0). Not ranked low, missing from the result set, with 4 explicit noise belief violations flagged on top of a full-corpus return.</p>
-
-    <!-- Session latency -->
-    <h3 style="margin-top: 3rem; margin-bottom: 0.5rem;">Session-turn latency</h3>
-    <p style="margin-bottom: 1rem;">Single-turn latency is not session latency. Under session load, all three comparison systems degrade 3–4×. Hindsight, 672ms single-turn, exceeds 2,700ms mean per session turn.</p>
-
-    <div class="compare-table-section">
-      <table class="compare-table-full">
-        <thead>
-          <tr>
-            <th>System</th>
-            <th>Single-turn mean</th>
-            <th>Session mean</th>
+            <th>Provider</th>
+            <th>Turns passed</th>
+            <th>Pass rate</th>
+            <th>Mean drift</th>
+            <th>Noise isolation</th>
+            <th>Mean precision</th>
             <th>Session p50</th>
-            <th>Session p95</th>
           </tr>
         </thead>
         <tbody>
           <tr class="highlight-row">
-            <td><strong>Tenure</strong></td>
-            <td><span class="val-good">13ms</span></td>
-            <td><span class="val-good">49ms</span></td>
-            <td>48ms</td>
-            <td>135ms</td>
+            <td><strong>tenure</strong></td>
+            <td><span class="val-good">12/12</span></td>
+            <td><span class="val-good">1.00</span></td>
+            <td><span class="val-good">0.0000</span></td>
+            <td><span class="val-good">1.00</span></td>
+            <td><span class="val-good">1.0000</span></td>
+            <td><span class="val-good">47.79ms</span></td>
           </tr>
           <tr>
-            <td>Vector baseline</td>
-            <td>96ms</td>
-            <td>319ms</td>
-            <td>257ms</td>
-            <td>728ms</td>
+            <td>open-knowledge-format</td>
+            <td>2/12</td>
+            <td>0.17</td>
+            <td>0.2153</td>
+            <td>0.17</td>
+            <td>0.5694</td>
+            <td>3349.45ms</td>
           </tr>
           <tr>
-            <td>Mem0</td>
-            <td>79ms</td>
-            <td>383ms</td>
-            <td>378ms</td>
-            <td>692ms</td>
+            <td>yourmemory</td>
+            <td>1/12</td>
+            <td>0.08</td>
+            <td>0.7365</td>
+            <td>0.08</td>
+            <td>0.1965</td>
+            <td>430.49ms</td>
           </tr>
           <tr>
-            <td>Zep</td>
-            <td>140ms</td>
-            <td>397ms</td>
-            <td>418ms</td>
-            <td>660ms</td>
+            <td>supermemory</td>
+            <td>1/12</td>
+            <td>0.08</td>
+            <td>0.7493</td>
+            <td>0.08</td>
+            <td>0.1825</td>
+            <td>172.32ms</td>
           </tr>
           <tr>
-            <td>Hindsight</td>
-            <td>672ms</td>
-            <td><span class="val-bad">2,736ms</span></td>
-            <td>1,881ms</td>
-            <td><span class="val-bad">6,163ms</span></td>
+            <td>gbrain</td>
+            <td>1/12</td>
+            <td>0.08</td>
+            <td>0.0000<span class="badge-note">empty result</span></td>
+            <td>0.08</td>
+            <td>—</td>
+            <td>535.61ms</td>
           </tr>
+          <tr><td>agentmemory</td><td>0/12</td><td>0.00</td><td>0.8087</td><td>0.00</td><td>0.1913</td><td>98.49ms</td></tr>
+          <tr><td>atomicmemory</td><td>0/12</td><td>0.00</td><td>0.8449</td><td>0.00</td><td>0.1551</td><td>355.08ms</td></tr>
+          <tr><td>zep</td><td>0/12</td><td>0.00</td><td>0.8888</td><td>0.00</td><td>0.1112</td><td>418.13ms</td></tr>
+          <tr><td>vector</td><td>0/12</td><td>0.00</td><td>0.9142</td><td>0.00</td><td>0.0858</td><td>256.75ms</td></tr>
+          <tr><td>a-mem</td><td>0/12</td><td>0.00</td><td>0.9259</td><td>0.00</td><td>0.0741</td><td>25.66ms</td></tr>
+          <tr><td>hindsight</td><td>0/12</td><td>0.00</td><td>0.9285</td><td>0.00</td><td>0.0715</td><td>1880.60ms</td></tr>
+          <tr><td>mem0</td><td>0/12</td><td>0.00</td><td>0.9398</td><td>0.00</td><td>0.0602</td><td>377.93ms</td></tr>
         </tbody>
       </table>
     </div>
+
+    <p style="margin-top: 1.5rem; font-size: 0.875rem;">gbrain returned no results for these session cases. Its drift score of 0.0 is recorded by construction because no returned beliefs could originate from drift topics. The correct belief also failed to surface, so this is an empty-result failure, not a genuine isolation pass.</p>
   </div>
 </section>
 
@@ -640,12 +663,12 @@ import Base from '../layouts/Base.astro';
       <div class="method-card">
         <div class="method-num">03</div>
         <h3>Schema-aware wrapper for fairness</h3>
-        <p>Comparison systems receive pin-status filtering, open-question routing, and scope isolation applied from Tenure's metadata. They do not fail due to structural technicalities — only because cosine similarity produces 10–18 irrelevant beliefs per query.</p>
+        <p>Comparison systems receive pin-status filtering, open-question routing, and scope isolation applied from Tenure's metadata. They do not fail due to structural technicalities. The score reflects whether the provider's runtime retrieval actually returns the asserted belief IDs without extra noise.</p>
       </div>
       <div class="method-card">
         <div class="method-num">04</div>
         <h3>Pinned Docker digests</h3>
-        <p>Mem0, Zep, and Hindsight were run from pinned image digests without modification. All embedding-dependent configurations use mxbai-embed-large, ensuring differences reflect architecture, not embedding model choice.</p>
+        <p>Reference systems are run from pinned, reproducible artifacts. Wrappers adapt each provider to the benchmark API contract without changing the seed corpus, precomputing answers, or injecting hidden ranking thresholds.</p>
       </div>
     </div>
 
@@ -683,7 +706,7 @@ import Base from '../layouts/Base.astro';
         <a href="https://arxiv.org/abs/2605.11325" target="_blank" rel="noopener" class="paper-link">Full paper →</a>
       </div>
       <h3 class="paper-title">Structured Belief State and the First Precision-Aware Benchmark for LLM Memory Retrieval</h3>
-      <p class="paper-abstract">Every major benchmark for LLM memory systems measures whether a model answered correctly, not whether the memory system retrieved correctly. We demonstrate that memory baselines achieve mean retrieval precision of just 0.05 to 0.08 on cases referencing their own extractions. We present PrecisionMemBench, an 89-case benchmark measuring retrieval precision independently of generative models, and Tenure, a local-first structured belief store achieving 89/89 passes with mean precision 1.0 and sub-15ms retrieval latency.</p>
+      <p class="paper-abstract">Every major benchmark for LLM memory systems measures whether a model answered correctly, not whether the memory system retrieved correctly. We demonstrate that common memory baselines can achieve high recall while still returning substantial retrieval noise on cases referencing their own extractions. We present PrecisionMemBench, an 89-case benchmark measuring retrieval precision independently of generative models, and Tenure, a local-first structured belief store achieving 77/77 non-session passes, 12/12 session passes, mean precision 1.0, and sub-15ms single-turn retrieval latency.</p>
 
       <div class="bibtex-block">
         <div class="bibtex-header">

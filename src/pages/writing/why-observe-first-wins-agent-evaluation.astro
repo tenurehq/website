@@ -1,0 +1,718 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Why Observe First Wins for Agent Evaluation | Tenure"
+  description="Agent builders do not need another blank config. They need to see what their agent actually did, turn that behavior into a reviewable contract, and then score future runs deterministically."
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why Observe First Wins for Agent Evaluation",
+  "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "url": "https://tenureai.dev/writing/why-observe-first-wins-agent-evaluation",
+  "description": "Agent builders do not need another blank config. They need to see what their agent actually did, turn that behavior into a reviewable contract, and then score future runs deterministically.",
+  "datePublished": "2026-07-08",
+  "dateModified": "2026-07-08"
+}
+</script>
+
+<section class="essay-hero">
+  <div class="container">
+    <div class="uc-breadcrumb">
+      <a href="/writing">Writing</a>
+      <span class="uc-breadcrumb-sep">&rsaquo;</span>
+      <span>GroundEval</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">GroundEval</span>
+    <h1>Why Observe First Wins for Agent Evaluation</h1>
+    <p class="hero-sub-title" style="margin-top:1rem;">
+      Agent builders do not need another blank config. They need to run the agent they already have, see what it actually did, and turn that behavior into a reviewable eval contract.
+    </p>
+    <div class="essay-meta">
+      <span class="essay-meta-item">Tenure research</span>
+      <span class="essay-meta-sep">&middot;</span>
+      <span class="essay-meta-item">~8 min read</span>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface);">
+  <div class="container">
+    <div class="tldr-box">
+      <h3>TL;DR</h3>
+      <ul>
+        <li>Most agent eval tools ask users to start with traces, golden datasets, expected tool trajectories, or custom scorers.</li>
+        <li>The hard part is not only scoring. The hard part is turning real agent behavior into a contract worth scoring against.</li>
+        <li>GroundEval now starts with observation. Run your existing agent once. GroundEval records the tools, arguments, artifacts, final answer, and decision path.</li>
+        <li>By default, observe mode drafts the config, tool map, artifacts, task contract, and review checklist from that run.</li>
+        <li>The draft is not treated as truth. The user validates it before deterministic scoring begins.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The shift</span>
+    <h2>Start from the run, not the rubric</h2>
+    <p>
+      Agent evaluation usually starts with a blank page. Define a dataset. Write an expected trajectory. Choose a judge. Create a rubric. Map your tools. Decide what counts as success. Then run the agent.
+    </p>
+    <p>
+      That order makes sense if the team already understands the agent's behavior. Most teams do not. They know the agent returns an answer. They may not know which tools it called, which arguments it passed, which artifacts it used, which searches it skipped, or whether the final answer depended on evidence that was never fetched.
+    </p>
+    <p>
+      Observe first flips the order. The user does not begin by declaring the perfect evaluation. They begin by running the agent they already have. GroundEval watches the run, records the trajectory, and drafts the starting contract from what actually happened.
+    </p>
+    <div class="essay-callout">
+      <p>
+        The first product question is not "Did this score pass?" It is "What did this agent actually do?"
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">What users are signaling</span>
+    <h2>Builders are asking for behavior visibility</h2>
+    <p>
+      The public feedback around agent frameworks points in the same direction. Builders are not only asking whether an answer was good. They are asking whether the agent really used the tool, whether the tool call had the right arguments, whether the path changed after a prompt update, and whether the observed trace explains the failure.
+    </p>
+
+    <div class="signal-grid">
+      <div class="signal-card">
+        <span class="signal-card__label">Tool execution</span>
+        <h3>Did the agent actually call the tool?</h3>
+        <p>
+          A CrewAI issue describes an agent generating a fake Observation instead of executing the tool, with no trace of tool usage in logs or Phoenix.
+        </p>
+        <a href="https://github.com/crewAIInc/crewAI/issues/3154" target="_blank" rel="noopener">CrewAI issue &rarr;</a>
+      </div>
+
+      <div class="signal-card">
+        <span class="signal-card__label">Trajectory checks</span>
+        <h3>Did the path match expected behavior?</h3>
+        <p>
+          LangSmith's trajectory evals compare the exact sequence of messages and tool calls using trajectory matching or an LLM judge.
+        </p>
+        <a href="https://docs.langchain.com/langsmith/trajectory-evals" target="_blank" rel="noopener">LangSmith docs &rarr;</a>
+      </div>
+
+      <div class="signal-card">
+        <span class="signal-card__label">Regression</span>
+        <h3>Will a change break the agent tomorrow?</h3>
+        <p>
+          Google ADK evals focus on golden datasets, evaluation criteria, automated checks, and catching regressions early.
+        </p>
+        <a href="https://codelabs.developers.google.com/adk-eval/instructions" target="_blank" rel="noopener">ADK codelab &rarr;</a>
+      </div>
+
+      <div class="signal-card">
+        <span class="signal-card__label">Behavior tests</span>
+        <h3>Can I test actions instead of wording?</h3>
+        <p>
+          The OpenAI community has discussed pytest-style behavioral tests for tool usage, tool order, step limits, unsupported success claims, and regression baselines.
+        </p>
+        <a href="https://community.openai.com/t/built-a-pytest-style-behavioral-testing-package-for-agents-it-checks-tool-usage-tool-order-step-limits-and-regression-against-baselines-validated-on-live-openai-agents-sdk-tests/1379920" target="_blank" rel="noopener">OpenAI community &rarr;</a>
+      </div>
+    </div>
+
+    <p>
+      The pattern is clear. The market already knows final answers are too thin. The next question is what to do with the behavior once it is visible.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The gap</span>
+    <h2>Observation is not the same as an eval contract</h2>
+    <p>
+      Traces are useful, but a trace is still raw material. A trace can tell you that the agent called <code>fetch_customer</code>, then <code>search_tickets</code>, then <code>fetch_contract</code>. It does not automatically tell you which of those calls were required, which artifact defined ground truth, which role was allowed to see which subsystem, or whether the final decision depended on a missing precondition.
+    </p>
+    <p>
+      Golden datasets and expected tool trajectories help, but they create another setup burden. The user still has to decide what the golden path is before seeing how the agent behaves in practice.
+    </p>
+    <p>
+      GroundEval's observe first model uses the run itself to remove the blank page.
+    </p>
+
+    <div class="compare-table-wrap" style="margin-top:2rem;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Current eval surface</th>
+            <th>What it gives you</th>
+            <th>What GroundEval adds</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tracing</td>
+            <td>Events, spans, tool calls, model turns</td>
+            <td>Draft config and review checklist from the observed run</td>
+          </tr>
+          <tr>
+            <td>Trajectory matching</td>
+            <td>Expected path compared to actual path</td>
+            <td>Evidence path validity against preconditions and artifacts</td>
+          </tr>
+          <tr>
+            <td>Golden datasets</td>
+            <td>Known examples for regression testing</td>
+            <td>A starter contract generated from real behavior, then reviewed</td>
+          </tr>
+          <tr>
+            <td>Tool call accuracy</td>
+            <td>Tool name, order, and parameter checks</td>
+            <td>Whether the returned artifact actually supports the decision</td>
+          </tr>
+          <tr>
+            <td>Output scoring</td>
+            <td>Whether the final response meets a metric</td>
+            <td>Whether the decision was supported, complete, and allowed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The workflow</span>
+    <h2>Observe, draft, validate, score</h2>
+    <p>
+      The new GroundEval workflow is deliberately simple. The user runs the agent once. GroundEval observes by default and drafts the eval assets during that same run.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">terminal</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">$</span> <span class="c-str">groundeval observe --framework crewai --crew-class my_project.crew.MyCrew</span>
+
+<span class="c-key">✓</span> <span class="c-str">ran agent</span>
+<span class="c-key">✓</span> <span class="c-str">recorded trajectory</span>
+<span class="c-key">✓</span> <span class="c-str">drafted config</span>
+<span class="c-key">✓</span> <span class="c-str">wrote review checklist</span>
+<span class="c-key">✓</span> <span class="c-str">wrote observe report</span></pre>
+      </div>
+    </div>
+
+    <p>
+      Drafting is on by default because the runtime already has the richest view of the run in memory: tool names, arguments, returned fields, artifacts, task context, final answer, and framework metadata. Users who only want the observation report can turn drafting off.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">terminal</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">$</span> <span class="c-str">groundeval observe --framework crewai --crew-class my_project.crew.MyCrew --no-draft</span></pre>
+      </div>
+    </div>
+
+    <p>
+      The default output is a working starting point, not a certified truth file.
+    </p>
+
+    <div class="artifact-tree">
+      <div class="tree-line">eval_output/</div>
+      <div class="tree-line tree-child">observed_run.json</div>
+      <div class="tree-line tree-child">observe_report.md</div>
+      <div class="tree-line tree-child">draft_config/</div>
+      <div class="tree-line tree-grandchild">config.yaml</div>
+      <div class="tree-line tree-grandchild">tool_map.yaml</div>
+      <div class="tree-line tree-grandchild">task_contracts/inferred_task.yaml</div>
+      <div class="tree-line tree-grandchild">artifacts/observed/</div>
+      <div class="tree-line tree-grandchild">REVIEW.md</div>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The trust boundary</span>
+    <h2>The draft is reviewed before it becomes truth</h2>
+    <p>
+      Observe first only works if the product is honest about the boundary. Observed behavior is not ground truth. The agent might have called the wrong tool. It might have retrieved the wrong artifact. It might have skipped a required search. It might have used a field that should not define correctness.
+    </p>
+    <p>
+      So GroundEval marks semantic inferences as review required. It can draft a likely task contract, but the user validates the contract before deterministic scoring begins.
+    </p>
+
+    <div class="review-grid">
+      <div class="review-card">
+        <span class="review-card__status">Safe to draft</span>
+        <h3>Mechanical structure</h3>
+        <p>Framework, observed tools, tool names, argument names, output path, raw trajectory, and observed artifacts.</p>
+      </div>
+      <div class="review-card">
+        <span class="review-card__status">Requires review</span>
+        <h3>Domain meaning</h3>
+        <p>Preconditions, ground truth fields, role permissions, action validity, artifact authority, and temporal cutoffs.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">generated config excerpt</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">groundeval</span>:
+  <span class="c-key">config_status</span>: <span class="c-str">draft</span>
+  <span class="c-key">generated_from_observation</span>: <span class="c-bool">true</span>
+  <span class="c-key">reviewed</span>: <span class="c-bool">false</span>
+
+<span class="c-key">task_contracts</span>:
+  - <span class="c-key">name</span>: <span class="c-str">verify_escalation_readiness</span>
+    <span class="c-key">review_required</span>: <span class="c-bool">true</span>
+    <span class="c-key">preconditions</span>:
+      - <span class="c-key">check</span>: <span class="c-str">customer_is_enterprise</span>
+        <span class="c-key">required_facts</span>: [<span class="c-str">plan_tier</span>]
+        <span class="c-key">ground_truth_field</span>: <span class="c-str">crm_account.plan_tier</span>
+        <span class="c-key">inferred_from</span>: [<span class="c-str">fetch_customer</span>, <span class="c-str">final_answer</span>]</pre>
+      </div>
+    </div>
+
+    <p>
+      The user can validate the draft, edit it, and then run the deterministic scorer. That keeps onboarding easy without turning inferred behavior into unquestioned truth.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">What GroundEval reports</span>
+    <h2>The first run gives value before the first score</h2>
+    <p>
+      The observe report is useful even before formal scoring. It tells the user what the agent did in a language closer to evaluation than raw logs.
+    </p>
+
+    <div class="report-grid">
+      <div class="report-card">
+        <span>1</span>
+        <h3>Tool inventory</h3>
+        <p>Which tools were called, what arguments were passed, and whether each tool behaved like search, fetch, or action.</p>
+      </div>
+      <div class="report-card">
+        <span>2</span>
+        <h3>Evidence path</h3>
+        <p>Which artifacts were retrieved, which fields appeared decision relevant, and which artifacts were mentioned in the final answer.</p>
+      </div>
+      <div class="report-card">
+        <span>3</span>
+        <h3>Candidate preconditions</h3>
+        <p>Which checks appear to control the decision, with provenance showing which events caused each inference.</p>
+      </div>
+      <div class="report-card">
+        <span>4</span>
+        <h3>Review checklist</h3>
+        <p>What the user must confirm before the config can be treated as a deterministic state contract.</p>
+      </div>
+    </div>
+
+    <div class="essay-callout">
+      <p>
+        This is the adoption win: GroundEval gives the user a useful artifact before asking them to become an eval expert.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Why it wins</span>
+    <h2>Observe first turns eval setup into review</h2>
+    <p>
+      The old path made the user author the eval before they could see the agent's behavior. The new path lets the user review a concrete draft based on a real run.
+    </p>
+
+    <div class="before-after">
+      <div class="path-card path-card--old">
+        <span class="path-card__label">Old entry point</span>
+        <h3>Write the eval first</h3>
+        <ul>
+          <li>Choose a task contract</li>
+          <li>Map every tool</li>
+          <li>Seed artifacts</li>
+          <li>Declare access rules</li>
+          <li>Write preconditions</li>
+          <li>Then run the agent</li>
+        </ul>
+      </div>
+      <div class="path-card path-card--new">
+        <span class="path-card__label">Observe first</span>
+        <h3>Run the agent first</h3>
+        <ul>
+          <li>Observe actual tool behavior</li>
+          <li>Draft the tool map</li>
+          <li>Capture candidate artifacts</li>
+          <li>Infer likely preconditions</li>
+          <li>Generate a review checklist</li>
+          <li>Then validate and score</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>
+      This also makes framework support easier. A plugin does not need to implement the entire scoring model on day one. It only needs to observe enough behavior to produce a useful report and a useful draft. Full gating and scoring can follow.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Positioning</span>
+    <h2>GroundEval is not another trace viewer</h2>
+    <p>
+      The current space helps teams observe, compare, and regression test agent behavior. GroundEval uses those same signals as the starting point for a stricter workflow.
+    </p>
+    <p>
+      The claim is narrow:
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        GroundEval helps you turn real agent behavior into a reviewed deterministic contract, then scores whether future decisions are evidence supported, complete, and allowed.
+      </p>
+    </div>
+
+    <p>
+      That means the product does not need to cover every evaluation use case. It owns the slice where agent correctness depends on tools, artifacts, preconditions, permissions, and trace evidence.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Summary</span>
+    <h2>The best eval starts with what the agent actually did</h2>
+    <p>
+      Agent builders already have traces, expected tool trajectories, golden datasets, and scorers. What they still need is a path from raw behavior to a state contract.
+    </p>
+    <p>
+      Observe first is that path. GroundEval watches the run, drafts the config by default, marks what needs review, and only scores once the user has validated what correctness means.
+    </p>
+    <p>
+      That is how evaluation becomes approachable without becoming loose. The first run shows the behavior. The draft removes the blank page. The review protects the truth boundary. The scorer measures the thing that matters: whether the agent's decision was justified by valid evidence.
+    </p>
+
+    <div class="essay-cta-row">
+      <a href="https://github.com/tenurehq/groundeval" class="btn-primary" target="_blank" rel="noopener">
+        GroundEval on GitHub &rarr;
+      </a>
+      <a href="https://arxiv.org/abs/2606.22737" class="btn-secondary" target="_blank" rel="noopener">
+        Read the paper
+      </a>
+      <a href="/writing/how-to-test-agent-checked-before-saying-no" class="btn-secondary">
+        Silence track
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface);">
+  <div class="container">
+    <span class="label">Related</span>
+    <h2 style="margin-bottom:2rem;">More from the GroundEval series</h2>
+    <div class="related-grid">
+      <a href="/writing/how-to-test-agent-checked-before-saying-no" class="related-card">
+        <div class="related-tag">GroundEval</div>
+        <h3>How to test whether an agent checked before saying no</h3>
+        <p>The Silence track catches agents that claim absence without searching the right places.</p>
+        <span class="related-link">Read &rarr;</span>
+      </a>
+      <a href="/writing/how-to-test-agent-perspective" class="related-card">
+        <div class="related-tag">GroundEval</div>
+        <h3>How to test what an AI agent was allowed to know</h3>
+        <p>The Perspective track catches agents that use information the actor could not access.</p>
+        <span class="related-link">Read &rarr;</span>
+      </a>
+      <a href="/writing/llm-as-judge-became-the-default-for-agent-evaluation" class="related-card">
+        <div class="related-tag">Research</div>
+        <h3>LLM-as-Judge Became the Default for Agent Evaluation</h3>
+        <p>Why final-answer judging cannot see the failure that matters in stateful agent evaluation.</p>
+        <span class="related-link">Read &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.signal-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.signal-card__label,
+.review-card__status,
+.path-card__label {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.signal-card h3,
+.review-card h3,
+.report-card h3,
+.path-card h3 {
+  color: var(--text);
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.signal-card p,
+.review-card p,
+.report-card p {
+  font-size: 0.86rem;
+  margin: 0 0 1rem;
+}
+
+.signal-card a {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+
+.code-block {
+  margin: 2rem 0;
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.code-block__header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.code-block__dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.code-dot--red { background: #3a3a3a; }
+.code-dot--yellow { background: #3a3a3a; }
+.code-dot--green { background: #3a3a3a; }
+
+.code-block__filename {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+}
+
+.code-block__body {
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+}
+
+.code-block__body pre {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: var(--muted);
+}
+
+.c-key { color: #82aaff; }
+.c-str { color: #c3e88d; }
+.c-bool { color: #ffcb6b; }
+
+.artifact-tree {
+  margin: 2rem 0;
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.9;
+}
+
+.tree-line {
+  color: var(--text);
+}
+
+.tree-child {
+  color: var(--muted);
+  padding-left: 1.5rem;
+}
+
+.tree-grandchild {
+  color: var(--dim);
+  padding-left: 3rem;
+}
+
+.review-grid,
+.before-after,
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.report-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.review-card,
+.report-card,
+.path-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.report-card span {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 168, 173, 0.1);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+}
+
+.path-card--new {
+  border-color: rgba(0, 168, 173, 0.25);
+  background: rgba(0, 168, 173, 0.04);
+}
+
+.path-card ul {
+  margin: 1rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--muted);
+}
+
+.path-card li {
+  margin: 0.4rem 0;
+  font-size: 0.88rem;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.related-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.15s;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.related-card:hover {
+  border-color: var(--accent);
+}
+
+.related-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.related-card h3 {
+  color: var(--text);
+  margin: 0;
+  font-size: 1rem;
+}
+
+.related-card p {
+  font-size: 0.85rem;
+  margin: 0;
+  flex: 1;
+}
+
+.related-link {
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 820px) {
+  .signal-grid,
+  .review-grid,
+  .before-after,
+  .report-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .essay-cta-row {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    justify-content: center;
+  }
+}
+</style>
+
+</Base>

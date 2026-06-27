@@ -1,6 +1,8 @@
 ---
-const { title, description, canonical } = Astro.props;
+const { title, description, canonical, keywords } = Astro.props;
 const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.dev").href;
+const defaultKeywords = "AI memory, developer memory tool, local LLM memory, persistent AI context, VS Code AI memory, localhost AI, coding assistant memory, AI context injection, no RAG memory, AI productivity";
+const resolvedKeywords = keywords ?? defaultKeywords;
 ---
 
 <!DOCTYPE html>
@@ -10,10 +12,7 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, "https://tenureai.
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta
-      name="keywords"
-      content="AI memory, developer memory tool, local LLM memory, persistent AI context, VS Code AI memory, localhost AI, coding assistant memory, AI context injection, no RAG memory, AI productivity"
-    />
+    <meta name="keywords" content={resolvedKeywords} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta

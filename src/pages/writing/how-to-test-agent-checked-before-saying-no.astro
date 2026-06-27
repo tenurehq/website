@@ -3,19 +3,19 @@ import Base from '../../layouts/Base.astro';
 ---
 
 <Base
-  title="How to Test Whether an AI Agent Checked Before Saying “No” | Tenure"
-  description="AI agents often say something does not exist without checking the systems where it would actually live. GroundEval’s Silence track catches that deterministically."
+  title="How to Test Whether an AI Agent Checked Before Saying No | Tenure"
+  description="GroundEval observes your agent, drafts a reviewable config, then scores whether absence claims were earned by the recorded tool path."
 >
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "How to Test Whether an AI Agent Checked Before Saying “No”",
+  "headline": "How to Test Whether an AI Agent Checked Before Saying No",
   "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
   "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
   "url": "https://tenureai.dev/writing/how-to-test-agent-checked-before-saying-no",
-  "description": "AI agents often say something does not exist without checking the systems where it would actually live. GroundEval’s Silence track catches that deterministically.",
+  "description": "GroundEval observes your agent, drafts a reviewable config, then scores whether absence claims were earned by the recorded tool path.",
   "datePublished": "2026-07-08",
   "dateModified": "2026-07-08"
 }
@@ -29,12 +29,11 @@ import Base from '../../layouts/Base.astro';
       <span>GroundEval series</span>
     </div>
     <span class="label" style="margin-top:1.5rem; display:inline-block;">GroundEval</span>
-    <h1>How to Test Whether an AI Agent Checked Before Saying “No”</h1>
+    <h1>How to Test Whether an AI Agent Checked Before Saying No</h1>
     <p class="hero-sub-title" style="margin-top:1rem;">
-      LLM agents are confident when they shouldn't be. They'll tell you a postmortem
-      doesn't exist, a document was never written, or an incident had no follow-up,
-      all without searching the places where those things would be found. Here's how
-      to catch that deterministically.
+      Absence claims are easy for agents to fake. GroundEval now starts by watching
+      your existing agent run, drafting the eval config from what it searched and
+      fetched, and marking what you need to review before deterministic scoring begins.
     </p>
     <div class="essay-meta">
       <span class="essay-meta-item">Tenure research</span>
@@ -49,11 +48,12 @@ import Base from '../../layouts/Base.astro';
     <div class="tldr-box">
       <h3>TL;DR</h3>
       <ul>
-        <li>Agents often say “no” after one shallow search. Answer-only eval misses this because the final answer may still be correct.</li>
-        <li>GroundEval's Silence track solves this by declaring a search space upfront: the subsystems and query patterns the agent must check before being permitted to answer "no."</li>
-        <li>The score isn't just whether the answer matches. It's whether the agent's tool trace shows it covered the required search space. An unsearched correct "no" scores zero.</li>
-        <li>You define silence pairs in a YAML config: what event triggers the expectation, what response event should follow, and where the agent should look. The framework handles the rest.</li>
-        <li>This is the mental shift: you are not testing whether the agent produced the string “no.” You are testing whether the agent earned the right to say “no.”</li>
+        <li>Agents often say no after one shallow search. The final answer may be correct while the search path is invalid.</li>
+        <li>GroundEval does not require users to start with a perfect YAML contract. Run <code>groundeval observe</code> against your existing agent first.</li>
+        <li>Observation records tool calls, tool arguments, tool results, artifacts, skipped paths, and the final answer.</li>
+        <li>GroundEval drafts the config by default, including candidate tools, artifacts, search spaces, preconditions, and review notes.</li>
+        <li>The draft is not ground truth. You validate it before scoring because the observed tool call or artifact may be the wrong one.</li>
+        <li>After validation, the Silence track scores whether the agent earned the right to say no by checking the required places.</li>
       </ul>
     </div>
   </div>
@@ -62,30 +62,29 @@ import Base from '../../layouts/Base.astro';
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The problem</span>
-    <h2>Your agent said "no." Did it actually check?</h2>
+    <h2>Your agent said no. Did it actually check?</h2>
     <p>
-      Picture this: you've built an agent that can search your team's tools. Someone asks
-      it, "Was a postmortem written for incident ENG-001?" The agent searches Jira, finds
-      the incident ticket, sees no linked postmortem, and confidently answers "No, there
-      was no postmortem."
+      Picture this: you built an agent that can search your team's tools. Someone asks
+      it, "Was a postmortem written for incident ENG-001?" The agent searches Jira,
+      finds the incident ticket, sees no linked postmortem, and confidently answers,
+      "No, there was no postmortem."
     </p>
     <p>
-      Here's the problem: your team writes postmortems in Confluence, not Jira. The agent
-      never searched Confluence. The answer "no" happens to be correct by accident, but
-      the agent didn't earn it. If it had checked Confluence, it might have found the
-      postmortem sitting right there under a slightly different name.
+      The problem is that your team writes postmortems in Confluence. The agent stopped
+      at Jira. The answer might be correct by accident, but the agent did not earn it.
+      If it had searched Confluence, it might have found the postmortem under a slightly
+      different title.
     </p>
     <p>
-      Now scale this up. Your agent is answering questions about incident follow-ups,
-      compliance checks, customer escalations, security investigations. In every case,
-      "nothing found" requires the agent to have looked in the right places. How do you
-      test that it did?
+      GroundEval tests the part that matters: not whether the sentence sounds right,
+      but whether the recorded tool path shows the agent checked the places where the
+      missing artifact would actually live.
     </p>
     <div class="essay-callout">
       <p>
-        An LLM judge reading the agent's final answer cannot tell whether the agent
-        searched Confluence or just stopped at Jira. The prose looks reasonable either
-        way. You need to test the search, not the sentence.
+        The adoption issue is that many teams do not know the right search contract yet.
+        So GroundEval now starts by observing a real run and drafting the config from
+        what the agent actually did.
       </p>
     </div>
   </div>
@@ -93,25 +92,37 @@ import Base from '../../layouts/Base.astro';
 
 <section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
-    <span class="label">The idea</span>
-    <h2>Declare what "checking" means, then verify the trace</h2>
+    <span class="label">The new flow</span>
+    <h2>Observe first, draft by default, validate before scoring</h2>
     <p>
-      GroundEval's Silence track starts from a simple premise: before an agent can claim
-      something didn't happen, you should be able to point to the places where it would
-      have happened, and verify the agent looked there.
+      The old way started with configuration. That was rigorous, but it made the user
+      do the hardest work first. The new way starts with the agent.
     </p>
+    <div class="flow-grid">
+      <div class="flow-card">
+        <span class="flow-step">1</span>
+        <h3>Observe</h3>
+        <p>Run your existing agent. GroundEval records the tools it called, the arguments it used, the artifacts it received, and the final answer it returned.</p>
+      </div>
+      <div class="flow-card">
+        <span class="flow-step">2</span>
+        <h3>Draft</h3>
+        <p>GroundEval writes a starter config by default. It includes a tool map, observed artifacts, candidate silence checks, and review notes.</p>
+      </div>
+      <div class="flow-card">
+        <span class="flow-step">3</span>
+        <h3>Validate</h3>
+        <p>You review the draft because observed behavior is not ground truth. The agent may have used the wrong tool, artifact, or field.</p>
+      </div>
+      <div class="flow-card">
+        <span class="flow-step">4</span>
+        <h3>Score</h3>
+        <p>After validation, GroundEval scores future runs deterministically against the reviewed search contract.</p>
+      </div>
+    </div>
     <p>
-      You don't need to enumerate every possible path the agent might take. You just need
-      to declare a <strong>search space</strong>: the subsystems and query patterns that
-      constitute a thorough search. If the agent's recorded tool trace shows it covered
-      those places and found nothing, the negative answer is valid. If it skipped them,
-      the negative answer is invalid, even if it happens to be factually correct.
-    </p>
-    <p>
-      This is a state contract, not a prose evaluation. The ground truth comes from your
-      event log and artifact corpus: you know whether the postmortem actually exists. The
-      trajectory check comes from the recorded tool calls: you know whether the agent
-      actually fetched the artifacts in the search space. No LLM judge required.
+      This keeps the strict part strict. GroundEval can help you remove the blank page,
+      but it does not pretend that one observed run proves your domain rules.
     </p>
   </div>
 </section>
@@ -119,22 +130,17 @@ import Base from '../../layouts/Base.astro';
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">Walkthrough</span>
-    <h2>A silence test, from zero to score</h2>
+    <h2>A silence test, from observed run to reviewed score</h2>
     <p>
-      Let's walk through a minimal, concrete example. We've published it as the
-      <strong>tiny</strong> example in the GroundEval repository: two actors, four events,
-      one silence candidate. You can copy it and run it yourself in under ten minutes.
+      Start with the same incident scenario. Alice opened incident <code>ENG-001</code>,
+      the incident was escalated, and no postmortem was created. The agent is asked
+      whether a postmortem exists.
     </p>
 
-    <h3>The scenario</h3>
+    <h3>Run observation</h3>
     <p>
-      Alice opened an incident (<code>ENG-001</code>) on January 15. The incident was
-      escalated and eventually closed. But no postmortem was ever created. This is
-      exactly the kind of situation where an agent might confidently claim absence
-      without checking the right places.
-    </p>
-    <p>
-      Here's the event log:
+      Instead of writing the silence pair first, point GroundEval at the agent you
+      already have.
     </p>
 
     <div class="code-block">
@@ -144,29 +150,19 @@ import Base from '../../layouts/Base.astro';
           <span class="code-dot code-dot--yellow"></span>
           <span class="code-dot code-dot--green"></span>
         </div>
-        <span class="code-block__filename">events.jsonl</span>
+        <span class="code-block__filename">terminal</span>
       </div>
       <div class="code-block__body" is:raw>
-        <pre><span class="c-dim">{</span><span class="c-key">"id"</span>: <span class="c-str">"evt-001"</span>, <span class="c-key">"type"</span>: <span class="c-str">"incident_opened"</span>, <span class="c-key">"timestamp"</span>: <span class="c-str">"2026-01-15T09:30:00"</span>, <span class="c-key">"actors"</span>: [<span class="c-str">"alice"</span>], <span class="c-key">"artifact_ids"</span>: {<span class="c-key">"jira"</span>: <span class="c-str">"ENG-001"</span>}, <span class="c-key">"facts"</span>: {<span class="c-key">"severity"</span>: <span class="c-str">"high"</span>}<span class="c-dim">}</span>
-<span class="c-dim">{</span><span class="c-key">"id"</span>: <span class="c-str">"evt-002"</span>, <span class="c-key">"type"</span>: <span class="c-str">"escalation_opened"</span>, <span class="c-key">"timestamp"</span>: <span class="c-str">"2026-01-15T10:00:00"</span>, <span class="c-key">"actors"</span>: [<span class="c-str">"alice"</span>], <span class="c-key">"artifact_ids"</span>: {<span class="c-key">"jira"</span>: <span class="c-str">"ENG-001"</span>}, <span class="c-key">"facts"</span>: {<span class="c-key">"reason"</span>: <span class="c-str">"latency"</span>}<span class="c-dim">}</span>
-<span class="c-dim">{</span><span class="c-key">"id"</span>: <span class="c-str">"evt-003"</span>, <span class="c-key">"type"</span>: <span class="c-str">"ticket_closed"</span>, <span class="c-key">"timestamp"</span>: <span class="c-str">"2026-01-16T14:00:00"</span>, <span class="c-key">"actors"</span>: [<span class="c-str">"alice"</span>], <span class="c-key">"artifact_ids"</span>: {<span class="c-key">"jira"</span>: <span class="c-str">"ENG-001"</span>}, <span class="c-key">"facts"</span>: {<span class="c-key">"resolution"</span>: <span class="c-str">"fixed"</span>}<span class="c-dim">}</span>
-<span class="c-dim">{</span><span class="c-key">"id"</span>: <span class="c-str">"evt-004"</span>, <span class="c-key">"type"</span>: <span class="c-str">"incident_opened"</span>, <span class="c-key">"timestamp"</span>: <span class="c-str">"2026-01-20T09:00:00"</span>, <span class="c-key">"actors"</span>: [<span class="c-str">"bob"</span>], <span class="c-key">"artifact_ids"</span>: {<span class="c-key">"salesforce"</span>: <span class="c-str">"SF-001"</span>}, <span class="c-key">"facts"</span>: {<span class="c-key">"severity"</span>: <span class="c-str">"medium"</span>}<span class="c-dim">}</span></pre>
+        <pre><span class="c-key">uv</span> <span class="c-str">run</span> <span class="c-key">python</span> <span class="c-str">-m</span> <span class="c-key">groundeval</span> <span class="c-str">observe</span> \
+  <span class="c-str">--framework</span> <span class="c-key">crewai</span> \
+  <span class="c-str">--crew-class</span> <span class="c-key">my_project.crew.MyCrew</span> \
+  <span class="c-str">--output</span> <span class="c-key">eval_output/eng_001_observe</span></pre>
       </div>
     </div>
 
     <p style="margin-top: 1.5rem;">
-      Notice what's missing: there is no <code>postmortem_created</code> event for
-      <code>ENG-001</code>. The answer to "Was a postmortem written?" is genuinely "no."
-      But that doesn't mean any path to "no" is valid.
-    </p>
-
-    <h3>Declaring the search space</h3>
-    <p>
-      This is the heart of a silence test. You tell GroundEval: "Whenever an
-      <code>incident_opened</code> event occurs, I expect a <code>postmortem_created</code>
-      event within 7 days. If one isn't found, the agent must search Confluence (using
-      the Jira ticket ID as a query term) and the Jira ticket itself before it can claim
-      absence."
+      By default, observe mode writes the report and drafts the config. If you only
+      want the raw observation, use <code>--no-draft</code>.
     </p>
 
     <div class="code-block">
@@ -176,47 +172,93 @@ import Base from '../../layouts/Base.astro';
           <span class="code-dot code-dot--yellow"></span>
           <span class="code-dot code-dot--green"></span>
         </div>
-        <span class="code-block__filename">config.yaml (silence portion)</span>
+        <span class="code-block__filename">generated files</span>
       </div>
-      <div class="code-block__body"  is:raw>
-        <pre><span class="c-key">silence_pairs</span>:
-  <span class="c-dim"># When an incident is opened, we expect a postmortem within 7 days</span>
-  - <span class="c-key">trigger_event_type</span>: <span class="c-str">incident_opened</span>
-    <span class="c-key">response_event_type</span>: <span class="c-str">postmortem_created</span>
-    <span class="c-key">max_gap_days</span>: <span class="c-num">7</span>
-    <span class="c-key">search_space</span>:
-      <span class="c-dim"># The agent must search Confluence for the postmortem</span>
-      - <span class="c-key">subsystem</span>: <span class="c-str">confluence</span>
-        <span class="c-key">query_template</span>: <span class="c-str">"postmortem artifact_ids.jira"</span>
-      <span class="c-dim"># And must also check the Jira ticket itself</span>
-      - <span class="c-key">subsystem</span>: <span class="c-str">jira</span>
-        <span class="c-key">id_template</span>: <span class="c-str">"artifact_ids.jira"</span></pre>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">eval_output/eng_001_observe</span>/
+  <span class="c-key">observed_run.json</span>
+  <span class="c-key">observe_report.md</span>
+  <span class="c-key">draft_config</span>/
+    <span class="c-key">config.yaml</span>
+    <span class="c-key">tool_map.yaml</span>
+    <span class="c-key">task_contracts</span>/
+      <span class="c-key">eng_001_silence.yaml</span>
+    <span class="c-key">artifacts</span>/
+      <span class="c-key">observed</span>/
+    <span class="c-key">REVIEW.md</span></pre>
       </div>
     </div>
 
-    <p style="margin-top: 1.5rem;" is:raw>
-      The <code>artifact_ids.jira</code> template resolves to the actual ticket ID
-      (like <code>ENG-001</code>) at question time. This is how you connect the silence
-      rule to the specific artifacts the agent should search. The agent doesn't need to
-      guess where to look; you've declared it. The test just verifies that the agent
-      actually went there.
+    <h3>What the observe report tells you</h3>
+    <p>
+      The report summarizes the behavior in language a developer can act on. For this
+      example, it might show that the agent searched Jira, fetched <code>ENG-001</code>,
+      answered no, and never searched Confluence.
     </p>
 
-    <h3>What the framework does with this</h3>
+    <div class="score-card score-card--bad" style="margin-top:1.25rem;">
+      <div class="score-card__label">Observed behavior</div>
+      <table class="score-table">
+        <tr>
+          <td>final_answer</td>
+          <td class="score-note" colspan="2">No postmortem exists for ENG-001</td>
+        </tr>
+        <tr>
+          <td>tools_called</td>
+          <td class="score-note" colspan="2">search_jira, fetch_ticket</td>
+        </tr>
+        <tr>
+          <td>artifacts_seen</td>
+          <td class="score-note" colspan="2">jira:ENG-001</td>
+        </tr>
+        <tr>
+          <td>candidate_gap</td>
+          <td class="score-value score-value--bad">confluence</td>
+          <td class="score-note">No Confluence search was observed before the absence claim</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>Review the draft</h3>
     <p>
-      When you run <code>groundeval generate</code>, the framework scans your event log
-      for trigger events that lack a matching response event within the gap window. For
-      <code>ENG-001</code>, it finds an <code>incident_opened</code> with no
-      <code>postmortem_created</code> following within 7 days. It generates a Silence
-      question: "Was a postmortem written for incident ENG-001?" with ground truth
-      <code>exists: false</code> and an expected search space of two artifacts: a
-      Confluence search for "postmortem ENG-001" and a direct Jira lookup of
-      <code>ENG-001</code>.
+      GroundEval can draft the likely silence check from the run, but the draft is
+      marked review required. The agent's observed path may be incomplete, so the user
+      must confirm what the search space should actually be.
     </p>
-    <p>
-      Then, when your agent answers the question in tool mode, GroundEval records every
-      <code>fetch_artifact</code> and <code>search_artifacts</code> call. The scorer checks whether the trace covered each required search-space entry: the Jira fetch and the Confluence search. If a matching artifact exists, the trace can also be checked for whether the agent fetched it. If not,
-      the trajectory score drops, hard, regardless of what answer the agent gave.
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">draft_config/task_contracts/eng_001_silence.yaml</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">name</span>: <span class="c-str">eng_001_postmortem_absence</span>
+<span class="c-key">config_status</span>: <span class="c-str">draft</span>
+<span class="c-key">review_required</span>: <span class="c-bool">true</span>
+<span class="c-key">task_description</span>: <span class="c-str">Determine whether a postmortem exists for ENG-001.</span>
+<span class="c-key">preconditions</span>:
+  - <span class="c-key">check</span>: <span class="c-str">postmortem_absence_checked</span>
+    <span class="c-key">description</span>: <span class="c-str">The agent must search the systems where an ENG-001 postmortem would live before answering no.</span>
+    <span class="c-key">required_searches</span>:
+      - <span class="c-key">subsystem</span>: <span class="c-str">jira</span>
+        <span class="c-key">artifact_id</span>: <span class="c-str">ENG-001</span>
+      - <span class="c-key">subsystem</span>: <span class="c-str">confluence</span>
+        <span class="c-key">query</span>: <span class="c-str">postmortem ENG-001</span>
+    <span class="c-key">inferred_from</span>:
+      <span class="c-key">observed_run</span>: <span class="c-str">eng_001_observe</span>
+      <span class="c-key">events</span>: [<span class="c-str">search_jira</span>, <span class="c-str">fetch_ticket</span>, <span class="c-str">final_answer</span>]
+<span class="c-key">decision_field</span>: <span class="c-str">postmortem_exists</span></pre>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem;">
+      The important thing is not that GroundEval guessed perfectly. The important thing
+      is that it gave you a reviewable starting point with receipts. You confirm the
+      required systems, adjust the query terms, and mark the config reviewed.
     </p>
   </div>
 </section>
@@ -224,12 +266,11 @@ import Base from '../../layouts/Base.astro';
 <section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">Anatomy of a failure</span>
-    <h2>What "shallow retrieval" looks like in the score</h2>
+    <h2>What shallow retrieval looks like after validation</h2>
     <p>
-      Here's the scenario GroundEval exposes: the agent searches Jira, finds
-      <code>ENG-001</code>, sees no linked postmortem, and answers "No, no postmortem was
-      created." It never touches Confluence. The answer is factually correct, but the
-      search was incomplete.
+      Once the config is reviewed, the scorer can be strict. If the reviewed contract
+      says Jira and Confluence must be checked, an agent that only searches Jira has
+      not earned the right to say no.
     </p>
 
     <div class="score-comparison">
@@ -243,97 +284,63 @@ import Base from '../../layouts/Base.astro';
           <tr>
             <td>answer_score</td>
             <td class="score-value score-value--good">1.000</td>
-            <td class="score-note">Answer was correct: no postmortem exists</td>
+            <td class="score-note">No postmortem exists in the reviewed artifacts</td>
           </tr>
           <tr>
             <td>trajectory_score</td>
             <td class="score-value score-value--bad">0.250</td>
-            <td class="score-note">Agent searched Jira but never touched Confluence</td>
+            <td class="score-note">Agent searched Jira but skipped Confluence</td>
           </tr>
           <tr>
-            <td>search_space_coverage</td>
+            <td>search_coverage</td>
             <td class="score-value score-value--bad">0.500</td>
-            <td class="score-note">1 of 2 required artifacts fetched</td>
+            <td class="score-note">1 of 2 required searches completed</td>
           </tr>
           <tr>
-            <td>combined (weighted 0.30/0.70)</td>
+            <td>silence_score</td>
             <td class="score-value score-value--bad">0.475</td>
-            <td class="score-note">Valid path matters more than correct answer</td>
+            <td class="score-note">Correct no, invalid path</td>
           </tr>
         </table>
       </div>
     </div>
 
-    <p style="margin-top: 1.75rem;">
-      The combined score is weighted 0.70 toward trajectory because, for silence tests,
-      the whole point is proving the negative is justified. A correct answer reached
-      through an incomplete search is a failure. The framework doesn't negotiate on this.
+    <p style="margin-top:1.75rem;">
+      This is where GroundEval differs from trace viewing. The report does not just say
+      the agent called Jira. It says the reviewed absence contract required more than
+      Jira, and the trajectory did not satisfy it.
     </p>
-    <div class="essay-callout">
-      <p>
-        If you sent this agent's response to an LLM judge, it would say "The agent
-        correctly identified that no postmortem exists and cited the relevant ticket.
-        Score: 0.85." The judge can't see the search space the agent skipped. That's
-        the blind spot.
-      </p>
-    </div>
   </div>
 </section>
 
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">Writing your own</span>
-    <h2>How to define a silence pair for your domain</h2>
+    <h2>How to use observe mode for your domain</h2>
     <p>
-      The config is a state contract. It doesn't prescribe agent behavior; it declares
-      what correctness means in your domain. Here's how to think about it for silence
-      tests.
+      Start with one real task your agent already performs. Ask it a question where an
+      absence claim matters: no postmortem, no duplicate ticket, no follow-up email, no
+      adverse action notice, no containment action.
     </p>
 
-    <h3>Step 1: Identify a trigger-and-response pair</h3>
+    <h3>Step 1: Run observe</h3>
     <p>
-      Ask yourself: in my domain, what events create an expectation that something else
-      should happen? Some examples from the domain packs that ship with GroundEval:
+      Point GroundEval at your existing agent. Let it produce an observed run, a behavior
+      report, and a draft config.
     </p>
 
-    <div class="pair-examples">
-      <div class="pair-row">
-        <div class="pair-cell pair-trigger">incident_opened</div>
-        <div class="pair-arrow">→</div>
-        <div class="pair-cell pair-response">postmortem_created</div>
-        <div class="pair-domain">Engineering</div>
-      </div>
-      <div class="pair-row">
-        <div class="pair-cell pair-trigger">phishing_alert_triggered</div>
-        <div class="pair-arrow">→</div>
-        <div class="pair-cell pair-response">containment_action_taken</div>
-        <div class="pair-domain">Security</div>
-      </div>
-      <div class="pair-row">
-        <div class="pair-cell pair-trigger">medication_administered</div>
-        <div class="pair-arrow">→</div>
-        <div class="pair-cell pair-response">lab_result_recorded</div>
-        <div class="pair-domain">Healthcare</div>
-      </div>
-      <div class="pair-row">
-        <div class="pair-cell pair-trigger">loan_application_submitted</div>
-        <div class="pair-arrow">→</div>
-        <div class="pair-cell pair-response">adverse_action_notice_sent</div>
-        <div class="pair-domain">Finance</div>
-      </div>
-      <div class="pair-row">
-        <div class="pair-cell pair-trigger">contract_draft_created</div>
-        <div class="pair-arrow">→</div>
-        <div class="pair-cell pair-response">dpa_review_completed</div>
-        <div class="pair-domain">Legal</div>
-      </div>
-    </div>
-
-    <h3>Step 2: Declare the search space</h3>
+    <h3>Step 2: Review the generated search space</h3>
     <p>
-      For each pair, ask: if the response event didn't happen, where would an agent need
-      to look to be sure? This is the search space. It's not a suggestion; it's a
-      requirement. The agent's trajectory score depends on covering it.
+      Check whether the draft lists the systems where the missing item would actually
+      live. Add anything the observed agent skipped. Remove anything that is irrelevant.
+      Rename checks so they match your domain language.
+    </p>
+
+    <h3>Step 3: Validate the config</h3>
+    <p>
+      Run validation after review. The goal is to confirm that fields, artifacts, tool
+      mappings, and required searches are internally consistent before spending model
+      calls on scoring.
     </p>
 
     <div class="code-block">
@@ -343,46 +350,27 @@ import Base from '../../layouts/Base.astro';
           <span class="code-dot code-dot--yellow"></span>
           <span class="code-dot code-dot--green"></span>
         </div>
-        <span class="code-block__filename">config.yaml (full silence block)</span>
+        <span class="code-block__filename">terminal</span>
       </div>
-      <div class="code-block__body"  is:raw>
-        <pre><span class="c-key">silence_pairs</span>:
-  <span class="c-dim"># Incident → Postmortem: agent must check Confluence AND the ticket</span>
-  - <span class="c-key">trigger_event_type</span>: <span class="c-str">incident_opened</span>
-    <span class="c-key">response_event_type</span>: <span class="c-str">postmortem_created</span>
-    <span class="c-key">max_gap_days</span>: <span class="c-num">7</span>
-    <span class="c-key">search_space</span>:
-      - <span class="c-key">subsystem</span>: <span class="c-str">confluence</span>
-        <span class="c-key">query_template</span>: <span class="c-str">"postmortem artifact_ids.jira"</span>
-      - <span class="c-key">subsystem</span>: <span class="c-str">jira</span>
-        <span class="c-key">id_template</span>: <span class="c-str">"artifact_ids.jira"</span>
-
-  <span class="c-dim"># Escalation → Customer follow-up: agent must check Zendesk AND email</span>
-  - <span class="c-key">trigger_event_type</span>: <span class="c-str">escalation_opened</span>
-    <span class="c-key">response_event_type</span>: <span class="c-str">customer_followup_sent</span>
-    <span class="c-key">max_gap_days</span>: <span class="c-num">3</span>
-    <span class="c-key">search_space</span>:
-      - <span class="c-key">subsystem</span>: <span class="c-str">zendesk</span>
-        <span class="c-key">query_template</span>: <span class="c-str">"follow-up artifact_ids.zendesk"</span>
-      - <span class="c-key">subsystem</span>: <span class="c-str">email</span>
-        <span class="c-key">query_template</span>: <span class="c-str">"follow-up re: artifact_ids.jira"</span></pre>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">uv</span> <span class="c-str">run</span> <span class="c-key">python</span> <span class="c-str">-m</span> <span class="c-key">groundeval</span> <span class="c-str">validate</span> \
+  <span class="c-str">--config</span> <span class="c-key">eval_output/eng_001_observe/draft_config/config.yaml</span> \
+  <span class="c-str">--mark-reviewed</span></pre>
       </div>
     </div>
 
-    <h3>Step 3: Run and inspect</h3>
+    <h3>Step 4: Score future runs</h3>
     <p>
-      Generate questions from your config, run your agent against them, and read the
-      per-question diagnostic trace. The trace is not used for scoring; it's there so
-      you can see exactly which searches the agent ran, which it skipped, and why the
-      score came out the way it did. No reconstructing from interleaved logs. No asking
-      a judge model to guess whether the agent's search was sufficient.
+      Now run the deterministic eval. Future model changes, prompt changes, and framework
+      changes are measured against the reviewed contract, not against the accident of one
+      observed path.
     </p>
+
     <div class="essay-callout">
       <p>
-        The config is reusable. Write it once for your domain, and it works across every
-        model version, every prompt change, every agent framework you swap in. The
-        silence contract doesn't care how your agent is implemented. It only cares
-        whether the trace says the search happened.
+        The generated draft removes the blank page. The validation step preserves the
+        contract. GroundEval helps you get started without pretending that observed
+        behavior is automatically correct behavior.
       </p>
     </div>
   </div>
@@ -391,23 +379,22 @@ import Base from '../../layouts/Base.astro';
 <section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">Mental model</span>
-    <h2>This isn't a unit test. It's a state contract.</h2>
+    <h2>Observed behavior is input, not truth</h2>
     <p>
-      If you're coming from a unit testing background, the mental model shift is this:
-      you're not asserting that the agent's output matches an expected string. You're
-      declaring what "thorough checking" means in your domain, and then verifying that
-      the agent's recorded behavior satisfies that declaration.
+      Observe mode is not a shortcut around correctness. It is a way to capture what the
+      agent already does while the full run is still fresh: tool calls, returns, artifacts,
+      answer shape, and failure paths.
     </p>
     <p>
-      A unit test says "assert the answer equals no." A GroundEval silence test says
-      "assert the agent searched these specific artifacts before answering." The answer
-      is secondary. The search is primary.
+      The draft config is a proposal. It should show provenance for every inferred check.
+      The user reviews it because the agent may have retrieved the wrong artifact or
+      relied on the wrong field. After validation, the same config becomes the contract
+      GroundEval scores against.
     </p>
     <p>
-      This is why the trajectory weight for silence is 0.70. The framework is not
-      ambivalent about whether searching matters. If your agent can get the right
-      answer without searching, that's not a passed test; it's a test that exposed a
-      gap in your evaluation.
+      This is the adoption shift: you no longer begin by writing the entire state contract
+      from scratch. You begin by letting GroundEval observe the agent, then you correct
+      the draft until it matches your domain.
     </p>
   </div>
 </section>
@@ -415,23 +402,20 @@ import Base from '../../layouts/Base.astro';
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">Summary</span>
-    <h2>A correct "no" is not the same as a justified "no"</h2>
+    <h2>A correct no is not the same as a justified no</h2>
     <p>
-      The Silence track exists because absence claims are the easiest thing for an
-      agent to fake. A confident tone, a plausible-sounding search description, a
-      correctly formatted negative answer. None of it proves the agent actually looked.
+      The Silence track exists because absence claims are easy to fake. A confident tone,
+      a plausible search description, and a correctly formatted negative answer do not
+      prove the agent actually looked.
     </p>
     <p>
-      GroundEval doesn't ask whether the answer sounds right. It asks whether the
-      agent's tool trace contains the fetches and searches you declared as necessary.
-      If the trace is missing them, the score reflects it, no matter how fluent the
-      final answer.
+      GroundEval now makes the path easier to adopt. Run your agent once, get a behavior
+      report, review the generated config, then score future runs against the reviewed
+      search contract.
     </p>
     <p>
-      Start with a single silence pair. Pick one trigger event type, one expected
-      response, two search locations. Run it against your agent. The gap between what
-      you declared and what the trace shows will tell you more than any LLM judge
-      ever could.
+      Start with one absence claim. Let GroundEval draft the config. Validate the systems
+      and artifacts. Then run the eval and see whether the agent earned the right to say no.
     </p>
 
     <div class="essay-cta-row">
@@ -456,18 +440,18 @@ import Base from '../../layouts/Base.astro';
       <a href="/writing/how-to-test-agent-perspective" class="related-card">
         <div class="related-tag">GroundEval</div>
         <h3>How to test whether an agent respected who should know what</h3>
-        <p>The Perspective track catches agents that use information the actor couldn't have seen.</p>
+        <p>The Perspective track catches agents that use information the actor could not have seen.</p>
         <span class="related-link">Read →</span>
       </a>
       <a href="/writing/how-to-test-agent-causal-reasoning" class="related-card">
         <div class="related-tag">GroundEval</div>
         <h3>How to test whether an agent found the real cause</h3>
-        <p>Correlation is not causation. The Counterfactual track enforces join conditions on causal claims.</p>
+        <p>The Counterfactual track checks whether the decision follows from valid evidence.</p>
         <span class="related-link">Read →</span>
       </a>
       <a href="https://arxiv.org/abs/2606.22737" class="related-card" target="_blank" rel="noopener">
         <div class="related-tag">Paper</div>
-        <h3>GroundEval: A Deterministic Replacement for LLM-as-Judge</h3>
+        <h3>GroundEval: Deterministic Agent Evaluation</h3>
         <p>The full paper with formal properties, all three tracks, and case studies.</p>
         <span class="related-link">arXiv →</span>
       </a>
@@ -476,6 +460,180 @@ import Base from '../../layouts/Base.astro';
 </section>
 
 <style>
+.code-block {
+  margin: 2rem 0;
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.code-block__header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.code-block__dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.code-dot--red { background: #3a3a3a; }
+.code-dot--yellow { background: #3a3a3a; }
+.code-dot--green { background: #3a3a3a; }
+
+.code-block__filename {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+}
+
+.code-block__body {
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+}
+
+.code-block__body pre {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: var(--muted);
+}
+
+.c-key { color: #82aaff; }
+.c-str { color: #c3e88d; }
+.c-num { color: #f78c6c; }
+.c-dim { color: #546e7a; }
+.c-bool { color: #ffcb6b; }
+
+.flow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.flow-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.flow-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: rgba(0,168,173,0.12);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.flow-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.flow-card p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.score-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.score-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.score-card--good {
+  border-color: rgba(0,168,173,0.2);
+  background: rgba(0,168,173,0.03);
+}
+
+.score-card--bad {
+  border-color: rgba(255,90,90,0.22);
+  background: rgba(255,90,90,0.03);
+}
+
+.score-card__label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  margin-bottom: 0.75rem;
+}
+
+.score-card__quote {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+.score-table td {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.score-table tr:last-child td {
+  border-bottom: none;
+}
+
+.score-table td:first-child {
+  color: var(--text);
+  width: 150px;
+}
+
+.score-value {
+  width: 60px;
+  text-align: left;
+  font-weight: 700;
+}
+
+.score-value--good { color: var(--accent); }
+.score-value--bad { color: var(--red); }
+
+.score-note {
+  color: var(--dim);
+  font-size: 0.7rem;
+  padding-left: 0.75rem;
+}
 
 .related-grid {
   display: grid;
@@ -513,8 +671,7 @@ import Base from '../../layouts/Base.astro';
 @media (max-width: 680px) {
   .essay-cta-row { flex-direction: column; }
   .btn-primary, .btn-secondary { justify-content: center; }
-  .pair-row { grid-template-columns: 1fr 1fr; }
-  .pair-domain { display: none; }
+  .score-comparison { grid-template-columns: 1fr; }
 }
 </style>
 

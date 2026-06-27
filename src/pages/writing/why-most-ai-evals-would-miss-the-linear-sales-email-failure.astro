@@ -5,6 +5,7 @@ import Base from '../../layouts/Base.astro';
 <Base
   title="Why most AI evals would miss the Linear sales email failure | Tenure"
   description="Linear's sales agent emailed an existing customer six times with the wrong company name. An LLM judge would have scored that email highly. Here is why standard evaluation never would have caught it."
+  keywords="AI agent evaluation, agent precondition failure, action validity evaluation, GroundEval, LLM agent eval, outbound AI agent failure, AI sales agent evaluation, agent state validation, pre-send preconditions, agentic AI evaluation, evidence path validity, AI action audit"
 >
 
 <script type="application/ld+json">
@@ -31,7 +32,7 @@ import Base from '../../layouts/Base.astro';
     <span class="label" style="margin-top:1.5rem; display:inline-block;">Research</span>
     <h1>Why most AI evals would miss the Linear sales email failure</h1>
     <p class="hero-sub-title" style="margin-top:1rem;">
-      Linear's sales agent emailed an existing customer six times with the wrong company name. It is easy to call that bad AI outreach. But the email was only the visible part. The real failure happened earlier, when the system decided it was allowed to send without proving the facts that decision depended on.
+      Linear's sales agent emailed an existing customer six times with the wrong company name. It is easy to call that bad AI outreach. But the email was only the visible part. The real failure was an action validity failure: the system decided it was allowed to send without proving the facts that decision depended on.
     </p>
     <div class="essay-meta">
       <span class="essay-meta-item">Tenure research</span>
@@ -228,7 +229,9 @@ import Base from '../../layouts/Base.astro';
     <p>
       If any one of those checks fails, the right behavior is not "write a better email." The
       right behavior is "do not send." That is why calling this a content quality problem misses
-      the failure mode. The generated text is only the artifact left at the scene.
+      the failure mode. The generated text is only the artifact left at the scene. What happened
+      upstream is an action validity failure: the agent acted without proving the preconditions
+      that justified the action.
     </p>
   </div>
 </section>
@@ -401,7 +404,8 @@ import Base from '../../layouts/Base.astro';
     <p>
       Once software can act, the eval target changes. The question is no longer only whether the
       output was correct. It becomes whether the action was valid under the state the agent was
-      allowed to observe.
+      allowed to observe. That is an action validity failure, and it is invisible to any evaluation
+      that only reads the final output.
     </p>
     <p>
       Bad AI outreach is a small, public example of that larger shift. The visible failure is the
@@ -415,19 +419,16 @@ import Base from '../../layouts/Base.astro';
 
 
 <div class="essay-cta-row">
-  <a href="https://github.com/tenurehq/groundeval" class="btn-primary" target="_blank" rel="noopener">
-    GroundEval on GitHub →
+  <a href="/writing/groundeval-observe-mode" class="btn-primary">
+    See observe mode →
   </a>
-  <a href="/writing/why-llm-as-judge-cant-see-state" class="btn-secondary">
-    Read the evaluation essay
+  <a href="https://github.com/tenurehq/groundeval" class="btn-secondary" target="_blank" rel="noopener">
+    GroundEval on GitHub →
   </a>
 </div>
 
-
   </div>
 </section>
-
-
 
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container">
@@ -446,11 +447,11 @@ import Base from '../../layouts/Base.astro';
         <p>Enterprise AI needs a context control plane beneath every model request, not a tool the agent can choose to call.</p>
         <span class="related-link">Read the essay →</span>
       </a>
-      <a href="/benchmark" class="related-card">
-        <div class="related-tag">Benchmark</div>
-        <h3>precisionMemBench</h3>
-        <p>A retrieval benchmark for measuring memory precision, noise isolation, session-turn latency, and belief mutability.</p>
-        <span class="related-link">View the benchmark →</span>
+      <a href="/writing/why-observe-first-wins-agent-evaluation" class="related-card">
+        <div class="related-tag">GroundEval</div>
+        <h3>Why observe first wins for agent evaluation</h3>
+        <p>Run the agent you already have. GroundEval records the trajectory and drafts the eval contract from what actually happened.</p>
+        <span class="related-link">Read the essay →</span>
       </a>
     </div>
   </div>
