@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 
 <Base
   title="PrecisionMemBench - LLM Memory Retrieval Benchmark | Tenure"
-  description="89-case benchmark measuring retrieval precision independently of generative models. Tenure: 1.0 precision, 77/77 non-session passes, and 12/12 session passes. Includes the latest supermemory and Open Knowledge Format runs."
+  description="89-case benchmark measuring retrieval precision independently of generative models. Tenure: 1.0 precision, 77/77 non-session passes, and 12/12 session passes. Includes the latest supermemory, Open Knowledge Format, and Cognee runs."
 >
 
 <script type="application/ld+json">
@@ -79,7 +79,7 @@ import Base from '../layouts/Base.astro';
       </div>
       <div class="bench-hero-stat-div"></div>
       <div class="bench-hero-stat">
-        <span class="bench-hero-value good">12</span>
+        <span class="bench-hero-value good">13</span>
         <span class="bench-hero-label">Systems evaluated</span>
       </div>
       <div class="bench-hero-stat-div"></div>
@@ -156,7 +156,7 @@ import Base from '../layouts/Base.astro';
   <div class="container-wide">
     <span class="label">Results</span>
     <h2>Leaderboard</h2>
-    <p>89 cases. 12 systems. One metric that matters: active retrieval passes, which are cases where a <code>retrievalPrecision</code> assertion was satisfied.</p>
+    <p>89 cases. 13 systems. One metric that matters: active retrieval passes, which are cases where a <code>retrievalPrecision</code> assertion was satisfied.</p>
 
     <!-- Main leaderboard table -->
     <div class="compare-table-section" style="margin-top: 2rem;">
@@ -273,6 +273,15 @@ import Base from '../layouts/Base.astro';
             <td>111.30s</td>
           </tr>
           <tr>
+            <td>cognee</td>
+            <td><span class="val-bad">0/0</span></td>
+            <td>11/77</td>
+            <td><span class="val-bad">0.05</span></td>
+            <td>0.92</td>
+            <td>2891.04ms</td>
+            <td>—</td>
+          </tr>
+          <tr>
             <td>a-mem</td>
             <td><span class="val-bad">0/0</span></td>
             <td>9/77</td>
@@ -319,6 +328,7 @@ import Base from '../layouts/Base.astro';
           <tr><td>a-mem</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
           <tr><td>agentmemory</td><td><span class="val-bad">0</span></td><td>5</td><td>2</td></tr>
           <tr><td>atomicmemory</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+          <tr><td>cognee</td><td><span class="val-bad">0</span></td><td>7</td><td>4</td></tr>
           <tr><td>hindsight</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
           <tr><td>mem0</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
           <tr><td>vector</td><td><span class="val-bad">0</span></td><td>8</td><td>3</td></tr>
@@ -351,6 +361,7 @@ import Base from '../layouts/Base.astro';
             <th>Mem0</th>
             <th>Zep</th>
             <th>Hindsight</th>
+            <th>Cognee</th>
           </tr>
         </thead>
         <tbody>
@@ -358,6 +369,7 @@ import Base from '../layouts/Base.astro';
             <td>Alias resolution</td>
             <td>23</td>
             <td><span class="val-good">23/23</span></td>
+            <td><span class="val-bad">0/23</span></td>
             <td><span class="val-bad">0/23</span></td>
             <td><span class="val-bad">0/23</span></td>
             <td><span class="val-bad">0/23</span></td>
@@ -371,6 +383,7 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-bad">0/12</span></td>
             <td><span class="val-bad">0/12</span></td>
             <td><span class="val-bad">0/12</span></td>
+            <td>1/12</td>
           </tr>
           <tr>
             <td>Scope disambiguation</td>
@@ -380,11 +393,13 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-bad">0/12</span></td>
             <td><span class="val-bad">0/12</span></td>
             <td><span class="val-bad">0/12</span></td>
+            <td><span class="val-bad">0/12</span></td>
           </tr>
           <tr>
             <td>Fuzzy matching &amp; prefix guards</td>
             <td>7</td>
             <td><span class="val-good">7/7</span></td>
+            <td><span class="val-bad">0/7</span></td>
             <td><span class="val-bad">0/7</span></td>
             <td><span class="val-bad">0/7</span></td>
             <td><span class="val-bad">0/7</span></td>
@@ -398,6 +413,7 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-bad">0/6</span></td>
             <td><span class="val-bad">0/6</span></td>
             <td><span class="val-bad">0/6</span></td>
+            <td>1/6</td>
           </tr>
           <tr>
             <td>Design boundary cases</td>
@@ -407,11 +423,13 @@ import Base from '../layouts/Base.astro';
             <td>2/6</td>
             <td>2/6</td>
             <td>2/6</td>
+            <td>3/6</td>
           </tr>
           <tr>
             <td>Budget eviction &amp; capacity</td>
             <td>5</td>
             <td><span class="val-good">5/5</span></td>
+            <td>3/5</td>
             <td>3/5</td>
             <td>3/5</td>
             <td>3/5</td>
@@ -425,11 +443,13 @@ import Base from '../layouts/Base.astro';
             <td>1/4</td>
             <td>1/4</td>
             <td>1/4</td>
+            <td>1/4</td>
           </tr>
           <tr>
             <td>Relation expansion</td>
             <td>4</td>
             <td><span class="val-good">4/4</span></td>
+            <td><span class="val-bad">0/4</span></td>
             <td><span class="val-bad">0/4</span></td>
             <td><span class="val-bad">0/4</span></td>
             <td><span class="val-bad">0/4</span></td>
@@ -443,11 +463,13 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-bad">0/3</span></td>
             <td><span class="val-bad">0/3</span></td>
             <td><span class="val-bad">0/3</span></td>
+            <td><span class="val-bad">0/3</span></td>
           </tr>
           <tr>
             <td>Ranking stability</td>
             <td>3</td>
             <td><span class="val-good">3/3</span></td>
+            <td>1/3</td>
             <td>1/3</td>
             <td>1/3</td>
             <td>1/3</td>
@@ -461,11 +483,13 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-bad">0/2</span></td>
             <td><span class="val-bad">0/2</span></td>
             <td><span class="val-bad">0/2</span></td>
+            <td><span class="val-bad">0/2</span></td>
           </tr>
           <tr>
             <td>Cross-user isolation</td>
             <td>1</td>
             <td><span class="val-good">1/1</span></td>
+            <td>1/1</td>
             <td>1/1</td>
             <td>1/1</td>
             <td>1/1</td>
@@ -479,6 +503,7 @@ import Base from '../layouts/Base.astro';
             <td>1/1</td>
             <td>1/1</td>
             <td>1/1</td>
+            <td>1/1</td>
           </tr>
           <tr style="font-weight:600; border-top: 2px solid var(--border2);">
             <td><strong>Total</strong></td>
@@ -488,6 +513,7 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-bad"><strong>9/89</strong></span></td>
             <td><span class="val-bad"><strong>9/89</strong></span></td>
             <td><span class="val-bad"><strong>8/89</strong></span></td>
+            <td><span class="val-bad"><strong>12/89</strong></span></td>
           </tr>
         </tbody>
       </table>
@@ -504,6 +530,18 @@ import Base from '../layouts/Base.astro';
 
     <div class="compare-verdict" style="margin-top: 1.5rem;">
       <p>OKF is the strongest non-Tenure run on active retrieval with 18/18 active passes, but it pays for that access pattern in latency: 3,534.53ms retrieval p50 and 3,349.45ms session p50. The result supports the distinction this benchmark is meant to expose: storage format, runtime access, and precision-controlled retrieval are separate layers.</p>
+    </div>
+  </div>
+</section>
+
+<section class="bench-section" style="border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="label">Cognee run</span>
+    <h2>Less context is not the same thing as correct context</h2>
+    <p>Cognee's graph-memory framing directly tests the claim that a memory layer can retrieve only what is needed for a given prompt. On PrecisionMemBench, Cognee reached high recall but low precision: 0.0548 mean precision, 0.9186 mean recall, 11/77 non-session passes, and 0 active retrieval passes.</p>
+
+    <div class="compare-verdict" style="margin-top: 1.5rem;">
+      <p>This is the pattern PrecisionMemBench is designed to expose. The right belief is often somewhere in the retrieved set, but the model is also handed unrelated, stale, adjacent, or cross-scope state. Context stuffing may be cooked, but reducing the token pile does not prove the remaining context is the right context.</p>
     </div>
   </div>
 </section>
@@ -620,6 +658,15 @@ import Base from '../layouts/Base.astro';
             <td>172.32ms</td>
           </tr>
           <tr>
+            <td>cognee</td>
+            <td>1/12</td>
+            <td>0.08</td>
+            <td>0.8459</td>
+            <td>0.08</td>
+            <td>0.0772</td>
+            <td>4222.62ms</td>
+          </tr>
+          <tr>
             <td>gbrain</td>
             <td>1/12</td>
             <td>0.08</td>
@@ -639,7 +686,7 @@ import Base from '../layouts/Base.astro';
       </table>
     </div>
 
-    <p style="margin-top: 1.5rem; font-size: 0.875rem;">gbrain returned no results for these session cases. Its drift score of 0.0 is recorded by construction because no returned beliefs could originate from drift topics. The correct belief also failed to surface, so this is an empty-result failure, not a genuine isolation pass.</p>
+    <p style="margin-top: 1.5rem; font-size: 0.875rem;">gbrain returned no results for these session cases. Its drift score of 0.0 is recorded by construction because no returned beliefs could originate from drift topics. The correct belief also failed to surface, so this is an empty-result failure, not a genuine isolation pass. Cognee passed 1/12 session turns with 0.8459 mean drift and 4,222.62ms session p50.</p>
   </div>
 </section>
 
