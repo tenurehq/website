@@ -49,7 +49,7 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <span class="label">The difference</span>
     <h2>Two different theories of where time gets lost.</h2>
-    <p>Most AI code review tools assume the problem happens at review time. Tenure assumes it happens earlier: at generation time.</p>
+    <p>Most AI code review tools assume the problem happens at review time. Tenure assumes part of the problem happens earlier: at generation time, when the model is missing the conventions, decisions, and unresolved questions your team already discussed.</p>
 
     <div class="contrast-grid">
       <div class="contrast-card contrast-bad">
@@ -68,13 +68,13 @@ import Base from '../../layouts/Base.astro';
           <h3>AI memory (Tenure)</h3>
         </div>
         <p class="contrast-tag">Align the code before the PR exists</p>
-        <p>Your team's naming conventions, folder structure, existing abstractions, error handling style, and testing expectations are in context when the code is generated. The PR opens closer to how your team would have written it. Less to debate. Fewer round-trips.</p>
+        <p>Your team's naming conventions, folder structure, existing abstractions, error handling style, testing expectations, and explicit architecture decisions are in context when the code is generated. If something is unresolved, Tenure can preserve it as an open question instead of letting the model silently guess. The PR opens closer to how your team would have written it. Less avoidable rework. Fewer round-trips.</p>
         <div class="contrast-note">Prevents problems. Doesn't just catch them.</div>
       </div>
     </div>
 
     <div class="contrast-callout">
-      <span class="contrast-callout-mono">The fastest review is the one that doesn't require fixing avoidable problems.</span>
+      <span class="contrast-callout-mono">Tenure does not replace judgment review. It removes the avoidable review comments caused by missing team context.</span>
     </div>
   </div>
 </section>
@@ -82,8 +82,8 @@ import Base from '../../layouts/Base.astro';
 <section class="uc-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">Where review time goes</span>
-    <h2>Reviewers spend most of their time on things AI already knows. If you tell it.</h2>
-    <p>The comments that slow review cycles aren't logic bugs. They're convention violations. Things that should have been obvious from context but weren't, because the AI generating the code didn't have that context.</p>
+    <h2>Reviewers spend time on things AI could have known before it wrote the code.</h2>
+    <p>Some review comments require human judgment. Tenure is not trying to eliminate those. It targets the avoidable comments: convention violations, missed architecture decisions, rejected approaches, and places where the AI guessed instead of carrying forward an unresolved question.</p>
 
     <div class="review-items">
       <div class="review-item">
@@ -122,7 +122,7 @@ import Base from '../../layouts/Base.astro';
           <span class="review-name">Architectural patterns</span>
         </div>
         <div class="review-item-right">
-          <p>Factory functions over classes. Repository pattern for data access. No direct DB calls from route handlers. These decisions were made in a planning doc two months ago. Tenure remembers them.</p>
+          <p>Factory functions over classes. Repository pattern for data access. No direct DB calls from route handlers. These are not just patterns inferred from code; they can be explicit decisions someone stated once in an AI session. Tenure stores the decision with scope, confidence, and provenance, then injects it when future generation touches the relevant project.</p>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ import Base from '../../layouts/Base.astro';
         </div>
       </div>
 
-      <div class="review-item" style="border-bottom:none;">
+      <div class="review-item">
         <div class="review-item-left">
           <span class="review-num">06</span>
           <span class="review-name">Testing expectations</span>
@@ -145,6 +145,57 @@ import Base from '../../layouts/Base.astro';
           <p>Vitest, not Jest. Unit tests in <code>__tests__/</code> adjacent to the module. Integration tests in <code>/tests/integration/</code>. Mocks using <code>vi.mock()</code>, never manual stubs. All stored. All injected.</p>
         </div>
       </div>
+
+      <div class="review-item">
+        <div class="review-item-left">
+          <span class="review-num">07</span>
+          <span class="review-name">Explicit decisions</span>
+        </div>
+        <div class="review-item-right">
+          <p>An engineer says, <code>Use the raw MongoDB driver here; do not add Mongoose</code>. That does not need to appear three times in the codebase before it matters. Tenure can capture the statement as a high-confidence decision and apply it to future AI requests in the same project.</p>
+        </div>
+      </div>
+
+      <div class="review-item" style="border-bottom:none;">
+        <div class="review-item-left">
+          <span class="review-num">08</span>
+          <span class="review-name">Open questions</span>
+        </div>
+        <div class="review-item-right">
+          <p>If the team has not decided between Redis and Postgres for a queue, Tenure can preserve that as an <code>open_question</code>. The next AI session can surface the uncertainty instead of generating code that assumes the answer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">The mechanism</span>
+    <h2>Tenure prevents the mistake by preserving the reason the code should not be written that way.</h2>
+    <p>There are two different kinds of context that affect code review. Tenure handles both, and it treats unresolved context as first-class instead of forcing the model to invent an answer.</p>
+
+    <div class="uc-feature-grid" style="margin-top:2.5rem;">
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">📐</div>
+        <h3>Convention enforcement</h3>
+        <p>Naming, folder placement, imports, error handling, test layout, and repeated coding patterns. These can be extracted from demonstrated code patterns or config artifacts and injected before generation.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🏛️</div>
+        <h3>Decision enforcement</h3>
+        <p>Business rules and architecture commitments the user explicitly states, like <code>do not persist PII in logs</code> or <code>raw driver only</code>. A single explicit statement can become a high-confidence project belief.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">🔎</div>
+        <h3>Provenance and confidence</h3>
+        <p>Tenure distinguishes direct statements, config artifacts, and inferred patterns. That matters because an explicit decision should carry more weight than a weak pattern inferred from one generated file.</p>
+      </div>
+      <div class="uc-feature-card">
+        <div class="uc-feature-icon">❓</div>
+        <h3>Open questions</h3>
+        <p>When something is unresolved, Tenure can store the uncertainty. The value is not only remembering what the team decided; it is also remembering what the team has not decided yet.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -152,8 +203,8 @@ import Base from '../../layouts/Base.astro';
 <section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">How it works</span>
-    <h2>Conventions go in once. They're in context forever.</h2>
-    <p>You don't configure rules or maintain a linting config for Tenure. You capture decisions as they happen, in the same chat sessions where you already work. Tenure extracts them, stores them locally, and injects the right ones on every AI request, before the prompt reaches the model.</p>
+    <h2>Decisions, conventions, and open questions enter the system as you work.</h2>
+    <p>You do not have to wait for a rule to appear in the codebase. Tenure can capture a direct statement from the user, a config artifact in the workspace, or a repeated pattern in generated code. Each belief carries scope, confidence, epistemic status, aliases, and provenance, so future requests know what to apply and why.</p>
 
     <div class="steps">
       <div class="step">
@@ -163,9 +214,9 @@ import Base from '../../layouts/Base.astro';
         </div>
         <div>
           <div class="step-label">Capture</div>
-          <h3>Decisions land in Tenure automatically</h3>
-          <p>When you tell your AI "we use factory functions, not classes" or "don't use Mongoose, raw driver only", Tenure extracts that belief from the conversation. No extra step. It just works in the background.</p>
-          <div class="step-mono">// You say it once. Tenure remembers it forever.</div>
+          <h3>Explicit statements become high-confidence beliefs</h3>
+          <p>When you tell your AI <code>we use factory functions, not classes</code> or <code>do not use Mongoose, raw driver only</code>, Tenure can extract that as a project-scoped decision. It does not need to infer the rule from historical code first.</p>
+          <div class="step-mono">// Direct statement → active decision → injected before future generation.</div>
         </div>
       </div>
 
@@ -176,8 +227,8 @@ import Base from '../../layouts/Base.astro';
         </div>
         <div>
           <div class="step-label">Scope</div>
-          <h3>Beliefs are scoped to projects, not globally polluted</h3>
-          <p>The MongoDB convention for your API project doesn't bleed into your data pipeline project. Tenure scopes beliefs to workspaces, so every project gets exactly the context it needs. Nothing more.</p>
+          <h3>Beliefs keep their scope, source, and confidence</h3>
+          <p>The MongoDB convention for your API project does not bleed into your data pipeline project. Tenure also distinguishes an explicit decision from an inferred pattern or config artifact, so the model is not treating every hint as equally authoritative.</p>
         </div>
       </div>
 
@@ -187,8 +238,8 @@ import Base from '../../layouts/Base.astro';
         </div>
         <div>
           <div class="step-label">Inject</div>
-          <h3>Every AI request arrives pre-loaded with your conventions</h3>
-          <p>Before the request reaches the model, Tenure injects the relevant beliefs automatically. The AI generating your code already knows your team's patterns, so PRs arrive closer to correct.</p>
+          <h3>Every AI request arrives with the relevant constraints</h3>
+          <p>Before the request reaches the model, Tenure injects the relevant beliefs and unresolved questions automatically. The AI generating your code sees the team's conventions, the decisions it must respect, and the questions it should not guess around.</p>
         </div>
       </div>
     </div>
@@ -200,7 +251,7 @@ import Base from '../../layouts/Base.astro';
     <div style="padding: 0 0 2.5rem;">
       <span class="label">Before &amp; after</span>
       <h2>What changes in code review.</h2>
-      <p>Same AI tool. Same task. Different outcome when the AI has your conventions in context.</p>
+      <p>Same AI tool. Same task. Different outcome when the AI has both conventions and explicit decisions in context.</p>
     </div>
 
     <div class="pr-compare">
@@ -233,7 +284,7 @@ import Base from '../../layouts/Base.astro';
           </div>
           <div class="pr-comment">
             <span class="pr-comment-author">reviewer</span>
-            <span class="pr-comment-text">This should import from the repository layer, not directly from the service. Check the architectural pattern doc.</span>
+            <span class="pr-comment-text">This should import from the repository layer, not directly from the service. We made that layer-boundary decision already.</span>
           </div>
           <div class="pr-verdict bad">3 review cycles. Fixed on third push.</div>
         </div>
@@ -243,7 +294,7 @@ import Base from '../../layouts/Base.astro';
         <div class="pr-panel-header good">
           <span class="pr-panel-dot good"></span>
           <span class="pr-panel-title">With Tenure</span>
-          <span class="pr-panel-sub">AI generated, conventions in context</span>
+          <span class="pr-panel-sub">AI generated, decisions in context</span>
         </div>
         <div class="pr-panel-body">
           <div class="pr-diff-line added">+ import {`{ makeUserRepository }`} from '../repositories/user'</div>
@@ -260,7 +311,7 @@ import Base from '../../layouts/Base.astro';
         <div class="pr-comments">
           <div class="pr-comment good">
             <span class="pr-comment-author good">reviewer</span>
-            <span class="pr-comment-text good">LGTM. Factory pattern, correct naming, proper layer separation. Approved.</span>
+            <span class="pr-comment-text good">LGTM. Factory pattern, correct naming, and the existing layer-boundary decision was followed. Approved.</span>
           </div>
           <div class="pr-verdict good">1 review cycle. Merged same day.</div>
         </div>
@@ -272,7 +323,7 @@ import Base from '../../layouts/Base.astro';
 <section class="uc-section" style="background: var(--surface); border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label">What Tenure actually is</span>
-    <h2>Not a code reviewer. The memory layer that makes AI-generated code look like your team's code.</h2>
+    <h2>Not a code reviewer. The memory layer that carries team intent into code generation.</h2>
 
     <div class="positioning-grid">
       <div class="positioning-card">
@@ -282,13 +333,13 @@ import Base from '../../layouts/Base.astro';
       </div>
       <div class="positioning-card highlight-card">
         <div class="positioning-label right">Tenure says:</div>
-        <div class="positioning-quote">"PRs move faster when AI already knows your conventions."</div>
-        <p>Tenure sits at generation time, before the code is written. The reduction in PR review time is a consequence of better-aligned output, not a bolt-on review step.</p>
+        <div class="positioning-quote">"PRs move faster when AI already knows your conventions, decisions, and open questions."</div>
+        <p>Tenure sits at generation time, before the code is written. The reduction in PR review time is a consequence of better-aligned output: fewer convention misses, fewer ignored decisions, and fewer guesses where the team had not decided yet.</p>
       </div>
     </div>
 
     <div class="compare-verdict" style="margin-top:2.5rem;">
-      <p>PR review time becomes a consequence of better code generation.</p>
+      <p>PR review still requires judgment. Tenure reduces the avoidable part: re-explaining context the AI should have carried forward.</p>
     </div>
   </div>
 </section>
@@ -297,7 +348,7 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <span class="label">For teams</span>
     <h2>Shared memory means every engineer's AI starts from the same baseline.</h2>
-    <p>When one engineer captures "we use Zod for input validation, not Joi", every other engineer's AI knows it too. Conventions propagate through the team without a style guide meeting, without a Confluence page nobody reads, without a linting rule that fires after the fact.</p>
+    <p>When one engineer captures <code>we use Zod for input validation, not Joi</code>, every other engineer's AI knows it too. When another engineer captures <code>queue backend is still undecided</code>, future sessions know not to assume one. Shared memory propagates decisions and uncertainty without a style guide meeting, without a Confluence page nobody reads, without a linting rule that fires after the fact.</p>
 
     <div class="uc-feature-grid" style="margin-top:2.5rem;">
       <div class="uc-feature-card">
