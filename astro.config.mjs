@@ -111,8 +111,8 @@ export default defineConfig({
         {
           tag: "script",
           attrs: {
-            src: "https://app.rybbit.io/api/script.js",
-            "data-site-id": "827b0b106221",
+            src: "https://white.tenureai.dev/api/script.js",
+            "data-site-id": "4644e3f20c35",
             defer: true,
           },
         },
