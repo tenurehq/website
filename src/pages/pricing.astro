@@ -1,0 +1,577 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Pricing | Tenure"
+  description="Simple pricing for Tenure. Start free with open source project-scoped memory, move to Team for production identity and shared memory, or choose Enterprise for SSO, SCIM, policy controls, audit exports, and faster email support."
+  canonical="https://tenureai.dev/pricing"
+  keywords="Tenure pricing, AI memory pricing, team AI memory, AI state infrastructure pricing, governed AI context, OIDC AI memory, SCIM AI memory, enterprise AI governance"
+>
+  <main class="pricing-page">
+    <section class="pricing-hero">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Open source core · Team Mode · Enterprise governance
+        </div>
+
+        <h1>Run Tenure free. Add governance when you need it.</h1>
+
+        <p class="hero-rag-line">
+          The same deterministic context engine at every tier, free or governed.
+        </p>
+
+        <p class="hero-sub">
+         Start free today. Team adds per-seat identity and shared memory. Enterprise adds SSO, policy, and audit at scale.
+        </p>
+      </div>
+    </section>
+
+    <section class="pricing-section" aria-labelledby="pricing-plans-heading">
+      <div class="container">
+        <span class="label">Plans</span>
+        <h2 id="pricing-plans-heading">Choose the operating path.</h2>
+        <p class="pricing-intro">
+          Tenure does not charge by projects, scopes, or agent tokens. The boundary is operational: local development, small-team production, or enterprise identity governance.
+        </p>
+
+        <div class="pricing-grid">
+          <article class="pricing-card">
+            <div class="pricing-card-topline">Open Source</div>
+            <h3>Single User</h3>
+            <p class="pricing-card-desc">For single users who want shared memory across tools.</p>
+
+            <div class="price-row">
+              <span class="price">Free</span>
+            </div>
+            <p class="price-note">Always free, no account or credit card required.</p>
+
+            <a class="btn-secondary pricing-btn" href="/docs/quickstart">Get Started</a>
+
+            <ul class="pricing-features">
+              <li>Project-scoped memory</li>
+              <li>Structured beliefs with provenance</li>
+              <li>Scoped client and agent tokens</li>
+              <li>User persona toggle</li>
+              <li>Local/self-hosted deployment</li>
+              <li>Community support</li>
+            </ul>
+          </article>
+
+          <article class="pricing-card pricing-card-featured">
+          <div class="pricing-pill pricing-pill-soon">Coming soon</div>
+            <div class="pricing-card-topline">Team</div>
+            <h3>Small Team</h3>
+            <p class="pricing-card-desc">For small teams using Tenure with shared project memory.</p>
+
+            <div class="price-row">
+              <span class="price">$25</span>
+              <span class="price-unit">/ user / month</span>
+            </div>
+            <p class="price-note">$99/month minimum, includes 4 users. $25/user/month after that. </p>
+
+            <a class="btn-primary pricing-btn" href="mailto:contact@tenureai.dev?subject=Tenure%20Team%20Early%20Access">Request Team access</a>
+
+            <ul class="pricing-features">
+              <li>Everything in Developer</li>
+              <li>Team Mode</li>
+              <li>OAuth / SSO</li>
+              <li>Project and team scopes</li>
+              <li>Shared team context</li>
+              <li>90-day audit history</li>
+              <li>Ticket-only support</li>
+            </ul>
+          </article>
+
+          <article class="pricing-card pricing-card-soon">
+            <div class="pricing-pill pricing-pill-soon">Coming soon</div>
+            <div class="pricing-card-topline">Enterprise</div>
+            <h3>Organization</h3>
+            <p class="pricing-card-desc">For organizations that need segmented shared memory and polciy enforcement.</p>
+
+            <div class="price-row">
+              <span class="price">Custom</span>
+            </div>
+            <p class="price-note">Annual contract. Deployment and support matched to your environment.</p>
+
+            <a class="btn-secondary pricing-btn" href="mailto:contact@tenureai.dev?subject=Tenure%20Enterprise%20Waitlist">Join Enterprise waitlist</a>
+
+            <ul class="pricing-features">
+              <li>Everything in Team</li>
+              <li>SCIM provisioning and deprovisioning</li>
+              <li>Group-to-scope mapping</li>
+              <li>Advanced policy controls</li>
+              <li>Audit exports and retention controls</li>
+              <li>Email support with faster response times</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing-section pricing-boundary" aria-labelledby="pricing-boundary-heading">
+      <div class="container">
+        <span class="label">The boundary</span>
+        <h2 id="pricing-boundary-heading">Free to run. Managed to operate at scale.</h2>
+        <p>
+          Open source gives you the engine. Team adds the operating layer on top of it. Enterprise adds that same operating layer across every team in your org.
+        </p>
+
+        <div class="boundary-grid">
+          <div class="boundary-card">
+            <div class="boundary-label">Developer</div>
+            <h3>Run Tenure yourself.</h3>
+            <p>Use project scopes, local tokens, structured beliefs, and the core context engine without an account.</p>
+          </div>
+
+          <div class="boundary-card featured">
+            <div class="boundary-label">Team, early access</div>
+            <h3>Use Tenure with real users.</h3>
+            <p>Add OAuth/OIDC, shared team memory, scoped tokens, and ticket support so a small team can rely on it. Onboarded by hand while self-serve billing is built.</p>
+          </div>
+
+          <div class="boundary-card">
+            <div class="boundary-label">Enterprise, coming soon</div>
+            <h3>Govern Tenure across the org.</h3>
+            <p>Add SSO, SCIM, policy controls, exports, retention, private deployment, and faster email support, once multi-team is available.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing-section" aria-labelledby="comparison-heading">
+      <div class="container">
+        <span class="label">Plan comparison</span>
+        <h2 id="comparison-heading">The same core state model. Different operating guarantees.</h2>
+
+        <div class="pricing-table-wrap">
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th>Developer</th>
+                <th>Team</th>
+                <th>Enterprise</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Project-scoped memory</td>
+                <td>Included</td>
+                <td>Included</td>
+                <td>Included</td>
+              </tr>
+              <tr>
+                <td>Scoped client and agent tokens</td>
+                <td>Included</td>
+                <td>Included</td>
+                <td>Included</td>
+              </tr>
+              <tr>
+                <td>User persona toggle</td>
+                <td>Included</td>
+                <td>Included</td>
+                <td>Policy-controlled</td>
+              </tr>
+              <tr>
+                <td>Team Mode</td>
+                <td>—</td>
+                <td>Included</td>
+                <td>Included</td>
+              </tr>
+              <tr>
+                <td>OAuth / OIDC</td>
+                <td>—</td>
+                <td>Included</td>
+                <td>Included</td>
+              </tr>
+              <tr>
+                <td>SSO / SAML</td>
+                <td>—</td>
+                <td>—</td>
+                <td>Included</td>
+              </tr>
+              <tr>
+                <td>SCIM provisioning</td>
+                <td>—</td>
+                <td>—</td>
+                <td>Included</td>
+              </tr>
+              <tr>
+                <td>Audit history</td>
+                <td>Local logs</td>
+                <td>90 days</td>
+                <td>Advanced + export</td>
+              </tr>
+              <tr>
+                <td>Support</td>
+                <td>Community</td>
+                <td>Ticket only</td>
+                <td>Email, faster response times</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing-section pricing-faq" aria-labelledby="pricing-faq-heading">
+      <div class="container">
+        <span class="label">FAQ</span>
+        <h2 id="pricing-faq-heading">What people ask before starting.</h2>
+
+        <div class="faq-grid">
+          <div class="faq-card">
+            <h3>Do we host Tenure, or do you?</h3>
+            <p>You do. Tenure is self-hosted by design. Your memory, policy, audit trail, and agent activity stay inside your environment, not ours.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3>Do you charge for agent tokens?</h3>
+            <p>No, tokens are free and unlimited. Pricing is based on users, not on how many agents or clients you set up tokens for.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3>Why is Team paid if Tenure is open source?</h3>
+            <p>The open-source version gives you the core state engine. Team adds the production operating layer: identity, shared memory, audit history, and support.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3>When do we need Enterprise?</h3>
+            <p>Once you have more than one team, each needing its own segmented shared memory, but you still want every agent's GroundEval-reviewed contract enforced at runtime the same way, team after team, plus a faster support relationship than ticket-only.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta" class="pricing-cta">
+      <div class="container">
+        <span class="label">Get started</span>
+        <h2>AI memory becomes valuable when teams can trust what gets injected.</h2>
+        <p class="cta-sub">
+          Start free for local development, move to Team when shared memory needs identity, and use Enterprise when governance becomes mandatory.
+        </p>
+
+        <div class="hero-cta-row">
+          <a href="mailto:founders@tenureai.dev?subject=Tenure%20Team%20Early%20Access" class="btn-primary">Request Team access</a>
+          <a href="/docs/quickstart" class="btn-secondary">Install Free</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .pricing-page {
+    --pricing-accent: var(--accent, #00a8ad);
+    --pricing-accent-soft: rgba(0, 168, 173, 0.14);
+    --pricing-accent-border: rgba(0, 168, 173, 0.35);
+    --pricing-bg: var(--bg, #151515);
+    --pricing-card: rgba(255, 255, 255, 0.035);
+    --pricing-card-strong: rgba(0, 168, 173, 0.075);
+    --pricing-border: rgba(255, 255, 255, 0.1);
+    --pricing-text: var(--text, #e8e8e8);
+    --pricing-muted: var(--dim, #888888);
+    color: var(--pricing-text);
+  }
+
+  .pricing-page *,
+  .pricing-page *::before,
+  .pricing-page *::after {
+    box-sizing: border-box;
+  }
+
+  .pricing-hero {
+    padding: 7rem 0 4rem;
+    text-align: center;
+  }
+
+  .pricing-hero h1 {
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pricing-section {
+    padding: 5rem 0;
+  }
+
+  .pricing-section h2,
+  .pricing-section > .container > p {
+    max-width: 900px;
+  }
+
+  .pricing-intro {
+    color: var(--pricing-muted);
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+    align-items: stretch;
+  }
+
+  .pricing-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem;
+    min-height: 100%;
+    border: 1px solid var(--pricing-border);
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.045), var(--pricing-card));
+  }
+
+  .pricing-card-featured {
+    border-color: var(--pricing-accent-border);
+    background:
+      radial-gradient(circle at top, rgba(0,168,173,0.16), transparent 45%),
+      linear-gradient(180deg, rgba(0,168,173,0.09), rgba(255,255,255,0.035));
+    transform: translateY(-0.5rem);
+  }
+
+  .pricing-pill {
+    position: absolute;
+    top: -0.85rem;
+    left: 1.25rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--pricing-accent-border);
+    border-radius: 999px;
+    background: #0d2728;
+    color: var(--pricing-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pricing-pill-soon {
+    background: #2a1f0d;
+    border-color: rgba(245,158,11,0.4);
+    color: #f5a623;
+  }
+
+  .pricing-card-soon {
+    opacity: 0.92;
+  }
+
+  .pricing-card-topline,
+  .boundary-label {
+    color: var(--pricing-accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .pricing-card h3,
+  .boundary-card h3,
+  .faq-card h3 {
+    margin: 0.6rem 0 0.55rem;
+    color: var(--pricing-text);
+  }
+
+  .pricing-card-desc,
+  .price-note,
+  .boundary-card p,
+  .faq-card p {
+    color: var(--pricing-muted);
+    line-height: 1.65;
+  }
+
+  .pricing-card-desc {
+    min-height: 5.25rem;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    margin: 0.5rem 0 0.25rem;
+  }
+
+  .price {
+    font-size: clamp(2.4rem, 5vw, 3.65rem);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  .price-unit {
+    color: var(--pricing-muted);
+    font-size: 1rem;
+  }
+
+  .price-note {
+    min-height: 3.4rem;
+    margin: 0.5rem 0 1.2rem;
+    font-size: 0.92rem;
+  }
+
+  .pricing-btn {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 0.35rem 0 1.4rem;
+  }
+
+  .pricing-features {
+    display: grid;
+    gap: 0.7rem;
+    margin: auto 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pricing-features li {
+    position: relative;
+    padding-left: 1.45rem;
+    color: var(--pricing-text);
+    line-height: 1.45;
+  }
+
+  .pricing-features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--pricing-accent);
+    font-weight: 800;
+  }
+
+  .pricing-boundary {
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0), rgba(0,168,173,0.035), rgba(0,0,0,0));
+  }
+
+  .pricing-boundary p {
+    color: var(--pricing-muted);
+    line-height: 1.7;
+  }
+
+  .boundary-grid,
+  .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .faq-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .boundary-card,
+  .faq-card {
+    padding: 1.4rem;
+    border: 1px solid var(--pricing-border);
+    border-radius: 20px;
+    background: var(--pricing-card);
+  }
+
+  .boundary-card.featured {
+    border-color: var(--pricing-accent-border);
+    background: var(--pricing-card-strong);
+  }
+
+  .pricing-table-wrap {
+    overflow-x: auto;
+    margin-top: 2rem;
+    border: 1px solid var(--pricing-border);
+    border-radius: 20px;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .pricing-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+  }
+
+  .pricing-table th,
+  .pricing-table td {
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    text-align: left;
+  }
+
+  .pricing-table th {
+    color: var(--pricing-accent);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(0,168,173,0.055);
+  }
+
+  .pricing-table td {
+    color: var(--pricing-text);
+  }
+
+  .pricing-table td:first-child {
+    color: var(--pricing-muted);
+  }
+
+  .pricing-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .pricing-faq h2 {
+    max-width: 760px;
+  }
+
+  .pricing-cta {
+    padding-top: 5rem;
+  }
+
+  @media (max-width: 980px) {
+    .pricing-grid,
+    .boundary-grid,
+    .faq-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .pricing-card-featured {
+      transform: none;
+    }
+
+    .pricing-card-desc,
+    .price-note {
+      min-height: unset;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pricing-hero {
+      padding-top: 5rem;
+    }
+
+    .pricing-section {
+      padding: 3.5rem 0;
+    }
+
+    .pricing-card,
+    .boundary-card,
+    .faq-card {
+      padding: 1.2rem;
+      border-radius: 18px;
+    }
+  }
+
+  .pricing-card-desc {
+    min-height: 6.6rem;
+    max-height: 6.6rem;
+  }
+
+  .price-note {
+    min-height: 6.6rem; 
+    max-height: 6.6rem;
+  }
+
+</style>

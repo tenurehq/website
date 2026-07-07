@@ -1,0 +1,689 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tenure | Scoped Tokens for AI Clients and Agents"
+  description="Give every AI client and agent only the memory access it needs. Tenure separates chat, extraction, injection, belief read/write access, project scopes, token expiry, and per-turn injection audit logs."
+  canonical="https://tenureai.dev/use-case/scoped-tokens"
+  keywords="AI access tokens, scoped agent tokens, AI memory governance, AI agent access control, LLM proxy tokens, AI audit logs, context governance"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Tenure: Scoped Tokens for AI Clients and Agents",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "url": "https://tenureai.dev/use-case/scoped-tokens",
+  "description": "Tenure gives every AI client and agent scoped memory capabilities, project restrictions, token expiry, and per-turn audit logs showing exactly which beliefs were injected into each request.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<section class="token-hero">
+  <div class="container token-hero-inner">
+    <div class="uc-breadcrumb token-breadcrumb">
+      <a href="/use-cases">Use cases</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Scoped Tokens</span>
+    </div>
+    <span class="label">Access control</span>
+    <h1>Give every AI surface only the memory access it needs.</h1>
+    <p class="token-hero-sub">
+      Tenure separates clients, agents, extraction, injection, and belief access. A trusted desktop client can manage memory directly. An automated agent can receive scoped context without becoming the memory administrator.
+    </p>
+    <div class="token-ctas">
+      <a href="/pricing" class="btn-primary">View plans →</a>
+      <a href="/docs" class="btn-secondary">Read the docs</a>
+    </div>
+  </div>
+</section>
+
+<section class="token-section token-section-border">
+  <div class="container">
+    <span class="label">Why it matters</span>
+    <h2>Most AI memory is all-or-nothing. Tenure is capability-scoped.</h2>
+    <p>
+      Your IDE, chat client, CI agent, background worker, and autonomous coding agent should not all have the same authority over shared memory. Some tools need to inspect and edit beliefs. Some only need context injected before a model call. Some should be allowed to extract candidate beliefs, but never manually mutate the belief store.
+    </p>
+
+    <div class="token-compare-grid">
+      <div class="token-compare-card token-muted-card">
+        <div class="token-card-label">Without scoped tokens</div>
+        <h3>Every connected tool becomes equally trusted.</h3>
+        <p>
+          Once a memory layer is wired into an AI client or agent, access is often broad. The agent can use memory, but the boundary between using memory and administering memory is blurry.
+        </p>
+      </div>
+      <div class="token-compare-card token-good-card">
+        <div class="token-card-label token-card-label-good">With Tenure</div>
+        <h3>Each AI surface gets only the capabilities it needs.</h3>
+        <p>
+          Generate separate tokens for clients and agents. Limit what they can read, write, extract, inject, and which projects they can touch. Revoke or expire access when the tool changes.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="token-section token-surface token-section-border">
+  <div class="container-wide">
+    <div class="token-section-heading">
+      <span class="label">Client tokens vs agent tokens</span>
+      <h2>Let agents use memory without giving them database access.</h2>
+      <p>
+        Tenure makes the authority boundary visible. User-facing clients can be trusted with full belief management. Automated agents can be limited to chat, extraction, and injection.
+      </p>
+    </div>
+
+    <div class="token-types-grid">
+      <div class="token-type-card">
+        <div class="token-type-header">
+          <span class="token-dot token-dot-client"></span>
+          <span>Client token</span>
+        </div>
+        <p class="token-type-desc">For trusted user-facing tools like VS Code, Open WebUI, CLI tools, or an admin client.</p>
+        <ul class="token-cap-list">
+          <li><span>chat</span><em>Use chat completions and model endpoints</em></li>
+          <li><span>beliefs:read</span><em>List, search, and inspect beliefs</em></li>
+          <li><span>beliefs:write</span><em>Create, update, and delete beliefs via API</em></li>
+          <li><span>extract</span><em>Auto-extract beliefs from chat turns</em></li>
+          <li><span>inject</span><em>Inject scoped beliefs into model context</em></li>
+        </ul>
+      </div>
+
+      <div class="token-type-card token-type-card-highlight">
+        <div class="token-type-header">
+          <span class="token-dot token-dot-agent"></span>
+          <span>Agent token</span>
+        </div>
+        <p class="token-type-desc">For automated tools, background agents, CI agents, and agent frameworks.</p>
+        <ul class="token-cap-list">
+          <li><span>chat</span><em>Use chat completions and model endpoints</em></li>
+          <li><span>extract</span><em>Submit turns for memory extraction</em></li>
+          <li><span>inject</span><em>Receive scoped memory in context</em></li>
+          <li class="token-denied"><span>beliefs:read</span><em>No direct belief inspection by default</em></li>
+          <li class="token-denied"><span>beliefs:write</span><em>No direct belief mutation by default</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="token-section token-section-border">
+  <div class="container">
+    <span class="label">How it works</span>
+    <h2>Capability, project, and expiry controls sit before the model call.</h2>
+    <p>
+      Tenure runs in the request path. Before context reaches the model, the token determines which capabilities are available, which project scopes are eligible, and whether the request is allowed to use or create memory.
+    </p>
+
+    <div class="token-flow">
+      <div class="token-flow-step">
+        <div class="token-flow-num">01</div>
+        <h3>Issue a token</h3>
+        <p>Create a client or agent token for a specific tool. Name it, choose its capabilities, restrict it to projects, and set an expiry date when needed.</p>
+      </div>
+      <div class="token-flow-arrow">→</div>
+      <div class="token-flow-step">
+        <div class="token-flow-num">02</div>
+        <h3>Resolve access</h3>
+        <p>Each request is checked against the token: chat access, extraction permission, injection permission, direct belief read/write access, and project scope.</p>
+      </div>
+      <div class="token-flow-arrow">→</div>
+      <div class="token-flow-step">
+        <div class="token-flow-num">03</div>
+        <h3>Write the audit log</h3>
+        <p>When memory is injected, Tenure records which beliefs were supplied, where they were used, and why they were eligible for that turn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="token-section token-surface token-section-border">
+  <div class="container-wide">
+    <div class="token-section-heading">
+      <span class="label">Injection audit</span>
+      <h2>When memory affects a response, you can see exactly what was injected.</h2>
+      <p>
+        If an AI answer looks wrong, you should not have to guess whether memory influenced it. Tenure records the scoped belief set supplied to each request, so memory use is inspectable instead of reconstructed after the fact.
+      </p>
+    </div>
+
+    <div class="audit-mockup">
+      <div class="audit-header">
+        <span class="audit-title">Injection audit</span>
+        <span class="audit-meta">request_7f3a · project:api-service</span>
+      </div>
+      <div class="audit-body">
+        <div class="audit-row">
+          <div class="audit-belief-type">decision</div>
+          <div class="audit-belief-content">
+            <strong>Use raw MongoDB driver, not Mongoose.</strong>
+            <span>Injected because the request touched project:api-service and database access.</span>
+          </div>
+          <div class="audit-status">injected</div>
+        </div>
+        <div class="audit-row">
+          <div class="audit-belief-type">preference</div>
+          <div class="audit-belief-content">
+            <strong>Prefer explicit error returns for expected failures.</strong>
+            <span>Injected because the request included service-layer error handling.</span>
+          </div>
+          <div class="audit-status">injected</div>
+        </div>
+        <div class="audit-row audit-row-dim">
+          <div class="audit-belief-type">decision</div>
+          <div class="audit-belief-content">
+            <strong>Client A uses Redis for queues.</strong>
+            <span>Excluded because it belongs to project:client-a, not project:api-service.</span>
+          </div>
+          <div class="audit-status audit-status-muted">excluded</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="token-section token-section-border">
+  <div class="container">
+    <span class="label">What this enables</span>
+    <h2>Move from personal memory to governed AI infrastructure.</h2>
+    <p>
+      Scoped tokens are the practical boundary between “my AI remembers things” and “our AI systems can safely use shared context.” They let teams adopt memory without handing every agent the keys to the belief store.
+    </p>
+
+    <div class="token-feature-grid">
+      <div class="token-feature-card">
+        <h3>Give agents context, not admin rights</h3>
+        <p>An agent can receive relevant memory in its prompt without being allowed to list, edit, or delete beliefs directly.</p>
+      </div>
+      <div class="token-feature-card">
+        <h3>Separate clients from background jobs</h3>
+        <p>Your desktop client can manage memory. A background agent can be limited to extraction and injection.</p>
+      </div>
+      <div class="token-feature-card">
+        <h3>Restrict memory by project</h3>
+        <p>Tokens can be limited to specific project scopes so customer, repo, and initiative context stays isolated.</p>
+      </div>
+      <div class="token-feature-card">
+        <h3>Expire and revoke access</h3>
+        <p>Short-lived tokens make it easier to rotate tools, decommission agents, and remove stale access.</p>
+      </div>
+      <div class="token-feature-card">
+        <h3>Debug memory influence</h3>
+        <p>Per-turn audit logs show whether a belief influenced the request, instead of relying on guesswork after the model responds.</p>
+      </div>
+      <div class="token-feature-card">
+        <h3>Prepare for team governance</h3>
+        <p>The same primitives become the foundation for role-based issuance, policy templates, SSO, SCIM, and audit/replay.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="token-section token-surface token-section-border">
+  <div class="container">
+    <span class="label">Community and teams</span>
+    <h2>Local controls today. Team governance when you need it.</h2>
+    <p>
+      Scoped client and agent tokens, project restrictions, token expiry, and per-turn injection logs are useful even for one developer running multiple AI tools. Team and Enterprise plans add shared administration, identity-backed controls, policy workflows, and audit/replay across people and agents.
+    </p>
+
+    <div class="token-plan-grid">
+      <div class="token-plan-card">
+        <div class="token-plan-label">Community</div>
+        <h3>Local token control</h3>
+        <ul>
+          <li>Client and agent tokens</li>
+          <li>Capability selection</li>
+          <li>Project scope restrictions</li>
+          <li>Token expiry and revocation</li>
+          <li>Per-turn injection logs</li>
+        </ul>
+      </div>
+      <div class="token-plan-card token-plan-card-highlight">
+        <div class="token-plan-label token-plan-label-good">Team / Enterprise</div>
+        <h3>Governed token administration</h3>
+        <ul>
+          <li>Shared workspaces</li>
+          <li>Role-based token issuance</li>
+          <li>OIDC and SCIM controls</li>
+          <li>Policy-backed agent tokens</li>
+          <li>Audit and replay workflows</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="token-cta-section">
+  <div class="container token-cta-card">
+    <span class="label">Get started</span>
+    <h2>Put a governed memory boundary in front of every AI surface.</h2>
+    <p>
+      Start locally with scoped tokens and injection logs. Move to team governance when you need shared administration, identity controls, and policy-backed agent access.
+    </p>
+    <div class="token-ctas">
+      <a href="/pricing" class="btn-primary">View pricing →</a>
+      <a href="https://github.com/tenurehq/tenure" class="btn-secondary" target="_blank" rel="noopener">Try Community</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .token-hero {
+    padding: 7rem 2rem 5rem;
+    text-align: center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(0, 168, 173, 0.11), transparent 38%),
+      var(--bg);
+  }
+
+  .token-hero-inner {
+    max-width: 980px;
+  }
+
+  .token-breadcrumb {
+    margin-bottom: 2rem;
+    color: var(--dim);
+    font-size: 0.85rem;
+  }
+
+  .token-breadcrumb a {
+    color: var(--muted);
+  }
+
+  .token-breadcrumb a:hover {
+    color: var(--accent);
+  }
+
+  .uc-breadcrumb-sep {
+    margin: 0 0.5rem;
+    color: var(--dim);
+  }
+
+  .token-hero h1 {
+    max-width: 940px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: clamp(2.4rem, 5.4vw, 4rem);
+    line-height: 1.05;
+  }
+
+  .token-hero-sub {
+    max-width: 760px;
+    margin: 0 auto 2.25rem;
+    font-size: 1.2rem;
+    color: var(--muted);
+  }
+
+  .token-ctas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .token-section {
+    padding: 6rem 2rem;
+  }
+
+  .token-section-border {
+    border-top: 1px solid var(--border);
+  }
+
+  .token-surface {
+    background: var(--surface);
+  }
+
+  .token-section-heading {
+    max-width: 900px;
+    margin-bottom: 2.5rem;
+  }
+
+  .token-compare-grid,
+  .token-types-grid,
+  .token-plan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  .token-compare-card,
+  .token-type-card,
+  .token-feature-card,
+  .token-plan-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.6rem;
+    background: var(--surface);
+  }
+
+  .token-surface .token-type-card,
+  .token-surface .token-plan-card {
+    background: var(--bg);
+  }
+
+  .token-muted-card {
+    opacity: 0.74;
+  }
+
+  .token-good-card,
+  .token-type-card-highlight,
+  .token-plan-card-highlight {
+    border-color: rgba(0, 168, 173, 0.34);
+    background: rgba(0, 168, 173, 0.05);
+  }
+
+  .token-card-label,
+  .token-plan-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .token-card-label-good,
+  .token-plan-label-good {
+    color: var(--accent);
+  }
+
+  .token-compare-card h3,
+  .token-type-card h3,
+  .token-feature-card h3,
+  .token-plan-card h3 {
+    color: var(--text);
+  }
+
+  .token-type-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .token-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+
+  .token-dot-client {
+    background: var(--accent);
+  }
+
+  .token-dot-agent {
+    background: var(--amber);
+  }
+
+  .token-type-desc {
+    font-size: 0.9rem;
+    margin-bottom: 1.3rem;
+  }
+
+  .token-cap-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .token-cap-list li {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .token-cap-list span {
+    font-family: var(--mono);
+    color: var(--text);
+    font-size: 0.83rem;
+  }
+
+  .token-cap-list em {
+    color: var(--muted);
+    font-style: normal;
+    font-size: 0.86rem;
+    line-height: 1.45;
+  }
+
+  .token-denied {
+    opacity: 0.55;
+  }
+
+  .token-denied span {
+    color: var(--red);
+  }
+
+  .token-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: stretch;
+    gap: 0.85rem;
+    margin-top: 2.75rem;
+  }
+
+  .token-flow-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem;
+  }
+
+  .token-flow-num {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.85rem;
+  }
+
+  .token-flow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dim);
+    font-size: 1.4rem;
+  }
+
+  .audit-mockup {
+    border: 1px solid rgba(0, 168, 173, 0.28);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0d0d0d;
+    box-shadow: 0 0 60px rgba(0, 168, 173, 0.08);
+  }
+
+  .audit-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+
+  .audit-title {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .audit-meta {
+    color: var(--dim);
+  }
+
+  .audit-body {
+    padding: 1rem;
+  }
+
+  .audit-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 90px;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.025);
+    margin-bottom: 0.75rem;
+  }
+
+  .audit-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .audit-row-dim {
+    opacity: 0.62;
+  }
+
+  .audit-belief-type,
+  .audit-status {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+  }
+
+  .audit-status {
+    text-align: right;
+  }
+
+  .audit-status-muted {
+    color: var(--dim);
+  }
+
+  .audit-belief-content strong {
+    display: block;
+    color: var(--text);
+    font-size: 0.92rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .audit-belief-content span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+
+  .token-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.75rem;
+  }
+
+  .token-feature-card p {
+    font-size: 0.9rem;
+  }
+
+  .token-plan-card ul {
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .token-plan-card li {
+    position: relative;
+    padding-left: 1rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .token-plan-card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.68em;
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+
+  .token-cta-section {
+    padding: 6rem 2rem;
+    background:
+      radial-gradient(circle at 50% 20%, rgba(0, 168, 173, 0.12), transparent 42%),
+      var(--bg);
+  }
+
+  .token-cta-card {
+    text-align: center;
+    border: 1px solid rgba(0, 168, 173, 0.28);
+    border-radius: 18px;
+    background: rgba(0, 168, 173, 0.04);
+    padding: 3rem 2rem;
+  }
+
+  .token-cta-card p {
+    max-width: 720px;
+    margin: 0 auto 2rem;
+  }
+
+  @media (max-width: 860px) {
+    .token-compare-grid,
+    .token-types-grid,
+    .token-plan-grid,
+    .token-feature-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .token-flow {
+      grid-template-columns: 1fr;
+    }
+
+    .token-flow-arrow {
+      transform: rotate(90deg);
+      padding: 0.5rem 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .token-hero,
+    .token-section,
+    .token-cta-section {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    .token-cap-list li,
+    .audit-row {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+
+    .audit-status {
+      text-align: left;
+    }
+
+    .audit-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+</Base>
