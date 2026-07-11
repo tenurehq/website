@@ -3,26 +3,26 @@ import Base from '../layouts/Base.astro';
 ---
 <Base
   title="Pricing | Tenure"
-  description="Simple pricing for Tenure. Start free with open source project-scoped memory, move to Team for production identity and shared memory, or choose Enterprise for SSO, SCIM, policy controls, audit exports, and faster email support."
+  description="Simple pricing for Tenure. Start free with the open-source core, move to Pro for single-user production governance, choose Team for shared memory and identity, or use Enterprise for organization-wide policy and audit controls."
   canonical="https://tenureai.dev/pricing"
-  keywords="Tenure pricing, AI memory pricing, team AI memory, AI state infrastructure pricing, governed AI context, OIDC AI memory, SCIM AI memory, enterprise AI governance"
+  keywords="Tenure pricing, AI memory pricing, AI agent governance pricing, individual AI tools, team AI memory, AI state infrastructure pricing, governed AI context, OIDC AI memory, SCIM AI memory, enterprise AI governance"
 >
   <main class="pricing-page">
     <section class="pricing-hero">
       <div class="container">
         <div class="hero-badge">
           <span class="hero-badge-dot"></span>
-          Open source core · Team Mode · Enterprise governance
+          Open source core · Pro governance · Team Mode · Enterprise controls
         </div>
 
-        <h1>Run Tenure free. Add governance when you need it.</h1>
+        <h1>Start free. Add governance when Tenure becomes part of your workflow.</h1>
 
         <p class="hero-rag-line">
-          The same deterministic context engine at every tier, free or governed.
+          The same deterministic context engine at every tier.
         </p>
 
         <p class="hero-sub">
-         Start free today. Team adds per-seat identity and shared memory. Enterprise adds SSO, policy, and audit at scale.
+          Use the open-source core for personal projects. Pro is for one person running production agents. Team adds shared identity and context. Enterprise adds organization-wide policy and audit controls.
         </p>
       </div>
     </section>
@@ -30,21 +30,21 @@ import Base from '../layouts/Base.astro';
     <section class="pricing-section" aria-labelledby="pricing-plans-heading">
       <div class="container">
         <span class="label">Plans</span>
-        <h2 id="pricing-plans-heading">Choose the operating path.</h2>
+        <h2 id="pricing-plans-heading">Choose the operating model.</h2>
         <p class="pricing-intro">
-          Tenure does not charge by projects, scopes, or agent tokens. The boundary is operational: local development, small-team production, or enterprise identity governance.
+          Tenure does not charge by projects, scopes, clients, or agent tokens. Pricing changes when the operating model changes: open-source development, single-user production, shared team operation, or organization-wide governance.
         </p>
 
         <div class="pricing-grid">
           <article class="pricing-card">
             <div class="pricing-card-topline">Open Source</div>
-            <h3>Single User</h3>
-            <p class="pricing-card-desc">For single users who want shared memory across tools.</p>
+            <h3>Developer</h3>
+            <p class="pricing-card-desc">For individuals exploring Tenure or running personal projects across their own tools.</p>
 
             <div class="price-row">
               <span class="price">Free</span>
             </div>
-            <p class="price-note">Always free, no account or credit card required.</p>
+            <p class="price-note">Always free. No account or credit card required.</p>
 
             <a class="btn-secondary pricing-btn" href="/docs/quickstart">Get Started</a>
 
@@ -53,32 +53,59 @@ import Base from '../layouts/Base.astro';
               <li>Structured beliefs with provenance</li>
               <li>Scoped client and agent tokens</li>
               <li>User persona toggle</li>
+              <li>Local audit logs</li>
               <li>Local/self-hosted deployment</li>
               <li>Community support</li>
             </ul>
           </article>
 
           <article class="pricing-card pricing-card-featured">
-          <div class="pricing-pill pricing-pill-soon">Coming soon</div>
+            <div class="pricing-pill pricing-pill-soon">Coming soon</div>
+            <div class="pricing-card-topline">Individual</div>
+            <h3>Pro</h3>
+            <p class="pricing-card-desc">For one person relying on Tenure across production agents, tools, and projects.</p>
+
+            <div class="price-row">
+              <span class="price">$19</span>
+              <span class="price-unit">/ month</span>
+            </div>
+            <p class="price-note">Unlimited projects, clients, and agent tokens.</p>
+
+            <a class="btn-primary pricing-btn" href="mailto:contact@tenureai.dev?subject=Tenure%20Pro%20Early%20Access">Request Pro access</a>
+
+            <ul class="pricing-features">
+              <li>Everything in Developer</li>
+              <li>Cross-project user context</li>
+              <li>Advanced token and capability policies</li>
+              <li>GroundEval contract enforcement</li>
+              <li>Full audit history and exports</li>
+              <li>Backup and restore tooling</li>
+              <li>Ticket support</li>
+            </ul>
+          </article>
+
+          <article class="pricing-card pricing-card-soon">
+            <div class="pricing-pill pricing-pill-soon">Coming soon</div>
             <div class="pricing-card-topline">Team</div>
             <h3>Small Team</h3>
-            <p class="pricing-card-desc">For small teams using Tenure with shared project memory.</p>
+            <p class="pricing-card-desc">For multiple people using Tenure with shared identity, policy, and project context.</p>
 
             <div class="price-row">
               <span class="price">$25</span>
               <span class="price-unit">/ user / month</span>
             </div>
-            <p class="price-note">$99/month minimum, includes 4 users. $25/user/month after that. </p>
+            <p class="price-note">$99/month minimum, including 4 users. $25/user/month after that.</p>
 
-            <a class="btn-primary pricing-btn" href="mailto:contact@tenureai.dev?subject=Tenure%20Team%20Early%20Access">Request Team access</a>
+            <a class="btn-secondary pricing-btn" href="mailto:contact@tenureai.dev?subject=Tenure%20Team%20Early%20Access">Request Team access</a>
 
             <ul class="pricing-features">
-              <li>Everything in Developer</li>
+              <li>Everything in Pro</li>
               <li>Team Mode</li>
-              <li>OAuth / SSO</li>
+              <li>OAuth / OIDC</li>
+              <li>Per-user identity and access</li>
               <li>Project and team scopes</li>
               <li>Shared team context</li>
-              <li>90-day audit history</li>
+              <li>Centralized team audit history</li>
               <li>Ticket-only support</li>
             </ul>
           </article>
@@ -87,7 +114,7 @@ import Base from '../layouts/Base.astro';
             <div class="pricing-pill pricing-pill-soon">Coming soon</div>
             <div class="pricing-card-topline">Enterprise</div>
             <h3>Organization</h3>
-            <p class="pricing-card-desc">For organizations that need segmented shared memory and polciy enforcement.</p>
+            <p class="pricing-card-desc">For organizations that need segmented shared memory and policy enforcement across teams.</p>
 
             <div class="price-row">
               <span class="price">Custom</span>
@@ -98,9 +125,10 @@ import Base from '../layouts/Base.astro';
 
             <ul class="pricing-features">
               <li>Everything in Team</li>
+              <li>SAML SSO</li>
               <li>SCIM provisioning and deprovisioning</li>
               <li>Group-to-scope mapping</li>
-              <li>Advanced policy controls</li>
+              <li>Organization-wide policy controls</li>
               <li>Audit exports and retention controls</li>
               <li>Email support with faster response times</li>
             </ul>
@@ -112,28 +140,34 @@ import Base from '../layouts/Base.astro';
     <section class="pricing-section pricing-boundary" aria-labelledby="pricing-boundary-heading">
       <div class="container">
         <span class="label">The boundary</span>
-        <h2 id="pricing-boundary-heading">Free to run. Managed to operate at scale.</h2>
+        <h2 id="pricing-boundary-heading">Free to explore. Paid when you depend on it.</h2>
         <p>
-          Open source gives you the engine. Team adds the operating layer on top of it. Enterprise adds that same operating layer across every team in your org.
+          The open-source core gives every user the deterministic memory engine. Pro adds the operating layer for a single power user. Team introduces shared user identity and team context. Enterprise extends governance across the organization.
         </p>
 
         <div class="boundary-grid">
           <div class="boundary-card">
             <div class="boundary-label">Developer</div>
-            <h3>Run Tenure yourself.</h3>
+            <h3>Run the core yourself.</h3>
             <p>Use project scopes, local tokens, structured beliefs, and the core context engine without an account.</p>
           </div>
 
           <div class="boundary-card featured">
-            <div class="boundary-label">Team, early access</div>
-            <h3>Use Tenure with real users.</h3>
-            <p>Add OAuth/OIDC, shared team memory, scoped tokens, and ticket support so a small team can rely on it. Onboarded by hand while self-serve billing is built.</p>
+            <div class="boundary-label">Pro, coming soon</div>
+            <h3>Govern your own agents.</h3>
+            <p>Add cross-project context, advanced policies, contract enforcement, audit exports, and support without paying for team features you do not need.</p>
+          </div>
+
+          <div class="boundary-card">
+            <div class="boundary-label">Team, coming soon</div>
+            <h3>Operate with real users.</h3>
+            <p>Add OAuth/OIDC, separate user identities, shared team memory, team scopes, and centralized administration.</p>
           </div>
 
           <div class="boundary-card">
             <div class="boundary-label">Enterprise, coming soon</div>
             <h3>Govern Tenure across the org.</h3>
-            <p>Add SSO, SCIM, policy controls, exports, retention, private deployment, and faster email support, once multi-team is available.</p>
+            <p>Add SAML, SCIM, organizational scopes, policy controls, retention, exports, private deployment options, and faster support.</p>
           </div>
         </div>
       </div>
@@ -150,6 +184,7 @@ import Base from '../layouts/Base.astro';
               <tr>
                 <th>Capability</th>
                 <th>Developer</th>
+                <th>Pro</th>
                 <th>Team</th>
                 <th>Enterprise</th>
               </tr>
@@ -160,27 +195,46 @@ import Base from '../layouts/Base.astro';
                 <td>Included</td>
                 <td>Included</td>
                 <td>Included</td>
-              </tr>
-              <tr>
-                <td>Scoped client and agent tokens</td>
-                <td>Included</td>
-                <td>Included</td>
                 <td>Included</td>
               </tr>
               <tr>
-                <td>User persona toggle</td>
+                <td>Client and agent tokens</td>
+                <td>Unlimited</td>
+                <td>Unlimited</td>
+                <td>Unlimited</td>
+                <td>Unlimited</td>
+              </tr>
+              <tr>
+                <td>Cross-project user context</td>
+                <td>—</td>
                 <td>Included</td>
                 <td>Included</td>
                 <td>Policy-controlled</td>
               </tr>
               <tr>
+                <td>GroundEval contract enforcement</td>
+                <td>—</td>
+                <td>Included</td>
+                <td>Included</td>
+                <td>Included</td>
+              </tr>
+              <tr>
+                <td>Multiple user identities</td>
+                <td>—</td>
+                <td>—</td>
+                <td>Included</td>
+                <td>Included</td>
+              </tr>
+              <tr>
                 <td>Team Mode</td>
+                <td>—</td>
                 <td>—</td>
                 <td>Included</td>
                 <td>Included</td>
               </tr>
               <tr>
                 <td>OAuth / OIDC</td>
+                <td>—</td>
                 <td>—</td>
                 <td>Included</td>
                 <td>Included</td>
@@ -189,23 +243,27 @@ import Base from '../layouts/Base.astro';
                 <td>SSO / SAML</td>
                 <td>—</td>
                 <td>—</td>
+                <td>—</td>
                 <td>Included</td>
               </tr>
               <tr>
                 <td>SCIM provisioning</td>
                 <td>—</td>
                 <td>—</td>
+                <td>—</td>
                 <td>Included</td>
               </tr>
               <tr>
-                <td>Audit history</td>
+                <td>Audit tooling</td>
                 <td>Local logs</td>
-                <td>90 days</td>
-                <td>Advanced + export</td>
+                <td>Full history + export</td>
+                <td>Centralized team history</td>
+                <td>Advanced + retention controls</td>
               </tr>
               <tr>
                 <td>Support</td>
                 <td>Community</td>
+                <td>Ticket</td>
                 <td>Ticket only</td>
                 <td>Email, faster response times</td>
               </tr>
@@ -227,18 +285,28 @@ import Base from '../layouts/Base.astro';
           </div>
 
           <div class="faq-card">
-            <h3>Do you charge for agent tokens?</h3>
-            <p>No, tokens are free and unlimited. Pricing is based on users, not on how many agents or clients you set up tokens for.</p>
+            <h3>Do you charge for agents, clients, or projects?</h3>
+            <p>No. Tokens, clients, agents, and projects are unlimited. Individual and team pricing is based on the number of users, not the number of automated systems they run.</p>
           </div>
 
           <div class="faq-card">
-            <h3>Why is Team paid if Tenure is open source?</h3>
-            <p>The open-source version gives you the core state engine. Team adds the production operating layer: identity, shared memory, audit history, and support.</p>
+            <h3>Who is Pro for?</h3>
+            <p>Pro is for a single developer, founder, researcher, or consultant who relies on Tenure in production and needs stronger policy, audit, contract enforcement, and support without team identity features.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3>When should I move from Pro to Team?</h3>
+            <p>Move to Team when more than one person needs a separate identity, shared team context, team scopes, and centralized administration. Pro remains limited to a single user operator.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3>Why are Pro and Team paid if Tenure is open source?</h3>
+            <p>The open-source version gives you the core deterministic state engine. Paid plans add production operating tools, advanced governance, longer-lived administration, and support while keeping the core useful on its own.</p>
           </div>
 
           <div class="faq-card">
             <h3>When do we need Enterprise?</h3>
-            <p>Once you have more than one team, each needing its own segmented shared memory, but you still want every agent's GroundEval-reviewed contract enforced at runtime the same way, team after team, plus a faster support relationship than ticket-only.</p>
+            <p>Choose Enterprise when multiple teams need segmented shared memory, centralized organizational policy, SAML or SCIM, configurable audit retention, deployment controls, and a faster support relationship.</p>
           </div>
         </div>
       </div>
@@ -247,13 +315,13 @@ import Base from '../layouts/Base.astro';
     <section id="cta" class="pricing-cta">
       <div class="container">
         <span class="label">Get started</span>
-        <h2>AI memory becomes valuable when teams can trust what gets injected.</h2>
+        <h2>Govern every agent you use, even when the entire team is you.</h2>
         <p class="cta-sub">
-          Start free for local development, move to Team when shared memory needs identity, and use Enterprise when governance becomes mandatory.
+          Start with the open-source core. Move to Pro when you depend on Tenure in production, Team when context becomes shared, and Enterprise when governance must span the organization.
         </p>
 
         <div class="hero-cta-row">
-          <a href="mailto:founders@tenureai.dev?subject=Tenure%20Team%20Early%20Access" class="btn-primary">Request Team access</a>
+          <a href="mailto:contact@tenureai.dev?subject=Tenure%20Pro%20Early%20Access" class="btn-primary">Request Pro access</a>
           <a href="/docs/quickstart" class="btn-secondary">Install Free</a>
         </div>
       </div>
@@ -287,7 +355,13 @@ import Base from '../layouts/Base.astro';
   }
 
   .pricing-hero h1 {
-    max-width: 980px;
+    max-width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pricing-hero .hero-sub {
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -298,7 +372,7 @@ import Base from '../layouts/Base.astro';
 
   .pricing-section h2,
   .pricing-section > .container > p {
-    max-width: 900px;
+    max-width: 940px;
   }
 
   .pricing-intro {
@@ -310,8 +384,8 @@ import Base from '../layouts/Base.astro';
 
   .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
     margin-top: 2.5rem;
     align-items: stretch;
   }
@@ -320,14 +394,16 @@ import Base from '../layouts/Base.astro';
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: 1.75rem;
+    min-width: 0;
     min-height: 100%;
+    padding: 1.5rem;
     border: 1px solid var(--pricing-border);
     border-radius: 22px;
     background: linear-gradient(180deg, rgba(255,255,255,0.045), var(--pricing-card));
   }
 
   .pricing-card-featured {
+    z-index: 1;
     border-color: var(--pricing-accent-border);
     background:
       radial-gradient(circle at top, rgba(0,168,173,0.16), transparent 45%),
@@ -385,18 +461,20 @@ import Base from '../layouts/Base.astro';
   }
 
   .pricing-card-desc {
-    min-height: 5.25rem;
+    min-height: 6.9rem;
+    margin-bottom: 0.6rem;
   }
 
   .price-row {
     display: flex;
     align-items: baseline;
+    flex-wrap: wrap;
     gap: 0.35rem;
     margin: 0.5rem 0 0.25rem;
   }
 
   .price {
-    font-size: clamp(2.4rem, 5vw, 3.65rem);
+    font-size: clamp(2.25rem, 4vw, 3.35rem);
     line-height: 1;
     font-weight: 800;
     letter-spacing: -0.04em;
@@ -404,13 +482,13 @@ import Base from '../layouts/Base.astro';
 
   .price-unit {
     color: var(--pricing-muted);
-    font-size: 1rem;
+    font-size: 0.92rem;
   }
 
   .price-note {
-    min-height: 3.4rem;
+    min-height: 5.4rem;
     margin: 0.5rem 0 1.2rem;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
   }
 
   .pricing-btn {
@@ -459,9 +537,12 @@ import Base from '../layouts/Base.astro';
   .boundary-grid,
   .faq-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
     margin-top: 2rem;
+  }
+
+  .boundary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .faq-grid {
@@ -491,7 +572,7 @@ import Base from '../layouts/Base.astro';
 
   .pricing-table {
     width: 100%;
-    min-width: 760px;
+    min-width: 980px;
     border-collapse: collapse;
   }
 
@@ -500,6 +581,7 @@ import Base from '../layouts/Base.astro';
     padding: 1rem 1.1rem;
     border-bottom: 1px solid rgba(255,255,255,0.08);
     text-align: left;
+    vertical-align: top;
   }
 
   .pricing-table th {
@@ -530,11 +612,10 @@ import Base from '../layouts/Base.astro';
     padding-top: 5rem;
   }
 
-  @media (max-width: 980px) {
+  @media (max-width: 1180px) {
     .pricing-grid,
-    .boundary-grid,
-    .faq-grid {
-      grid-template-columns: 1fr;
+    .boundary-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .pricing-card-featured {
@@ -547,7 +628,13 @@ import Base from '../layouts/Base.astro';
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 720px) {
+    .pricing-grid,
+    .boundary-grid,
+    .faq-grid {
+      grid-template-columns: 1fr;
+    }
+
     .pricing-hero {
       padding-top: 5rem;
     }
@@ -563,15 +650,4 @@ import Base from '../layouts/Base.astro';
       border-radius: 18px;
     }
   }
-
-  .pricing-card-desc {
-    min-height: 6.6rem;
-    max-height: 6.6rem;
-  }
-
-  .price-note {
-    min-height: 6.6rem; 
-    max-height: 6.6rem;
-  }
-
 </style>
