@@ -83,7 +83,7 @@ import Base from '../../layouts/Base.astro';
     <span class="label">What GroundEval produces</span>
     <h2>The scores are more than a report card</h2>
     <p>
-      GroundEval evaluates agents against a deterministic state contract before they see production traffic. It generates questions from a configured event log, artifact corpus, and access policy, lets the agent answer, and then scores both the final answer and the trajectory that produced it. No LLM judge. The correctness signal comes from state.
+      GroundEval evaluates agents against a deterministic state policy before they see production traffic. It generates questions from a configured event log, artifact corpus, and access policy, lets the agent answer, and then scores both the final answer and the trajectory that produced it. No LLM judge. The correctness signal comes from state.
     </p>
     <p>
       What comes out the other end is richer than a single aggregate score. Each run surfaces a violation rate (how often the agent crossed access, temporal, or subsystem boundaries), a trajectory score (whether the evidence path was valid under the task constraints), and a compliance-adjusted combined score that penalizes governance violations even when the final answer looked right. It also gives you per-question failure reasons, so you can see exactly which failure class each breakdown belongs to.
@@ -166,7 +166,7 @@ import Base from '../../layouts/Base.astro';
       If the Counterfactual track came back with a violation rate of 0.000 and a strong trajectory score, that's not just a positive signal. It's a case for removing the review checkpoint on counterfactual responses entirely. The eval proved the agent follows valid causal evidence paths in this domain. Keeping a human in the loop on those responses isn't safety, it's overhead that costs reviewer attention that should be going somewhere else.
     </p>
     <p>
-      This is what makes GroundEval's determinism property matter beyond the obvious benefits. Because re-scoring an identical trace under an identical configuration always yields an identical score, the eval can serve as a regression gate. When you change the retrieval backend, update the prompt, or swap model versions, you re-run the eval against the same contract and see exactly what changed. If a workflow that previously had clean trajectory scores develops violations after a prompt change, the regression gate catches it before it reaches production, and the HITL routing updates accordingly.
+      This is what makes GroundEval's determinism property matter beyond the obvious benefits. Because re-scoring an identical trace under an identical configuration always yields an identical score, the eval can serve as a regression gate. When you change the retrieval backend, update the prompt, or swap model versions, you re-run the eval against the same policy and see exactly what changed. If a workflow that previously had clean trajectory scores develops violations after a prompt change, the regression gate catches it before it reaches production, and the HITL routing updates accordingly.
     </p>
 
     <div class="hitl-table-wrap">
@@ -231,10 +231,10 @@ import Base from '../../layouts/Base.astro';
     <span class="label">Getting started</span>
     <h2>The authoring cost is front-loaded and reusable</h2>
     <p>
-      The honest thing to say about this is that getting to a characterized system requires writing the evaluation contract. That means an event log, an artifact corpus, an access policy, and a config declaring what correctness looks like in your domain. GroundEval ships with five ready-to-run domain examples covering enterprise support, cybersecurity, healthcare, finance, and legal workflows, and the README walks through a solo dev scenario you can stand up in under fifteen minutes using LLM-generated synthetic data.
+      The honest thing to say about this is that getting to a characterized system requires writing the evaluation policy. That means an event log, an artifact corpus, an access policy, and a config declaring what correctness looks like in your domain. GroundEval ships with five ready-to-run domain examples covering enterprise support, cybersecurity, healthcare, finance, and legal workflows, and the README walks through a solo dev scenario you can stand up in under fifteen minutes using LLM-generated synthetic data.
     </p>
     <p>
-      But the authoring cost is front-loaded. Once the contract exists, it runs again across model versions and prompt changes without being re-authored. The eval that characterized your agent before the first deployment is the same eval that catches regressions six months later. The HITL routing decisions you made against the initial profile update automatically when the scores change.
+      But the authoring cost is front-loaded. Once the policy exists, it runs again across model versions and prompt changes without being re-authored. The eval that characterized your agent before the first deployment is the same eval that catches regressions six months later. The HITL routing decisions you made against the initial profile update automatically when the scores change.
     </p>
     <p>
       That's the compounding benefit. The work you put in before the first deployment keeps paying off every time you change something downstream.

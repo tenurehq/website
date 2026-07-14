@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 
 <Base
   title="Agent Evals Are Not Unit Tests | Tenure"
-  description="Stateful agent evaluation gets expensive when teams try to pre-author every failure case. GroundEval makes the first step easier by observing real behavior, drafting the eval contract, and letting domain experts review concrete evidence instead of starting from a blank page."
+  description="Stateful agent evaluation gets expensive when teams try to pre-author every failure case. GroundEval makes the first step easier by observing real behavior, drafting the eval policy, and letting domain experts review concrete evidence instead of starting from a blank page."
 >
 
 <script type="application/ld+json">
@@ -15,7 +15,7 @@ import Base from '../../layouts/Base.astro';
   "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
   "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
   "url": "https://tenureai.dev/writing/agent-evals-are-not-unit-tests",
-  "description": "Stateful agent evaluation gets expensive when teams try to pre-author every failure case. GroundEval makes the first step easier by observing real behavior, drafting the eval contract, and letting domain experts review concrete evidence instead of starting from a blank page.",
+  "description": "Stateful agent evaluation gets expensive when teams try to pre-author every failure case. GroundEval makes the first step easier by observing real behavior, drafting the eval policy, and letting domain experts review concrete evidence instead of starting from a blank page.",
   "datePublished": "2026-06-26",
   "dateModified": "2026-06-26"
 }
@@ -31,7 +31,7 @@ import Base from '../../layouts/Base.astro';
     <span class="label" style="margin-top:1.5rem; display:inline-block;">GroundEval</span>
     <h1>Agent Evals Are Not Unit Tests</h1>
     <p class="hero-sub-title" style="margin-top:1rem;">
-      The old way asks teams to pre-author every failure case. GroundEval starts by observing the agent they already have, then turns real behavior into a reviewable contract.
+      The old way asks teams to pre-author every failure case. GroundEval starts by observing the agent they already have, then turns real behavior into a reviewable policy.
     </p>
     <div class="essay-meta">
       <span class="essay-meta-item">Tenure research</span>
@@ -49,8 +49,8 @@ import Base from '../../layouts/Base.astro';
         <li>Most agent eval setup still borrows from unit testing: define expected behavior, write cases, then check pass or fail.</li>
         <li>That breaks down for stateful agents because the hard part is often the trajectory, not the final answer.</li>
         <li>Pre-authoring hundreds of cases assumes the team already knows the failure surface. Most teams only discover it by watching the agent act.</li>
-        <li>GroundEval makes the first step easier by observing real runs, drafting the tool map and task contract, and marking what needs human review.</li>
-        <li>The expert does not start from a blank page. They review concrete behavior, correct the contract, then score future runs deterministically.</li>
+        <li>GroundEval makes the first step easier by observing real runs, drafting the tool map and task policy, and marking what needs human review.</li>
+        <li>The expert does not start from a blank page. They review concrete behavior, correct the policy, then score future runs deterministically.</li>
       </ul>
     </div>
   </div>
@@ -114,7 +114,7 @@ import Base from '../../layouts/Base.astro';
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The missing step</span>
-    <h2>Observe the behavior before you write the contract</h2>
+    <h2>Observe the behavior before you write the policy</h2>
     <p>
       GroundEval changes the starting point. Instead of asking the user to define the perfect eval upfront, it lets them run the agent they already have and inspect what actually happened.
     </p>
@@ -122,7 +122,7 @@ import Base from '../../layouts/Base.astro';
       Observe mode records the trajectory: tool calls, arguments, returned artifacts, retrieved fields, final answer, and the apparent decision path. From that run, GroundEval drafts the eval assets that would otherwise have to be written by hand.
     </p>
     <p>
-      The draft is not treated as truth. It is a structured starting point. The user reviews the proposed tool map, artifacts, task contract, preconditions, and evidence requirements before deterministic scoring begins.
+      The draft is not treated as truth. It is a structured starting point. The user reviews the proposed tool map, artifacts, task policy, preconditions, and evidence requirements before deterministic scoring begins.
     </p>
 
     <div class="workflow-strip">
@@ -133,7 +133,7 @@ import Base from '../../layouts/Base.astro';
       <div class="workflow-arrow">&rsaquo;</div>
       <div class="workflow-step">
         <span>Draft</span>
-        <p>Generate the tool map, candidate contract, artifacts, and review checklist.</p>
+        <p>Generate the tool map, candidate policy, artifacts, and review checklist.</p>
       </div>
       <div class="workflow-arrow">&rsaquo;</div>
       <div class="workflow-step">
@@ -209,7 +209,7 @@ import Base from '../../layouts/Base.astro';
       Suppose an agent is asked whether a customer should be escalated to enterprise support. A final-answer eval might only check whether the agent said yes or no. That misses the actual risk.
     </p>
     <p>
-      The correct trajectory may require the agent to verify the customer plan in CRM, check the contract status, inspect recent support tickets, confirm the incident severity, and only then recommend escalation. The path matters because each step controls whether the decision is justified.
+      The correct trajectory may require the agent to verify the customer plan in CRM, check the policy status, inspect recent support tickets, confirm the incident severity, and only then recommend escalation. The path matters because each step controls whether the decision is justified.
     </p>
 
     <div class="trajectory-grid">
@@ -220,8 +220,8 @@ import Base from '../../layouts/Base.astro';
       </div>
       <div class="trajectory-card trajectory-card--strong">
         <span class="trajectory-label">Valid at the trajectory layer</span>
-        <h3>CRM &rarr; contract &rarr; tickets &rarr; decision</h3>
-        <p>The agent checked the authoritative plan field, verified active contract status, inspected recent support history, and grounded the decision in visible evidence.</p>
+        <h3>CRM &rarr; policy &rarr; tickets &rarr; decision</h3>
+        <p>The agent checked the authoritative plan field, verified active policy status, inspected recent support history, and grounded the decision in visible evidence.</p>
       </div>
     </div>
 
@@ -253,7 +253,7 @@ import Base from '../../layouts/Base.astro';
 
 <span class="c-key">✓</span> <span class="c-str">observed tool calls</span>
 <span class="c-key">✓</span> <span class="c-str">captured arguments and returned artifacts</span>
-<span class="c-key">✓</span> <span class="c-str">drafted config and task contract</span>
+<span class="c-key">✓</span> <span class="c-str">drafted config and task policy</span>
 <span class="c-key">✓</span> <span class="c-str">generated review checklist</span></pre>
       </div>
     </div>
@@ -265,7 +265,7 @@ import Base from '../../layouts/Base.astro';
       <div class="tree-line tree-child">draft_config/</div>
       <div class="tree-line tree-grandchild">config.yaml</div>
       <div class="tree-line tree-grandchild">tool_map.yaml</div>
-      <div class="tree-line tree-grandchild">task_contracts/inferred_task.yaml</div>
+      <div class="tree-line tree-grandchild">task_policys/inferred_task.yaml</div>
       <div class="tree-line tree-grandchild">artifacts/observed/</div>
       <div class="tree-line tree-grandchild">REVIEW.md</div>
     </div>
@@ -329,7 +329,7 @@ import Base from '../../layouts/Base.astro';
 
     <div class="essay-callout">
       <p>
-        The product promise is not "write no evals." The promise is "start from real behavior, review the contract, and stop hand-authoring from a blank page."
+        The product promise is not "write no evals." The promise is "start from real behavior, review the policy, and stop hand-authoring from a blank page."
       </p>
     </div>
   </div>
@@ -343,7 +343,7 @@ import Base from '../../layouts/Base.astro';
       Treating agent evals like unit tests pushes teams toward large manually authored suites before they understand how their agent actually behaves. That creates the wrong bottleneck: too much speculative authoring, too little empirical failure discovery.
     </p>
     <p>
-      GroundEval makes the path smaller. Run the agent. Observe the trajectory. Draft the contract. Review the truth boundary. Then score future runs deterministically.
+      GroundEval makes the path smaller. Run the agent. Observe the trajectory. Draft the policy. Review the truth boundary. Then score future runs deterministically.
     </p>
     <p>
       That is how agent evaluation becomes practical for stateful systems. Not by pretending the final answer is enough, and not by asking teams to imagine every failure upfront, but by turning actual behavior into reviewed, repeatable checks.
@@ -371,7 +371,7 @@ import Base from '../../layouts/Base.astro';
       <a href="/writing/why-observe-first-wins-agent-evaluation" class="related-card">
         <div class="related-tag">GroundEval</div>
         <h3>Why Observe First Wins for Agent Evaluation</h3>
-        <p>How GroundEval turns real agent runs into reviewable eval contracts.</p>
+        <p>How GroundEval turns real agent runs into reviewable eval policys.</p>
         <span class="related-link">Read &rarr;</span>
       </a>
       <a href="/writing/how-to-test-agent-checked-before-saying-no" class="related-card">

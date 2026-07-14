@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 
 <Base
   title="Why Observe First Wins for Agent Evaluation | Tenure"
-  description="Agent builders do not need another blank config. They need to see what their agent actually did, turn that behavior into a reviewable contract, and then score future runs deterministically."
+  description="Agent builders do not need another blank config. They need to see what their agent actually did, turn that behavior into a reviewable policy, and then score future runs deterministically."
 >
 
 <script type="application/ld+json">
@@ -15,7 +15,7 @@ import Base from '../../layouts/Base.astro';
   "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
   "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
   "url": "https://tenureai.dev/writing/why-observe-first-wins-agent-evaluation",
-  "description": "Agent builders do not need another blank config. They need to see what their agent actually did, turn that behavior into a reviewable contract, and then score future runs deterministically.",
+  "description": "Agent builders do not need another blank config. They need to see what their agent actually did, turn that behavior into a reviewable policy, and then score future runs deterministically.",
   "datePublished": "2026-07-08",
   "dateModified": "2026-07-08"
 }
@@ -31,7 +31,7 @@ import Base from '../../layouts/Base.astro';
     <span class="label" style="margin-top:1.5rem; display:inline-block;">GroundEval</span>
     <h1>Why Observe First Wins for Agent Evaluation</h1>
     <p class="hero-sub-title" style="margin-top:1rem;">
-      Agent builders do not need another blank config. They need to run the agent they already have, see what it actually did, and turn that behavior into a reviewable eval contract.
+      Agent builders do not need another blank config. They need to run the agent they already have, see what it actually did, and turn that behavior into a reviewable eval policy.
     </p>
     <div class="essay-meta">
       <span class="essay-meta-item">Tenure research</span>
@@ -47,9 +47,9 @@ import Base from '../../layouts/Base.astro';
       <h3>TL;DR</h3>
       <ul>
         <li>Most agent eval tools ask users to start with traces, golden datasets, expected tool trajectories, or custom scorers.</li>
-        <li>The hard part is not only scoring. The hard part is turning real agent behavior into a contract worth scoring against.</li>
+        <li>The hard part is not only scoring. The hard part is turning real agent behavior into a policy worth scoring against.</li>
         <li>GroundEval now starts with observation. Run your existing agent once. GroundEval records the tools, arguments, artifacts, final answer, and decision path.</li>
-        <li>By default, observe mode drafts the config, tool map, artifacts, task contract, and review checklist from that run.</li>
+        <li>By default, observe mode drafts the config, tool map, artifacts, task policy, and review checklist from that run.</li>
         <li>The draft is not treated as truth. The user validates it before deterministic scoring begins.</li>
       </ul>
     </div>
@@ -67,7 +67,7 @@ import Base from '../../layouts/Base.astro';
       That order makes sense if the team already understands the agent's behavior. Most teams do not. They know the agent returns an answer. They may not know which tools it called, which arguments it passed, which artifacts it used, which searches it skipped, or whether the final answer depended on evidence that was never fetched.
     </p>
     <p>
-      Observe first flips the order. The user does not begin by declaring the perfect evaluation. They begin by running the agent they already have. GroundEval watches the run, records the trajectory, and drafts the starting contract from what actually happened.
+      Observe first flips the order. The user does not begin by declaring the perfect evaluation. They begin by running the agent they already have. GroundEval watches the run, records the trajectory, and drafts the starting policy from what actually happened.
     </p>
     <div class="essay-callout">
       <p>
@@ -132,9 +132,9 @@ import Base from '../../layouts/Base.astro';
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The gap</span>
-    <h2>Observation is not the same as an eval contract</h2>
+    <h2>Observation is not the same as an eval policy</h2>
     <p>
-      Traces are useful, but a trace is still raw material. A trace can tell you that the agent called <code>fetch_customer</code>, then <code>search_tickets</code>, then <code>fetch_contract</code>. It does not automatically tell you which of those calls were required, which artifact defined ground truth, which role was allowed to see which subsystem, or whether the final decision depended on a missing precondition.
+      Traces are useful, but a trace is still raw material. A trace can tell you that the agent called <code>fetch_customer</code>, then <code>search_tickets</code>, then <code>fetch_policy</code>. It does not automatically tell you which of those calls were required, which artifact defined ground truth, which role was allowed to see which subsystem, or whether the final decision depended on a missing precondition.
     </p>
     <p>
       Golden datasets and expected tool trajectories help, but they create another setup burden. The user still has to decide what the golden path is before seeing how the agent behaves in practice.
@@ -166,7 +166,7 @@ import Base from '../../layouts/Base.astro';
           <tr>
             <td>Golden datasets</td>
             <td>Known examples for regression testing</td>
-            <td>A starter contract generated from real behavior, then reviewed</td>
+            <td>A starter policy generated from real behavior, then reviewed</td>
           </tr>
           <tr>
             <td>Tool call accuracy</td>
@@ -241,7 +241,7 @@ import Base from '../../layouts/Base.astro';
       <div class="tree-line tree-child">draft_config/</div>
       <div class="tree-line tree-grandchild">config.yaml</div>
       <div class="tree-line tree-grandchild">tool_map.yaml</div>
-      <div class="tree-line tree-grandchild">task_contracts/inferred_task.yaml</div>
+      <div class="tree-line tree-grandchild">task_policys/inferred_task.yaml</div>
       <div class="tree-line tree-grandchild">artifacts/observed/</div>
       <div class="tree-line tree-grandchild">REVIEW.md</div>
     </div>
@@ -256,7 +256,7 @@ import Base from '../../layouts/Base.astro';
       Observe first only works if the product is honest about the boundary. Observed behavior is not ground truth. The agent might have called the wrong tool. It might have retrieved the wrong artifact. It might have skipped a required search. It might have used a field that should not define correctness.
     </p>
     <p>
-      So GroundEval marks semantic inferences as review required. It can draft a likely task contract, but the user validates the contract before deterministic scoring begins.
+      So GroundEval marks semantic inferences as review required. It can draft a likely task policy, but the user validates the policy before deterministic scoring begins.
     </p>
 
     <div class="review-grid">
@@ -287,7 +287,7 @@ import Base from '../../layouts/Base.astro';
   <span class="c-key">generated_from_observation</span>: <span class="c-bool">true</span>
   <span class="c-key">reviewed</span>: <span class="c-bool">false</span>
 
-<span class="c-key">task_contracts</span>:
+<span class="c-key">task_policys</span>:
   - <span class="c-key">name</span>: <span class="c-str">verify_escalation_readiness</span>
     <span class="c-key">review_required</span>: <span class="c-bool">true</span>
     <span class="c-key">preconditions</span>:
@@ -331,7 +331,7 @@ import Base from '../../layouts/Base.astro';
       <div class="report-card">
         <span>4</span>
         <h3>Review checklist</h3>
-        <p>What the user must confirm before the config can be treated as a deterministic state contract.</p>
+        <p>What the user must confirm before the config can be treated as a deterministic state policy.</p>
       </div>
     </div>
 
@@ -356,7 +356,7 @@ import Base from '../../layouts/Base.astro';
         <span class="path-card__label">Old entry point</span>
         <h3>Write the eval first</h3>
         <ul>
-          <li>Choose a task contract</li>
+          <li>Choose a task policy</li>
           <li>Map every tool</li>
           <li>Seed artifacts</li>
           <li>Declare access rules</li>
@@ -397,7 +397,7 @@ import Base from '../../layouts/Base.astro';
 
     <div class="essay-callout">
       <p>
-        GroundEval helps you turn real agent behavior into a reviewed deterministic contract, then scores whether future decisions are evidence supported, complete, and allowed.
+        GroundEval helps you turn real agent behavior into a reviewed deterministic policy, then scores whether future decisions are evidence supported, complete, and allowed.
       </p>
     </div>
 
@@ -412,7 +412,7 @@ import Base from '../../layouts/Base.astro';
     <span class="label">Summary</span>
     <h2>The best eval starts with what the agent actually did</h2>
     <p>
-      Agent builders already have traces, expected tool trajectories, golden datasets, and scorers. What they still need is a path from raw behavior to a state contract.
+      Agent builders already have traces, expected tool trajectories, golden datasets, and scorers. What they still need is a path from raw behavior to a state policy.
     </p>
     <p>
       Observe first is that path. GroundEval watches the run, drafts the config by default, marks what needs review, and only scores once the user has validated what correctness means.
