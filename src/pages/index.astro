@@ -14,90 +14,87 @@ import Base from '../layouts/Base.astro';
           Precise shared memory · No call-home telemetry · Scoped agent tokens · OIDC / SCIM 
         </div>
 
-        <h1>Give every AI surface shared memory. Govern what they do.</h1>
+        <h1>API gateways secure your endpoints. <br/> <span>Tenure</span> secures the AI request path.</h1>
 
-        <p class="hero-rag-line">
-        One endpoint. Every AI client. Context that follows you.
+        <p class="hero-rag-line">One endpoint. Shared scoped memory. Real-time enforcement.</p>
+
+        <p class="hero-sub hero-sub-lede">
+        Once you give an agent access to your tools, databases, or CRM, it can take consequential actions autonomously. Monitoring those actions after the fact isn't safety—it's an autopsy.
         </p>
-
-        <p class="hero-sub">
-        Default deny. Every client and agent gets scoped context.</p>
 
         <div class="hero-cta-row">
           <a href="#architecture" class="btn-primary">See How Tenure Fits</a>
            <a href="/pricing" class="btn-secondary">View Pricing</a>
         </div>
 
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="hero-stat-value">1.0<a href="https://huggingface.co/spaces/tenurehq/precisionmembench" style="color:var(--accent);font-size:0.7em;vertical-align:super;text-decoration:none">*</a></span>
-            <span class="hero-stat-label">Retrieval precision</span>
-          </div>
-          <div class="hero-stat">
-            <span class="hero-stat-value">&lt;15ms</span>
-            <span class="hero-stat-label">Context injection</span>
-          </div>
-          <div class="hero-stat">
-            <span class="hero-stat-value">0.00</span>
-            <span class="hero-stat-label">Drift score</span>
-          </div>
-          <div class="hero-stat">
-            <span class="hero-stat-value">0</span>
-            <span class="hero-stat-label">Workflow changes</span>
-          </div>
-        </div>
-
-        <div class="terminal">
-          <div class="terminal-bar">
+        <div class="gateway-mock" aria-label="Example runtime decision made by Tenure">
+          <div class="gateway-mock-bar">
             <span class="term-dot term-dot-red"></span>
             <span class="term-dot term-dot-yellow"></span>
             <span class="term-dot term-dot-green"></span>
-            <div class="term-tabs">
-              <button class="term-tab active" data-tab="team">Team</button>
-              <button class="term-tab" data-tab="local">Local</button>
-            </div>
+            <span class="gateway-mock-title">RUNTIME GATEWAY <span class="gateway-mock-agent">agent:sales-outbound</span></span>
           </div>
 
-        <div class="terminal-body" id="term-team">
-          <div><span class="t-prompt">$</span> <span class="t-cmd">helm repo add tenure https://charts.tenureai.dev</span></div>
-          <div><span class="t-prompt">$</span> <span class="t-cmd">helm repo update</span></div>
-          <div><span class="t-prompt">$</span> <span class="t-cmd">helm install tenure tenure/tenure \</span></div>
-          <div class="t-indent"><span class="t-cmd">--create-namespace \</span></div>
-          <div class="t-indent"><span class="t-cmd">--namespace tenure</span></div>
-          <div>&nbsp;</div>
-          <div><span class="t-ok">  &#10003; Tenure running in cluster</span></div>
-          <div><span class="t-ok">  &#10003;</span> <span class="t-muted">OIDC endpoint ready</span></div>
-          <div><span class="t-ok">  &#10003;</span> <span class="t-muted">SCIM provisioning active</span></div>
-          <div><span class="t-ok">  &#10003;</span> <span class="t-muted">Audit trail enabled</span></div>
+          <div class="gateway-mock-body">
+            <div class="gateway-mock-intent">
+              <span class="gateway-mock-eyebrow">Agent Intent</span>
+              <span class="gateway-mock-quote">&ldquo;Send follow-up offer to Prospect&rdquo;</span>
+            </div>
+
+            <div class="gateway-mock-eyebrow gateway-mock-eyebrow-checks">Evaluating preconditions&hellip;</div>
+
+            <ul class="gateway-checks">
+              <li class="gateway-check gateway-check-pass" style="--d:1">
+                <span class="gateway-check-name">Identity <span class="gateway-check-dim">&mdash; Token authenticated, workload-id 9482</span></span>
+                <span class="gateway-check-badge">PASS</span>
+              </li>
+              <li class="gateway-check gateway-check-pass" style="--d:2">
+                <span class="gateway-check-name">Auth <span class="gateway-check-dim">&mdash; CRM write permission</span></span>
+                <span class="gateway-check-badge">PASS</span>
+              </li>
+              <li class="gateway-check gateway-check-fail" style="--d:3">
+                <span class="gateway-check-name">Precondition <span class="gateway-check-dim">&mdash; &ldquo;not currently a paying user&rdquo;</span></span>
+                <span class="gateway-check-badge">FAIL</span>
+                <span class="gateway-check-evidence">Evidence: found active account &lsquo;linear.app&rsquo;</span>
+              </li>
+            </ul>
+
+            <div class="gateway-decision" style="--d:4">
+              <span class="gateway-decision-label">Decision</span>
+              <span class="gateway-decision-value">Block &amp; escalate</span>
+              <span class="gateway-decision-rule">Policy #104</span>
+            </div>
+          </div>
         </div>
 
-        <div class="terminal-body" id="term-local" style="display:none">
-          <div><span class="t-prompt">$</span> <span class="t-cmd">curl -fsSL https://raw.githubusercontent.com/tenurehq/tenure/main/scripts/install.sh | bash</span></div>
-          <div class="t-dim">&nbsp;&nbsp;Pulling tenurehq/tenure:latest...</div>
-          <div class="t-dim">&nbsp;&nbsp;Starting container on :5757...</div>
-          <div><span class="t-ok">&nbsp;&nbsp;&#10003; Tenure is running</span></div>
-          <div>&nbsp;</div>
-          <div class="t-muted">&nbsp;&nbsp;Bearer token:</div>
-          <div>&nbsp;&nbsp;<span class="t-token">sk-tenure-&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</span></div>
-          <div>&nbsp;</div>
-          <div><span class="t-ok">&nbsp;&nbsp;&#10003;</span> <span class="t-muted">Change your endpoint to localhost:5757/v1</span></div>
-          <div><span class="t-ok">&nbsp;&nbsp;&#10003;</span> <span class="t-muted">Extraction on. Injection off. Observe first.</span></div>
-          <div>&nbsp;</div>
-          <div class="t-dim">&nbsp;&nbsp;30 seconds. That's it.</div>
-        </div>
       </div>
+    </section>
 
-      <script>
-        document.querySelectorAll('.term-tab').forEach(tab => {
-          tab.addEventListener('click', () => {
-            document.querySelectorAll('.term-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            const target = tab.dataset.tab;
-            document.getElementById('term-team').style.display = target === 'team' ? 'block' : 'none';
-            document.getElementById('term-local').style.display = target === 'local' ? 'block' : 'none';
-          });
-        });
-      </script>
+    <section id="state-vs-context">
+      <div class="container">
+        <span class="label">The problem</span>
+        <h2>Your AI can act. Your infrastructure can't judge when it should.</h2>
+        <p>
+        AI is no longer trapped inside a chat bubble. Whether it's an internal copilot querying databases, a background agent updating a CRM, or a model executing tool calls, downstream business systems can only verify who is calling. They cannot evaluate if the AI's current request is safe, correct, or contextually valid.
+        </p>
+
+        <div class="problem-grid problem-grid-strong">
+          <article class="problem-card">
+            <span class="problem-number">01</span>
+            <h3>Authenticated does not mean appropriate.</h3>
+            <p>A valid token proves who is calling. It does not prove that the action fits the agent's current job.</p>
+          </article>
+          <article class="problem-card">
+            <span class="problem-number">02</span>
+            <h3>Permission does not equal intent.</h3>
+            <p>An agent may have CRM access without being allowed to update every customer in every situation.</p>
+          </article>
+          <article class="problem-card">
+            <span class="problem-number">03</span>
+            <h3>Observability happens too late.</h3>
+            <p>Tracing can explain what happened. Enforcement has to happen before the consequential action executes.</p>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -106,40 +103,10 @@ import Base from '../layouts/Base.astro';
     <section id="architecture" class="architecture-section">
       <div class="container">
         <span class="label">Where Tenure fits</span>
-        <h2>The memory layer in the request path.</h2>
+        <h2>One gateway every agent request passes through.</h2>
         <p>
-          Tenure sits between the tools that ask for work and the models that generate answers.
-          It resolves the token, checks the allowed context lanes, retrieves precise shared memory,
-          and records what was injected before the request reaches the model. The policy it enforces is compiled from a reviewed contract, generated by our own evaluation engine, GroundEval, not hand-maintained rules. 
+        Tenure sits between your AI clients and models, providing a single enforcement point for agent activity. It checks identity, permissions, policy, and available evidence before an action proceeds; then allows it, blocks it, or escalates for human review.
         </p>
-
-        <div class="groundeval-strip" aria-label="GroundEval policy pipeline">
-          <div class="groundeval-label">
-            <span class="groundeval-kicker">GroundEval</span>
-            <span class="groundeval-caption">Our offline policy review engine</span>
-          </div>
-          <div class="groundeval-steps">
-            <div class="groundeval-step">
-              <strong>Observe run</strong>
-              <span>Tools, evidence</span>
-            </div>
-            <div class="groundeval-arrow">&#8594;</div>
-            <div class="groundeval-step">
-              <strong>Draft policy</strong>
-              <span>Checks &amp; limits</span>
-            </div>
-            <div class="groundeval-arrow">&#8594;</div>
-            <div class="groundeval-step">
-              <strong>Reviewed policy</strong>
-              <span>Compiles to policy</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="groundeval-connector" aria-hidden="true">
-          <span class="groundeval-connector-line"></span>
-          <span class="groundeval-connector-label">Policy import</span>
-        </div>
 
         <div class="architecture-shell" aria-label="Tenure architecture diagram">
           <div class="architecture-row architecture-row-top">
@@ -157,35 +124,23 @@ import Base from '../layouts/Base.astro';
             <span class="beta-badge">Private beta</span>
             <div class="architecture-gateway-header">
               <span class="architecture-kicker">Tenure</span>
-              <h3>Governed context gateway</h3>
-              <p>Every request is resolved through scope, identity, provenance, and token policy.</p>
+              <h3>Runtime gateway</h3>
+              <p>Every request gets eligible context. Every consequential action is checked before it executes.</p>
             </div>
 
-            <div class="architecture-controls">
+            <div class="architecture-controls architecture-controls-simple">
               <div class="architecture-control">
-                <strong>Agent token</strong>
-                <span>Project scopes + persona toggle</span>
-              </div>
-              <div class="architecture-control">
-                <strong>Scope resolver</strong>
-                <span>Org, team, project, user, session</span>
-              </div>
-              <div class="architecture-control policy-control">
-                <strong>Active policy</strong>
-                <span>Compiled from a reviewed policy</span>
+                <strong>Identity</strong>
+                <span>Every agent authenticates before it acts</span>
               </div>
               <div class="architecture-control">
-                <strong>System audit trail</strong>
-                <span>Every request, decision, and denial, across every client and agent</span>
+                <strong>Permissions &amp; evidence</strong>
+                <span>Checked against what the task actually requires</span>
               </div>
-            </div>
-
-            <div class="context-lanes" aria-label="Context lanes">
-              <span>Org rules</span>
-              <span>Team memory</span>
-              <span>Project state</span>
-              <span>User persona</span>
-              <span>Session context</span>
+              <div class="architecture-control">
+                <strong>Decision</strong>
+                <span>Allow, block, or escalate, logged every time</span>
+              </div>
             </div>
           </div>
 
@@ -194,413 +149,218 @@ import Base from '../layouts/Base.astro';
           </div>
 
           <div class="architecture-row architecture-row-bottom-models">
-            <div class="architecture-node model-node">OpenAI</div>
-            <div class="architecture-node model-node">Anthropic</div>
-            <div class="architecture-node model-node">Local models</div>
-            <div class="architecture-node model-node">OpenAI-compatible</div>
-          </div>
-        </div>
-
-        <div class="architecture-caption">
-          <div>
-            <strong>Without Tenure:</strong> each client decides what to remember and every model call becomes a new context assembly problem.
-          </div>
-          <div>
-            <strong>With Tenure:</strong> memory is granted by purpose, scope, and token policy before context reaches the model.
+            <div class="architecture-node model-node">Models</div>
+            <div class="architecture-node model-node">Tools</div>
+            <div class="architecture-node model-node">APIs</div>
+            <div class="architecture-node model-node">Business Systems</div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="state-vs-context">
+    <section id="scoped-memory" class="section-surface">
       <div class="container">
-        <span class="label">The core problem</span>
-        <h2>Shared memory cannot be a shared junk drawer.</h2>
-        <p>
-          Agents need context that is current, relevant, and allowed for the task in front of them.
-          Tenure turns memory into governed state: precise belief objects with provenance, scope,
-          supersession, and hard boundaries across projects, teams, users, and sessions.
+        <span class="label">Shared scoped memory</span>
+        <h2>Shared memory without shared everything.</h2>
+        <p class="section-lede">
+          The memory lives in Tenure, not inside a single client. Tokens determine which context lanes are eligible for each
+          agent or client, so shared state can travel across tools without collapsing every project, team, and user into one pool.
         </p>
 
-        <div class="two-col-compare">
-          <div class="compare-col bad-col">
-            <div class="compare-col-label">Memory databases</div>
-            <ul class="compare-list">
-              <li>User-level memory buckets</li>
-              <li>Similarity search</li>
-              <li>Hidden drift</li>
-              <li>Soft boundaries</li>
-              <li>Persona leakage</li>
-              <li>Context stuffing</li>
-              <li>"Hope it remembers"</li>
-            </ul>
-          </div>
-          <div class="compare-col good-col">
-            <div class="compare-col-label tenure-label">Tenure</div>
-            <ul class="compare-list">
-              <li>Purpose-bound context</li>
-              <li>Structured beliefs</li>
-              <li>Provenance</li>
-              <li>Hard scope isolation</li>
-              <li>Persona opt-in</li>
-              <li>Typed state</li>
-              <li>Auditability</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="drift">
-      <div class="container">
-        <span class="label">Memory drift</span>
-        <h2>Drift is invisible until it is not.</h2>
-        <p>
-          Memory drift is the AI-era equivalent of configuration drift. It accumulates silently, degrades output quality, and is almost impossible to diagnose after the fact. Tenure makes it visible and gives you the tools to prevent it.
-        </p>
-
-        <div class="drift-cards">
-          <div class="drift-card">
-            <div class="drift-icon">&#8680;</div>
-            <h3>Context bleed</h3>
-            <p>Yesterday's topic surfaces in today's session. The model has no way to tell you why.</p>
-          </div>
-          <div class="drift-card">
-            <div class="drift-icon">&#8680;</div>
-            <h3>Cross-project contamination</h3>
-            <p>Customer A's decisions influence Customer B's responses. Probabilistic filters are not boundaries.</p>
-          </div>
-          <div class="drift-card">
-            <div class="drift-icon">&#8680;</div>
-            <h3>Stale knowledge</h3>
-            <p>Outdated decisions never truly disappear. Without supersession, they keep competing with the truth.</p>
-          </div>
-        </div>
-
-        <div class="drift-callout">
-          Tenure scores <strong>0.00</strong> on drift. Mem0 scores 0.94. Agentmemory scores 0.81.
-          <a href="/benchmark">See the benchmark</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="governance">
-      <div class="container">
-        <span class="label">Govern what AI knows</span>
-        <h2>The governance layer for shared AI memory.</h2>
-        <p>
-          Tenure does not send every memory to every agent. Each token defines eligible projects and whether user persona context is allowed. Every belief has an origin, a scope, a version, and a history. The record is written as the request happens.
-        </p>
-
-        <div class="governance-grid">
-          <div class="gov-card">
-            <div class="gov-card-title">Scope isolation</div>
-            <p>Engineering beliefs stay in engineering sessions. Project A never bleeds into Project B. Hard structural boundaries, not probabilistic filters.</p>
-          </div>
-          <div class="gov-card">
-            <div class="gov-card-title">Belief versioning</div>
-            <p>When you change a decision, the old one is retired, not deleted. It never gets suggested again, but the record stays for audit.</p>
-          </div>
-          <div class="gov-card">
-            <div class="gov-card-title">Audit trails</div>
-            <p>Every request is logged with identity, timestamp, and the exact query that triggered retrieval. Not reconstructed. Recorded as it happened.</p>
-          </div>
-          <div class="gov-card">
-            <div class="gov-card-title">Provenance</div>
-            <p>Click any belief to see every session it was injected and the query that surfaced it each time. The record is complete.</p>
-          </div>
-          <div class="gov-card">
-            <div class="gov-card-title">Injection visibility</div>
-            <p>See exactly which beliefs were in context for every turn. Not inferred. Per-turn injection log, written at the time it happened.</p>
-          </div>
-          <div class="gov-card">
-            <div class="gov-card-title">Supersession chains</div>
-            <p>Beliefs are superseded, not overwritten. The full chain of what was known and when is always recoverable.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="retrieval">
-      <div class="container">
-        <span class="label">Retrieval precision</span>
-        <h2>1.0 precision. Because the right belief should surface. Only the right belief.</h2>
-        <p>
-          Other memory tools dump entire chat histories or loose vector clusters into the context window and let a capable downstream model sort it out. You pay the latency and token cost for every irrelevant belief that arrives.
-        </p>
-        <p>
-          It is the difference between querying your database and filtering in application code. One belongs in production.
-        </p>
-
-        <div class="compare-code">
-          <div class="compare-code-col">
-            <div class="compare-code-label">Everyone else</div>
-            <div class="terminal">
-              <div class="terminal-body">
-                <div><span class="code-comment">-- retrieve everything</span></div>
-                <div><span class="code-kw">SELECT</span> <span class="code-punct">*</span> <span class="code-kw">FROM</span> <span class="code-type">beliefs</span></div>
-                <div>&nbsp;</div>
-                <div><span class="code-comment">-- hope the model sorts it out</span></div>
-                <div><span class="code-comment">-- 18 results injected</span></div>
-                <div><span class="code-comment">-- precision: 0.05</span></div>
-              </div>
+        <div class="memory-visual">
+          <div class="memory-scope-stack">
+            <div class="memory-scope scope-org">
+              <span class="scope-kind">ORG</span>
+              <strong>Never send customer secrets to third-party tools.</strong>
+              <small>Absolute organizational rule</small>
+            </div>
+            <div class="memory-scope scope-team">
+              <span class="scope-kind">TEAM</span>
+              <strong>Platform APIs use structured error envelopes.</strong>
+              <small>Shared team practice</small>
+            </div>
+            <div class="memory-scope scope-project">
+              <span class="scope-kind">PROJECT</span>
+              <strong>Payments service migration targets PostgreSQL 18.</strong>
+              <small>Project-specific state</small>
+            </div>
+            <div class="memory-scope scope-user muted-scope">
+              <span class="scope-kind">USER</span>
+              <strong>Prefer concise explanations with code first.</strong>
+              <small>Persona lane · not eligible for this token</small>
             </div>
           </div>
-          <div class="compare-code-col">
-            <div class="compare-code-label good">Tenure</div>
-            <div class="terminal">
-              <div class="terminal-body">
-                <div><span class="code-comment">-- query at the source</span></div>
-                <div><span class="code-kw">SELECT</span> <span class="code-punct">*</span> <span class="code-kw">FROM</span> <span class="code-type">beliefs</span></div>
-                <div><span class="code-kw">WHERE</span> <span class="code-type">scope</span> <span class="code-punct">=</span> <span class="code-str">'project:api'</span></div>
-                <div><span class="code-kw">AND</span> <span class="code-fn">alias_match</span><span class="code-punct">(</span><span class="code-str">'redis'</span><span class="code-punct">)</span></div>
-                <div><span class="code-kw">AND</span> <span class="code-type">status</span> <span class="code-punct">=</span> <span class="code-str">'active'</span></div>
-                <div>&nbsp;</div>
-                <div><span class="code-comment">-- 1 result. precision: 1.0</span></div>
-              </div>
+
+          <div class="memory-token-card">
+            <div class="memory-token-header">
+              <span>Token policy</span>
+              <strong>agent:code-reviewer</strong>
+            </div>
+            <div class="token-policy-row"><span>Org context</span><b class="policy-on">Allowed</b></div>
+            <div class="token-policy-row"><span>Team: platform</span><b class="policy-on">Allowed</b></div>
+            <div class="token-policy-row"><span>Project: payments</span><b class="policy-on">Allowed</b></div>
+            <div class="token-policy-row"><span>User persona</span><b class="policy-off">Off</b></div>
+            <div class="token-policy-divider"></div>
+            <div class="token-output">
+              <span class="token-output-label">Eligible context</span>
+              <strong>3 scoped beliefs</strong>
+              <small>Only active, relevant state can enter the request.</small>
             </div>
           </div>
-        </div>
-
-        <p class="precision-tax">
-          Every irrelevant belief in context is <strong>tokens you're paying for</strong> and <strong>latency you're waiting on.</strong>
-        </p>
-
-        <div class="precision-bars">
-          <div class="bar-row">
-            <span class="bar-label tenure-label">tenure</span>
-            <div class="bar-track"><div class="bar-fill tenure-fill"></div></div>
-            <span class="bar-value tenure-val">1.00</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">supermemory</span>
-            <div class="bar-track"><div class="bar-fill" style="background:var(--dim);width:22%"></div></div>
-            <span class="bar-value other-val">0.22</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">zep</span>
-            <div class="bar-track"><div class="bar-fill zep-fill"></div></div>
-            <span class="bar-value other-val">0.09</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">mem0</span>
-            <div class="bar-track"><div class="bar-fill mem0-fill"></div></div>
-            <span class="bar-value other-val">0.06</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">hindsight</span>
-            <div class="bar-track"><div class="bar-fill hindsight-fill"></div></div>
-            <span class="bar-value other-val">0.06</span>
-          </div>
-        </div>
-
-        <div style="margin-top:2rem;text-align:center">
-          <p style="font-size:0.8rem;color:var(--dim)">
-            Results are reproducible. Dataset on HuggingFace.
-            <a href="https://github.com/tenurehq/precisionMemBench">Run it yourself</a>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="trust">
-      <div class="container">
-        <span class="label">Trust the process</span>
-        <h2>Observe before you commit.</h2>
-        <p>
-          Run with extraction on and injection off for a week or two. See exactly what Tenure learned about how you work before it ever changes a single response. No risk. No behavior change. No surprises.
-        </p>
-
-        <div class="trust-grid">
-          <div class="trust-card">
-            <div class="trust-step">Week 1-2 -- Observe</div>
-            <h3>Extraction on. Injection off.</h3>
-            <p>
-              Tenure watches your sessions silently. It extracts decisions, preferences, facts, questions, and blockers into a structured belief store but injects nothing. Your AI responses are completely unchanged.
-            </p>
-            <div class="toggle-demo">
-              <div><span class="cmd">!inject off</span> &nbsp;<span class="comment"># nothing changes yet</span></div>
-            </div>
-          </div>
-          <div class="trust-card featured">
-            <div class="trust-step">When you are ready -- Turn it on</div>
-            <h3>Open the panel. See what it knows.</h3>
-            <p>
-              Before you ever turn injection on, open the VS Code side panel and read every belief Tenure captured. Edit anything. Delete anything. Pin what matters most. You decide what the model gets to know.
-            </p>
-            <div class="toggle-demo">
-              <div><span class="cmd">!inject on</span> &nbsp;<span class="comment"># now it knows you</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="unique-badge">&#10003; No other memory system lets you observe before you commit.</div>
-      </div>
-    </section>
-
-
-
-    <section id="platform">
-      <div class="container">
-        <span class="label">The platform</span>
-        <h2>Agent tokens become context policies.</h2>
-        <p>
-          A Tenure token does more than authenticate a request. It declares what project state an agent may use, whether user persona context may shape behavior, and which context lanes must remain unavailable. Memory becomes purpose-bound instead of all-or-nothing.
-        </p>
-
-        <div class="flow-diagram">
-          <div class="flow-step">Client or agent</div>
-          <div class="flow-arrow">&#8595;</div>
-          <div class="flow-step accent">Scoped token</div>
-          <div class="flow-arrow">&#8595;</div>
-          <div class="flow-step">Project access</div>
-          <div class="flow-arrow">&#8595;</div>
-          <div class="flow-step">Persona decision</div>
-          <div class="flow-arrow">&#8595;</div>
-          <div class="flow-step accent">Precise injection</div>
-          <div class="flow-arrow">&#8595;</div>
-          <div class="flow-step">Model request</div>
         </div>
 
         <div class="three-pillars">
           <div class="pillar">
-            <div class="pillar-label">Project-scoped</div>
-            <p>Agents can work inside a project without inheriting unrelated memories or user-level behavior preferences.</p>
+            <div class="pillar-label">Precise state</div>
+            <p>Decisions, preferences, entities, relations, and open questions are stored as structured beliefs instead of loose history.</p>
           </div>
           <div class="pillar">
-            <div class="pillar-label">Persona-aware</div>
-            <p>User persona is an explicit context lane. Turn it on for personal copilots. Leave it off for task agents.</p>
+            <div class="pillar-label">Hard boundaries</div>
+            <p>Project and team isolation are structural. User persona is a separate lane that agents inherit only when explicitly allowed.</p>
           </div>
           <div class="pillar">
-            <div class="pillar-label">Auditable</div>
-            <p>Every injection is recorded with the token, scope, query, belief, and request that caused it.</p>
+            <div class="pillar-label">Full provenance</div>
+            <p>Every belief keeps its origin, scope, version, and lifecycle so you can see what was known, when, and why.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="native-integrations">
+    <section id="precision" class="section-surface">
       <div class="container">
-        <span class="label">Where it runs</span>
-        <h2>Built for coding assistants.<br />Designed for AI systems.</h2>
-        <p>
-          Point any OpenAI-compatible client at localhost:5757. Tenure routes to your provider, governs the state layer, and injects what it knows on every request.
+        <span class="label">Memory precision</span>
+        <h2>Governance is only as reliable as the context behind it.</h2>
+        <p class="section-lede">
+          Wrong or stale memory can produce the wrong decision even with perfect policy. Tenure retrieves scoped belief state precisely, without dumping a similarity-ranked memory pile into the model and hoping it sorts things out.
         </p>
 
-        <div class="compat-row">
-          <span class="compat-chip">VS Code</span>
-          <span class="compat-chip">Windsurf</span>
-          <span class="compat-chip">Continue</span>
-          <span class="compat-chip">Open WebUI</span>
-          <span class="compat-chip">Cline</span>
-          <span class="compat-chip">LibreChat</span>
-          <span class="compat-chip">OpenClaw</span>
-          <span class="compat-chip">Any OpenAI-compatible client</span>
+        <div class="precision-proof">
+          <div class="precision-chart">
+            <div class="bar-row">
+              <span class="bar-label tenure-label">Tenure</span>
+              <div class="bar-track"><div class="bar-fill tenure-fill"></div></div>
+              <span class="bar-value tenure-val">1.00</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Open Knowledge Format</span>
+              <div class="bar-track"><div class="bar-fill comparison-fill" style="width:47%"></div></div>
+              <span class="bar-value other-val">0.47</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Supermemory</span>
+              <div class="bar-track"><div class="bar-fill comparison-fill" style="width:22%"></div></div>
+              <span class="bar-value other-val">0.22</span>
+            </div>
+             <div class="bar-row">
+              <span class="bar-label">gbrain</span>
+              <div class="bar-track"><div class="bar-fill comparison-fill" style="width:14%"></div></div>
+              <span class="bar-value other-val">0.14</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Zep</span>
+              <div class="bar-track"><div class="bar-fill comparison-fill" style="width:9%"></div></div>
+              <span class="bar-value other-val">0.09</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Mem0</span>
+              <div class="bar-track"><div class="bar-fill comparison-fill" style="width:6%"></div></div>
+              <span class="bar-value other-val">0.06</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Hindsight</span>
+              <div class="bar-track"><div class="bar-fill comparison-fill" style="width:6%"></div></div>
+              <span class="bar-value other-val">0.06</span>
+            </div>
+          </div>
+
+          <div class="precision-stat-stack">
+            <div class="precision-stat">
+              <strong>89</strong>
+              <span>benchmark cases</span>
+            </div>
+            <div class="precision-stat">
+              <strong>&lt;15ms</strong>
+              <span>context injection</span>
+            </div>
+            <div class="precision-stat">
+              <strong>0.00</strong>
+              <span>drift score</span>
+            </div>
+          </div>
         </div>
 
-        <div class="integration-block">
-          <div class="integration-card featured" style="border:1px solid rgba(0,168,173,0.3)">
-            <div class="integration-header">
-              <div class="integration-logo">
-                <svg width="40" height="40" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8.09429 7.20447C8.53365 7.64379 8.53368 8.3561 8.09436 8.79546L4.88978 12.0003L8.09432 15.2049C8.53366 15.6442 8.53366 16.3565 8.09432 16.7959C7.65498 17.2352 6.94267 17.2352 6.50333 16.7959L2.50333 12.7959C2.06401 12.3565 2.06399 11.6443 2.5033 11.2049L6.5033 7.20454C6.94262 6.76518 7.65493 6.76515 8.09429 7.20447ZM17.0034 7.20447C17.4427 6.76515 18.155 6.76518 18.5944 7.20454L22.5944 11.2049C23.0337 11.6443 23.0336 12.3565 22.5943 12.7959L18.5943 16.7959C18.155 17.2352 17.4427 17.2352 17.0033 16.7959C16.564 16.3565 16.564 15.6442 17.0033 15.2049L20.2079 12.0003L17.0033 8.79546C16.564 8.3561 16.564 7.64379 17.0034 7.20447Z" fill="#ffffff"/>
-                  <path opacity="0.4" d="M14.2328 2.87882C14.3063 2.87273 14.381 2.87384 14.4565 2.88273C14.4941 2.88716 14.5319 2.8929 14.5697 2.90128C15.1763 3.03607 15.559 3.63753 15.4242 4.24406L11.8686 20.2441C11.7589 20.7369 11.3417 21.0815 10.8637 21.121C10.7903 21.1271 10.7154 21.126 10.64 21.1171C10.6024 21.1127 10.5646 21.106 10.5268 21.0976C9.92025 20.9628 9.5375 20.3623 9.67227 19.7558L13.2279 3.75577C13.3375 3.26294 13.7548 2.91846 14.2328 2.87882Z" fill="#ffffff"/>
-                </svg>
-              </div>
-              <div>
-                <div class="integration-title">VS Code</div>
-                <div class="integration-subtitle">Native LLM Provider + BYOK</div>
-              </div>
-            </div>
-            <p class="integration-desc">
-              Registered at the provider level, not a plugin wrapping someone else's call. Your key, your model, your state. Beliefs panel in the sidebar. Onboarding inside the IDE.
-            </p>
-            <div class="integration-features">
-              <div class="integration-feature">
-                <span class="integration-feature-dot"></span>
-                <span><strong>BYOK</strong> -- Anthropic, OpenAI, or any OpenAI-compatible endpoint</span>
-              </div>
-              <div class="integration-feature">
-                <span class="integration-feature-dot"></span>
-                <span><strong>Beliefs panel</strong> in the sidebar -- inspect, edit, pin from inside VS Code</span>
-              </div>
-              <div class="integration-feature">
-                <span class="integration-feature-dot"></span>
-                <span><strong>Per-turn injection log</strong> -- see exactly what the model knew and when</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="integration-card">
-            <div class="integration-header">
-              <div class="integration-logo">
-                <svg width="40" height="40" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 12.1016C2 6.57871 6.47715 2.10156 12 2.10156C17.5228 2.10156 22 6.57871 22 12.1016C22 17.6244 17.5228 22.1016 12 22.1016C11.5379 22.1016 11.0832 22.0702 10.6378 22.0096C10.8132 21.7604 10.9601 21.4871 11.0727 21.1937L11.3105 20.574C11.5379 20.5923 11.7679 20.6016 12 20.6016C16.6944 20.6016 20.5 16.796 20.5 12.1016C20.5 7.40714 16.6944 3.60156 12 3.60156C7.30558 3.60156 3.5 7.40714 3.5 12.1016C3.5 12.265 3.50461 12.4274 3.51372 12.5885C2.90303 12.9909 2.5 13.6827 2.5 14.4688V15.2327C2.17555 14.2478 2 13.1952 2 12.1016Z" fill="#ffffff"/>
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.75 13.9069C5.16421 13.9069 5.5 14.2427 5.5 14.6569V16.7931L13.5164 14.1652C13.91 14.0362 14.3337 14.2507 14.4627 14.6443C14.5917 15.0379 14.3772 15.4616 13.9836 15.5906L11.276 16.4782L9.67225 20.6577C9.33849 21.5274 8.50322 22.1016 7.57161 22.1016H6.25C5.00736 22.1016 4 21.0942 4 19.8516V14.6569C4 14.2427 4.33579 13.9069 4.75 13.9069Z" fill="#ffffff"/>
-                </svg>
-              </div>
-              <div>
-                <div class="integration-title">Think anywhere. It follows you.</div>
-                <div class="integration-subtitle">Chat client + Mobile + Zero cold starts</div>
-              </div>
-            </div>
-            <p class="integration-desc">
-              You are on a walk. The auth flow clicks. You tell OpenClaw on WhatsApp: "Redis for sessions, not Postgres." Tomorrow morning, your IDE already knows. No copy-paste. The decision landed the moment you said it.
-            </p>
-            <div class="integration-features">
-              <div class="integration-feature">
-                <span class="integration-feature-dot"></span>
-                <span>Works with Open WebUI, OpenClaw, LibreChat, any OpenAI-compatible client</span>
-              </div>
-              <div class="integration-feature">
-                <span class="integration-feature-dot"></span>
-                <span>Same local belief store as your IDE</span>
-              </div>
-              <div class="integration-feature">
-                <span class="integration-feature-dot"></span>
-                <span>Aha moments captured wherever they happen: phone, tablet, laptop</span>
-              </div>
-            </div>
-          </div>
+        <div class="proof-links">
+          <a href="/benchmark">Explore PrecisionMemBench →</a>
+          <a href="https://arxiv.org/abs/2605.11325">Read the memory paper →</a>
         </div>
       </div>
     </section>
+
+    <section id="visibility">
+      <div class="container">
+        <span class="label">Built to be inspected</span>
+        <h2>Nothing important should be invisible.</h2>
+        <p class="section-lede">
+          Tenure records the state it stores, the context it injects, and the decisions it makes. You can inspect the chain
+          instead of reconstructing it after something goes wrong.
+        </p>
+
+        <div class="visibility-grid">
+          <article class="audit-window">
+            <div class="audit-window-bar">
+              <span>MEMORY RECORD</span>
+              <b>belief:v12</b>
+            </div>
+            <div class="audit-window-body">
+              <span class="audit-field">TYPE <b>decision</b></span>
+              <span class="audit-field">SCOPE <b>project:payments</b></span>
+              <p>&ldquo;Payments migration targets PostgreSQL 18.&rdquo;</p>
+              <div class="audit-meta">source: session_482 · supersedes: belief:v11</div>
+            </div>
+          </article>
+
+          <article class="audit-window">
+            <div class="audit-window-bar">
+              <span>INJECTION LOG</span>
+              <b>turn:1842</b>
+            </div>
+            <div class="audit-window-body">
+              <span class="audit-field">TOKEN <b>agent:code-reviewer</b></span>
+              <span class="audit-field">ELIGIBLE <b>3 beliefs</b></span>
+              <p>Injected project decision + team API practice.</p>
+              <div class="audit-meta">user persona excluded by token policy</div>
+            </div>
+          </article>
+
+          <article class="audit-window">
+            <div class="audit-window-bar">
+              <span>RUNTIME DECISION</span>
+              <b class="audit-red">BLOCK</b>
+            </div>
+            <div class="audit-window-body">
+              <span class="audit-field">POLICY <b>#104 · v7</b></span>
+              <span class="audit-field">EVIDENCE <b>active_account=true</b></span>
+              <p>Follow-up offer blocked before CRM action executed.</p>
+              <div class="audit-meta">decision and evidence recorded at runtime</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
 
     <section id="cta">
       <div class="container">
         <span class="label">Get started</span>
-        <h2>Put shared AI memory in the request path.</h2>
-        <p class="cta-sub">Run Tenure locally for project-scoped memory, or use Team Mode when shared context needs identity, OAuth/OIDC, and org-wide policy enforcement.</p>
+        <h2>Secure and contextualize every AI request at runtime.</h2>
+        <p class="cta-sub">Run Tenure locally to manage context lanes and beliefs in your development environment, or spin up Team Mode to intercept, verify, and govern every outbound LLM call across your entire company.</p>
 
         <div class="hero-cta-row">
          <a href="/pricing" class="btn-primary">View Pricing</a>
  <a href="/docs/quickstart" class="btn-secondary">Get Started</a>        
  </div>
 
-        <p class="install-label">// install from your existing tools</p>
-
-        <div class="editor-buttons">
-          <a href="https://marketplace.visualstudio.com/items?itemName=tenureai.tenure-vscode" class="editor-btn">
-            <img class="image-icon" src="images/vscode.webp" />
-          </a>
-          <a href="https://clawhub.ai/plugins/@tenureai/openclaw-plugin" class="editor-btn">
-            <img class="image-icon" src="images/openclaw.svg" />
-          </a>
-          <a href="https://open-vsx.org/extension/tenureai/tenure-vscode" class="editor-btn">
-            <img class="image-icon" src="images/windsurf.png" />
-          </a>
-          <a href="https://open-vsx.org/extension/tenureai/tenure-vscode" class="editor-btn">
-            <img class="image-icon" src="images/continue.png" />
-          </a>
-        </div>
-
-        <p class="terminal-line">
-          Prefer the terminal?
-          <span class="copy-cmd-wrap">
-            <code class="copy-cmd-text">curl -fsSL https://raw.githubusercontent.com/tenurehq/tenure/main/scripts/install.sh | bash</code>
-            <button class="copy-cmd-btn" onclick="(function(btn){navigator.clipboard.writeText('curl -fsSL https://raw.githubusercontent.com/tenurehq/tenure/main/scripts/install.sh | bash').then(function(){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy'},2000)})})(this)">Copy</button>
-          </span>
-        </p>
 
         <p class="cta-meta">
           Self-hosted <span>&middot;</span> No call-home telemetry
@@ -611,6 +371,200 @@ import Base from '../layouts/Base.astro';
   </main>
 
   <style>
+    .hero-sub-lede {
+      max-width: 640px;
+      font-size: 1.15rem;
+      line-height: 1.55;
+    }
+
+    .hero-stats-secondary {
+      margin-top: 1.4rem;
+    }
+
+    .gateway-mock {
+      max-width: 640px;
+      margin: 1.6rem 0 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border2, #2a2a2a);
+      background: var(--surface, #111111);
+      box-shadow: 0 24px 60px -30px rgba(0,0,0,0.6);
+      font-family: var(--mono);
+      margin-left: auto;
+      margin-top: 6rem;
+      margin-right: auto;
+    }
+
+    .gateway-mock-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.8rem;
+      background: var(--surface2, #1a1a1a);
+      border-bottom: 1px solid var(--border, #222222);
+    }
+
+    .gateway-mock-title {
+      margin-left: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--muted, #b8b8b8);
+      text-transform: uppercase;
+    }
+
+    .gateway-mock-agent {
+      color: var(--accent, #00a8ad);
+    }
+
+    .gateway-mock-body {
+      padding: 1rem 1.1rem 1.15rem;
+      text-align: center;
+    }
+
+    .gateway-mock-intent {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .gateway-mock-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dim, #7a7a7a);
+    }
+
+    .gateway-mock-eyebrow-checks {
+      margin-bottom: 0.5rem;
+    }
+
+    .gateway-mock-quote {
+      font-size: 0.9rem;
+      color: var(--text, #e8e8e8);
+    }
+
+    .gateway-checks {
+      list-style: none;
+      margin: 0 0 0.9rem;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .gateway-check {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.3rem 0.6rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid var(--border, #222222);
+      background: rgba(255,255,255,0.02);
+      font-size: 0.76rem;
+      opacity: 0;
+      animation: gatewayReveal 0.4s ease forwards;
+      animation-delay: calc(var(--d) * 0.35s);
+    }
+
+    .gateway-check-name {
+      flex: 1 1 auto;
+      color: var(--text, #e8e8e8);
+    }
+
+    .gateway-check-dim {
+      color: var(--dim, #7a7a7a);
+    }
+
+    .gateway-check-badge {
+      font-weight: 800;
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+    }
+
+    .gateway-check-pass {
+      border-color: rgba(34,197,94,0.25);
+    }
+
+    .gateway-check-pass .gateway-check-badge {
+      color: var(--green, #22c55e);
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+    }
+
+    .gateway-check-fail {
+      border-color: rgba(196,83,83,0.35);
+      background: rgba(196,83,83,0.06);
+    }
+
+    .gateway-check-fail .gateway-check-badge {
+      color: var(--red, #c45353);
+      background: rgba(196,83,83,0.14);
+      border: 1px solid rgba(196,83,83,0.35);
+    }
+
+    .gateway-check-evidence {
+      flex-basis: 100%;
+      color: var(--red, #c45353);
+      opacity: 0.85;
+      font-size: 0.7rem;
+      padding-left: 1.2rem;
+    }
+
+    .gateway-decision {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.6rem 0.7rem;
+      border-radius: 8px;
+      border: 1px solid rgba(196,83,83,0.4);
+      background: rgba(196,83,83,0.1);
+      opacity: 0;
+      animation: gatewayReveal 0.4s ease forwards;
+      animation-delay: calc(var(--d) * 0.35s);
+    }
+
+    .gateway-decision-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dim, #7a7a7a);
+    }
+
+    .gateway-decision-value {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--red, #c45353);
+    }
+
+    .gateway-decision-rule {
+      margin-left: auto;
+      font-size: 0.68rem;
+      color: var(--dim, #7a7a7a);
+    }
+
+    @keyframes gatewayReveal {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .gateway-mock-body {
+        padding: 0.85rem 0.8rem 1rem;
+      }
+
+      .gateway-decision-rule {
+        margin-left: 0;
+      }
+    }
+
     .architecture-section {
       position: relative;
       overflow: hidden;
@@ -618,7 +572,7 @@ import Base from '../layouts/Base.astro';
 
     .architecture-shell {
       max-width: 660px;
-      margin: 0 auto 0;
+      margin: 2.5rem auto 0;
       padding: 0.85rem;
       border: 1px solid rgba(0, 168, 173, 0.22);
       border-radius: 20px;
@@ -890,6 +844,19 @@ import Base from '../layouts/Base.astro';
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.5rem;
       margin-top: 0.6rem;
+    }
+
+    .architecture-controls-simple {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 640px) {
+      .architecture-controls-simple {
+        grid-template-columns: 1fr;
+      }
     }
 
     .architecture-control {
