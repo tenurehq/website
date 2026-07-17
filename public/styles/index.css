@@ -231,7 +231,7 @@ p {
 .hero-rag-line {
   font-family: var(--mono);
   font-size: 1.2rem;
-  color: #00a8ad;
+  color: var(--dim);
   letter-spacing: 0.02em;
   margin-bottom: 1.25rem;
   margin-top: -0.5rem;
