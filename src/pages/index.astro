@@ -11,7 +11,7 @@ import Base from '../layouts/Base.astro';
       <div class="container">
         <div class="hero-badge">
           <span class="hero-badge-dot"></span>
-          Observe & Enforce · No SDKs · Out-of-model Security · Zero Telemetry
+          No SDKs · Out-of-model Security · Zero Telemetry
         </div>
 
 
@@ -23,7 +23,7 @@ import Base from '../layouts/Base.astro';
        
 
         <p class="hero-sub hero-sub-lede">
-       <b>No hand-written agent policies. No model policing itself.</b> Tenure observes how your agents operate, generates the policy automatically, then enforces it deterministically before unsafe actions execute.
+       Tenure observes agent behavior, automatically generates deterministic policies, and blocks unsafe actions before they execute.
         </p>
 
         <div class="hero-cta-row">
@@ -59,7 +59,7 @@ import Base from '../layouts/Base.astro';
               <li class="gateway-check gateway-check-fail" style="--d:3">
                 <span class="gateway-check-name">Precondition <span class="gateway-check-dim">&mdash; &ldquo;not currently a paying user&rdquo;</span></span>
                 <span class="gateway-check-badge">FAIL</span>
-                <span class="gateway-check-evidence">Evidence: found active account &lsquo;linear.app&rsquo;</span>
+                <span class="gateway-check-evidence">Evidence: CRM query returned &lsquo;active&rsquo;</span>
               </li>
             </ul>
 
@@ -79,14 +79,14 @@ import Base from '../layouts/Base.astro';
         <span class="label">The problem</span>
         <h2>Your AI can act. Your infrastructure can't judge when it should.</h2>
         <p>
-        AI is no longer trapped inside a chat bubble. Whether it's an internal copilot querying databases, a background agent updating a CRM, or a model executing tool calls, downstream business systems can only verify who is calling. They cannot evaluate if the AI's current request is safe, correct, or contextually valid.
+        AI is no longer trapped inside a chat bubble. Whether it's an internal copilot querying databases, a background agent updating a CRM, or a model executing tool calls, downstream business systems only check the API token. They are blind to whether the agent's actual intent is safe, authorized, or completely rogue.
         </p>
 
         <div class="problem-grid problem-grid-strong">
           <article class="problem-card">
             <span class="problem-number">01</span>
             <h3>Authenticated does not mean appropriate.</h3>
-            <p>A valid token proves who is calling. It does not prove that the action fits the agent's current job.</p>
+            <p>A valid token proves who is calling. It does not stop a customer-support bot from calling an internal deletion API.</p>
           </article>
           <article class="problem-card">
             <span class="problem-number">02</span>
@@ -96,7 +96,7 @@ import Base from '../layouts/Base.astro';
           <article class="problem-card">
             <span class="problem-number">03</span>
             <h3>Observability happens too late.</h3>
-            <p>Tracing can explain what happened. Enforcement has to happen before the consequential action executes.</p>
+            <p>Logs will tell you how you got hacked. Enforcement stops it from happening.</p>
           </article>
         </div>
       </div>
@@ -109,7 +109,7 @@ import Base from '../layouts/Base.astro';
         <span class="label">Where Tenure fits</span>
         <h2>One gateway every agent request passes through.</h2>
         <p>
-        Tenure sits between your AI clients and models, providing a single enforcement point for agent activity. It checks identity, permissions, policy, and available evidence before an action proceeds; then allows it, blocks it, or escalates for human review.
+        Tenure intercepts agent activity at the runtime level. Every request is verified against active context and explicit policy: allowing, blocking, or escalating actions in under 15ms.
         </p>
 
         <div class="architecture-shell" aria-label="Tenure architecture diagram">
@@ -215,16 +215,16 @@ import Base from '../layouts/Base.astro';
 
         <div class="three-pillars">
           <div class="pillar">
-            <div class="pillar-label">Precise state</div>
-            <p>Decisions, preferences, entities, relations, and open questions are stored as structured beliefs instead of loose history.</p>
+            <div class="pillar-label">Structured Beliefs over Vector Dumps</div>
+            <p>Drop the loose conversation history. Tenure maps relations, entities, and open questions into precise, queryable state.</p>
           </div>
           <div class="pillar">
-            <div class="pillar-label">Hard boundaries</div>
-            <p>Project and team isolation are structural. User persona is a separate lane that agents inherit only when explicitly allowed.</p>
+            <div class="pillar-label">Cryptographic Isolation</div>
+            <p>Multi-tenant project and team isolation are structural. Agents only inherit user personas when explicitly allowed by the token.</p>
           </div>
           <div class="pillar">
-            <div class="pillar-label">Full provenance</div>
-            <p>Every belief keeps its origin, scope, version, and lifecycle so you can see what was known, when, and why.</p>
+            <div class="pillar-label">Tamper-Proof Audit Trails</div>
+            <p>Every single belief retains its origin, scope, and lifecycle history. Know exactly why an agent knew something, and when it found out.</p>
           </div>
         </div>
       </div>
@@ -233,9 +233,9 @@ import Base from '../layouts/Base.astro';
     <section id="precision" class="section-surface">
       <div class="container">
         <span class="label">Memory precision</span>
-        <h2>Governance is only as reliable as the context behind it.</h2>
+        <h2>Deterministic memory injection. Zero prompt bloat.</h2>
         <p class="section-lede">
-          Wrong or stale memory can produce the wrong decision even with perfect policy. Tenure retrieves scoped belief state precisely, without dumping a similarity-ranked memory pile into the model and hoping it sorts things out.
+         Tenure retrieves scoped belief state precisely, outperforming standard vector strategies by up to 4x on standard agent benchmarks without adding latency.
         </p>
 
         <div class="precision-proof">
@@ -305,8 +305,7 @@ import Base from '../layouts/Base.astro';
         <span class="label">Built to be inspected</span>
         <h2>Nothing important should be invisible.</h2>
         <p class="section-lede">
-          Tenure records the state it stores, the context it injects, and the decisions it makes. You can inspect the chain
-          instead of reconstructing it after something goes wrong.
+          Tenure records the state it stores, the context it injects, and the decisions it makes. Stop reconstructing execution chains after a failure occurs. Track every state shift, context injection, and runtime block in real-time.
         </p>
 
         <div class="visibility-grid">
