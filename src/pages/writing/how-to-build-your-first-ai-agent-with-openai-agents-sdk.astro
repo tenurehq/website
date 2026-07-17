@@ -1,0 +1,531 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="How to Build Your First AI Agent in Python with OpenAI's Agents SDK | Tenure"
+  description="A beginner-friendly walkthrough for installing openai-agents, writing your first Agent, giving it a tool with @function_tool, and running it end to end."
+  keywords="openai agents sdk, openai agents sdk python, python ai agent tutorial, build ai agent python, openai agents sdk tutorial, function_tool, ai agent for beginners, openai agents python"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Build Your First AI Agent in Python with OpenAI's Agents SDK",
+  "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "url": "https://tenureai.dev/writing/how-to-build-ai-agent-openai-agents-sdk-python",
+  "description": "A beginner-friendly walkthrough for installing openai-agents, writing your first Agent, giving it a tool with @function_tool, and running it end to end.",
+  "datePublished": "2026-07-16",
+  "dateModified": "2026-07-16"
+}
+</script>
+
+<section class="essay-hero">
+  <div class="container">
+    <div class="uc-breadcrumb">
+      <a href="/writing">Writing</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Tutorials</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Python tutorial</span>
+    <h1>How to Build Your First AI Agent in Python with OpenAI's Agents SDK</h1>
+    <p class="hero-sub-title" style="margin-top:1rem;">
+      No prior agent experience required. In about ten minutes you'll install the
+      SDK, write a working agent, give it a real tool to call, and see exactly what
+      happens between your prompt and the final answer.
+    </p>
+    <div class="essay-meta">
+      <span class="essay-meta-item">Beginner friendly</span>
+      <span class="essay-meta-sep">·</span>
+      <span class="essay-meta-item">~7 min read</span>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface);">
+  <div class="container">
+    <div class="tldr-box">
+      <h3>TL;DR</h3>
+      <ul>
+        <li><code>pip install openai-agents</code>, set <code>OPENAI_API_KEY</code>, and you can run an agent in five lines of code.</li>
+        <li>An <code>Agent</code> is just an LLM plus instructions. A <code>Runner</code> is what actually executes it.</li>
+        <li>Tools are regular Python functions. Decorate one with <code>@function_tool</code> and the agent can call it.</li>
+        <li>The docstring on your tool function is not a comment, it's the description the model reads to decide when to use it.</li>
+        <li>The SDK loops automatically: call the model, run any tool it asks for, feed the result back, repeat until there's a final answer.</li>
+        <li>Once this works, the natural next steps are handoffs, guardrails, sessions, and tracing, all built into the same SDK.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">What you're building</span>
+    <h2>A small agent, on purpose</h2>
+    <p>
+      The <a href="https://github.com/openai/openai-agents-python" target="_blank" rel="noopener">OpenAI Agents SDK</a>
+      is a lightweight Python framework for building agentic apps: LLMs that can call
+      tools, hand off to other agents, and run in a loop until a task is done. It's
+      easy to find examples that jump straight into multi-agent handoffs and sandboxed
+      workspaces. Those are worth learning later, but they're the wrong place to start.
+    </p>
+    <p>
+      This tutorial stays small on purpose. You'll build one agent with one tool: a
+      weather assistant that can answer a normal question and knows when to call a
+      function instead of guessing. That's enough to understand every moving part
+      without getting lost in orchestration logic you don't need yet.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Setup</span>
+    <h2>Install the SDK and set your API key</h2>
+    <p>
+      You'll need Python 3.10 or newer and an OpenAI API key. Create a virtual
+      environment first so the install stays isolated from other projects.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">terminal</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">python</span> <span class="c-str">-m</span> <span class="c-key">venv</span> <span class="c-str">.venv</span>
+<span class="c-key">source</span> <span class="c-str">.venv/bin/activate</span>  <span class="c-dim"># Windows: .venv\Scripts\activate</span>
+<span class="c-key">pip</span> <span class="c-str">install</span> <span class="c-key">openai-agents</span></pre>
+      </div>
+    </div>
+
+    <p>
+      Prefer <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">uv</a>?
+      <code>uv init</code> followed by <code>uv add openai-agents</code> does the same thing.
+    </p>
+
+    <p>
+      Next, set your API key as an environment variable so the SDK can find it
+      automatically.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">terminal</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">export</span> <span class="c-str">OPENAI_API_KEY</span>=<span class="c-str">"sk-..."</span></pre>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem;">
+      If you'd rather not export it in your shell, a <code>.env</code> file loaded
+      with <code>python-dotenv</code> works just as well.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Your first agent</span>
+    <h2>Five lines, one working agent</h2>
+    <p>
+      Before adding any tools, confirm the basics work. An <code>Agent</code> is a
+      name plus instructions. A <code>Runner</code> sends your input to the model and
+      hands back the result.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">hello_agent.py</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">from</span> agents <span class="c-key">import</span> Agent, Runner
+
+agent = Agent(
+    name=<span class="c-str">"Assistant"</span>,
+    instructions=<span class="c-str">"You are a helpful assistant."</span>,
+)
+
+result = Runner.run_sync(agent, <span class="c-str">"Write a haiku about recursion in programming."</span>)
+<span class="c-key">print</span>(result.final_output)</pre>
+      </div>
+    </div>
+
+    <p>
+      Run it with <code>python hello_agent.py</code>. You should see a short haiku
+      printed to your terminal. <code>run_sync</code> blocks until the agent finishes,
+      which is the simplest way to run something while you're learning. Everything
+      the agent produces lives on <code>result.final_output</code>.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Adding a tool</span>
+    <h2>Give the agent something it can actually do</h2>
+    <p>
+      An agent that can only talk is a chatbot. What makes it an agent is the ability
+      to call functions and use the result. In the Agents SDK, any Python function
+      becomes a tool the moment you decorate it with <code>@function_tool</code>.
+    </p>
+    <p>
+      The function's type hints tell the model what arguments to pass, and its
+      docstring tells the model when to use it. Both matter: skip the docstring and
+      the model has no idea what the tool is for.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">weather_agent.py</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-key">import</span> asyncio
+<span class="c-key">from</span> agents <span class="c-key">import</span> Agent, Runner, function_tool
+
+<span class="c-dim">@function_tool</span>
+<span class="c-key">def</span> get_weather(city: <span class="c-key">str</span>) -&gt; <span class="c-key">str</span>:
+    <span class="c-str">"""Return the current weather for a given city."""</span>
+    <span class="c-dim"># Swap this out for a real weather API call later.</span>
+    <span class="c-key">return</span> <span class="c-str">f"It's sunny and 72°F in {city}."</span>
+
+agent = Agent(
+    name=<span class="c-str">"Weather Assistant"</span>,
+    instructions=<span class="c-str">"Answer weather questions. Use get_weather when the user asks about a specific city."</span>,
+    tools=[get_weather],
+)
+
+<span class="c-key">async def</span> main():
+    result = <span class="c-key">await</span> Runner.run(agent, <span class="c-str">"What's the weather like in Austin?"</span>)
+    <span class="c-key">print</span>(result.final_output)
+
+<span class="c-key">if</span> __name__ == <span class="c-str">"__main__"</span>:
+    asyncio.run(main())</pre>
+      </div>
+    </div>
+
+    <p>
+      Note the switch from <code>Runner.run_sync</code> to <code>await Runner.run</code>
+      inside an <code>async def main()</code>. Both work the same way; <code>run_sync</code>
+      just wraps the async version for you, and it can't be used if you're already
+      inside an event loop, such as in a Jupyter notebook.
+    </p>
+
+    <p>
+      Run this file and you'll get something like:
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <div class="code-block__dots">
+          <span class="code-dot code-dot--red"></span>
+          <span class="code-dot code-dot--yellow"></span>
+          <span class="code-dot code-dot--green"></span>
+        </div>
+        <span class="code-block__filename">output</span>
+      </div>
+      <div class="code-block__body" is:raw>
+        <pre><span class="c-dim">It's sunny and 72°F in Austin.</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Under the hood</span>
+    <h2>What actually happened between input and output</h2>
+    <p>
+      Nothing about that result was hardcoded, and the model didn't just make up a
+      temperature. Here's the loop the SDK ran on your behalf.
+    </p>
+
+    <div class="flow-grid">
+      <div class="flow-card">
+        <span class="flow-step">1</span>
+        <h3>Model sees the prompt</h3>
+        <p>The Runner sends your input, the agent's instructions, and the tool definitions to the model.</p>
+      </div>
+      <div class="flow-card">
+        <span class="flow-step">2</span>
+        <h3>Model requests a tool call</h3>
+        <p>It recognizes the question needs live data, so it asks to call <code>get_weather</code> with <code>city="Austin"</code>.</p>
+      </div>
+      <div class="flow-card">
+        <span class="flow-step">3</span>
+        <h3>SDK runs your function</h3>
+        <p>The Agents SDK executes your actual Python function locally and captures the return value.</p>
+      </div>
+      <div class="flow-card">
+        <span class="flow-step">4</span>
+        <h3>Model writes the answer</h3>
+        <p>The tool's result is fed back to the model, which turns it into a natural language reply.</p>
+      </div>
+    </div>
+
+    <p>
+      This is why <code>Runner.run</code> is described as running "in a loop": if the
+      model had needed two tool calls to answer your question, the SDK would have
+      handled both before returning <code>final_output</code>. You never write that
+      loop yourself.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Common beginner mistakes</span>
+    <h2>Things that trip people up on their first agent</h2>
+    <ul>
+      <li><strong>Forgetting the docstring.</strong> Without one, the model doesn't know what the tool does or when to reach for it, and will often ignore it entirely.</li>
+      <li><strong>Vague instructions.</strong> "You are a helpful assistant" won't tell the model when to use your tools. Be explicit, like the example above does.</li>
+      <li><strong>Mixing sync and async incorrectly.</strong> Use <code>run_sync</code> in a plain script; use <code>await Runner.run(...)</code> inside async code such as a FastAPI route or notebook.</li>
+      <li><strong>No API key set.</strong> A missing or invalid <code>OPENAI_API_KEY</code> is the single most common first error, and the traceback isn't always obvious about it.</li>
+      <li><strong>Untyped tool arguments.</strong> The SDK uses your function's type hints to build the tool's schema. Skip them and the model has no idea what shape of input to send.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Where to go next</span>
+    <h2>Once this feels easy, here's what to add</h2>
+    <p>
+      A single agent with one tool covers a surprising number of real use cases. When
+      you outgrow it, the SDK's other primitives are there without switching
+      frameworks:
+    </p>
+    <ul>
+      <li><strong>Handoffs</strong>: let a router agent delegate to specialist agents for different kinds of requests.</li>
+      <li><strong>Guardrails</strong>: validate input and output before they reach the user or your tools.</li>
+      <li><strong>Sessions</strong>: keep conversation history across multiple turns without managing it by hand.</li>
+      <li><strong>Tracing</strong>: visualize and debug exactly which tools ran and what the model decided at each step.</li>
+    </ul>
+    <div class="essay-callout">
+      <p>
+        One thing tracing and sessions won't tell you is whether your agent's answers
+        were actually earned, meaning whether it checked the right places before
+        answering. That's a different problem, and it's the one we write about most.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface);">
+  <div class="container essay-prose">
+    <span class="label">Summary</span>
+    <h2>You now have a working, tool-using agent</h2>
+    <p>
+      You installed the SDK, ran an agent with no tools to confirm the basics, then
+      gave it a real function to call and watched it decide, on its own, when to use
+      that function instead of guessing. That decision loop, model to tool to model,
+      is the entire mental model you need to start building with the OpenAI Agents SDK.
+    </p>
+    <p>
+      From here, try swapping <code>get_weather</code> for a function that hits a real
+      API, or add a second tool and see how the model chooses between them.
+    </p>
+
+    <div class="essay-cta-row">
+      <a href="https://github.com/openai/openai-agents-python" class="btn-primary mr-2" target="_blank" rel="noopener">
+        OpenAI Agents SDK on GitHub →
+      </a>
+      <a href="https://openai.github.io/openai-agents-python/" class="btn-secondary mr-2" target="_blank" rel="noopener">
+        Read the docs
+      </a>
+      <a href="/writing" class="btn-secondary">
+        More from Tenure
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-top:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Related</span>
+    <h2 style="margin-bottom:2rem;">Keep going</h2>
+    <div class="related-grid">
+      <a href="/writing/how-to-test-agent-checked-before-saying-no" class="related-card">
+        <div class="related-tag">GroundEval</div>
+        <h3>How to test whether an AI agent checked before saying no</h3>
+        <p>Once your agent is live, here's how to verify it actually earned its answers instead of guessing.</p>
+        <span class="related-link">Read →</span>
+      </a>
+      <a href="https://openai.github.io/openai-agents-python/tools/" class="related-card" target="_blank" rel="noopener">
+        <div class="related-tag">Docs</div>
+        <h3>Using tools in the OpenAI Agents SDK</h3>
+        <p>Hosted tools, function tools, and agents-as-tools, straight from the source.</p>
+        <span class="related-link">Read →</span>
+      </a>
+      <a href="/writing" class="related-card">
+        <div class="related-tag">Tenure</div>
+        <h3>More writing on agents and AI infrastructure</h3>
+        <p>Tutorials and research notes on building and evaluating real agent systems.</p>
+        <span class="related-link">Read →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.code-block {
+  margin: 2rem 0;
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.code-block__header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.code-block__dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.code-dot--red { background: #3a3a3a; }
+.code-dot--yellow { background: #3a3a3a; }
+.code-dot--green { background: #3a3a3a; }
+
+.code-block__filename {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+}
+
+.code-block__body {
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+}
+
+.code-block__body pre {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: var(--muted);
+  white-space: pre;
+}
+
+.c-key { color: #82aaff; }
+.c-str { color: #c3e88d; }
+.c-num { color: #f78c6c; }
+.c-dim { color: #546e7a; }
+.c-bool { color: #ffcb6b; }
+
+.flow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.flow-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.flow-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: rgba(0,168,173,0.12);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.flow-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.flow-card p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.related-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.15s;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.related-card:hover { border-color: var(--accent); }
+
+.related-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.related-card h3 { color: var(--text); margin: 0; font-size: 1rem; }
+.related-card p { font-size: 0.85rem; margin: 0; flex: 1; }
+.related-link { font-size: 0.8rem; color: var(--accent); margin-top: 0.25rem; }
+
+@media (max-width: 680px) {
+  .essay-cta-row { flex-direction: column; }
+  .btn-primary, .btn-secondary { justify-content: center; }
+}
+</style>
+
+</Base>

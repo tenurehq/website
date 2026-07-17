@@ -2957,6 +2957,10 @@ footer {
   margin-right: 1.5rem;
 }
 
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
 .section-surface {
   background: var(--surface);
 }
