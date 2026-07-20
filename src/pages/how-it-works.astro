@@ -1,0 +1,415 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="How Tenure Works | Tenure"
+  description="Follow an AI request through Tenure: token authentication, scoped beliefs, observation, capability filtering, policy enforcement, audit, and usage tracking."
+>
+  <main class="how-it-works-page">
+
+    <section id="how-hero">
+      <div class="container">
+        <span class="label">How it works</span>
+        <h1>What actually happens between a request and a result.</h1>
+        <p class="section-lede">
+          Every request enters Tenure through an authenticated token. Tenure resolves the precise context lanes that token is allowed to inherit, strips forbidden capabilities before the model ever encounters them, and traps unsafe tool calls before they can execute against your business systems.
+        </p>
+      </div>
+    </section>
+
+    <section id="request-path" class="section-surface">
+      <div class="container">
+        <span class="label">The request path</span>
+        <h2>One request. A series of deterministic checkpoints.</h2>
+        <p class="section-lede">
+          Tenure sits on the model request path, outside the agent loop. Frameworks iterate. Models shift. The out-of-model policy boundary remains absolute.
+        </p>
+
+        <div class="request-path-grid">
+          <div class="request-stage">
+            <span class="execution-kicker">01</span>
+            <strong>Authenticate</strong>
+            <small>Identify the Tenure token and the policy attached to it.</small>
+          </div>
+          <div class="request-arrow">&rarr;</div>
+          <div class="request-stage">
+            <span class="execution-kicker">02</span>
+            <strong>Resolve context</strong>
+            <small>Load the scoped context lanes and structured beliefs.</small>
+          </div>
+          <div class="request-arrow">&rarr;</div>
+          <div class="request-stage">
+            <span class="execution-kicker">03</span>
+            <strong>Project capabilities</strong>
+            <small>Remove capability definitions the active policy does not allow.</small>
+          </div>
+          <div class="request-arrow">&rarr;</div>
+          <div class="request-stage model-stage">
+            <span class="execution-kicker">04</span>
+            <strong>Call the model</strong>
+            <small>Forward the constrained request using the supported provider protocol.</small>
+          </div>
+          <div class="request-arrow">&rarr;</div>
+          <div class="request-stage boundary-node">
+            <span class="execution-kicker">05</span>
+            <strong>Authorize invocation</strong>
+            <small>Release or block structured calls before they reach your runtime.</small>
+          </div>
+        </div>
+
+        <div class="sidecar-grid">
+          <article class="sidecar-card">
+            <span class="sidecar-label">Scoped beliefs</span>
+            <h3>Context is resolved before inference.</h3>
+            <p>Tenure injects precise structured beliefs instead of flattening loose conversation history into one retrieval pool. Organizational rules, team practices, project context, and user preferences remain scoped instead of being flattened into one retrieval pool.</p>
+          </article>
+          <article class="sidecar-card">
+            <span class="sidecar-label">Observation</span>
+            <h3>Behavior is captured without becoming policy.</h3>
+            <p>Observe mode records what capabilities were supplied, what the model could see, what it invoked, which providers and models appeared, and how that behavior changes over time.</p>
+          </article>
+          <article class="sidecar-card">
+            <span class="sidecar-label">Audit</span>
+            <h3>Enforcement decisions become durable evidence.</h3>
+            <p>Once policy is active, Tenure records the policy version applied and the decisions it made, including capability filtering, release, block, and request denial.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="control-layers">
+      <div class="container">
+        <span class="label">Two sides of enforcement</span>
+        <h2>Policy controls what the model can see and what can reach your runtime.</h2>
+        <p class="section-lede">
+          A request can offer more capability than policy permits without making the entire request invalid. Tenure narrows the model's effective capability surface before inference, then checks returned invocations again on the way back.
+        </p>
+
+        <div class="enforcement-visual">
+          <div class="enforcement-column">
+            <span class="enforcement-title">SUPPLIED BY APPLICATION</span>
+            <div class="capability-row allowed"><span>fetch_customer_profile</span><b>KEEP</b></div>
+            <div class="capability-row allowed"><span>send_email</span><b>KEEP</b></div>
+            <div class="capability-row filtered"><span>jira.create_issue</span><b>REMOVE</b></div>
+            <div class="capability-row filtered"><span>confluence.search</span><b>REMOVE</b></div>
+          </div>
+
+          <div class="enforcement-center">
+            <span>POLICY</span>
+            <strong>&rarr;</strong>
+          </div>
+
+          <div class="enforcement-column">
+            <span class="enforcement-title">EXPOSED TO MODEL</span>
+            <div class="capability-row allowed"><span>fetch_customer_profile</span><b>VISIBLE</b></div>
+            <div class="capability-row allowed"><span>send_email</span><b>VISIBLE</b></div>
+            <div class="capability-row muted"><span>jira.create_issue</span><b>HIDDEN</b></div>
+            <div class="capability-row muted"><span>confluence.search</span><b>HIDDEN</b></div>
+          </div>
+
+          <div class="enforcement-center">
+            <span>MODEL</span>
+            <strong>&rarr;</strong>
+          </div>
+
+          <div class="enforcement-column">
+            <span class="enforcement-title">RETURNED INVOCATION</span>
+            <div class="capability-row released"><span>send_email</span><b>RELEASE</b></div>
+            <div class="capability-row blocked"><span>jira.create_issue</span><b>BLOCK</b></div>
+          </div>
+        </div>
+
+        <div class="three-pillars">
+          <div class="pillar">
+            <div class="pillar-label">Exposure filtering</div>
+            <p>Before inference, Tenure removes capability definitions the active policy does not allow. The model never sees them. The request can continue with the capability surface policy actually permits.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-label">Invocation enforcement</div>
+            <p>After inference, Tenure normalizes every structured invocation and checks it against policy again. Disallowed calls are withheld before they reach the application runtime.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-label">Forced capability denial</div>
+            <p>If the caller explicitly requires a specific disallowed capability, or filtering makes an explicit request constraint impossible to satisfy, Tenure rejects the request instead of silently changing its meaning.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="policy-lifecycle" class="section-surface">
+      <div class="container">
+        <span class="label">From observation to enforcement</span>
+        <h2>You do not have to write the policy first.</h2>
+        <p class="section-lede">
+          Tenure can observe how an agent is actually configured and used, collapse that activity into a reviewable behavioral profile, and turn the reviewed result into an enforceable policy.
+        </p>
+
+        <div class="execution-path policy-path">
+          <div class="execution-node">
+            <span class="execution-kicker">STEP 1</span>
+            <strong>Observe</strong>
+            <small>Capabilities, models, providers, usage</small>
+          </div>
+          <div class="execution-arrow">&rarr;</div>
+          <div class="execution-node">
+            <span class="execution-kicker">STEP 2</span>
+            <strong>Draft</strong>
+            <small>Aggregate behavior into a policy candidate</small>
+          </div>
+          <div class="execution-arrow">&rarr;</div>
+          <div class="execution-node">
+            <span class="execution-kicker">STEP 3</span>
+            <strong>Review</strong>
+            <small>Invoked capabilities selected by default</small>
+          </div>
+          <div class="execution-arrow">&rarr;</div>
+          <div class="execution-node">
+            <span class="execution-kicker">STEP 4</span>
+            <strong>Publish</strong>
+            <small>Attach the reviewed policy to the token</small>
+          </div>
+          <div class="execution-arrow">&rarr;</div>
+          <div class="execution-node boundary-node">
+            <span class="execution-kicker">STEP 5</span>
+            <strong>Enforce</strong>
+            <small>Apply it on every request</small>
+          </div>
+        </div>
+
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <span class="evidence-state">OBSERVED EXPOSURE</span>
+            <h3>What was available?</h3>
+            <p>The capabilities the application supplied and the subset Tenure exposed to the model. This is the agent's potential surface, not proof that every capability is needed.</p>
+          </article>
+          <article class="evidence-card">
+            <span class="evidence-state">OBSERVED USE</span>
+            <h3>What was actually invoked?</h3>
+            <p>Capabilities the model returned as structured calls, with invocation counts and first and last seen dates drawn from the observation window.</p>
+          </article>
+          <article class="evidence-card featured-evidence">
+            <span class="evidence-state">REVIEWED PERMISSION</span>
+            <h3>What should remain allowed?</h3>
+            <p>Invoked capabilities are proposed for the allowlist. Available but never invoked capabilities remain visible and unselected, making unnecessary exposure easy to remove.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="agent-profile">
+      <div class="container">
+        <span class="label">What Tenure learns about an agent</span>
+        <h2>A behavioral profile, not a pile of request logs.</h2>
+        <p class="section-lede">
+          The Agents view collapses high-volume observations into the signals needed to understand behavior and draft policy, while still keeping recent raw observations available for investigation.
+        </p>
+
+        <div class="profile-grid">
+          <article class="profile-card">
+            <span class="profile-kicker">CAPABILITIES</span>
+            <h3>Available versus invoked</h3>
+            <p>See every capability observed as available to the model, which ones the model actually invoked, and which remained unused.</p>
+          </article>
+          <article class="profile-card">
+            <span class="profile-kicker">FREQUENCY</span>
+            <h3>Counts and recency</h3>
+            <p>Invocation counts plus first and last seen dates make low-frequency but legitimate capabilities visible without relying on only the latest requests.</p>
+          </article>
+          <article class="profile-card">
+            <span class="profile-kicker">ROUTING</span>
+            <h3>Providers and models</h3>
+            <p>Track which providers and models appear on the token so routing behavior is visible alongside capability behavior.</p>
+          </article>
+          <article class="profile-card">
+            <span class="profile-kicker">USAGE</span>
+            <h3>Token consumption</h3>
+            <p>Record per-request token usage and roll it up over time by agent, provider, and model for cost visibility and future consumption controls.</p>
+          </article>
+        </div>
+
+        <p class="lifecycle-note">
+          The agent detail view keeps the most recent observations available for drill-down, while policy drafting works from the aggregated capability profile rather than assuming the latest 100 requests represent the agent's full behavior.
+        </p>
+      </div>
+    </section>
+
+    <section id="records" class="section-surface">
+      <div class="container">
+        <span class="label">Three records, three jobs</span>
+        <h2>Observing agent behavior, enforcing governance, and accounting for token costs are entirely different engineering challenges.</h2>
+        <p class="section-lede">
+          Tenure keeps these concerns separate so high-volume behavioral logging does not have to serve as permanent audit evidence or long-term usage accounting.
+        </p>
+
+        <div class="records-grid">
+          <article class="record-card">
+            <div class="trust-step">Observations</div>
+            <h3>The behavioral evidence</h3>
+            <p>What was supplied, exposed, and invoked; invocation arguments and call IDs; provider and model activity; counts and first or last seen dates. Granular, high volume, and time limited.</p>
+            <span class="record-question">What shape does this agent's behavior have?</span>
+          </article>
+          <article class="record-card featured">
+            <div class="trust-step">Audit</div>
+            <h3>The governance record</h3>
+            <p>Identity, authentication, policy version, filtering decisions, forced-capability denials, releases, and blocks. Durable evidence of what Tenure itself decided.</p>
+            <span class="record-question">What did Tenure permit or prevent?</span>
+          </article>
+          <article class="record-card">
+            <div class="trust-step">Usage</div>
+            <h3>The consumption record</h3>
+            <p>Per-request token counts linked to the same request or observation when available, with independent retention and aggregation by agent, model, provider, and time window.</p>
+            <span class="record-question">How much model capacity did this agent consume?</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="lifecycle">
+      <div class="container">
+        <span class="label">The capability lifecycle</span>
+        <h2>Four states define Tenure's enforcement boundary.</h2>
+        <p class="section-lede">
+          The wire format differs by provider protocol, but Tenure reduces the lifecycle to the same small set of states before policy is evaluated.
+        </p>
+
+        <div class="execution-path execution-path-4">
+          <div class="execution-node">
+            <span class="execution-kicker">STAGE 1</span>
+            <strong>Supplied</strong>
+            <small>Application includes it</small>
+          </div>
+          <div class="execution-arrow">&rarr;</div>
+          <div class="execution-node">
+            <span class="execution-kicker">STAGE 2</span>
+            <strong>Exposed</strong>
+            <small>Tenure forwards it to the model</small>
+          </div>
+          <div class="execution-arrow">&rarr;</div>
+          <div class="execution-node">
+            <span class="execution-kicker">STAGE 3</span>
+            <strong>Invoked</strong>
+            <small>Model emits a structured call</small>
+          </div>
+          <div class="execution-arrow">&rarr;</div>
+          <div class="execution-node boundary-node">
+            <span class="execution-kicker">STAGE 4</span>
+            <strong>Tenure decision</strong>
+            <small>Release or block</small>
+          </div>
+        </div>
+
+        <div class="outcome-grid">
+          <article class="outcome-card allow-card">
+            <span class="outcome-status">RELEASED</span>
+            <h3>Allowed back to your runtime</h3>
+            <p>The invocation is returned to your application runtime. What happens after that point belongs to your infrastructure, not to Tenure.</p>
+          </article>
+          <article class="outcome-card block-card">
+            <span class="outcome-status">BLOCKED</span>
+            <h3>Withheld before release</h3>
+            <p>Policy says no. Tenure withholds the structured invocation and records the attempted call and enforcement decision.</p>
+          </article>
+          <article class="outcome-card escalate-card">
+            <span class="outcome-status">REJECTED</span>
+            <h3>Explicit constraint cannot be satisfied</h3>
+            <p>When the caller explicitly requires a disallowed capability, Tenure rejects the request rather than silently altering what the caller asked the model to do.</p>
+          </article>
+        </div>
+
+        <p class="lifecycle-note">
+          Tenure's authority ends at release. It does not claim to know whether a released action succeeded, failed, was ignored, or produced a side effect after it reached the application runtime.
+        </p>
+      </div>
+    </section>
+
+    <section id="protocol-boundary" class="section-surface">
+      <div class="container">
+        <span class="label">Protocol-level, not framework-level</span>
+        <h2>Govern the model request path without coupling policy to an agent SDK.</h2>
+        <p class="section-lede">
+          Tenure normalizes each supported ingress protocol into the same internal capability identities. Policy evaluation does not need to know which agent framework constructed the request or which provider-specific field carried the tool definition.
+        </p>
+
+        <div class="protocol-diagram">
+          <div class="framework-stack">
+            <span>Custom agent</span>
+            <span>Agent framework</span>
+            <span>Application code</span>
+            <span>AI client</span>
+          </div>
+          <div class="protocol-arrow">&rarr;</div>
+          <div class="protocol-box">
+            <small>SUPPORTED INGRESS</small>
+            <strong>OpenAI / Anthropic protocols</strong>
+            <span>Normalize supplied capabilities and returned invocations</span>
+          </div>
+          <div class="protocol-arrow">&rarr;</div>
+          <div class="protocol-box tenure-box">
+            <small>TENURE CORE</small>
+            <strong>Canonical policy evaluation</strong>
+            <span>Filter, authorize, audit</span>
+          </div>
+        </div>
+
+        <p class="lifecycle-note">
+          Protocol adapters understand provider wire formats. The enforcement core operates on canonical identities. Observation and enforcement share the same normalization logic, but runtime decisions never depend on querying historical observations.
+        </p>
+      </div>
+    </section>
+
+    <section id="recap">
+      <div class="container">
+        <span class="label">The full picture</span>
+        <h2>Five critical governance questions and the layers that answer them</h2>
+
+        <table class="recap-table">
+          <tbody>
+            <tr>
+              <td>What context should this caller receive?</td>
+              <td>Scoped beliefs</td>
+            </tr>
+            <tr>
+              <td>What capabilities did the application offer?</td>
+              <td>Observation</td>
+            </tr>
+            <tr>
+              <td>What capabilities does the agent demonstrate it needs?</td>
+              <td>Observed invocation</td>
+            </tr>
+            <tr>
+              <td>What should the agent be allowed to do?</td>
+              <td>Reviewed policy</td>
+            </tr>
+            <tr>
+              <td>What did Tenure actually permit or prevent?</td>
+              <td>Audit</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="lifecycle-note">
+          Scoped beliefs supplies the right context. Observation builds the evidence. Policy turns evidence into a reviewed decision. Enforcement applies that decision on the request path. Audit proves what Tenure did.
+        </p>
+      </div>
+    </section>
+
+    <section id="cta" class="section-surface">
+      <div class="container">
+        <span class="label">Get started</span>
+        <h2>Put Tenure on the request path.</h2>
+        <p class="cta-sub">Run Tenure locally, observe an agent's real capability surface, generate a policy draft, and enforce the reviewed policy without changing how the agent reasons.</p>
+
+        <div class="hero-cta-row">
+          <a href="/pricing" class="btn-primary">View Pricing</a>
+          <a href="/docs" class="btn-secondary">Read the Docs</a>
+        </div>
+
+        <p class="cta-meta">
+          Self-hosted <span>&middot;</span> No call-home telemetry
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+</Base>

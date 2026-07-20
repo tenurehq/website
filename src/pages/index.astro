@@ -23,12 +23,34 @@ import Base from '../layouts/Base.astro';
        
 
         <p class="hero-sub hero-sub-lede">
-       Tenure observes agent behavior, automatically generates deterministic policies, and blocks unsafe actions before they execute.
+
+        Tenure gives every chat client, IDE, and agent precise context, turns observed agent behavior into deterministic policy, and blocks unsafe actions before they execute.
+
+
         </p>
 
         <div class="hero-cta-row">
-          <a href="#architecture" class="btn-primary">See How It Works</a>
-           <a href="/pricing" class="btn-secondary">View Pricing</a>
+          <a href="/how-it-works" class="btn-primary">See How It Works</a>
+          <a href="/pricing" class="btn-secondary">View Pricing</a>
+        </div>
+
+         <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value">1.0<a href="https://huggingface.co/spaces/tenurehq/precisionmembench" style="color:var(--accent);font-size:0.7em;vertical-align:super;text-decoration:none">*</a></span>
+            <span class="hero-stat-label">Retrieval precision</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">&lt;15ms</span>
+            <span class="hero-stat-label">latency</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">0.00</span>
+            <span class="hero-stat-label">Drift score</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">0</span>
+            <span class="hero-stat-label">SDK dependencies</span>
+          </div>
         </div>
 
         <div class="gateway-mock" aria-label="Example runtime decision made by Tenure">
@@ -159,6 +181,7 @@ import Base from '../layouts/Base.astro';
             <div class="architecture-node model-node">Business Systems</div>
           </div>
         </div>
+       
       </div>
     </section>
 
@@ -354,20 +377,15 @@ import Base from '../layouts/Base.astro';
 
 
     <section id="cta">
-      <div class="container">
+      <div class="container cta-card">
         <span class="label">Get started</span>
         <h2>Secure and contextualize every AI request at runtime.</h2>
-        <p class="cta-sub">Run Tenure locally to manage context lanes and beliefs in your development environment, or spin up Team Mode to intercept, verify, and govern every outbound LLM call across your entire company.</p>
+        <p class="cta-sub">Run Tenure Community to give shared context to your AI tools, or leverage Pro to govern every outbound LLM call across your entire company.</p>
 
         <div class="hero-cta-row">
          <a href="/pricing" class="btn-primary">View Pricing</a>
  <a href="/docs/quickstart" class="btn-secondary">Get Started</a>        
  </div>
-
-
-        <p class="cta-meta">
-          Self-hosted <span>&middot;</span> No call-home telemetry
-        </p>
       </div>
     </section>
 
