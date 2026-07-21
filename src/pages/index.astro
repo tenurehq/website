@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 ---
 <Base
   title="Tenure | Governed context for AI agents"
-  description="Tenure is the governance layer for AI memory: precise shared project state, scoped agent tokens, optional user persona context, provenance, and per-turn audit trails between every client, agent, and model."
+  description="Tenure gives every chat client, IDE, and agent access to institutional knowledge, turns observed agent behavior into deterministic policy, and blocks unsafe actions before they execute."
 >
   <main>
 
@@ -24,7 +24,7 @@ import Base from '../layouts/Base.astro';
 
         <p class="hero-sub hero-sub-lede">
 
-        Tenure gives every chat client, IDE, and agent precise context, turns observed agent behavior into deterministic policy, and blocks unsafe actions before they execute.
+        Tenure gives every chat client, IDE, and agent access to institutional knowledge, turns observed agent behavior into deterministic policy, and blocks unsafe actions before they execute.
 
 
         </p>
@@ -131,7 +131,7 @@ import Base from '../layouts/Base.astro';
         <span class="label">Where Tenure fits</span>
         <h2>One gateway every agent request passes through.</h2>
         <p>
-        Tenure intercepts agent activity at the runtime level. Every request is verified against active context and explicit policy: allowing, blocking, or escalating actions in under 15ms.
+        Tenure provides the right institutional knowledge and evaluates policy before allowing, blocking, or escalating an action in under 15ms.
         </p>
 
         <div class="architecture-shell" aria-label="Tenure architecture diagram">
@@ -190,8 +190,7 @@ import Base from '../layouts/Base.astro';
         <span class="label">Shared scoped memory</span>
         <h2>Shared memory without shared everything.</h2>
         <p class="section-lede">
-          The memory lives in Tenure, not inside a single client. Tokens determine which context lanes are eligible for each
-          agent or client, so shared state can travel across tools without collapsing every project, team, and user into one pool.
+          Tenure preserves your organization’s institutional knowledge across every AI tool, without mixing teams, projects, or users into one shared pool.
         </p>
 
         <div class="memory-visual">
@@ -231,23 +230,24 @@ import Base from '../layouts/Base.astro';
             <div class="token-output">
               <span class="token-output-label">Eligible context</span>
               <strong>3 scoped beliefs</strong>
-              <small>Only active, relevant state can enter the request.</small>
+              <small>Only active, relevant context can enter the request.</small>
             </div>
           </div>
         </div>
 
         <div class="three-pillars">
           <div class="pillar">
-            <div class="pillar-label">Structured Beliefs over Vector Dumps</div>
-            <p>Drop the loose conversation history. Tenure maps relations, entities, and open questions into precise, queryable state.</p>
+            <div class="pillar-label">Memory built for models, not humans</div>
+            <p>
+            Tenure structures the decisions, practices, relationships, preferences, and corrections that run your org into beliefs the model understands.</p>
           </div>
           <div class="pillar">
             <div class="pillar-label">Cryptographic Isolation</div>
-            <p>Multi-tenant project and team isolation are structural. Agents only inherit user personas when explicitly allowed by the token.</p>
+            <p>Every chat client, IDE, and agent is only given access to the knowledge it's allowed to. No worrying about context bleed across projects.</p>
           </div>
           <div class="pillar">
             <div class="pillar-label">Tamper-Proof Audit Trails</div>
-            <p>Every single belief retains its origin, scope, and lifecycle history. Know exactly why an agent knew something, and when it found out.</p>
+            <p>Every belief retains its origin, scope, and lifecycle history. Know why an agent knew something, and when it found out.</p>
           </div>
         </div>
       </div>
@@ -256,9 +256,9 @@ import Base from '../layouts/Base.astro';
     <section id="precision" class="section-surface">
       <div class="container">
         <span class="label">Memory precision</span>
-        <h2>Deterministic memory injection. Zero prompt bloat.</h2>
+        <h2>The right belief, at the right time. Nothing extra.</h2>
         <p class="section-lede">
-         Tenure retrieves scoped belief state precisely, outperforming standard vector strategies by up to 4x on standard agent benchmarks without adding latency.
+        Other memory systems drag loosely related memories forward as the conversation changes. Tenure provides the right belief at each turn, so when the topic shifts, irrelevant context stays behind.
         </p>
 
         <div class="precision-proof">
@@ -328,7 +328,7 @@ import Base from '../layouts/Base.astro';
         <span class="label">Built to be inspected</span>
         <h2>Nothing important should be invisible.</h2>
         <p class="section-lede">
-          Tenure records the state it stores, the context it injects, and the decisions it makes. Stop reconstructing execution chains after a failure occurs. Track every state shift, context injection, and runtime block in real-time.
+          See what Tenure knew, what context the model received, and why an agent action was allowed or blocked. Track every change in real time; not after something goes wrong.
         </p>
 
         <div class="visibility-grid">
@@ -380,7 +380,7 @@ import Base from '../layouts/Base.astro';
       <div class="container cta-card">
         <span class="label">Get started</span>
         <h2>Secure and contextualize every AI request at runtime.</h2>
-        <p class="cta-sub">Run Tenure Community to give shared context to your AI tools, or leverage Pro to govern every outbound LLM call across your entire company.</p>
+        <p class="cta-sub">Run Tenure Community to give institutional knowledge to your AI tools, or leverage Tenure Team to govern every outbound LLM call across your entire company.</p>
 
         <div class="hero-cta-row">
          <a href="/pricing" class="btn-primary">View Pricing</a>
