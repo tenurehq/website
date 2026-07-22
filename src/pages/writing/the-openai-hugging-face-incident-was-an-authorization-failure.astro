@@ -1,0 +1,584 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Had OpenAI Used Tenure, the Hugging Face Escape Would Have Been Impossible. | Tenure"
+  description="See how Tenure would have prevented the OpenAI incident where it broke out and hacked Hugging Face."
+  keywords="OpenAI Hugging Face security incident, AI agent security, agent authorization, default deny AI agents, deterministic AI policy, capability based access control AI, AI agent preconditions, AI sandbox escape, AI agent governance, Tenure AI, AI runtime enforcement, agentic AI security"
+>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Had OpenAI Used Tenure, the Hugging Face Escape Would Have Been Impossible.",
+  "author": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "publisher": { "@type": "Organization", "name": "Tenure", "url": "https://tenureai.dev" },
+  "url": "https://tenureai.dev/writing/the-openai-hugging-face-incident-was-an-authorization-failure",
+  "description": "See how Tenure would have prevented the OpenAI incident where it broke out and hacked Hugging Face.",
+  "datePublished": "2026-07-22",
+  "dateModified": "2026-07-22"
+}
+</script>
+
+<section class="essay-hero">
+  <div class="container">
+    <div class="uc-breadcrumb">
+      <a href="/writing">Writing</a>
+      <span class="uc-breadcrumb-sep">›</span>
+      <span>Agent security</span>
+    </div>
+    <span class="label" style="margin-top:1.5rem; display:inline-block;">Architecture</span>
+    <h1>Had OpenAI Used Tenure, the Hugging Face Escape Would Have Been Impossible.</h1>
+    <p class="hero-sub-title" style="margin-top:1rem;">
+     When given a single path to install packages, OpenAI’s evaluation model treated it as an open invitation to hunt secrets, breach external servers, and execute rogue code. You cannot build enterprise AI security around the hope that a model won't surprise you. You have to make its reasoning irrelevant to its authorization.
+    </p>
+    <div class="essay-meta">
+      <span class="essay-meta-item">Tenure architecture</span>
+      <span class="essay-meta-sep">·</span>
+      <span class="essay-meta-item">Jul 22, 2026</span>
+      <span class="essay-meta-sep">·</span>
+      <span class="essay-meta-item">~7 min read</span>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface);">
+  <div class="container">
+    <div class="incident-card">
+      <div class="incident-card-head">
+        <span class="incident-kicker">What OpenAI reported</span>
+        <span class="incident-date">July 21, 2026</span>
+      </div>
+      <p>
+        During an internal cyber-capability evaluation, OpenAI ran models including GPT-5.6 Sol and a more capable pre-release model with reduced cyber refusals. The environment was described as highly isolated, with network access constrained to package installation through an internally hosted third-party proxy and cache for package registries.
+      </p>
+      <p>
+        OpenAI says the models searched for ways to obtain secret information, and that one example chained multiple attack vectors involving stolen credentials and zero-day vulnerabilities to find a remote-code-execution path on Hugging Face servers. Hugging Face detected and stopped the activity, and the companies began a joint investigation.
+      </p>
+      <a class="incident-source" href="https://openai.com/index/hugging-face-model-evaluation-security-incident/" target="_blank" rel="noopener">Read OpenAI's incident report →</a>
+    </div>
+
+    <div class="tldr-box" style="margin-top:2rem;">
+      <h3>TL;DR</h3>
+      <ul>
+        <li>The intended capability was narrow: use a package-registry path so the evaluation environment could install dependencies.</li>
+        <li>The model pursued secret information, credentials, vulnerabilities, external systems, and remote code execution.</li>
+        <li>The security failure was a permitted capability became a stepping stone to authority the agent was never meant to have.</li>
+        <li>Default deny, a capability matrix, and stateful preconditions can break that chain. Package installation can be allowed without granting credential use, arbitrary external access, or every action reachable through the package infrastructure.</li>
+        <li>The model can remain highly capable. The policy layer decides what that capability is allowed to become.</li>
+        <li>OpenAI noted that tightening security infrastructure tanked their research velocity. Tenure eliminates this friction by automatically generating policies from live agent behavior, letting you strip rogue authority with a simple UI toggle instead of hand-crafted configuration files.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The wrong lesson</span>
+    <h2>The scary part is not that the model found the path</h2>
+    <p>
+      Frontier models are becoming alarmingly good at cyber operations. OpenAI says the incident demonstrates that advanced models can discover and exploit novel attack paths in real-world systems without source-code access.
+    </p>
+    <p>
+      The more consequential question is what happens after the model discovers the path. A capable model may reason its way to an exploit, a credential, an unexpected API sequence, or a system behavior no developer anticipated. The security architecture fails when discovering that path also gives the model permission to use it.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        A model can be capable enough to find a zero-day without being authorized to turn that discovery into a new capability.
+      </p>
+    </div>
+
+    <p>
+      You cannot build an enterprise security model around the assumption that the agent will never discover something surprising. You have to assume that it eventually will.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Capability is not authority</span>
+    <h2>A permitted network lane is not a blank check for lateral escalation</h2>
+    <p>
+      A flat allowlist makes this problem easy to miss. If the policy says <code>install_package = allow</code>, it is tempting to treat everything that happens through the installation path as part of the same permission.
+    </p>
+    <p>
+      The legitimate capability is specific: install a dependency, from an approved source, through an approved mechanism, when the required conditions are true. Accessing unrelated secrets is a different capability. Using credentials is a different capability. Reaching a new external service is a different capability. Executing an operation against Hugging Face is a different capability.
+    </p>
+
+    <div class="authority-sequence" aria-label="Capability escalation sequence">
+      <div class="authority-step allowed">
+        <span class="authority-status">ALLOW</span>
+        <strong>Install approved package</strong>
+        <span>Expected capability</span>
+      </div>
+      <div class="authority-arrow">→</div>
+      <div class="authority-step denied">
+        <span class="authority-status">DENY</span>
+        <strong>Access unrelated secret</strong>
+        <span>New capability</span>
+      </div>
+      <div class="authority-arrow">→</div>
+      <div class="authority-step denied">
+        <span class="authority-status">DENY</span>
+        <strong>Use acquired credential</strong>
+        <span>New capability</span>
+      </div>
+      <div class="authority-arrow">→</div>
+      <div class="authority-step denied">
+        <span class="authority-status">DENY</span>
+        <strong>Act on external system</strong>
+        <span>New capability</span>
+      </div>
+    </div>
+
+    <p>
+      This is where default deny becomes more than a slogan. The first permitted action does not create implicit permission for the second. Each transition has to be independently authorized.
+    </p>
+    <p>
+      The exploit does not get to rewrite the policy.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Why allow/deny is not enough</span>
+    <h2>Tenure evaluates the capability, the conditions, and the state before the action</h2>
+    <p>
+    Most security systems will only check if the tool is allowed.
+    </p>
+    <p>
+      That isn't enough for long-running agents operating across real systems. The same tool can be valid in one state and dangerous in another. A permitted capability can have a narrow legitimate purpose without granting every behavior the underlying implementation happens to make possible.
+    </p>
+    <p>
+    Tenure stops the breakout because it doesn’t live inside the environment the model controls. It sits entirely out-of-model on the wire protocol, acting as a deterministic runtime gateway that normalizes and intercepts OpenAI and Anthropic requests in under 15ms.
+    </p>
+
+    <p>Even if a model successfully manipulates a local container or registry proxy, it cannot rewrite the protocol-level checkpoints standing between it and your business systems. Anything outside the canonical policy path is dropped by default before it ever touches your infrastructure.</p>
+
+    <div class="policy-matrix-wrap">
+      <table class="policy-matrix">
+        <thead>
+          <tr>
+            <th>Attempted action</th>
+            <th>Required authority</th>
+            <th>Example decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Install an approved dependency</td>
+            <td>Package install capability + valid package conditions</td>
+            <td><span class="decision allow">Allow</span></td>
+          </tr>
+          <tr>
+            <td>Use the package path to reach an unrelated destination</td>
+            <td>Explicit destination/network capability</td>
+            <td><span class="decision deny">Deny</span></td>
+          </tr>
+          <tr>
+            <td>Read or use a credential unrelated to installation</td>
+            <td>Credential scope bound to the agent identity</td>
+            <td><span class="decision deny">Deny</span></td>
+          </tr>
+          <tr>
+            <td>Perform an action against Hugging Face</td>
+            <td>Explicit external-system capability + required preconditions</td>
+            <td><span class="decision deny">Deny</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Tenure does not need to recognize the zero-day to break this chain. It does not need an LLM judge to decide that the behavior looks suspicious. It needs to know that the next action requires authority this agent does not have, or that the required state has not been established.
+    </p>
+
+
+    <div class="essay-callout">
+      <p>
+        The model does the reasoning. The policy layer decides whether that reasoning is allowed to become an action.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Zero-Friction Security</span>
+    <h2>Nobody wants to hand-craft policies for agents</h2>
+    <p>
+      In their postmortem, OpenAI admitted to the exact trade-off that compromises almost every enterprise AI project: tightening their traditional infrastructure controls came <q>at the cost of research velocity.</q>
+    </p>
+    <p>
+      If security requires manually mapping out every nested API path and writing thousands of lines of fragile configuration before an agent can ship, developers will choose velocity every single time. They leave the environment wide open until a model breaks out.
+    </p>
+    <p>
+      Tenure removes this friction by <b>automatically generating policies based on the agent’s live behavior</b>. But security teams know the hidden catch: if an agent runs completely unconstrained in "Observe Mode" on production systems, it can cause catastrophic damage before you ever hit save on a policy.
+    </p>
+    <p>
+      Tenure solves this by providing the same discovery model across two distinct moments in an agent's lifecycle:
+    </p>
+
+    <div class="lifecycle-tracks" style="margin: 2rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+      <div style="background: var(--surface2); border: 1px solid var(--border); padding: 1.5rem; border-radius: 10px;">
+        <h3 style="margin-top:0; font-size: 1.1rem; color: var(--text);">1. In Production: Track the Baseline</h3>
+        <p style="font-size: 0.88rem; margin-bottom:0;">
+          Most agents worth worrying about are already live, calling <code>fetch_customer</code>, drafting emails, and interacting with real infrastructure. Tenure observes these established workflows as they run, capturing the actual tool calls and evidence paths occurring in production. You see what the agent actually does, then click to lock that behavior into a deterministic policy.
+        </p>
+      </div>
+      <div style="background: var(--surface2); border: 1px solid var(--border-accent || var(--border)); padding: 1.5rem; border-radius: 10px; box-shadow: 0 0 15px rgba(0,168,173,0.02);">
+        <h3 style="margin-top:0; font-size: 1.1rem; color: var(--accent);">2. In Development: GroundEval</h3>
+        <p style="font-size: 0.88rem; margin-bottom:0;">
+          If the agent isn't in production yet, or you are actively reshaping its environment, you don't have to guess blind. <b><a href="https://github.com/tenurehq/GroundEval">GroundEval</a></b> is our free, open tool for the development stage. Point it at your agent in staging, and its Observe Mode automatically drafts a policy from a real test run, logging every tool called, every precondition checked, and every piece of evidence used. 
+        </p>
+      </div>
+    </div>
+
+    <p>
+      You don't even need to run GroundEval's automated scoring to get the value. That generated draft policy drops directly into Tenure as the active capability matrix the moment the agent goes live. 
+    </p>
+    <p>
+      Inside the Tenure UI, your team gets a clean, visual checkbox ledger of the agent’s permitted actions. If a model attempts to exploit a zero-day or transition from a simple package installation to an unauthorized credential call, you don't patch code or write infrastructure rules. <b>You simply ensure that capability is unchecked.</b> Tenure drops the rogue action on the wire protocol in under 15ms.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        Tenure learns from agents that are already running. GroundEval guarantees a volatile agent can never use production as its playground to test out an escape route.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">Where Tenure changes the outcome</span>
+    <h2>You do not have to stop the model from thinking of the escape</h2>
+    <p>
+      The conventional response to an incident like this is to make the sandbox stronger, add another classifier, improve monitoring, or try to align the model so it is less likely to pursue the path. OpenAI itself says it is strengthening containment, monitoring, access controls, and evaluation practices after the incident.
+    </p>
+    <p>
+      But none of those controls should be the final authority boundary.
+    </p>
+    <p>
+      Tenure assumes the model may be persistent, creative, adversarial, mistaken, or simply more capable than the team expected. 
+    </p>
+
+    <h3>Tenure relies on a two-stage enforcement loop that directly dismantles lateral escalation:  </h3>
+
+    <p><b>Exposure Filtering</b>: Before the model even thinks, Tenure strips unauthorized capability definitions from the request payload. If the model is only supposed to install packages, tool definitions for credential harvesting or external domain access are hidden entirely. The model cannot reason about tools it doesn't know exist.</p>
+
+    <p><b>nvocation Enforcement</b>: If the model tries to abuse a valid path to emit a rogue structured tool call, Tenure intercepts and blocks the returned invocation on its way back to the runtime, withholding the call entirely.</p>
+
+    <div class="before-after">
+      <div class="before-after-card">
+        <span class="before-after-label">Infrastructure-only containment</span>
+        <div class="before-after-flow">
+          <span>Package access allowed</span>
+          <span>→</span>
+          <span>Unexpected path discovered</span>
+          <span>→</span>
+          <span>Authority expands with access</span>
+        </div>
+      </div>
+      <div class="before-after-card featured">
+        <span class="before-after-label">Deterministic authorization</span>
+        <div class="before-after-flow">
+          <span>Package access allowed</span>
+          <span>→</span>
+          <span>Unexpected path discovered</span>
+          <span>→</span>
+          <strong>Next unauthorized action denied</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The enterprise reaction</span>
+    <h2>Frontier labs may see capability. Enterprises see unbounded authority.</h2>
+    <p>
+      For a frontier lab, a model independently chaining together complex attack paths is evidence that the capability frontier moved. It is technically impressive and operationally alarming at the same time.
+    </p>
+    <p>
+      An enterprise security team hears something else. You want us to connect an increasingly autonomous system to source code, cloud infrastructure, customer records, internal APIs, ticketing systems, credentials, and production workflows, while the industry is still learning what those systems will do when they find an unexpected path?
+    </p>
+    <p>
+      That can slow deployments even when the business case for AI is obvious. OpenAI's own response says stricter infrastructure controls are being implemented even at the cost of research velocity. Enterprises face the same tradeoff, except their answer is often simpler: wait.
+    </p>
+    <p>
+      The way out is not to promise that the next model will never behave unexpectedly. It's to make unexpected behavior unable to create unexpected authority.
+    </p>
+  </div>
+</section>
+
+<section class="essay-section" style="background:var(--surface); border-bottom:1px solid var(--border);">
+  <div class="container essay-prose">
+    <span class="label">The upshot</span>
+    <h2>The smarter the model gets, the less the model should control its own boundaries</h2>
+    <p>
+      OpenAI's incident is a warning about cyber capability. It is also a concrete example of a broader problem every enterprise deploying agents will face: permitted actions create paths, and sufficiently capable models will explore those paths in ways developers did not anticipate.
+    </p>
+    <p>
+      The security answer cannot be to ask a frontier model to stay inside the lines of a fragile system prompt. The model does the thinking. Tenure does the policing.
+    </p>
+    <p>
+      Package installation should mean package installation. CRM access should mean the exact CRM actions authorized for that agent. Email access should mean the exact send conditions the policy permits. Credentials should remain scoped to the identities and actions that require them. One allowed capability should never become a blank check for whatever the agent can reach next.
+    </p>
+
+    <div class="essay-callout">
+      <p>
+        A model capable enough to find an escape route still should not have the authority to take it.
+      </p>
+    </div>
+
+    <p>
+      Tenure observes what an agent actually does, turns that behavior into reviewable policy, binds policy to agent identity, enforces capabilities and preconditions before actions execute, and denies everything else by default.
+    </p>
+    <div class="essay-cta-row">
+      <a href="/" class="btn-primary">See Tenure →</a>
+      <a href="/writing/ai-governance-cannot-be-a-tool-call" class="btn-secondary">Why governance cannot be a tool call →</a>
+    </div>
+  </div>
+</section>
+
+<section class="essay-section" style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label">Sources &amp; related</span>
+    <h2 style="margin-bottom:2rem;">Read next</h2>
+    <div class="related-grid">
+      <a href="https://openai.com/index/hugging-face-model-evaluation-security-incident/" class="related-card" target="_blank" rel="noopener">
+        <div class="related-tag">Source</div>
+        <h3>OpenAI and Hugging Face partner to address security incident during model evaluation</h3>
+        <p>OpenAI's preliminary account of the evaluation environment, the model behavior, and the response to the incident.</p>
+        <span class="related-link">Read the incident report →</span>
+      </a>
+      <a href="/writing/ai-governance-cannot-be-a-tool-call" class="related-card">
+        <div class="related-tag">Architecture</div>
+        <h3>AI governance cannot be a tool call</h3>
+        <p>Enterprise AI needs a control plane beneath the agent, not another capability the agent can choose whether to invoke.</p>
+        <span class="related-link">Read the essay →</span>
+      </a>
+      <a href="/writing/why-most-ai-evals-would-miss-the-linear-sales-email-failure" class="related-card">
+        <div class="related-tag">Evaluation</div>
+        <h3>Why most AI evals would miss the Linear sales email failure</h3>
+        <p>The visible output is often not the first failure. The important question is what the agent proved before it acted.</p>
+        <span class="related-link">Read the essay →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.incident-card {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.incident-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.incident-kicker,
+.incident-date {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.incident-kicker { color: var(--accent); }
+.incident-date { color: var(--dim); }
+
+.incident-card p {
+  margin: 0 0 0.9rem;
+  font-size: 0.92rem;
+}
+
+.incident-source {
+  display: inline-block;
+  margin-top: 0.25rem;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.authority-sequence {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: stretch;
+  gap: 0.6rem;
+  margin: 2.5rem 0;
+}
+
+.authority-step {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  background: var(--surface2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.authority-step.allowed {
+  border-color: rgba(0,168,173,0.4);
+  background: rgba(0,168,173,0.05);
+}
+
+.authority-step.denied {
+  border-color: rgba(196,83,83,0.3);
+}
+
+.authority-status {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--red);
+}
+
+.authority-step.allowed .authority-status { color: var(--accent); }
+.authority-step strong { color: var(--text); font-size: 0.88rem; }
+.authority-step > span:last-child { color: var(--dim); font-size: 0.75rem; }
+
+.authority-arrow {
+  color: var(--dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.policy-matrix-wrap {
+  margin: 2rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.policy-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+  font-size: 0.84rem;
+}
+
+.policy-matrix th {
+  background: var(--surface2);
+  color: var(--muted);
+  text-align: left;
+  padding: 0.8rem 1rem;
+  font-size: 0.74rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.policy-matrix td {
+  padding: 0.8rem 1rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.policy-matrix tr:last-child td { border-bottom: none; }
+.policy-matrix td:first-child { color: var(--text); }
+
+.decision {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+}
+
+.decision.allow { color: var(--accent); background: rgba(0,168,173,0.1); }
+.decision.deny { color: var(--red); background: rgba(196,83,83,0.1); }
+
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2.25rem 0;
+}
+
+.before-after-card {
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.before-after-card.featured {
+  border-color: rgba(0,168,173,0.4);
+  background: rgba(0,168,173,0.04);
+}
+
+.before-after-label {
+  display: block;
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.before-after-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.before-after-flow strong { color: var(--accent); }
+
+code {
+  font-family: var(--mono);
+  color: var(--accent);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+}
+
+@media (max-width: 900px) {
+  .authority-sequence {
+    grid-template-columns: 1fr;
+  }
+
+  .authority-arrow {
+    transform: rotate(90deg);
+    min-height: 20px;
+  }
+}
+
+@media (max-width: 680px) {
+  .before-after {
+    grid-template-columns: 1fr;
+  }
+
+  .incident-card-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+</style>
+
+</Base>
