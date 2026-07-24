@@ -154,6 +154,9 @@ import Base from '../../layouts/Base.astro';
       That isn't enough for long-running agents operating across real systems. The same tool can be valid in one state and dangerous in another. A permitted capability can have a narrow legitimate purpose without granting every behavior the underlying implementation happens to make possible.
     </p>
     <p>
+      Real intrusions, whether run by a person or a model, are rarely a single move. They look more like probe, observe, adapt, escalate, repeat. OpenAI's own account fits the pattern. The models spent substantial inference compute searching for a way out, then chained multiple attack vectors before reaching Hugging Face. There is no single moment that has to be caught correctly. A capability matrix does not need to anticipate the specific exploit in advance.
+    </p>
+    <p>
     Tenure stops the breakout because it doesn’t live inside the environment the model controls. It sits entirely out-of-model on the wire protocol, acting as a deterministic runtime gateway that normalizes and intercepts OpenAI and Anthropic requests in under 15ms.
     </p>
 
@@ -271,7 +274,7 @@ import Base from '../../layouts/Base.astro';
 
     <p><b>Exposure Filtering</b>: Before the model even thinks, Tenure strips unauthorized capability definitions from the request payload. If the model is only supposed to install packages, tool definitions for credential harvesting or external domain access are hidden entirely. The model cannot reason about tools it doesn't know exist.</p>
 
-    <p><b>Invocation Enforcement</b>: If the model tries to abuse a valid path to emit a rogue structured tool call, Tenure intercepts and blocks the returned invocation on its way back to the runtime, withholding the call entirely.</p>
+    <p><b>Invocation Enforcement</b>: If the model tries to abuse a valid path to emit a rogue structured tool call, Tenure intercepts and blocks the returned invocation on its way back to the runtime, withholding the call entirely. This holds even when the model tries to compress many steps into one call, such as a downloaded script or a piped shell command meant to run unsupervised. The initiating call still has to declare or imply a capability, and Tenure evaluates that call before it reaches the environment, so an unreviewed program never gets to start.</p>
 
     <div class="before-after">
       <div class="before-after-card">
