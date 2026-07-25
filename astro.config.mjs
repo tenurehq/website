@@ -8,6 +8,8 @@ export default defineConfig({
   site: "https://tenureai.dev",
   redirects: {
     "/docs": "/docs/quickstart",
+    "/writing/had-openai-used-tenure-the-hugging-face-escape-would-have-been-impossible":
+      "/writing/had-openai-used-tenure-the-agents-escape-to-hugging-face-would-have-been-impossible",
   },
   integrations: [
     starlight({
