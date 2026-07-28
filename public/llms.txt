@@ -98,18 +98,18 @@ The table below summarizes retrieval results across Tenure and comparison provid
 | Provider                | Active passes | Total passes | Mean precision | Mean recall | Retrieval p50 (ms) | Ingestion total (s) |
 | ----------------------- | ------------- | ------------ | -------------- | ----------- | ------------------ | ------------------- |
 | `tenure`                | 43/43         | 77/77        | 1.00           | 1.00        | 9.77               | 1.00                |
-| `open-knowledge-format` | 18/18         | 36/77        | 0.47           | 0.91        | 3534.53            | 0.00                |
-| `supermemory`           | 4/4           | 21/77        | 0.22           | 0.71        | 69.41              | 5.20                |
-| `agentmemory`           | 0/0           | 7/77         | 0.17           | 0.97        | 82.28              | 1.10                |
-| `yourmemory`            | 0/0           | 21/77        | 0.17           | 0.88        | 313.39             | 16.40               |
-| `atomicmemory`          | 0/0           | 9/77         | 0.15           | 0.95        | 71.01              | 658.90              |
-| `gbrain`                | 5/5           | 34/77        | 0.14           | 0.17        | 543.84             | 28.60               |
-| `zep`                   | 0/0           | 9/77         | 0.09           | 0.95        | 124.36             | 897.00              |
-| `vector`                | 0/0           | 11/77        | 0.09           | 1.00        | 71.87              | ---                 |
-| `hindsight`             | 0/0           | 9/77         | 0.06           | 1.00        | 589.86             | 173.30              |
-| `mem0`                  | 0/0           | 9/77         | 0.06           | 0.99        | 64.94              | 111.30              |
-| `a-mem`                 | 0/0           | 9/77         | 0.06           | 0.99        | 13.80              | 178.80              |
-| `cognee`                | 0/0           | 11/77        | 0.05           | 0.92        | 2891.04            | 369.20              |
+| `open-knowledge-format` | 18/43         | 36/77        | 0.47           | 0.91        | 3534.53            | 0.00                |
+| `supermemory`           | 4/43           | 21/77        | 0.22           | 0.71        | 69.41              | 5.20                |
+| `agentmemory`           | 0/43          | 7/77         | 0.17           | 0.97        | 82.28              | 1.10                |
+| `yourmemory`            | 0/43           | 21/77        | 0.17           | 0.88        | 313.39             | 16.40               |
+| `atomicmemory`          | 0/43          | 9/77         | 0.15           | 0.95        | 71.01              | 658.90              |
+| `gbrain`                | 5/43           | 34/77        | 0.14           | 0.17        | 543.84             | 28.60               |
+| `zep`                   | 0/43           | 9/77         | 0.09           | 0.95        | 124.36             | 897.00              |
+| `vector`                | 0/43           | 11/77        | 0.09           | 1.00        | 71.87              | ---                 |
+| `hindsight`             | 0/43           | 9/77         | 0.06           | 1.00        | 589.86             | 173.30              |
+| `mem0`                  | 0/43          | 9/77         | 0.06           | 0.99        | 64.94              | 111.30              |
+| `a-mem`                 | 0/43           | 9/77         | 0.06           | 0.99        | 13.80              | 178.80              |
+| `cognee`                | 0/43           | 11/77        | 0.05           | 0.92        | 2891.04            | 369.20              |
 
 Active passes are the cases that demonstrate verified retrieval capability. A system cannot accumulate active passes by returning everything or nothing. Recall of 1.0 does not imply precision. A memory system can return the correct belief alongside many irrelevant beliefs and still score perfectly on recall.
 

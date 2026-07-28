@@ -81,7 +81,7 @@ import Base from '../layouts/Base.astro';
       <div class="bench-hero-stat-div"></div>
       <div class="bench-hero-stat">
         <span class="bench-hero-value good">13</span>
-        <span class="bench-hero-label">Systems evaluated</span>
+        <span class="bench-hero-label">Configurations evaluated</span>
       </div>
       <div class="bench-hero-stat-div"></div>
       <div class="bench-hero-stat">
@@ -157,7 +157,7 @@ import Base from '../layouts/Base.astro';
   <div class="container-wide">
     <span class="label">Results</span>
     <h2>Leaderboard</h2>
-    <p>89 cases. 13 systems. One metric that matters: active retrieval passes, which are cases where a <code>retrievalPrecision</code> assertion was satisfied.</p>
+    <p>89 cases across 13 configurations. Active retrieval passes measure whether query-dependent retrieval returned the complete allowable belief set without prohibited or unrelated beliefs.</p>
 
     <!-- Main leaderboard table -->
     <div class="compare-table-section" style="margin-top: 2rem;">
@@ -185,7 +185,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>open-knowledge-format</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">18/18</span></td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">18/43</span></td>
             <td>36/77</td>
             <td><span style="color:var(--amber);font-family:var(--mono);">0.47</span></td>
             <td>0.91</td>
@@ -194,7 +194,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>supermemory</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">4/4</span></td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">4/43</span></td>
             <td>21/77</td>
             <td><span style="color:var(--amber);font-family:var(--mono);">0.22</span></td>
             <td>0.71</td>
@@ -203,7 +203,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>agentmemory</td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>7/77</td>
             <td><span class="val-bad">0.17</span></td>
             <td>0.97</td>
@@ -212,7 +212,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>yourmemory</td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>21/77</td>
             <td><span class="val-bad">0.17</span></td>
             <td>0.88</td>
@@ -221,7 +221,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>atomicmemory</td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>9/77</td>
             <td><span class="val-bad">0.15</span></td>
             <td>0.95</td>
@@ -230,7 +230,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>gbrain</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">5/5</span></td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">5/43</span></td>
             <td>34/77</td>
             <td><span style="color:var(--amber);font-family:var(--mono);">0.14</span></td>
             <td>0.17</td>
@@ -239,7 +239,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>zep</td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>9/77</td>
             <td><span class="val-bad">0.09</span></td>
             <td>0.95</td>
@@ -248,7 +248,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>vector<span class="badge-note">mxbai-embed-large</span></td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>11/77</td>
             <td><span class="val-bad">0.09</span></td>
             <td>1.00</td>
@@ -257,7 +257,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>hindsight</td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>9/77</td>
             <td><span class="val-bad">0.06</span></td>
             <td>1.00</td>
@@ -266,7 +266,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>mem0</td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>9/77</td>
             <td><span class="val-bad">0.06</span></td>
             <td>0.99</td>
@@ -275,7 +275,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>cognee</td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>11/77</td>
             <td><span class="val-bad">0.05</span></td>
             <td>0.92</td>
@@ -284,7 +284,7 @@ import Base from '../layouts/Base.astro';
           </tr>
           <tr>
             <td>a-mem</td>
-            <td><span class="val-bad">0/0</span></td>
+            <td><span class="val-bad">0/43</span></td>
             <td>9/77</td>
             <td><span class="val-bad">0.06</span></td>
             <td>0.99</td>
@@ -295,11 +295,10 @@ import Base from '../layouts/Base.astro';
       </table>
     </div>
 
-    <!-- Pass type explainer -->
     <div class="pass-type-grid">
       <div class="pass-type-card">
         <div class="pass-type-label">Active retrieval passes</div>
-        <p>Cases with a <code>retrievalPrecision</code> assertion that was satisfied. The only pass type that demonstrates verified retrieval capability. A system cannot accumulate these by returning everything or nothing.</p>
+        <p>Cases requiring query-dependent retrieval in which every required belief was returned, every prohibited belief was excluded, and the returned set stayed within the complete allowable set.</p>
       </div>
       <div class="pass-type-card">
         <div class="pass-type-label">Structural passes</div>
@@ -340,7 +339,7 @@ import Base from '../layouts/Base.astro';
     </div>
 
     <div class="methodology-note">
-      All comparison systems received a schema-aware wrapper granting them pin-status filtering, open-question routing, and scope isolation for free at evaluation time where those concepts apply. Results reflect pinned, reproducible artifacts. <a href="https://github.com/tenurehq/precisionMemBench" target="_blank" rel="noopener">Reproduce locally →</a>
+      Comparison wrappers adapt each provider to the common add, search, and reset interface. When a provider does not expose stable belief IDs, the harness maps returned content back to seeded IDs for scoring. Wrappers do not alter provider ranking, thresholds, candidate selection, or retrieval behavior. Results reflect pinned, reproducible artifacts. <a href="https://github.com/tenurehq/precisionMemBench" target="_blank" rel="noopener">Reproduce locally →</a>
     </div>
   </div>
 </section>
@@ -389,7 +388,7 @@ import Base from '../layouts/Base.astro';
           <tr>
             <td>Scope disambiguation</td>
             <td>12</td>
-            <td><span class="val-good">10/12</span></td>
+            <td><span class="val-good">12/12</span></td>
             <td>1/12</td>
             <td><span class="val-bad">0/12</span></td>
             <td><span class="val-bad">0/12</span></td>
@@ -513,7 +512,7 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-bad"><strong>11/89</strong></span></td>
             <td><span class="val-bad"><strong>9/89</strong></span></td>
             <td><span class="val-bad"><strong>9/89</strong></span></td>
-            <td><span class="val-bad"><strong>8/89</strong></span></td>
+            <td><span class="val-bad"><strong>9/89</strong></span></td>
             <td><span class="val-bad"><strong>12/89</strong></span></td>
           </tr>
         </tbody>
@@ -530,7 +529,7 @@ import Base from '../layouts/Base.astro';
     <p>The Open Knowledge Format run is not a test of markdown as a storage format. It evaluates the runtime access pattern implied when an OKF-style bundle is placed into an AI tool today: files are available, the model may inspect them, and PrecisionMemBench scores the belief IDs corresponding to the files the model actually retrieves.</p>
 
     <div class="compare-verdict" style="margin-top: 1.5rem;">
-      <p>OKF is the strongest non-Tenure run on active retrieval with 18/18 active passes, but it pays for that access pattern in latency: 3,534.53ms retrieval p50 and 3,349.45ms session p50. The result supports the distinction this benchmark is meant to expose: storage format, runtime access, and precision-controlled retrieval are separate layers.</p>
+      <p>OKF is the strongest non-Tenure run on active retrieval with 18/43 active passes, but it pays for that access pattern in latency: 3,534.53ms retrieval p50 and 3,349.45ms session p50. The result supports the distinction this benchmark is meant to expose: storage format, runtime access, and precision-controlled retrieval are separate layers.</p>
     </div>
   </div>
 </section>
@@ -710,8 +709,8 @@ import Base from '../layouts/Base.astro';
       </div>
       <div class="method-card">
         <div class="method-num">03</div>
-        <h3>Schema-aware wrapper for fairness</h3>
-        <p>Comparison systems receive pin-status filtering, open-question routing, and scope isolation applied from Tenure's metadata. They do not fail due to structural technicalities. The score reflects whether the provider's runtime retrieval actually returns the asserted belief IDs without extra noise.</p>
+        <h3>Output normalization without reranking</h3>
+        <p>When a provider does not expose stable belief IDs, the harness maps returned content to the corresponding seeded IDs. This normalization supports common scoring without changing provider ranking, thresholds, candidate selection, or retrieval behavior.</p>
       </div>
       <div class="method-card">
         <div class="method-num">04</div>
@@ -721,24 +720,24 @@ import Base from '../layouts/Base.astro';
     </div>
 
     <div class="tldr-box" style="margin-top: 2rem;">
-      <h3>Case taxonomy</h3>
-      <ul>
-        <li>Alias resolution (23) — variant surface forms, short-form, natural-language, multi-word</li>
-        <li>Scope disambiguation (12) — hard scope isolation between domain contexts</li>
-        <li>Session noise isolation (12) — 10-turn drift sessions with per-turn assertions</li>
-        <li>Fuzzy matching &amp; prefix guards (7) — transpositions, near-miss, intentional prefix blocks</li>
-        <li>Type routing &amp; open questions (6) — routing logic by belief type</li>
-        <li>Design boundary cases (6) — intentional empty returns and edge behavior</li>
-        <li>Budget eviction &amp; capacity (5) — slot constraints, priority, flooding resistance</li>
-        <li>Relation expansion (4) — one-hop participant joins with scope filtering</li>
-        <li>Persona prelude content (4) — unconditional belief injection</li>
-        <li>Supersession chain exclusion (3) — three-hop chain, active terminal only</li>
-        <li>Ranking stability (3) — consistent ordering across equivalent queries</li>
-        <li>Counter-signal retrieval (2) — rejected terms surfacing active replacements</li>
-        <li>Cross-user isolation (1) — structural exclusion regardless of semantic proximity</li>
-        <li>Cold start behavior (1) — empty store, no error</li>
-      </ul>
-    </div>
+  <h3>Case taxonomy</h3>
+  <ul>
+    <li><strong>Alias resolution (23):</strong> Whether shorthand, abbreviations, and natural variations resolve to the intended belief without unrelated results.</li>
+    <li><strong>Scope disambiguation (12):</strong> Whether identical names remain isolated across projects and domains.</li>
+    <li><strong>Session-level noise isolation (12):</strong> Whether returning to an earlier topic excludes memories introduced during intervening topic drift.</li>
+    <li><strong>Fuzzy matching and prefix guards (7):</strong> Whether misspellings and transpositions resolve correctly without admitting similarly spelled but unrelated terms.</li>
+    <li><strong>Type routing and open questions (6):</strong> Whether open questions remain distinct from established state and leave the active route when resolved.</li>
+    <li><strong>Design boundary cases (6):</strong> Whether empty, ambiguous, or unsupported queries produce predictable results without low-confidence retrieval.</li>
+    <li><strong>Budget eviction and capacity (5):</strong> Whether limited context capacity is allocated to required state under competing retrieval demands.</li>
+    <li><strong>Relation expansion (4):</strong> Whether relationship queries return eligible associated state without unrelated or out-of-scope participants.</li>
+    <li><strong>Persona prelude content (4):</strong> Whether durable preferences remain available across topics without consuming query-dependent retrieval capacity.</li>
+    <li><strong>Supersession chain exclusion (3):</strong> Whether replaced state stops influencing current behavior and outdated terminology resolves to active rather than obsolete guidance.</li>
+    <li><strong>Ranking stability (3):</strong> Whether specific queries rank the intended belief ahead of weaker matches.</li>
+    <li><strong>Counter-signal retrieval (2):</strong> Whether rejected or replaced terminology surfaces the current governing decision.</li>
+    <li><strong>Cross-user isolation (1):</strong> Whether one user's stored information remains inaccessible to another.</li>
+    <li><strong>Cold-start behavior (1):</strong> Whether a user with no stored state receives a clean empty result.</li>
+  </ul>
+</div>
   </div>
 </section>
 
