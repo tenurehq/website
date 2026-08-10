@@ -133,6 +133,14 @@ export default defineConfig({
           items: [{ autogenerate: { directory: "docs/getting-started" } }],
         },
         {
+          label: "Agent Observability",
+          items: [{ autogenerate: { directory: "docs/agent-observability" } }],
+        },
+        {
+          label: "Agent Enforcement",
+          items: [{ autogenerate: { directory: "docs/agent-enforcement" } }],
+        },
+        {
           label: "Memory",
           items: [{ autogenerate: { directory: "docs/memory" } }],
         },
