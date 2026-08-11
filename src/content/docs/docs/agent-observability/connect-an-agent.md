@@ -5,6 +5,10 @@ description: Put Tenure on the model request path to observe agent behavior and 
 
 Tenure sits directly on the model request path. Your application keeps its existing OpenAI or Anthropic API format, but routes requests through Tenure using an authenticated agent token.
 
+### Route every agent request through Tenure
+
+Tenure can only observe and govern requests that pass through it. Configure every deployment of the agent to use the Tenure endpoint, and remove direct provider credentials where possible. A direct connection to the model provider bypasses Tenure’s memory, policy enforcement, and audit trail.
+
 ## 1. Create an agent policy
 
 Open **Policies** in the Tenure UI and select **Create policy**.

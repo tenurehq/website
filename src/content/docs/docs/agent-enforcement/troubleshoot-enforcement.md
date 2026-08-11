@@ -3,6 +3,8 @@ title: Troubleshoot Enforcement Decisions
 description: Diagnose missing tools, blocked actions, and workflow precondition failures.
 ---
 
+**Confirm that every environment uses the Tenure base URL. Requests sent directly to the provider will not appear in Agents or Audit and will not be governed by the active Tenure policy.**
+
 When Tenure withholds a tool call, start with the active agent token and policy, then use Audit to identify the enforcement decision.
 
 ## Confirm the request identity
