@@ -114,7 +114,7 @@ export default defineConfig({
           tag: "script",
           attrs: {
             src: "https://white.tenureai.dev/api/script.js",
-            "data-site-id": "4644e3f20c35",
+            "data-site-id": "d9f7a199288e",
             defer: true,
           },
         },
