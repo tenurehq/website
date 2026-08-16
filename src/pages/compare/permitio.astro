@@ -1,0 +1,149 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs Permit.io | AI Agent Security Comparison" description="Permit.io secures AI agents at the callsites and MCP servers you route through it. Tenure sits on the model protocol itself, so there's no surface left to forget. Here's the architectural difference.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>Tenure vs. Permit.io</h1>
+    <p>Permit.io is an authorization control plane and policy engine you call from your code, plus a proxy you point at individual MCP servers. Tenure is a protocol-level gateway your requests pass through.</p>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure enforcement boundary</div>
+          <div class="metric-value good" style="font-size: 1.2rem">Wire</div>
+          <div class="metric-context">Outside the agent's process</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Permit enforcement boundary</div>
+          <div class="metric-value bad" style="font-size: 1.2rem">Configured surfaces</div>
+          <div class="metric-context">SDK callsites, plus MCP server proxy</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure & non-MCP tool calls</div>
+          <div class="metric-value good" style="font-size: 1.2rem">Yes</div>
+          <div class="metric-context">Any returned action, MCP or not</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Permit & non-MCP tool calls</div>
+          <div class="metric-value bad" style="font-size: 1.2rem">No</div>
+          <div class="metric-context">Scoped to MCP-mediated servers</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>The architectural problem</h2>
+      <p>Permit.io ships two things that both get called "AI security." The core Policy Engine is an authorization API: you call <code>permit.check()</code> at the points in your code where you've decided a decision matters, and it's evaluated against RBAC, ABAC, or ReBAC policy. Enforcement exists where a developer remembered to instrument it, in whatever framework they're already using.</p>
+      <p>The MCP Gateway is a separate product, where you route an upstream MCP server's traffic through a Permit-issued URL, and every tool call to that server is authenticated, checked against an auto-generated OPA policy, and logged before it reaches the server. That part of Permit's story is architecturally close to Tenure's: out-of-process, protocol-level, no code changes to adopt.</p>
+      <p>The difference is scope. The Gateway only sees traffic for MCP servers you've explicitly routed through it, one upstream URL at a time. It doesn't see tool calls that reach a service directly, and it doesn't see non-MCP function calling at all. For teams whose agents call tools directly through native function-calling APIs, with no MCP server anywhere in the path, the Gateway has nothing to attach to. That's not a partial gap; MCP isn't part of that architecture at all. Tenure sits on the model request itself, so it checks every returned action regardless of whether the target tool speaks MCP, some other protocol, or nothing standardized at all.</p>
+
+      <div class="compare-verdict">
+        <p><strong>Permit's own MCP Gateway page acknowledges the gap:</strong> its enterprise tier adds IGA/PAM connectors specifically because, in their words, "agents won't always go through the gateway." Tenure doesn't have an equivalent "which servers did we forget to route" list, because there's no per-server routing decision to make.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>What happens outside the configured surface</h2>
+      <p><strong>Unrouted MCP servers.</strong> A team connects a new MCP server and starts using it before anyone updates the gateway routing. Until that URL is proxied through Permit, every call to it is ungoverned. This is the exact scenario Permit built shadow-MCP detection to catch after the fact, not to prevent at the time.</p>
+      <p><strong>No MCP layer at all.</strong> Function calling that doesn't go through an MCP server, direct API calls the model triggers, raw tool use over the OpenAI or Anthropic protocol without an MCP layer in between, sits entirely outside what the Gateway inspects. This isn't limited to teams migrating toward MCP. Plenty of production agents are built on native, direct function-calling and never touch MCP by design, whether for latency, simplicity, or because they predate MCP's adoption. For those teams the Gateway isn't a tool with a coverage gap, it's a tool that isn't in play.</p>
+      <p><strong>Uninstrumented callsites.</strong> Where Permit's core Policy Engine is used instead of the Gateway, the same per-callsite problem AGT has applies: a new tool added after integration, or a code path that calls the underlying function without going through <code>permit.check()</code>, is simply not evaluated.</p>
+
+      <div class="compare-verdict">
+        <p><strong>None of this requires an attacker.</strong> A new integration, a tool added mid-sprint, or a team that reaches for direct function calling instead of MCP is enough to open a gap in either model. Tenure doesn't have a routing table or a wrapper list to keep current, because it isn't watching specific servers or specific callsites. It's watching the model request protocol itself, so whatever tool the model tries to call arrives already inside Tenure's view.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Full comparison</h2>
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenure</th>
+              <th>Permit.io</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td>Enforcement location</td>
+              <td><span class="check">On the wire</span></td>
+              <td><span class="cross">SDK callsites + per-server MCP proxy</span></td>
+            </tr>
+            <tr>
+              <td>Requires per-callsite instrumentation</td>
+              <td><span class="check">No</span></td>
+              <td><span class="cross">Yes, for the Policy Engine (permit.check())</span></td>
+            </tr>
+            <tr>
+              <td>Requires per-server routing</td>
+              <td><span class="check">No, single protocol endpoint</span></td>
+              <td><span class="cross">Yes, one upstream URL per MCP server</span></td>
+            </tr>
+            <tr>
+              <td>Covers non-MCP tool calls</td>
+              <td><span class="check">Yes</span></td>
+              <td><span class="cross">No, MCP Gateway is MCP-only</span></td>
+            </tr>
+            <tr>
+              <td>Precondition evidence checks (field/type/value)</td>
+              <td><span class="check">Yes</span></td>
+              <td>Not part of published spec</td>
+            </tr>
+            <tr>
+              <td>Human identity binding (OAuth 2.1 / IdP / SSO)</td>
+              <td><span class="check">Yes, Token-scoped caller identity</td>
+              <td><span class="check">Yes, native IdP binding</span></td>
+            </tr>
+            <tr>
+              <td>Human-in-the-loop consent UI</td>
+              <td>Hand off to your application logic</td>
+              <td><span class="check">Yes, visual consent editor</span></td>
+            </tr>
+            <tr>
+              <td>Pre-built SaaS MCP server catalog</td>
+              <td>Not applicable, protocol-level</td>
+              <td><span class="check">Yes, major SaaS servers pre-wired</span></td>
+            </tr>
+            <tr>
+              <td>Requires an SDK integration</td>
+              <td><span class="check">No, any OpenAI/Anthropic client</span></td>
+              <td>Optional; required for the Policy Engine, not the Gateway</td>
+            </tr>
+            <tr>
+              <td>Self-hosted</td>
+              <td><span class="check">Yes, always</span></td>
+              <td>Hosted by default; on-prem/VPC available on enterprise plans</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="methodology-note">
+        This comparison is based on Permit.io's public documentation and marketing pages as published at <a href="https://www.permit.io/ai-access-control">permit.io/ai-access-control</a> and <a href="https://www.permit.io/mcp-gateway">permit.io/mcp-gateway</a>. Details are current as of publication; verify against the latest docs before citing specific figures.
+      </p>
+    </div>
+  </section>
+
+  <section class="compare-cta" style="background: unset;">
+    <div class="container">
+      <h2>One checkpoint, not a routing table</h2>
+      <p>No per-server proxy URL to configure. No callsite to remember. Every model request, whatever tool it tries to call, crosses the same checkpoint.</p>
+      <div class="cta-buttons">
+        <a href="/how-it-works" class="btn-primary">How It Works</a>
+        <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

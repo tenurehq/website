@@ -1,0 +1,165 @@
+---
+import Layout from '../../layouts/Base.astro';
+---
+
+<Layout title="Tenure vs Agent Governance Toolkit | AI Agent Security Comparison" description="Microsoft's Agent Governance Toolkit enforces policy inside your agent's process. Tenure enforces it on the wire, outside the process it's watching. Here's why that boundary matters.">
+  <section class="compare-hero">
+    <span class="label">Comparison</span>
+    <h1>Tenure vs. Agent Governance Toolkit</h1>
+    <p>Microsoft's Agent Governance Toolkit (AGT) is a family of language SDKs you wrap around your own tool calls. Tenure is a protocol-level gateway your requests pass through. Same goal, enforcement, opposite architecture: inside the process versus outside it.</p>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Tenure enforcement boundary</div>
+          <div class="metric-value good">Wire</div>
+          <div class="metric-context">Outside the agent's process</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">AGT enforcement boundary</div>
+          <div class="metric-value bad">In-process</div>
+          <div class="metric-context">Shares the agent's process boundary</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tenure default policy</div>
+          <div class="metric-value good">Deny</div>
+          <div class="metric-context">Unreviewed capability is absent</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">AGT default policy</div>
+          <div class="metric-value bad">Allow</div>
+          <div class="metric-context">Published quickstart example</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>The architectural problem</h2>
+      <p>AGT governs by asking your code to cooperate. You import the SDK, wrap a tool function with <code>govern()</code>, and every call through that wrapper is checked against a YAML, OPA, or Cedar policy before it runs. It runs in whatever language your agent is already written in.</p>
+      <p>The tradeoff is where that control lives. The policy engine executes inside the same process as the agent it's governing. There is no separate trust boundary between the thing being checked and the thing doing the checking.</p>
+
+      <div class="compare-verdict">
+        <p><strong>AGT's own documentation states:</strong> the policy engine and agents "share the same process boundary." Their stated production recommendation is to run each agent in a separate container for OS-level isolation, which is an infrastructure workaround applied on top of the toolkit, not a property the governance layer provides on its own.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>How in-process governance falls out of sync with what it's governing.</h2>
+      <p>Ask what happens when the thing being governed changes underneath the governance layer. In AGT's model, that happens in several places at once.</p>
+      <p><strong>Per-framework adapters.</strong> AGT integrates with LangGraph, CrewAI, AutoGen, the OpenAI Agents SDK, and roughly a dozen others, each through its own adapter. When one of those frameworks changes how it dispatches tool calls internally, and agent frameworks change quickly, the adapter has to be updated to keep intercepting correctly. Until it is, calls either fail outright or pass through ungoverned.</p>
+      <p><strong>Per-callsite wrapping.</strong> Enforcement only exists where a developer remembered to call <code>govern()</code>. A new tool added after the initial integration, or a raw call that reaches the underlying function directly, is simply not evaluated. There is no fallback checkpoint catching what the wrapper missed.</p>
+      <p><strong>Cross-language parity.</strong> AGT publishes five SDKs and is explicit that the Python package carries the full feature set while the others carry partial coverage, tracked in a package-feature matrix. Five independent implementations of the same policy semantics is five places for behavior to quietly diverge as each one ships on its own schedule.</p>
+
+      <div class="compare-verdict">
+        <p><strong>None of this requires an attacker.</strong> A minor version bump in a dependency, a framework release that changes its tool-call internals, or a developer who adds a tool and forgets the wrapper is enough to open a gap. Tenure doesn't have an equivalent surface to keep in sync, because it isn't watching library calls inside your process. It's watching the same OpenAI or Anthropic protocol request regardless of which framework, language, or SDK version produced it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section" style="background: var(--surface);">
+    <div class="container">
+      <h2>Where AGT is ahead</h2>
+      <p>AGT ships formal compliance mapping for OWASP Agentic AI Top 10, NIST AI RMF, EU AI Act, and SOC 2, each with automated evidence generation. Tenure covers EU AI Act today.</p>
+
+      <div class="compare-verdict">
+        <p><strong>If a team wants one toolkit that covers governance, compliance paperwork, and operational reliability in whatever language they already write in, and is willing to add container-level isolation themselves, AGT is a reasonable choice.</strong> Tenure's bet is narrower: a single out-of-process checkpoint that every request has to cross regardless of language, framework, or which developer remembered to wrap what.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="container">
+      <h2>Full comparison</h2>
+      <div class="compare-table-section">
+        <table class="compare-table-full">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenure</th>
+              <th>AGT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td>Enforcement location</td>
+              <td><span class="check">On the wire</span></td>
+              <td><span class="cross">Same process as agent</span></td>
+            </tr>
+            <tr>
+              <td>Default policy action</td>
+              <td><span class="check">Deny</span></td>
+              <td><span class="cross">Allow (published example)</span></td>
+            </tr>
+            <tr>
+              <td>Requires per-callsite wrapping</td>
+              <td><span class="check">No</span></td>
+              <td><span class="cross">Yes (govern())</span></td>
+            </tr>
+            <tr>
+              <td>Requires per-framework adapter</td>
+              <td><span class="check">No, protocol-level</span></td>
+              <td><span class="cross">Yes, one per framework</span></td>
+            </tr>
+            <tr>
+              <td>Language SDKs to keep in sync</td>
+              <td><span class="check">0, single gateway</span></td>
+              <td>5 (partial feature parity)</td>
+            </tr>
+            <tr>
+              <td>Survives a compromised agent dependency</td>
+              <td><span class="check">Yes, separate trust boundary</span></td>
+              <td><span class="cross">Not by default, shared process</span></td>
+            </tr>
+            <tr>
+              <td>Precondition evidence checks (field/type/value)</td>
+              <td><span class="check">Yes</span></td>
+              <td>Not part of published spec</td>
+            </tr>
+            <tr>
+              <td>Compliance mapping (OWASP/NIST/SOC2/EU AI Act)</td>
+              <td>EU AI Act only</td>
+              <td><span class="check">All four, automated evidence</span></td>
+            </tr>
+            <tr>
+              <td>Requires an SDK integration</td>
+              <td><span class="check">No, any OpenAI/Anthropic client</span></td>
+              <td>Yes, per language</td>
+            </tr>
+            <tr>
+              <td>Self-hosted</td>
+              <td><span class="check">Yes, always</span></td>
+              <td>Yes, runs in your own process</td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>MIT</td>
+              <td>MIT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="methodology-note">
+        This comparison is based on AGT's public documentation and README as published at <a href="https://github.com/microsoft/agent-governance-toolkit">github.com/microsoft/agent-governance-toolkit</a>. Details are current as of AGT's public preview release; verify against the latest docs before citing specific figures.
+      </p>
+    </div>
+  </section>
+
+  <section class="compare-cta">
+    <div class="container">
+      <h2>Enforcement that lives outside the process it's watching</h2>
+      <p>No SDK. No per-framework adapter. No callsite to forget. One protocol-level checkpoint every request crosses.</p>
+      <div class="cta-buttons">
+        <a href="/how-it-works" class="btn-primary">How It Works</a>
+        <a href="/docs" class="btn-primary" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

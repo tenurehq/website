@@ -189,6 +189,10 @@ import Base from '../layouts/Base.astro';
             <p>Tools, arguments, and required evidence are verified before release to your runtime.</p>
           </article>
         </div>
+
+        <p class="boundary-note">
+          When an action is blocked, your team chooses what happens next. Tenure can return a hard error, or hand the rejection to your own application logic for retry, fallback, or rerouting to a different agent.
+        </p>
       </div>
     </section>
 
@@ -197,7 +201,7 @@ import Base from '../layouts/Base.astro';
         <span class="label">Required evidence</span>
         <h2>Allowed does not always mean allowed yet.</h2>
         <p class="section-lede">
-          A policy can require an earlier tool call to return specific evidence before the next action is released. Tenure calls these requirements preconditions.
+          A policy can require an earlier tool call to return specific evidence before the next action is released. Tenure calls these requirements preconditions. Each check verifies three things: that the field is present, that its type matches what was observed, and that its value satisfies the rule your team approved.
         </p>
 
         <div class="precondition-flow">
@@ -211,8 +215,18 @@ import Base from '../layouts/Base.astro';
           <article class="precondition-card evidence-card">
             <span class="step-number">02</span>
             <h3>Verify the result</h3>
-            <div class="evidence-row"><code>customer_id</code><b>present</b></div>
-            <div class="evidence-row"><code>email_address</code><b>present</b></div>
+            <div class="evidence-row">
+              <div class="evidence-row-head"><code>customer_id</code><b>MATCH</b></div>
+              <small class="evidence-meta">String &middot; matches customer_id sent to generate_email</small>
+            </div>
+            <div class="evidence-row">
+              <div class="evidence-row-head"><code>active</code><b>EQUALS</b></div>
+              <small class="evidence-meta">Boolean &middot; must equal true</small>
+            </div>
+            <div class="evidence-row">
+              <div class="evidence-row-head"><code>tier</code><b>VALID</b></div>
+              <small class="evidence-meta">String &middot; non-empty, any observed value</small>
+            </div>
           </article>
           <div class="flow-arrow">&rarr;</div>
           <article class="precondition-card release-card">
@@ -256,7 +270,7 @@ import Base from '../layouts/Base.astro';
         </p>
 
         <div class="policy-flow">
-          <article><span>01</span><strong>Observe</strong><small>Record tools, calls, inputs, and results.</small></article>
+          <article><span>01</span><strong>Observe</strong><small>Record tools, calls, inputs, and results, and track which available tools were never invoked.</small></article>
           <div>&rarr;</div>
           <article><span>02</span><strong>Draft</strong><small>Propose capabilities and preconditions.</small></article>
           <div>&rarr;</div>
@@ -271,7 +285,7 @@ import Base from '../layouts/Base.astro';
           <article class="plain-card">
             <span class="card-label">Observed exposure</span>
             <h3>What could the agent use?</h3>
-            <p>See every tool the application made available to the model.</p>
+            <p>See every tool the application made available to the model, and which of those capabilities were never invoked during observation.</p>
           </article>
           <article class="plain-card">
             <span class="card-label">Observed use</span>
@@ -305,7 +319,7 @@ import Base from '../layouts/Base.astro';
           <article class="record-card">
             <span class="card-label">Observation record</span>
             <h3>What did the agent attempt?</h3>
-            <p>See available tools, invoked tools, arguments, outputs, and evidence paths.</p>
+            <p>See available tools, invoked tools, arguments, outputs, and evidence paths, and drill into the exact observation behind any summarized frequency.</p>
             <strong>What did the agent try to do?</strong>
           </article>
           <article class="record-card featured-record">
@@ -642,7 +656,6 @@ import Base from '../layouts/Base.astro';
     }
 
     .boundary-note {
-      max-width: 900px;
       margin: 2rem 0 0;
       padding: 1.1rem 1.25rem;
       border-left: 3px solid var(--accent);
@@ -723,27 +736,38 @@ import Base from '../layouts/Base.astro';
     }
 
     .evidence-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.75rem;
       margin-top: 0.55rem;
       padding: 0.55rem 0.65rem;
       border: 1px solid var(--border);
       border-radius: 8px;
     }
 
-    .evidence-row code,
-    .evidence-row b {
+    .evidence-row-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .evidence-row-head code,
+    .evidence-row-head b {
       font-family: var(--mono);
       font-size: 0.72rem;
     }
 
-    .evidence-row code {
+    .evidence-row-head code {
       color: var(--text);
     }
 
-    .evidence-row b {
+    .evidence-row-head b {
       color: var(--accent);
+    }
+
+    .evidence-meta {
+      display: block;
+      margin-top: 0.3rem;
+      color: var(--dim);
+      font-size: 0.66rem;
+      line-height: 1.4;
     }
 
     .pass-outcome {
