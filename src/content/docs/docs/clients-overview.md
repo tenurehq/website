@@ -36,14 +36,6 @@ The [VS Code extension](clients/vscode.md) adds real-time workspace scope resolu
 
 **Point and shoot setup:** In your IDE's AI settings, replace the base URL with `http://localhost:5757/v1` and add your bearer token.
 
-## Agents
-
-Agent integrations run Tenure as a plugin inside the agent framework itself, with automatic per-agent memory isolation. Memory written in one agent never surfaces in another.
-
-| Client                          | Integration   | Status    |
-| ------------------------------- | ------------- | --------- |
-| [OpenClaw](clients/openclaw.md) | Native plugin | Supported |
-
 ## Manual mode
 
 If you prefer to manage your belief store by hand, extraction can be disabled entirely. Tenure still injects whatever you have authored into every session.
