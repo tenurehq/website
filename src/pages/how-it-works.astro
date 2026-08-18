@@ -74,7 +74,7 @@ import Base from '../layouts/Base.astro';
           <article>
             <span class="card-label">Policy</span>
             <h3>What may the agent do?</h3>
-            <p>Only reviewed tools, arguments, and actions attached to its identity.</p>
+            <p>Only reviewed tools, arguments, and output attached to its identity.</p>
           </article>
           <article>
             <span class="card-label">Preconditions</span>
@@ -143,7 +143,7 @@ import Base from '../layouts/Base.astro';
       </div>
     </section>
 
-    <section id="enforcement" class="section-surface hiw-section">
+    <section id="enforcement" class="section-surface hiw-section" style="background: var(--surface);">
       <div class="container">
         <span class="label">How enforcement works</span>
         <h2>Tenure controls both sides of the model call.</h2>
@@ -164,8 +164,6 @@ import Base from '../layouts/Base.astro';
             <span class="column-title">Model sees</span>
             <div class="tool-row keep"><code>fetch_customer</code><b>VISIBLE</b></div>
             <div class="tool-row keep"><code>generate_email</code><b>VISIBLE</b></div>
-            <div class="tool-row hidden"><code>delete_customer</code><b>HIDDEN</b></div>
-            <div class="tool-row hidden"><code>export_database</code><b>HIDDEN</b></div>
           </div>
           <div class="enforcement-arrow">&rarr;</div>
           <div class="enforcement-column">
@@ -175,7 +173,7 @@ import Base from '../layouts/Base.astro';
           </div>
         </div>
 
-        <div class="three-grid">
+        <div class="four-grid">
           <article class="plain-card">
             <h3>Add approved context</h3>
             <p>Only memory that is relevant, active, and allowed for the token enters the request.</p>
@@ -187,6 +185,10 @@ import Base from '../layouts/Base.astro';
           <article class="plain-card">
             <h3>Check returned actions</h3>
             <p>Tools, arguments, and required evidence are verified before release to your runtime.</p>
+          </article>
+          <article class="plain-card">
+            <h3>Check standalone actions</h3>
+            <p>Calls with no ancestor and no evidence chain are still checked against policy, not waved through by default.</p>
           </article>
         </div>
 
@@ -260,6 +262,7 @@ import Base from '../layouts/Base.astro';
         </p>
       </div>
     </section>
+    
 
     <section id="policy-lifecycle" class="section-surface hiw-section">
       <div class="container">
@@ -301,7 +304,7 @@ import Base from '../layouts/Base.astro';
       </div>
     </section>
 
-    <section id="visibility" class="hiw-section">
+    <section class="hiw-section">
       <div class="container">
         <span class="label">Built to be inspected</span>
         <h2>See what the model knew and why an action was allowed.</h2>
@@ -430,9 +433,6 @@ import Base from '../layouts/Base.astro';
       border-bottom: 1px solid var(--border);
     }
 
-    .hiw-section .section-lede {
-      max-width: 850px;
-    }
 
     .request-flow {
       display: grid;
