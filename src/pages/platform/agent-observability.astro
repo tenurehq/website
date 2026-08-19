@@ -1,0 +1,176 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Agent Observability | Tenure"
+  description="See the tools an agent could use, the actions it attempted, the results it received, and the evidence path behind every workflow."
+  keywords="AI agent observability, agent workflow tracing, tool call observability, AI audit trail, agent behavior monitoring, OpenAI tool calls, Anthropic tool use"
+>
+  <main class="agent-page">
+    <section class="agent-hero">
+      <div class="container">
+        <span class="label">Agent observability</span>
+        <h1>See what the agent could do.<br />See what it actually did.</h1>
+        <p class="section-lede">Tenure captures tools, calls, arguments, results, and evidence paths directly on the model request path. Start with the behavior your agent actually produces, not the behavior a dashboard guesses after the fact.</p>
+        <p class="hero-point">Observation shows what happened. Reviewed policy decides what should remain possible.</p>
+        <div class="hero-cta-row">
+          <a href="/docs/agent-governance/connect-an-agent/" class="btn-primary">Connect an Agent</a>
+          <a href="/platform/runtime-enforcement" class="btn-secondary">See Runtime Enforcement</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="agent-section surface-section">
+      <div class="container">
+        <span class="label">The complete trajectory</span>
+        <h2>A log of the answer is not a log of the agent.</h2>
+        <p class="section-lede">An agent can expose ten tools, invoke three, pass evidence between two, and leave one result pending. Tenure records each part of that sequence while it crosses the wire.</p>
+        <div class="trajectory">
+          <article><span>01</span><strong>Available tools</strong><small>Everything the application made visible to the model.</small></article>
+          <b>&rarr;</b>
+          <article><span>02</span><strong>Tool invocation</strong><small>The selected tool, call ID, arguments, and workflow ID.</small></article>
+          <b>&rarr;</b>
+          <article><span>03</span><strong>Tool result</strong><small>The matching output, status, and original call ID.</small></article>
+          <b>&rarr;</b>
+          <article class="featured"><span>04</span><strong>Next action</strong><small>The later call that used the earlier result as evidence.</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="agent-section">
+      <div class="container">
+        <span class="label">Exposure and use</span>
+        <h2>Get insight into available tools and invoked tools.</h2>
+        <div class="split-grid">
+          <article class="detail-card">
+            <span class="card-label">Available</span>
+            <h3>What could the model choose?</h3>
+            <div class="tool-list">
+              <div><code>fetch_customer</code><b>EXPOSED</b></div>
+              <div><code>generate_email</code><b>EXPOSED</b></div>
+              <div><code>send_email</code><b>EXPOSED</b></div>
+              <div class="unused"><code>delete_customer</code><b>UNUSED</b></div>
+            </div>
+            <p>Available tools reveal the total capability surface presented to the model, including tools it never selected.</p>
+          </article>
+          <article class="detail-card featured-card">
+            <span class="card-label">Invoked</span>
+            <h3>What did the model attempt?</h3>
+            <div class="tool-list">
+              <div><code>fetch_customer</code><b>CALLED</b></div>
+              <div><code>generate_email</code><b>CALLED</b></div>
+              <div><code>send_email</code><b>CALLED</b></div>
+            </div>
+            <p>Invoked tools show the actions selected during a run, with their inputs, outputs, and relationship to the surrounding workflow.</p>
+          </article>
+        </div>
+        <p class="boundary-note">A tool that was available but unused is still part of the agent's exposed authority. Tenure keeps that distinction visible when you review policy.</p>
+      </div>
+    </section>
+
+    <section class="agent-section surface-section">
+      <div class="container">
+        <span class="label">Workflow reconstruction</span>
+        <h2>Follow the evidence from one action to the next.</h2>
+        <p class="section-lede">When your application returns tool results, Tenure associates later actions with the results that preceded them.</p>
+        <div class="workflow">
+          <article><span>CALL</span><code>fetch_customer</code><small>customer_id: cus_9482</small></article>
+          <b>&rarr;</b>
+          <article class="evidence"><span>RESULT</span><code>active: true</code><small>tier: enterprise</small></article>
+          <b>&rarr;</b>
+          <article><span>CALL</span><code>generate_email</code><small>customer_id: cus_9482</small></article>
+          <b>&rarr;</b>
+          <article class="evidence"><span>RESULT</span><code>draft_ready: true</code><small>review required</small></article>
+        </div>
+        <div class="three-grid">
+          <article><span class="card-label">Identity</span><h3>Attribute every run</h3><p>A separate agent token ties activity to the correct workload and active policy.</p></article>
+          <article><span class="card-label">Continuity</span><h3>Preserve call relationships</h3><p>Call IDs and workflow IDs connect invocations with their returned results.</p></article>
+          <article><span class="card-label">Evidence</span><h3>Inspect what supported the action</h3><p>See earlier arguments and result fields used by downstream actions.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="agent-section">
+      <div class="container">
+        <span class="label">From observation to policy</span>
+        <h2>Turn real behavior into a reviewable boundary.</h2>
+        <p class="section-lede">Tenure uses successful observed workflows to produce a draft. Your team decides which capabilities and evidence requirements become enforceable policy.</p>
+        <div class="lifecycle">
+          <article><span>01</span><strong>Observe</strong><small>Capture representative workflows.</small></article>
+          <b>&rarr;</b>
+          <article><span>02</span><strong>Draft</strong><small>Propose tools and preconditions.</small></article>
+          <b>&rarr;</b>
+          <article><span>03</span><strong>Review</strong><small>Remove unnecessary authority.</small></article>
+          <b>&rarr;</b>
+          <article><span>04</span><strong>Publish</strong><small>Bind policy to agent identity.</small></article>
+          <b>&rarr;</b>
+          <article class="featured"><span>05</span><strong>Enforce</strong><small>Check every governed request.</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="agent-section surface-section">
+      <div class="container">
+        <span class="label">Built to be inspected</span>
+        <h2>Keep the request, workflow, and decision connected.</h2>
+        <div class="three-grid">
+          <article><span class="card-label">Request record</span><h3>What entered the model call?</h3><p>Inspect protocol, provider, model, route, request ID, available tools, and exposed tools.</p></article>
+          <article><span class="card-label">Observation record</span><h3>What happened during the turn?</h3><p>Inspect released calls, arguments, results, status, call IDs, and workflow relationships.</p></article>
+          <article class="featured-card"><span class="card-label">Policy record</span><h3>What changed after review?</h3><p>See the allowed capabilities, required evidence, active version, and enforcement outcome.</p></article>
+        </div>
+        <p class="boundary-note">Arguments and results may contain sensitive application data. Tenure stores observation payloads encrypted and returns them through the authorized agent detail view.</p>
+      </div>
+    </section>
+
+    <section class="agent-section">
+      <div class="container cta-panel">
+        <span class="label">Start with evidence</span>
+        <h2>Observe the agent you actually run.</h2>
+        <p>Route supported OpenAI or Anthropic traffic through Tenure, run representative workflows, and turn what you observe into policy.</p>
+        <div class="hero-cta-row">
+          <a href="/docs/agent-governance/connect-an-agent/" class="btn-primary">Connect an Agent</a>
+          <a href="/docs/agent-governance/observe-agent-workflows/" class="btn-secondary">Read the Docs</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .agent-page *, .agent-page *::before, .agent-page *::after { box-sizing: border-box; }
+    .agent-hero { padding: 7rem 0 5rem; text-align: center; border-bottom: 1px solid #252525; }
+    .agent-hero h1 { max-width: 1050px; }
+    .agent-hero .section-lede, .agent-hero .hero-point { max-width: 900px; margin-left: auto; margin-right: auto; }
+    .hero-point { margin-top: 1.4rem; color: #ededed; font-weight: 650; }
+    .agent-section { padding: 5rem 0; border-bottom: 1px solid #252525; }
+    .surface-section { background: #111; }
+    .trajectory, .lifecycle { display: grid; align-items: stretch; gap: .65rem; margin-top: 2.5rem; }
+    .trajectory { grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; }
+    .lifecycle { grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr; }
+    .trajectory article, .lifecycle article, .detail-card, .three-grid article, .workflow article { padding: 1.25rem; border: 1px solid #292929; border-radius: 14px; background: #171717; }
+    .trajectory article span, .lifecycle article span, .card-label, .workflow article span { display: block; margin-bottom: .65rem; color: #00a8ad; font-family: monospace; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+    .trajectory strong, .trajectory small, .lifecycle strong, .lifecycle small { display: block; }
+    .trajectory strong, .lifecycle strong { color: #ededed; }
+    .trajectory small, .lifecycle small, .workflow small { margin-top: .45rem; color: #8e8e8e; line-height: 1.45; }
+    .trajectory b, .lifecycle b, .workflow b { display: flex; align-items: center; color: #777; }
+    .featured, .featured-card, .evidence { border-color: rgba(0,168,173,.42) !important; background: rgba(0,168,173,.055) !important; }
+    .split-grid, .three-grid { display: grid; gap: 1rem; margin-top: 2.5rem; }
+    .split-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .three-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .detail-card h3, .three-grid h3 { color: #ededed; margin-bottom: .65rem; }
+    .detail-card p, .three-grid p { margin-bottom: 0; }
+    .tool-list { margin: 1.2rem 0; }
+    .tool-list div { display: flex; justify-content: space-between; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid #292929; }
+    .tool-list div:last-child { border-bottom: 0; }
+    code { color: #ededed; font-family: monospace; }
+    .tool-list b { color: #00a8ad; font-family: monospace; font-size: .67rem; }
+    .tool-list .unused { opacity: .42; }
+    .boundary-note { margin-top: 2rem; padding: 1.1rem 1.25rem; border-left: 3px solid #00a8ad; background: rgba(0,168,173,.045); color: #ededed; }
+    .workflow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; gap: .8rem; align-items: stretch; margin-top: 2.5rem; }
+    .workflow article { display: flex; flex-direction: column; }
+    .workflow code { color: #00a8ad; }
+    .cta-panel { text-align: center; }
+    .cta-panel p { max-width: 760px; margin-left: auto; margin-right: auto; }
+    @media (max-width: 900px) { .trajectory, .lifecycle, .workflow { grid-template-columns: 1fr; } .trajectory b, .lifecycle b, .workflow b { justify-content: center; transform: rotate(90deg); min-height: 22px; } .three-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { .agent-hero { padding: 5rem 0 3.5rem; } .agent-section { padding: 3.5rem 0; } .split-grid { grid-template-columns: 1fr; } }
+  </style>
+</Base>

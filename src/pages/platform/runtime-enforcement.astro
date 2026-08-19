@@ -1,0 +1,175 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Runtime Enforcement for AI Agents | Tenure"
+  description="Limit the tools an agent can see, verify every returned action, and require evidence before consequential work reaches your runtime."
+  keywords="AI agent runtime enforcement, tool call authorization, agent policy, AI capability control, workflow preconditions, agent security gateway"
+>
+  <main class="enforcement-page">
+    <section class="enforcement-hero">
+      <div class="container">
+        <span class="label">Runtime enforcement</span>
+        <h1>Let the model reason.<br />Control what becomes real.</h1>
+        <p class="section-lede">Tenure removes capabilities outside policy before inference, then checks every returned action, argument, and required evidence before it reaches your systems.</p>
+        <p class="hero-point">The model can propose an action. It cannot grant itself authority.</p>
+        <div class="hero-cta-row">
+          <a href="/how-it-works" class="btn-primary">See How It Works</a>
+          <a href="/docs/runtime-enforcement/control-agent-tools/" class="btn-secondary">Read the Docs</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="enforcement-section surface-section">
+      <div class="container">
+        <span class="label">Two-stage enforcement</span>
+        <h2>Control both sides of the model call.</h2>
+        <p class="section-lede">An allowlist that only changes the prompt is not an execution boundary. Tenure filters the request before inference and verifies the response before release.</p>
+        <div class="stage-grid">
+          <article>
+            <span class="stage-number">01</span>
+            <h3>Exposure filtering</h3>
+            <p>Tenure removes tools outside the active policy before the provider request. The model does not see capabilities it is not allowed to use.</p>
+            <div class="tool-list"><div><code>fetch_customer</code><b>VISIBLE</b></div><div><code>generate_email</code><b>VISIBLE</b></div><div class="denied"><code>delete_customer</code><b>REMOVED</b></div></div>
+          </article>
+          <article class="featured-card">
+            <span class="stage-number">02</span>
+            <h3>Invocation enforcement</h3>
+            <p>Tenure checks every structured action returned by the provider. Unapproved tools and actions without required evidence are withheld.</p>
+            <div class="tool-list"><div><code>generate_email</code><b>RELEASED</b></div><div class="blocked"><code>delete_customer</code><b>BLOCKED</b></div><div class="blocked"><code>send_email</code><b>NO EVIDENCE</b></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="enforcement-section">
+      <div class="container">
+        <span class="label">Identity-bound authority</span>
+        <h2>Every agent gets its own boundary.</h2>
+        <p class="section-lede">A Tenure agent token identifies the workload, resolves its active policy, and limits the context and capabilities available on that request.</p>
+        <div class="identity-flow">
+          <article><span>IDENTITY</span><strong>agent:sales-outbound</strong><small>Authenticated agent token</small></article>
+          <b>&rarr;</b>
+          <article><span>POLICY</span><strong>sales-outbound:v7</strong><small>Reviewed capability matrix</small></article>
+          <b>&rarr;</b>
+          <article><span>REQUEST</span><strong>send_email</strong><small>Arguments and workflow evidence</small></article>
+          <b>&rarr;</b>
+          <article class="decision"><span>DECISION</span><strong>Block and record</strong><small>Required customer state failed</small></article>
+        </div>
+        <p class="boundary-note">A valid provider credential proves that a caller can reach a model. It does not prove that this agent should delete a customer, send an email, or export a database.</p>
+      </div>
+    </section>
+
+    <section class="enforcement-section surface-section">
+      <div class="container">
+        <span class="label">Required evidence</span>
+        <h2>Allowed does not always mean allowed yet.</h2>
+        <p class="section-lede">A capability may be valid only after an earlier step establishes the state required to use it. Tenure verifies that evidence before releasing the dependent action.</p>
+        <div class="precondition-flow">
+          <article><span>01</span><h3>Fetch the customer</h3><code>fetch_customer</code><p>The required prerequisite runs first.</p></article>
+          <b>&rarr;</b>
+          <article class="evidence-card"><span>02</span><h3>Verify the result</h3><div class="check"><code>customer_id</code><b>MATCH</b></div><div class="check"><code>active</code><b>TRUE</b></div><div class="check"><code>opted_in</code><b>TRUE</b></div></article>
+          <b>&rarr;</b>
+          <article class="release-card"><span>03</span><h3>Release the action</h3><code>generate_email</code><p>Every enabled requirement must pass.</p></article>
+        </div>
+        <div class="outcome-grid">
+          <article><span class="card-label">Released</span><h3>Evidence is present</h3><p>The action remains available to your runtime.</p></article>
+          <article class="blocked-card"><span class="card-label">Blocked</span><h3>Evidence is missing</h3><p>The action is withheld before execution.</p></article>
+          <article><span class="card-label">Configurable</span><h3>Your team owns the rule</h3><p>Observed conditions are suggestions until your team reviews and publishes them.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="enforcement-section">
+      <div class="container">
+        <span class="label">Per-action decisions</span>
+        <h2>One bad call does not have to erase every valid one.</h2>
+        <p class="section-lede">When a response contains multiple tool calls, Tenure evaluates each call independently. Valid actions can be released while denied actions remain withheld.</p>
+        <div class="multi-call">
+          <div><span>MODEL RESPONSE</span><code>fetch_customer</code><code>generate_email</code><code>delete_customer</code></div>
+          <b>&rarr;</b>
+          <div class="decision-list"><span>TENURE DECISION</span><p><code>fetch_customer</code><strong>RELEASE</strong></p><p><code>generate_email</code><strong>RELEASE</strong></p><p class="deny"><code>delete_customer</code><strong>WITHHOLD</strong></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="enforcement-section surface-section">
+      <div class="container">
+        <span class="label">From behavior to boundary</span>
+        <h2>Build policy from the workflow, not from a blank file.</h2>
+        <div class="policy-flow">
+          <article><span>01</span><strong>Observe</strong><small>Capture exposed and invoked tools.</small></article><b>&rarr;</b>
+          <article><span>02</span><strong>Draft</strong><small>Propose capabilities and evidence.</small></article><b>&rarr;</b>
+          <article><span>03</span><strong>Review</strong><small>Remove authority and tune checks.</small></article><b>&rarr;</b>
+          <article><span>04</span><strong>Publish</strong><small>Attach the version to an agent token.</small></article><b>&rarr;</b>
+          <article class="featured-card"><span>05</span><strong>Enforce</strong><small>Apply the policy on every request.</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="enforcement-section">
+      <div class="container">
+        <span class="label">Auditable decisions</span>
+        <h2>Know exactly why an action stopped.</h2>
+        <div class="audit-grid">
+          <article><span class="card-label">Actor</span><h3>Which agent attempted it?</h3><p>Resolve the agent token, project scope, provider, model, and request.</p></article>
+          <article><span class="card-label">Policy</span><h3>Which boundary was active?</h3><p>Record the policy ID and immutable version used for the decision.</p></article>
+          <article class="featured-card"><span class="card-label">Outcome</span><h3>What passed or failed?</h3><p>Inspect tool filtering, capability decisions, precondition results, and final outcome.</p></article>
+        </div>
+        <p class="boundary-note">Tenure governs requests that pass through it. Direct provider credentials, direct tool execution, and other ungoverned side channels bypass this enforcement boundary.</p>
+      </div>
+    </section>
+
+    <section class="enforcement-section surface-section">
+      <div class="container cta-panel">
+        <span class="label">Control consequences</span>
+        <h2>Put policy between model intent and execution.</h2>
+        <p>Keep the agent framework you already use. Route supported model traffic through Tenure and enforce reviewed authority at runtime.</p>
+        <div class="hero-cta-row"><a href="/docs/agent-governance/connect-an-agent/" class="btn-primary">Connect an Agent</a><a href="/docs/runtime-enforcement/workflow-preconditions/" class="btn-secondary">Explore Preconditions</a></div>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .enforcement-page *, .enforcement-page *::before, .enforcement-page *::after { box-sizing: border-box; }
+    .enforcement-hero { padding: 7rem 0 5rem; text-align: center; border-bottom: 1px solid #252525; }
+    .enforcement-hero h1 { max-width: 1050px; }
+    .enforcement-hero .section-lede, .enforcement-hero .hero-point { max-width: 900px; margin-left: auto; margin-right: auto; }
+    .hero-point { margin-top: 1.4rem; color: #ededed; font-weight: 650; }
+    .enforcement-section { padding: 5rem 0; border-bottom: 1px solid #252525; }
+    .surface-section { background: #111; }
+    .stage-grid, .outcome-grid, .audit-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; margin-top: 2.5rem; }
+    .stage-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .stage-grid article, .outcome-grid article, .audit-grid article, .identity-flow article, .precondition-flow article, .policy-flow article, .multi-call > div { padding: 1.3rem; border: 1px solid #292929; border-radius: 14px; background: #171717; }
+    .stage-number, .card-label, .identity-flow span, .precondition-flow article > span, .policy-flow article > span, .multi-call span { display: block; margin-bottom: .65rem; color: #00a8ad; font-family: monospace; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+    .stage-grid h3, .outcome-grid h3, .audit-grid h3, .precondition-flow h3 { color: #ededed; }
+    .featured-card, .evidence-card, .release-card { border-color: rgba(0,168,173,.42) !important; background: rgba(0,168,173,.055) !important; }
+    .tool-list { margin-top: 1.2rem; }
+    .tool-list div { display: flex; justify-content: space-between; gap: 1rem; padding: .7rem 0; border-bottom: 1px solid #292929; }
+    .tool-list div:last-child { border-bottom: 0; }
+    code { color: #ededed; font-family: monospace; }
+    .tool-list b, .check b, .decision-list strong { color: #00a8ad; font-family: monospace; font-size: .67rem; }
+    .tool-list .denied { opacity: .42; }
+    .tool-list .blocked b, .decision-list .deny strong { color: #c45353; }
+    .identity-flow, .precondition-flow, .policy-flow { display: grid; align-items: stretch; gap: .65rem; margin-top: 2.5rem; }
+    .identity-flow { grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; }
+    .precondition-flow { grid-template-columns: 1fr auto 1fr auto 1fr; }
+    .policy-flow { grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr; }
+    .identity-flow b, .precondition-flow > b, .policy-flow > b, .multi-call > b { display: flex; align-items: center; color: #777; }
+    .identity-flow strong, .identity-flow small, .policy-flow strong, .policy-flow small { display: block; }
+    .identity-flow strong, .policy-flow strong { color: #ededed; }
+    .identity-flow small, .policy-flow small { margin-top: .45rem; color: #8e8e8e; }
+    .identity-flow .decision { border-color: rgba(196,83,83,.38); background: rgba(196,83,83,.055); }
+    .boundary-note { margin-top: 2rem; padding: 1.1rem 1.25rem; border-left: 3px solid #00a8ad; background: rgba(0,168,173,.045); color: #ededed; }
+    .check { display: flex; justify-content: space-between; gap: 1rem; padding: .65rem; margin-top: .5rem; border: 1px solid #2c2c2c; border-radius: 8px; }
+    .blocked-card { border-color: rgba(196,83,83,.38) !important; }
+    .blocked-card .card-label { color: #c45353; }
+    .multi-call { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: stretch; margin-top: 2.5rem; }
+    .multi-call > div:first-child code { display: block; margin-top: .65rem; }
+    .decision-list p { display: flex; justify-content: space-between; gap: 1rem; padding: .6rem 0; margin: 0; border-bottom: 1px solid #292929; }
+    .cta-panel { text-align: center; }
+    .cta-panel p { max-width: 760px; margin-left: auto; margin-right: auto; }
+    @media (max-width: 950px) { .identity-flow, .precondition-flow, .policy-flow, .multi-call { grid-template-columns: 1fr; } .identity-flow b, .precondition-flow > b, .policy-flow > b, .multi-call > b { justify-content: center; transform: rotate(90deg); min-height: 22px; } }
+    @media (max-width: 760px) { .stage-grid, .outcome-grid, .audit-grid { grid-template-columns: 1fr; } .enforcement-hero { padding: 5rem 0 3.5rem; } .enforcement-section { padding: 3.5rem 0; } }
+  </style>
+</Base>
