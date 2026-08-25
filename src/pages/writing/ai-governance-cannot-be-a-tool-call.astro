@@ -30,10 +30,10 @@ import Base from '../../layouts/Base.astro';
       <span>AI context control plane</span>
     </div>
     <span class="label" style="margin-top:1.5rem; display:inline-block;">Architecture</span>
-    <h1>Governance cannot be a tool call</h1>
+    <h1>Governance cannot be a tool call.</h1>
     <p class="hero-sub-title" style="margin-top:1rem;">
       Enterprise AI needs a context control plane beneath every model request.
-      Not a tool the agent can choose to call. A layer every request has to pass through.
+      Not a tool the agent can choose to call, but a layer every request has to pass through.
     </p>
     <div class="essay-meta">
       <span class="essay-meta-item">Tenure research</span>
@@ -60,16 +60,16 @@ import Base from '../../layouts/Base.astro';
 <section class="essay-section" style="border-bottom:1px solid var(--border);">
   <div class="container essay-prose">
     <span class="label">The assumption nobody states out loud</span>
-    <h2>If it depends on the model deciding to call it, it is not governance</h2>
+    <h2>If it depends on the model deciding to call it, it is not governance.</h2>
     <p>
       Open almost any architecture diagram for an AI coding agent today and you will find the same
-      shape. The model sits at the center. Around it, a ring of tools it can reach for: a ticketing
-      system, a memory store, a compliance check, an audit log. The diagram looks complete. It is
-      missing the detail that determines whether any of it actually works: every one of those tools
+      shape, where the model sits at the center. Around it, a ring of tools it can reach for: a ticketing
+      system, a memory store, a compliance check, an audit log and the diagram looks complete. It is
+      missing the detail that determines whether any of it actually works, where every one of those tools
       only does something if the model decides to call it.
     </p>
     <p>
-      That is fine for a calendar lookup. It is not fine for the things people actually mean when
+      That is fine for a calendar lookup. It isn't fine for the things people actually mean when
       they say governance. Access control that depends on the agent remembering to check access
       is not access control. An audit trail that exists only when the model chooses to write to it
       is not an audit trail. A coding convention that the model follows when it happens to recall
