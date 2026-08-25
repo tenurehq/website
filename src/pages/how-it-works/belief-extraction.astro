@@ -29,10 +29,9 @@ import Base from '../../layouts/Base.astro';
       <span>Belief Extraction</span>
     </div>
     <span class="label" style="margin-top:1.5rem; display:inline-block;">Memory lifecycle</span>
-    <h1>Tenure does not remember transcripts.<br/>It extracts governed state.</h1>
+    <h1>Raw chat logs make bad memory. <br/>Tenure pulls out the parts worth keeping.</h1>
     <p class="hero-sub">
-      Conversations, docs, and code context are noisy. Tenure turns useful signals into structured beliefs with scope,
-      provenance, confidence, and a path for review before they become model-facing memory.
+     Conversations, docs, and code context are noisy. Tenure pulls out what's worth keeping, tags where it came from and how confident it is, and gives you a chance to review it before it ever reaches the model.
     </p>
     <div class="hiw-hero-ctas">
       <a href="/docs/quickstart/" class="btn-primary" target="_blank" rel="noopener">Get Started →</a>
@@ -56,7 +55,7 @@ import Base from '../../layouts/Base.astro';
       </div>
       <div class="hiw-intro-card">
         <div class="hiw-intro-label">Mode aware</div>
-        <h3>Extraction does not mean injection.</h3>
+        <h3>Extracted, not always shown.</h3>
         <p>In observation or curated modes, Tenure can extract and show what it learned without automatically giving it to the model.</p>
       </div>
     </div>
@@ -67,8 +66,8 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <div class="hiw-section-header">
       <span class="label">The extraction path</span>
-      <h2>Useful memory has to pass through gates.</h2>
-      <p>Tenure separates signal capture from trust. Extraction creates candidates. Validation, scope enforcement, memory mode, and merge policy decide what happens next.</p>
+      <h2>Not everything Tenure extracts becomes memory right away.</h2>
+      <p>Tenure keeps capturing signal separate from trusting it. Extraction just creates candidates. What happens after that comes down to validation, scope, your memory mode, and merge policy.</p>
     </div>
 
     <div class="hiw-flow">
@@ -100,8 +99,8 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <div class="hiw-section-header">
       <span class="label">What gets extracted</span>
-      <h2>Tenure looks for state the model can act on.</h2>
-      <p>A belief is not just an interesting sentence. It is a durable piece of state that can improve future model behavior when scoped and injected correctly.</p>
+      <h2>Tenure looks for things the model can use later.</h2>
+      <p>A belief isn't just an interesting sentence someone said. It's specific enough that, scoped and injected the right way, it actually changes how the model behaves next time.</p>
     </div>
 
     <div class="hiw-grid-two">
@@ -136,7 +135,7 @@ import Base from '../../layouts/Base.astro';
     <div class="hiw-section-header">
       <span class="label">RAG comparison</span>
       <h2>Extraction is not chunk retrieval.</h2>
-      <p>RAG stores source text and retrieves passages later. Tenure extracts the durable claim, records where it came from, and gives future models the smallest useful belief instead of a transcript dump.</p>
+      <p>RAG stores the source text and digs through it again later. Tenure pulls out the actual claim, keeps track of where it came from, and hands the model that one small, useful belief instead of a pile of old transcript.</p>
     </div>
 
     <div class="hiw-compare">
@@ -205,8 +204,8 @@ User: Actually only at API boundaries...</pre>
 <section class="hiw-closing">
   <div class="container">
     <span class="label">The point</span>
-    <h2>Extraction turns context into something governable.</h2>
-    <p>Once work becomes structured belief state, teams can review it, merge it, supersede it, audit it, and decide exactly when it becomes model-facing memory.</p>
+    <h2>Extraction gives you something you can actually manage.</h2>
+    <p>Once your work turns into structured beliefs, your team can review them, merge them, replace outdated ones, audit the history, and decide exactly when they reach the model.</p>
     <div class="hiw-hero-ctas">
       <a href="/docs/quickstart" class="btn-primary" target="_blank" rel="noopener">Install Free →</a>
       <a href="/how-it-works/belief-merging" class="btn-secondary">Next: Belief Merging</a>
@@ -233,7 +232,7 @@ User: Actually only at API boundaries...</pre>
 .hiw-intro-card p,.hiw-panel p,.hiw-flow-card p,.hiw-compare-card p { font-size:.875rem; margin:0; }
 .hiw-section { padding:5rem 2rem; border-bottom:1px solid var(--border); }
 .hiw-section.alt { background:var(--surface); }
-.hiw-section-header { max-width:740px; margin-bottom:2.5rem; }
+.hiw-section-header { margin-bottom:2.5rem; }
 .hiw-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
 .hiw-flow-num { font-family:var(--mono); font-size:.72rem; color:var(--accent); background:rgba(0,168,173,.08); border:1px solid rgba(0,168,173,.2); border-radius:6px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; }
 .hiw-grid-two,.hiw-compare { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }

@@ -36,8 +36,7 @@ import Base from '../../layouts/Base.astro';
     </p>
 
     <p class="hero-sub">
-      Tenure treats memory as governed state. Repeated beliefs are reinforced, aliases are added,
-      stale versions are superseded, and uncertain merges are left alone.
+      Repeated beliefs get reinforced. Aliases get added. Old versions get replaced but kept on record. If two beliefs might be different, Tenure leaves them alone.
     </p>
     <div class="hiw-hero-ctas">
       <a href="/docs/quickstart/" class="btn-primary" target="_blank" rel="noopener">Get Started →</a>
@@ -72,8 +71,8 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <div class="hiw-section-header">
       <span class="label">The merge path</span>
-      <h2>Every extracted belief enters a lifecycle.</h2>
-      <p>A new belief is not simply dumped into memory. Tenure checks for canonical and alias matches, fuzzy merge candidates, file context, confidence, and explicit update signals before deciding what to do.</p>
+      <h2>A new belief doesn't just get filed away.</h2>
+      <p>Before Tenure decides what to do with it, it checks for name and alias matches, close-enough merge candidates, where it came from, how confident it is, and whether anything explicitly says to update.</p>
     </div>
 
     <div class="hiw-flow">
@@ -106,7 +105,7 @@ import Base from '../../layouts/Base.astro';
     <div class="hiw-section-header">
       <span class="label">State transitions</span>
       <h2>Beliefs are reinforced before they are trusted.</h2>
-      <p>Tenure separates weak signals from durable memory. Inferred beliefs need both repeated evidence and time before they can become active, which keeps one long session from accidentally promoting a fragile assumption.</p>
+      <p>A weak signal and a durable memory aren't treated the same. An inferred belief needs to show up more than once, and needs some time to pass, before it goes active. That way one long session can't accidentally turn a shaky guess into settled fact.</p>
     </div>
 
     <div class="hiw-demo">
@@ -170,7 +169,7 @@ import Base from '../../layouts/Base.astro';
     </div>
 
     <div class="hiw-callout">
-      <p><strong>Tenure’s merge rule is intentionally boring:</strong> preserve evidence, promote slowly, and never compress uncertainty into false certainty.</p>
+      <p><strong>The merge rule stays simple:</strong> keep the evidence, promote things slowly, and never turn an uncertain guess into a confident-sounding fact.</p>
     </div>
   </div>
 </section>
@@ -180,7 +179,7 @@ import Base from '../../layouts/Base.astro';
     <div class="hiw-section-header">
       <span class="label">Why this matters</span>
       <h2>The model is the consumer.</h2>
-      <p>Memory is only useful when the model receives the right belief at the right time. Merging is not just cleanup. It controls what future sessions are allowed to assume.</p>
+      <p>Memory only helps if the model gets the right belief at the right moment. Merging isn't just tidying up. It decides what future sessions get to assume is true.</p>
     </div>
 
     <div class="hiw-code">
@@ -197,7 +196,7 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <span class="label">The point</span>
     <h2>Memory should become clearer as it grows.</h2>
-    <p>Tenure gives teams a memory layer that can accumulate evidence without losing control of provenance, confidence, scope, or lineage.</p>
+    <p>Tenure gives you a memory layer that can pile up evidence over time without ever losing track of where something came from, how sure it is, where it applies, or what it replaced.</p>
     <div class="hiw-hero-ctas">
       <a href="/docs/quickstart" class="btn-primary" target="_blank" rel="noopener">Install Free →</a>
       <a href="/how-it-works/contradiction-handling" class="btn-secondary">Next: Contradictions</a>
@@ -289,7 +288,6 @@ import Base from '../../layouts/Base.astro';
 .hiw-section.alt { background: var(--surface); }
 
 .hiw-section-header {
-  max-width: 720px;
   margin-bottom: 2.5rem;
 }
 

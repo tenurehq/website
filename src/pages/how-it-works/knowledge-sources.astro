@@ -31,8 +31,7 @@ import Base from '../../layouts/Base.astro';
     <span class="label" style="margin-top:1.5rem; display:inline-block;">Source control for memory</span>
     <h1>Bring the knowledge your team<br/>already trusts into Tenure.</h1>
     <p class="hero-sub">
-      AGENTS.md, Confluence, ADRs, READMEs, coding standards, and manual beliefs can all seed governed memory.
-      Docs remain sources. Beliefs become the runtime state your AI can use.
+      AGENTS.md, Confluence, ADRs, READMEs, coding standards, and manual beliefs can all feed into memory. The docs stay where they are. The beliefs are what your AI uses.
     </p>
     <div class="hiw-hero-ctas">
       <a href="/docs/quickstart/" class="btn-primary" target="_blank" rel="noopener">Get Started →</a>
@@ -67,8 +66,8 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <div class="hiw-section-header">
       <span class="label">Supported source types</span>
-      <h2>Tenure starts from the knowledge you already maintain.</h2>
-      <p>Most teams already have useful AI context. The problem is that it lives in scattered files, docs, and decisions that models cannot use consistently across tools.</p>
+      <h2>Tenure starts with the knowledge you already have.</h2>
+      <p>Most teams already have what a model would need to know. It's just scattered across files, docs, and old decisions that no tool can pull from consistently.</p>
     </div>
 
     <div class="hiw-source-grid">
@@ -110,8 +109,8 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <div class="hiw-section-header">
       <span class="label">Markdown is a source</span>
-      <h2>AGENTS.md is useful. It should not be the entire memory system.</h2>
-      <p>Markdown files are great for human-readable instructions. Tenure gives those instructions governance, scope, provenance, review, and per-turn control.</p>
+      <h2>AGENTS.md is useful on its own. It just can't carry your whole memory system.</h2>
+      <p>Markdown files are great for instructions a person can read. Tenure adds the scope, source tracking, review step, and per-turn control that markdown alone can't give you.</p>
     </div>
 
     <div class="hiw-compare">
@@ -143,8 +142,8 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <div class="hiw-section-header">
       <span class="label">Manual belief creation</span>
-      <h2>Some memory should be explicit from day one.</h2>
-      <p>Teams should not have to wait for repeated conversations to establish known rules. Manual belief creation lets admins, team leads, and developers seed memory intentionally.</p>
+      <h2>Some things shouldn't have to wait to become memory.</h2>
+      <p>If a rule is already known, your team shouldn't need repeated conversations to teach it to the model. Admins, team leads, and developers can just add it directly.</p>
     </div>
 
     <div class="hiw-demo">
@@ -191,8 +190,8 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <div class="hiw-section-header">
       <span class="label">Safe rollout</span>
-      <h2>Start with trusted sources. Expand as trust is earned.</h2>
-      <p>The fastest path is not “let AI learn everything.” It is to seed from sources you trust, observe what Tenure extracts, then approve the beliefs that should become runtime memory.</p>
+      <h2>Start with what you trust. Add more once it proves out.</h2>
+      <p>Trying to let the AI learn everything at once isn't the fastest path. Seeding from sources you already trust, watching what Tenure pulls out, then approving what's worth keeping gets you there faster.</p>
     </div>
 
     <div class="hiw-flow">
@@ -219,7 +218,7 @@ import Base from '../../layouts/Base.astro';
     </div>
 
     <div class="hiw-callout">
-      <p><strong>The practical adoption story:</strong> Keep the docs your team already trusts. Use Tenure to make the durable parts inspectable, scoped, and available across every AI client.</p>
+      <p>In practice, this means keeping the docs your team already trusts and using Tenure to make the durable parts of them inspectable, scoped, and available across every AI client.</p>
     </div>
   </div>
 </section>
@@ -228,7 +227,7 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <span class="label">The point</span>
     <h2>Knowledge sources are where memory starts.<br/>Beliefs are what the model uses.</h2>
-    <p>Tenure lets teams seed memory intentionally, preserve source provenance, and decide what becomes active AI context.</p>
+    <p>Tenure lets your team decide what feeds into memory, keep track of where it came from, and control what actually reaches the model.</p>
     <div class="hiw-hero-ctas">
       <a href="/docs/quickstart" class="btn-primary" target="_blank" rel="noopener">Install Free →</a>
       <a href="/how-it-works/belief-extraction" class="btn-secondary">Belief Extraction</a>
@@ -255,7 +254,7 @@ import Base from '../../layouts/Base.astro';
 .hiw-intro-card p,.hiw-panel p,.hiw-flow-card p,.hiw-source-card p,.hiw-compare-card p { font-size:.875rem; margin:0; }
 .hiw-section { padding:5rem 2rem; border-bottom:1px solid var(--border); }
 .hiw-section.alt { background:var(--surface); }
-.hiw-section-header { max-width:760px; margin-bottom:2.5rem; }
+.hiw-section-header { margin-bottom:2.5rem; }
 .hiw-source-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
 .hiw-source-icon { font-family:var(--mono); font-size:.72rem; color:var(--accent); background:rgba(0,168,173,.08); border:1px solid rgba(0,168,173,.2); border-radius:6px; min-width:36px; height:36px; padding:0 .35rem; display:inline-flex; align-items:center; justify-content:center; margin-bottom:1rem; }
 .hiw-compare,.hiw-split { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1.25rem; }
