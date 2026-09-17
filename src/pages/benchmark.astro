@@ -180,8 +180,8 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-good">77/77</span></td>
             <td><span class="val-good">1.00</span></td>
             <td><span class="val-good">1.00</span></td>
-            <td><span class="val-good">9.77ms</span></td>
-            <td>1.00s</td>
+            <td><span class="val-good">9.25ms</span></td>
+            <td>0.80s</td>
           </tr>
           <tr>
             <td>open-knowledge-format</td>
@@ -193,22 +193,22 @@ import Base from '../layouts/Base.astro';
             <td>0.00s</td>
           </tr>
           <tr>
-            <td>supermemory</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">4/43</span></td>
-            <td>21/77</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">0.22</span></td>
-            <td>0.71</td>
-            <td>69.41ms</td>
-            <td>5.20s</td>
+            <td>atomicmemory</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">5/43</span></td>
+            <td>16/77</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">0.23</span></td>
+            <td>0.54</td>
+            <td>163.85ms</td>
+            <td>664.80s</td>
           </tr>
           <tr>
-            <td>agentmemory</td>
-            <td><span class="val-bad">0/43</span></td>
-            <td>7/77</td>
-            <td><span class="val-bad">0.17</span></td>
-            <td>0.97</td>
-            <td>82.28ms</td>
-            <td>1.10s</td>
+            <td>supermemory</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">2/43</span></td>
+            <td>15/77</td>
+            <td><span style="color:var(--amber);font-family:var(--mono);">0.18</span></td>
+            <td>0.82</td>
+            <td>45.77ms</td>
+            <td>1.70s</td>
           </tr>
           <tr>
             <td>yourmemory</td>
@@ -216,35 +216,8 @@ import Base from '../layouts/Base.astro';
             <td>21/77</td>
             <td><span class="val-bad">0.17</span></td>
             <td>0.88</td>
-            <td>313.39ms</td>
-            <td>16.40s</td>
-          </tr>
-          <tr>
-            <td>atomicmemory</td>
-            <td><span class="val-bad">0/43</span></td>
-            <td>9/77</td>
-            <td><span class="val-bad">0.15</span></td>
-            <td>0.95</td>
-            <td>71.01ms</td>
-            <td>658.90s</td>
-          </tr>
-          <tr>
-            <td>gbrain</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">5/43</span></td>
-            <td>34/77</td>
-            <td><span style="color:var(--amber);font-family:var(--mono);">0.14</span></td>
-            <td>0.17</td>
-            <td>543.84ms</td>
-            <td>28.60s</td>
-          </tr>
-          <tr>
-            <td>zep</td>
-            <td><span class="val-bad">0/43</span></td>
-            <td>9/77</td>
-            <td><span class="val-bad">0.09</span></td>
-            <td>0.95</td>
-            <td>124.36ms</td>
-            <td>897.00s</td>
+            <td>464.08ms</td>
+            <td>24.80s</td>
           </tr>
           <tr>
             <td>vector<span class="badge-note">mxbai-embed-large</span></td>
@@ -256,13 +229,49 @@ import Base from '../layouts/Base.astro';
             <td>—</td>
           </tr>
           <tr>
+            <td>gbrain</td>
+            <td><span class="val-bad">0/43</span></td>
+            <td>11/77</td>
+            <td><span class="val-bad">0.07</span></td>
+            <td>1.00</td>
+            <td>1455.98ms</td>
+            <td>52.60s</td>
+          </tr>
+          <tr>
             <td>hindsight</td>
+            <td><span class="val-bad">0/43</span></td>
+            <td>11/77</td>
+            <td><span class="val-bad">0.07</span></td>
+            <td>1.00</td>
+            <td>610.36ms</td>
+            <td>173.00s</td>
+          </tr>
+          <tr>
+            <td>zep</td>
             <td><span class="val-bad">0/43</span></td>
             <td>9/77</td>
             <td><span class="val-bad">0.06</span></td>
-            <td>1.00</td>
-            <td>589.86ms</td>
-            <td>173.30s</td>
+            <td>0.66</td>
+            <td>146.41ms</td>
+            <td>485.80s</td>
+          </tr>
+          <tr>
+            <td>agentmemory</td>
+            <td><span class="val-bad">0/43</span></td>
+            <td>9/77</td>
+            <td><span class="val-bad">0.06</span></td>
+            <td>0.99</td>
+            <td>148.30ms</td>
+            <td>8.50s</td>
+          </tr>
+          <tr>
+            <td>cognee</td>
+            <td><span class="val-bad">0/43</span></td>
+            <td>9/77</td>
+            <td><span class="val-bad">0.06</span></td>
+            <td>0.98</td>
+            <td>293.18ms</td>
+            <td>495.00s</td>
           </tr>
           <tr>
             <td>mem0</td>
@@ -270,26 +279,17 @@ import Base from '../layouts/Base.astro';
             <td>9/77</td>
             <td><span class="val-bad">0.06</span></td>
             <td>0.99</td>
-            <td>64.94ms</td>
-            <td>111.30s</td>
-          </tr>
-          <tr>
-            <td>cognee</td>
-            <td><span class="val-bad">0/43</span></td>
-            <td>11/77</td>
-            <td><span class="val-bad">0.05</span></td>
-            <td>0.92</td>
-            <td>2891.04ms</td>
-            <td>—</td>
+            <td>61.15ms</td>
+            <td>132.80s</td>
           </tr>
           <tr>
             <td>a-mem</td>
             <td><span class="val-bad">0/43</span></td>
-            <td>9/77</td>
-            <td><span class="val-bad">0.06</span></td>
+            <td>7/77</td>
+            <td><span class="val-bad">0.05</span></td>
             <td>0.99</td>
-            <td>13.80ms</td>
-            <td>178.80s</td>
+            <td>12.44ms</td>
+            <td>46.80s</td>
           </tr>
         </tbody>
       </table>
@@ -323,13 +323,13 @@ import Base from '../layouts/Base.astro';
         <tbody>
           <tr class="highlight-row"><td><strong>tenure</strong></td><td><span class="val-good">43</span></td><td>25</td><td>9</td></tr>
           <tr><td>open-knowledge-format</td><td><span style="color:var(--amber);font-family:var(--mono);">18</span></td><td>13</td><td>5</td></tr>
-          <tr><td>gbrain</td><td><span style="color:var(--amber);font-family:var(--mono);">5</span></td><td>20</td><td>9</td></tr>
-          <tr><td>supermemory</td><td><span style="color:var(--amber);font-family:var(--mono);">4</span></td><td>14</td><td>3</td></tr>
-          <tr><td>a-mem</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
-          <tr><td>agentmemory</td><td><span class="val-bad">0</span></td><td>5</td><td>2</td></tr>
-          <tr><td>atomicmemory</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
-          <tr><td>cognee</td><td><span class="val-bad">0</span></td><td>7</td><td>4</td></tr>
-          <tr><td>hindsight</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+          <tr><td>atomicmemory</td><td><span style="color:var(--amber);font-family:var(--mono);">5</span></td><td>8</td><td>3</td></tr>
+          <tr><td>supermemory</td><td><span style="color:var(--amber);font-family:var(--mono);">2</span></td><td>10</td><td>3</td></tr>
+          <tr><td>a-mem</td><td><span class="val-bad">0</span></td><td>5</td><td>2</td></tr>
+          <tr><td>agentmemory</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+          <tr><td>cognee</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
+          <tr><td>gbrain</td><td><span class="val-bad">0</span></td><td>8</td><td>3</td></tr>
+          <tr><td>hindsight</td><td><span class="val-bad">0</span></td><td>8</td><td>3</td></tr>
           <tr><td>mem0</td><td><span class="val-bad">0</span></td><td>6</td><td>3</td></tr>
           <tr><td>vector</td><td><span class="val-bad">0</span></td><td>8</td><td>3</td></tr>
           <tr><td>yourmemory</td><td><span class="val-bad">0</span></td><td>15</td><td>6</td></tr>
@@ -571,24 +571,24 @@ import Base from '../layouts/Base.astro';
             <td>768</td>
             <td><span class="val-bad">0.09</span></td>
             <td><span class="val-bad">11/77</span></td>
-            <td>43ms</td>
-            <td>85ms</td>
+            <td>43.36ms</td>
+            <td>85.21ms</td>
           </tr>
           <tr>
             <td>mxbai-embed-large</td>
             <td>1024</td>
             <td><span class="val-bad">0.09</span></td>
             <td><span class="val-bad">11/77</span></td>
-            <td>96ms</td>
-            <td>257ms</td>
+            <td>96.48ms</td>
+            <td>257.24ms</td>
           </tr>
           <tr>
             <td>qwen3-8b</td>
             <td>4096</td>
             <td><span class="val-bad">0.09</span></td>
             <td><span class="val-bad">11/77</span></td>
-            <td>1131ms</td>
-            <td>2605ms</td>
+            <td>1130.95ms</td>
+            <td>2604.84ms</td>
           </tr>
         </tbody>
       </table>
@@ -628,60 +628,20 @@ import Base from '../layouts/Base.astro';
             <td><span class="val-good">0.0000</span></td>
             <td><span class="val-good">1.00</span></td>
             <td><span class="val-good">1.0000</span></td>
-            <td><span class="val-good">47.79ms</span></td>
+            <td><span class="val-good">49.74ms</span></td>
           </tr>
-          <tr>
-            <td>open-knowledge-format</td>
-            <td>2/12</td>
-            <td>0.17</td>
-            <td>0.2153</td>
-            <td>0.17</td>
-            <td>0.5694</td>
-            <td>3349.45ms</td>
-          </tr>
-          <tr>
-            <td>yourmemory</td>
-            <td>1/12</td>
-            <td>0.08</td>
-            <td>0.7365</td>
-            <td>0.08</td>
-            <td>0.1965</td>
-            <td>430.49ms</td>
-          </tr>
-          <tr>
-            <td>supermemory</td>
-            <td>1/12</td>
-            <td>0.08</td>
-            <td>0.7493</td>
-            <td>0.08</td>
-            <td>0.1825</td>
-            <td>172.32ms</td>
-          </tr>
-          <tr>
-            <td>cognee</td>
-            <td>1/12</td>
-            <td>0.08</td>
-            <td>0.8459</td>
-            <td>0.08</td>
-            <td>0.0772</td>
-            <td>4222.62ms</td>
-          </tr>
-          <tr>
-            <td>gbrain</td>
-            <td>1/12</td>
-            <td>0.08</td>
-            <td>0.0000<span class="badge-note">empty result</span></td>
-            <td>0.08</td>
-            <td>—</td>
-            <td>535.61ms</td>
-          </tr>
-          <tr><td>agentmemory</td><td>0/12</td><td>0.00</td><td>0.8087</td><td>0.00</td><td>0.1913</td><td>98.49ms</td></tr>
-          <tr><td>atomicmemory</td><td>0/12</td><td>0.00</td><td>0.8449</td><td>0.00</td><td>0.1551</td><td>355.08ms</td></tr>
-          <tr><td>zep</td><td>0/12</td><td>0.00</td><td>0.8888</td><td>0.00</td><td>0.1112</td><td>418.13ms</td></tr>
+          <tr><td>open-knowledge-format</td><td>2/12</td><td>0.17</td><td>0.2153</td><td>0.17</td><td>0.5694</td><td>3349.45ms</td></tr>
+          <tr><td>supermemory</td><td>1/12</td><td>0.08</td><td>0.6944</td><td>0.08</td><td>0.1668</td><td>164.38ms</td></tr>
+          <tr><td>yourmemory</td><td>0/12</td><td>0.00</td><td>0.7444</td><td>0.00</td><td>0.1879</td><td>568.08ms</td></tr>
+          <tr><td>atomicmemory</td><td>0/12</td><td>0.00</td><td>0.8611</td><td>0.00</td><td>0.1389</td><td>403.97ms</td></tr>
           <tr><td>vector</td><td>0/12</td><td>0.00</td><td>0.9142</td><td>0.00</td><td>0.0858</td><td>256.75ms</td></tr>
-          <tr><td>a-mem</td><td>0/12</td><td>0.00</td><td>0.9259</td><td>0.00</td><td>0.0741</td><td>25.66ms</td></tr>
-          <tr><td>hindsight</td><td>0/12</td><td>0.00</td><td>0.9285</td><td>0.00</td><td>0.0715</td><td>1880.60ms</td></tr>
-          <tr><td>mem0</td><td>0/12</td><td>0.00</td><td>0.9398</td><td>0.00</td><td>0.0602</td><td>377.93ms</td></tr>
+          <tr><td>a-mem</td><td>0/12</td><td>0.00</td><td>0.9259</td><td>0.00</td><td>0.0741</td><td>22.36ms</td></tr>
+          <tr><td>gbrain</td><td>0/12</td><td>0.00</td><td>0.9259</td><td>0.00</td><td>0.0741</td><td>2001.14ms</td></tr>
+          <tr><td>hindsight</td><td>0/12</td><td>0.00</td><td>0.9259</td><td>0.00</td><td>0.0741</td><td>1217.50ms</td></tr>
+          <tr><td>mem0</td><td>0/12</td><td>0.00</td><td>0.9259</td><td>0.00</td><td>0.0741</td><td>259.26ms</td></tr>
+          <tr><td>cognee</td><td>0/12</td><td>0.00</td><td>0.9295</td><td>0.00</td><td>0.0705</td><td>483.71ms</td></tr>
+          <tr><td>zep</td><td>0/12</td><td>0.00</td><td>0.9320</td><td>0.00</td><td>0.0680</td><td>357.21ms</td></tr>
+          <tr><td>agentmemory</td><td>0/12</td><td>0.00</td><td>0.9398</td><td>0.00</td><td>0.0602</td><td>339.12ms</td></tr>
         </tbody>
       </table>
     </div>
